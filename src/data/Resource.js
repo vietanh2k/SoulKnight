@@ -20,7 +20,7 @@ var res = {
 
     //images
     Slot1_png : "zcsd/slot1.png",
-    LoginScene_json : "ui/MainScene.json"
+    LoginScene_json : "ui/LogInScene.json"
 };
 
 var g_resources = [

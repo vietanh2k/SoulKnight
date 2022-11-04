@@ -15,7 +15,7 @@ var SignInScreen = cc.Layer.extend({
     onSelectLogin:function(sender)
     {
         // this.lblLog.setString("Start Connect!");
-        gv.gameClient._userName = this.textField.getString()
+        gv.gameClient._userId = this.textField.getString()
         cc.log("current test is :" + this.textField.getString())
         gv.gameClient.connect();
     },
