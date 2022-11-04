@@ -12,6 +12,7 @@ gv.CMD.MOVE = 2001;
 testnetwork = testnetwork||{};
 testnetwork.packetMap = {};
 
+
 /** Outpacket */
 
 //Handshake
@@ -55,9 +56,10 @@ CmdSendLogin = fr.OutPacket.extend(
             this.initData(100);
             this.setCmdId(gv.CMD.USER_LOGIN);
         },
-        pack:function(user){
+        pack:function(userId){
             this.packHeader();
-            this.putString(user);
+            this.putString("section");
+            this.putInt(userId)
             this.updateSize();
         }
     }
@@ -115,10 +117,9 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             this._super();
         },
         readData:function(){
-            this.token = this.getInt();
-            this.name = this.getString();
-            this.x = this.getInt();
-            this.y = this.getInt();
+            this.playerInfo = new PlayerInfo(this)
+            sharePlayerInfo = this.playerInfo;
+
         }
     }
 );

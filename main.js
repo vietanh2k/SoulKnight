@@ -1,8 +1,8 @@
 
 var gv = gv || {};
 
-var DESIGN_RESOLUTION_WIDTH = 1136;
-var DESIGN_RESOLUTION_HEIGHT = 640;
+var DESIGN_RESOLUTION_WIDTH = 640;
+var DESIGN_RESOLUTION_HEIGHT = 1136;
 cc.game.onStart = function () {
     if (!cc.sys.isNative && document.getElementById("cocosLoading")) //If referenced loading.js, please remove it
         document.body.removeChild(document.getElementById("cocosLoading"));
@@ -33,7 +33,7 @@ cc.game.onStart = function () {
         //modules
         testnetwork.connector = new testnetwork.Connector(gv.gameClient);
 
-        fr.view(ScreenMenu);
+        fr.view(SignInScreen);
     }, this);
 };
 cc.game.run();

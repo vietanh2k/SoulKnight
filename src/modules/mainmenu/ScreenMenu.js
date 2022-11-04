@@ -31,7 +31,8 @@ var ScreenMenu = cc.Layer.extend({
     },
     onSelectNetwork:function(sender)
     {
-        fr.view(ScreenNetwork);
+        // fr.view(ScreenNetwork);
+        fr.view(SignInScreen);
     },
     onSelectLocalization:function(sender)
     {

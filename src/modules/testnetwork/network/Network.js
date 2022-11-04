@@ -13,12 +13,15 @@ testnetwork.Connector = cc.Class.extend({
         gameClient.receivePacketSignal.add(this.onReceivedPacket, this);
         this._userName = "username";
     },
+
     onReceivedPacket:function(cmd, packet)
     {
         cc.log("onReceivedPacket:", cmd);
+
         switch (cmd)
         {
             case gv.CMD.HAND_SHAKE:
+
                 this.sendLoginRequest();
                 break;
             case gv.CMD.USER_LOGIN:
@@ -44,7 +47,8 @@ testnetwork.Connector = cc.Class.extend({
     sendLoginRequest: function () {
         cc.log("sendLoginRequest");
         var pk = this.gameClient.getOutPacket(CmdSendLogin);
-        pk.pack(this._userName);
+        var userId = parseInt(this.gameClient._userId)
+        pk.pack(userId);
         this.gameClient.sendPacket(pk);
     },
     sendMove:function(direction){
