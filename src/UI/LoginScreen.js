@@ -8,8 +8,10 @@ var SignInScreen = cc.Layer.extend({
         this.addChild(mainscene);
         this.login_button = mainscene.getChildByName("LogIn");
         this.textField  = mainscene.getChildByName("IdField");
+        this.notification = mainscene.getChildByName("Notification");
+        // this.notification.visible = false;
+        this.notification.setOpacity(0);
         this.login_button.addClickEventListener(this.onSelectLogin.bind(this));
-
         return true;
     },
     onSelectLogin:function(sender)
@@ -27,6 +29,11 @@ var SignInScreen = cc.Layer.extend({
     },
     onFinishLogin: function (){
 
+    },
+    OnError: function (error){
+        this.notification.setOpacity(255);
+        this.notification.setString(error);
+        this.notification.runAction(cc.FadeOut.create(3.0));
     }
 });
 

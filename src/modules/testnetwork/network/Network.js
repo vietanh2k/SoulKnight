@@ -46,10 +46,20 @@ testnetwork.Connector = cc.Class.extend({
     },
     sendLoginRequest: function () {
         cc.log("sendLoginRequest");
-        var pk = this.gameClient.getOutPacket(CmdSendLogin);
-        var userId = parseInt(this.gameClient._userId)
-        pk.pack(userId);
-        this.gameClient.sendPacket(pk);
+        try{
+            var userId = parseInt(this.gameClient._userId);
+            if(!isNaN(userId)){
+                var pk = this.gameClient.getOutPacket(CmdSendLogin);
+                pk.pack(userId);
+                this.gameClient.sendPacket(pk);
+            } else {
+                fr.getCurrentScreen().OnError("User_ID_must_be_number!");
+            }
+
+        } catch (e){
+            fr.getCurrentScreen().OnError("User_ID_must_be_number!");
+        }
+
     },
     sendMove:function(direction){
         cc.log("SendMove:" + direction);
