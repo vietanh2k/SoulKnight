@@ -13,12 +13,15 @@ testnetwork.Connector = cc.Class.extend({
         gameClient.receivePacketSignal.add(this.onReceivedPacket, this);
         this._userName = "username";
     },
+
     onReceivedPacket:function(cmd, packet)
     {
         cc.log("onReceivedPacket:", cmd);
+
         switch (cmd)
         {
             case gv.CMD.HAND_SHAKE:
+
                 this.sendLoginRequest();
                 break;
             case gv.CMD.USER_LOGIN:

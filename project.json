@@ -9,7 +9,8 @@
     "modules": [
         "cocos2d",
         "extensions",
-        "external"
+        "external",
+        "cocostudio"
     ],
     "jsListOrder": [
         "src/data/**/*.js",
@@ -43,6 +44,10 @@
         "src/modules/mainmenu/ScreenMenu.js",
         "src/modules/testnetwork/network/Network.js",
         "src/modules/testnetwork/network/Packet.js",
-        "src/modules/testnetwork/ScreenNetwork.js"
+        "src/modules/testnetwork/ScreenNetwork.js",
+        "src/Logic/Card.js",
+        "src/Logic/Chest.js",
+        "src/Logic/PlayerInfo.js",
+        "src/UI/LoginScreen.js"
     ]
 }

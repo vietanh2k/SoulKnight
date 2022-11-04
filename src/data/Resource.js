@@ -19,7 +19,8 @@ var res = {
     ZCSD_POPUP_MINI_GAME:"zcsd/game/mini_game/PopupMiniGame.json",
 
     //images
-    Slot1_png : "zcsd/slot1.png"
+    Slot1_png : "zcsd/slot1.png",
+    LoginScene_json : "ui/MainScene.json"
 };
 
 var g_resources = [

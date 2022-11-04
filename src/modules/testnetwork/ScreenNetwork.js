@@ -41,6 +41,7 @@ var ScreenNetwork = cc.Layer.extend({
     {
         var size = cc.director.getVisibleSize();
 
+
         this._gameNode = new cc.Node();
         this._gameNode.setPosition(cc.p(size.width*0.4, size.height*0.4));
         this._gameNode.setVisible(false);
