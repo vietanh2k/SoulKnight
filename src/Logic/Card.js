@@ -5,7 +5,7 @@ var Card = cc.Class.extend({
         this.type= byte_buffer.getByte();
         this.level= byte_buffer.getInt();
         this.quantity= byte_buffer.getInt();
-        this.attackSpeed= byte_buffer.getFloat();
-        this.attackRange= byte_buffer.getFloat();
+        this.attackSpeed= byte_buffer.getDouble();
+        this.attackRange= byte_buffer.getDouble();
     }
 })

@@ -26,6 +26,9 @@ var SignInScreen = cc.Layer.extend({
     },
     onUserInfo: function (){
         cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
+        this.notification.setOpacity(255);
+        this.notification.setString(JSON.stringify(sharePlayerInfo));
+        this.notification.runAction(cc.FadeOut.create(3.0));
     },
     onFinishLogin: function (){
 
