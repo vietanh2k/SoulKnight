@@ -8,7 +8,7 @@ gv.CMD.USER_LOGIN = 1;
 
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
-gv.CMD.OPEN_CHEST_NOW = 2004;
+gv.CMD.OPEN_CHEST_NOW = 3001;
 
 testnetwork = testnetwork||{};
 testnetwork.packetMap = {};
@@ -44,6 +44,29 @@ CmdSendUserInfo = fr.OutPacket.extend(
         },
         pack:function(){
             this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
+CmdSendOpenChest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.OPEN_CHEST_NOW);
+        },
+        /**
+         * send open chest request
+         * sử dụng biến sharePlayerInfo.id
+         * @param {Chest} chest: the chest to open*/
+        putData:function(chest){
+            //pack
+            this.packHeader();
+            this.putInt(chest.id);
+            this.putInt(sharePlayerInfo.id);
+            //update
             this.updateSize();
         }
     }

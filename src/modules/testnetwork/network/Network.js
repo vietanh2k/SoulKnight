@@ -34,6 +34,9 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("MOVE:", packet.x, packet.y);
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
+            case gv.CMD.OPEN_CHEST_NOW:
+                fr.getCurrentScreen().onReceivedServerResponse(packet.status);
+                break;
         }
     },
     sendGetUserInfo:function()
@@ -54,6 +57,12 @@ testnetwork.Connector = cc.Class.extend({
         cc.log("SendMove:" + direction);
         var pk = this.gameClient.getOutPacket(CmdSendMove);
         pk.pack(direction);
+        this.gameClient.sendPacket(pk);
+    },
+    sendOpnChestRequest:function (chest){
+        cc.log("SendOpenChest:" + chest.id);
+        var pk = this.gameClient.getOutPacket(CmdSendOpenChest);
+        pk.pack(chest);
         this.gameClient.sendPacket(pk);
     }
 });

@@ -63,6 +63,9 @@ var SignInScreen = cc.Layer.extend({
         this.notification.setOpacity(255);
         this.notification.setString(error);
         this.notification.runAction(cc.FadeOut.create(3.0));
+    },
+    onReceivedServerResponse: function (status, playerInfo){
+
     }
 });
 
