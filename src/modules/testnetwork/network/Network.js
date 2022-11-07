@@ -21,7 +21,6 @@ testnetwork.Connector = cc.Class.extend({
         switch (cmd)
         {
             case gv.CMD.HAND_SHAKE:
-
                 this.sendLoginRequest();
                 break;
             case gv.CMD.USER_LOGIN:
@@ -45,20 +44,10 @@ testnetwork.Connector = cc.Class.extend({
         this.gameClient.sendPacket(pk);
     },
     sendLoginRequest: function () {
-        cc.log("sendLoginRequest");
-        try{
-            var userId = parseInt(this.gameClient._userId);
-            if(!isNaN(userId)){
-                var pk = this.gameClient.getOutPacket(CmdSendLogin);
-                pk.pack(userId);
-                this.gameClient.sendPacket(pk);
-            } else {
-                fr.getCurrentScreen().OnError("User_ID_must_be_number!");
-            }
+        var pk = this.gameClient.getOutPacket(CmdSendLogin);
+        pk.pack(this.gameClient._userId);
+        this.gameClient.sendPacket(pk);
 
-        } catch (e){
-            fr.getCurrentScreen().OnError("User_ID_must_be_number!");
-        }
 
     },
     sendMove:function(direction){

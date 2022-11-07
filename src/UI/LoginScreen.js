@@ -17,9 +17,21 @@ var SignInScreen = cc.Layer.extend({
     onSelectLogin:function(sender)
     {
         // this.lblLog.setString("Start Connect!");
-        gv.gameClient._userId = this.textField.getString()
+        // gv.gameClient._userId = this.textField.getString()
         cc.log("current test is :" + this.textField.getString())
-        gv.gameClient.connect();
+        cc.log("sendLoginRequest");
+        try{
+            gv.gameClient._userId = parseInt(this.textField.getString());
+            if(!isNaN(gv.gameClient._userId)){
+                gv.gameClient.connect();
+            } else {
+                this.OnError("User_ID_must_be_number!");
+            }
+
+        } catch (e){
+            this.OnError("User_ID_must_be_number!");
+        }
+
     },
     onConnectSuccess: function (){
 
