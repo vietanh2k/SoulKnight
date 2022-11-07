@@ -2,7 +2,7 @@
 var gv = gv || {};
 
 var DESIGN_RESOLUTION_WIDTH = 640;
-var DESIGN_RESOLUTION_HEIGHT = 1136;
+var DESIGN_RESOLUTION_HEIGHT = 960;
 cc.game.onStart = function () {
     if (!cc.sys.isNative && document.getElementById("cocosLoading")) //If referenced loading.js, please remove it
         document.body.removeChild(document.getElementById("cocosLoading"));

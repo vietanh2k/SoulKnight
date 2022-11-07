@@ -45,7 +45,7 @@ var SignInScreen = cc.Layer.extend({
      * Hiện tại mới chỉ hiển thị lên JSON info này
      *
      */
-    onUserInfo: function (){
+    onUserInfo: function () {
         // todo: direct to mainGUI
         cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
         this.notification.setOpacity(255);
