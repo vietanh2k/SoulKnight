@@ -59,10 +59,13 @@ testnetwork.Connector = cc.Class.extend({
         pk.pack(direction);
         this.gameClient.sendPacket(pk);
     },
-    sendOpnChestRequest:function (chest){
+    /**
+     * gửi yêu cầu mở chest
+     * */
+    sendOpenChestRequest:function (chest){
         cc.log("SendOpenChest:" + chest.id);
         var pk = this.gameClient.getOutPacket(CmdSendOpenChest);
-        pk.pack(chest);
+        pk.putData(chest);
         this.gameClient.sendPacket(pk);
     }
 });
