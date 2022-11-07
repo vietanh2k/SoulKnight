@@ -51,6 +51,7 @@ var SignInScreen = cc.Layer.extend({
         this.notification.setOpacity(255);
         this.notification.setString(JSON.stringify(sharePlayerInfo));
         this.notification.runAction(cc.FadeOut.create(3.0));
+        sharePlayerInfo.onWaitingChestList[0].onOpenNow();
     },
     onFinishLogin: function (){
 
@@ -63,8 +64,11 @@ var SignInScreen = cc.Layer.extend({
         this.notification.setOpacity(255);
         this.notification.setString(error);
         this.notification.runAction(cc.FadeOut.create(3.0));
+        cc.log("Notification: "+error)
     },
     onReceivedServerResponse: function (status, playerInfo){
+        this.OnError(status);
+        this.notification.setString(JSON.stringify(sharePlayerInfo));
 
     }
 });

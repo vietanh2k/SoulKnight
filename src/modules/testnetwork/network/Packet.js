@@ -148,6 +148,21 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
     }
 );
 
+testnetwork.packetMap[gv.CMD.OPEN_CHEST_NOW] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            this.status = this.getString();
+            this.player_info_is_not_null = this.getBool();
+            if(this.player_info_is_not_null)  sharePlayerInfo = new PlayerInfo(this);
+
+        }
+    }
+);
+
 testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
     {
         ctor:function()
