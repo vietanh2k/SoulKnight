@@ -8,6 +8,7 @@ gv.CMD.USER_LOGIN = 1;
 
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
+gv.CMD.OPEN_CHEST_NOW = 2004;
 
 testnetwork = testnetwork||{};
 testnetwork.packetMap = {};

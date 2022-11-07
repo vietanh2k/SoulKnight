@@ -15,6 +15,13 @@ var PlayerInfo = cc.Class.extend({
         for(i=0; i<chest_size; i++){
             this.onWaitingChestList.push(new Chest(byte_buffer))
         }
+        cc.log(JSON.stringify(this))
+        var deck_size = byte_buffer.getInt();
+        cc.log(deck_size)
+        this.deck = []
+        for(i=0; i<3; i++){
+            this.deck.push(new Card(byte_buffer))
+        }
         // cc.log(JSON.stringify(this))
     }
     // todo: thêm các hàm
