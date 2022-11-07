@@ -8,4 +8,5 @@ var Card = cc.Class.extend({
         this.attackSpeed= byte_buffer.getDouble();
         this.attackRange= byte_buffer.getDouble();
     }
+    // todo: thêm các hàm
 })

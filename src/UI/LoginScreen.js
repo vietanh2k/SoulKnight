@@ -14,10 +14,14 @@ var SignInScreen = cc.Layer.extend({
         this.login_button.addClickEventListener(this.onSelectLogin.bind(this));
         return true;
     },
+    /**
+     * Bắt sự kiện nút login được nhấn
+     * Nếu ID là số hợp lệ sẽ tiến hành connect và biến toàn cục sharePlayerInfo sẽ được gán giá trị
+     * Ngược lại sẽ thông báo lỗi và không connect nào được thiết lập (kể cả hand shake)
+     *
+     */
     onSelectLogin:function(sender)
     {
-        // this.lblLog.setString("Start Connect!");
-        // gv.gameClient._userId = this.textField.getString()
         cc.log("current test is :" + this.textField.getString())
         cc.log("sendLoginRequest");
         try{
@@ -36,7 +40,13 @@ var SignInScreen = cc.Layer.extend({
     onConnectSuccess: function (){
 
     },
+    /**
+     * Bắt sự kiện User infor được gửi về (sharePlayerInfo được gán giá trị)
+     * Hiện tại mới chỉ hiển thị lên JSON info này
+     *
+     */
     onUserInfo: function (){
+        // todo: direct to mainGUI
         cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
         this.notification.setOpacity(255);
         this.notification.setString(JSON.stringify(sharePlayerInfo));
@@ -45,6 +55,10 @@ var SignInScreen = cc.Layer.extend({
     onFinishLogin: function (){
 
     },
+    /**
+     * Thông báo lỗi lên màn hình bằng 1 dòng animation kéo dài 3 giây
+     * @param {string}  error: nội dung thông báo
+     * */
     OnError: function (error){
         this.notification.setOpacity(255);
         this.notification.setString(error);

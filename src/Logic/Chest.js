@@ -6,5 +6,6 @@ var Chest  = cc.Class.extend({
         this.openTimeInSecond= byte_buffer.getInt();
         
     }
+    // todo: thêm các hàm
 
 })

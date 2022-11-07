@@ -17,6 +17,7 @@ var PlayerInfo = cc.Class.extend({
         }
         // cc.log(JSON.stringify(this))
     }
+    // todo: thêm các hàm
 
 })
 
