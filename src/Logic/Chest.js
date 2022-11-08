@@ -4,8 +4,7 @@ var Chest  = cc.Class.extend({
         this.type= byte_buffer.getByte();
         this.remainingTimeInSecond= this.setRemainingTime(byte_buffer.getLong());
         this.openTimeInSecond= byte_buffer.getLong(); //thời gian mở rương cố định: ví d: 3600s, 7200s,...
-        this._init_time_stamp = Date.now() / 1000
-        
+
     },
     /**
      * Cài thời gian đếm ngược mở rương
@@ -13,6 +12,7 @@ var Chest  = cc.Class.extend({
     setRemainingTime:function (time_in_second){
         // update UI gì đó.... (nếu có)
         this.remainingTimeInSecond = time_in_second;
+        this._init_time_stamp = Date.now() / 1000
     },
     // todo: thêm các hàm
     onOpenNow: function (){
