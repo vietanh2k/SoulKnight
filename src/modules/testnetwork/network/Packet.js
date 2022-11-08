@@ -199,7 +199,9 @@ testnetwork.packetMap[gv.CMD.START_COOL_DOWN] = fr.InPacket.extend(
             var chestID = this.getInt();
 
             this.chest = sharePlayerInfo.getChestById(chestID);
-            this.chest.onStartCoolDown(this);
+            if(this.chest !=null){
+                this.chest.onStartCoolDown(this);
+            }
             // if(this.player_info_is_not_null)  sharePlayerInfo = new PlayerInfo(this);
 
         }
