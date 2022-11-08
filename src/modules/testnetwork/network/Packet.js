@@ -9,9 +9,9 @@ gv.CMD.USER_LOGIN = 1;
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
-gv.MATCH_REQUEST = 4001;
-gv.MATCH_REPONSE = 4002;
-gv.MATCH_CONFIRM = 4003;
+gv.CMD.MATCH_REQUEST = 4001;
+gv.CMD.MATCH_REPONSE = 4002;
+gv.CMD.MATCH_CONFIRM = 4003;
 
         testnetwork = testnetwork||{};
 testnetwork.packetMap = {};

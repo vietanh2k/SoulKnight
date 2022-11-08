@@ -15,9 +15,9 @@ var GameUI = cc.Layer.extend({
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this._super();
-        // this._gameStateManager = new GameStateManager()
+        this._gameStateManager = new GameStateManager()
         this.init();
-        // this.scheduleUpdate();
+        this.scheduleUpdate();
 
     },
     init:function () {
@@ -25,14 +25,15 @@ var GameUI = cc.Layer.extend({
         winSize = cc.director.getWinSize();
 
         this.initBackGround();
-        // this.initCellSlot()
-        // this.addChild(this._gameStateManager.playerA._map.monsters[0])
+        this.initCellSlot()
+        // cc.log(this._gameStateManager.playerA._map.monsters[0])
+        this.addChild(this._gameStateManager.playerA._map.monsters[0])
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
         // this._gameStateManager.playerA._map.monsters[0].updateDes()
 
         // this.schedule(this.update, 0.1);
         // var map = new MapController(this)
-        this.addTouchListener()
+        // this.addTouchListener()
 
 
 
@@ -44,9 +45,9 @@ var GameUI = cc.Layer.extend({
             // swallowTouches: true,
             onTouchBegan: function (touch, event){
                 cc.log("touch began2: "+ touch.getLocationX());
-                MW.MOUSE.x = touch.getLocationX();
-                MW.MOUSE.y = touch.getLocationY();
-                MW.TOUCH = true;
+                // MW.MOUSE.x = touch.getLocationX();
+                // MW.MOUSE.y = touch.getLocationY();
+                // MW.TOUCH = true;
                 return true;
 
             }
@@ -59,57 +60,57 @@ var GameUI = cc.Layer.extend({
             // }
         } , this);
     },
-    checkTouchRight: function (){
-        if(MW.TOUCH){
-            MW.TOUCH = false
-            var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
-            cc.log(loc.x+'---'+loc.y)
-            if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0 ) {
-                cc.log('touch right')
-                this.createObjectByTouch = true
-            }else if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0 ){
-                this.deleteObjectByTouch = true
-            }
-        }
+    // checkTouchRight: function (){
+    //     if(MW.TOUCH){
+    //         MW.TOUCH = false
+    //         var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
+    //         var loc = this._gameStateManager.playerA.convertPosToCor(pos)
+    //         cc.log(loc.x+'---'+loc.y)
+    //         if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0 ) {
+    //             cc.log('touch right')
+    //             this.createObjectByTouch = true
+    //         }else if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0 ){
+    //             this.deleteObjectByTouch = true
+    //         }
+    //     }
+    //
+    // },
 
-    },
-
-    createObjectByTouch2: function (){
-        if(this.createObjectByTouch ){
-            this.createObjectByTouch = false
-            cc.log('creat right')
-            var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
-            var rand = Math.floor(Math.random() * 2)+1;
-            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
-            if(!this.isNodehasMonsterAbove(loc)){
-                this._gameStateManager.playerA._map._mapController.findPath()
-                this.addObjectUI(res.treeUI, loc.x, loc.y)
-
-                // }else{
-                //     this.arr[loc.x][loc.y] = 0
-            }
-
-
-        }
-
-    },
-    isNodehasMonsterAbove:function (loc){
-
-        var children = this.children
-        for (i in children) {
-            if(children[i]._curNode != undefined ){
-                var monsterLocArr = children[i]._curNode.split('-');
-                var monsterLoc = new cc.p(parseInt(monsterLocArr[0]), parseInt(monsterLocArr[1]));
-                if(monsterLoc.x == loc.x && monsterLoc.y == loc.y){
-                    return true
-                }
-            }
-        }
-
-        return false
-    },
+    // createObjectByTouch2: function (){
+    //     if(this.createObjectByTouch ){
+    //         this.createObjectByTouch = false
+    //         cc.log('creat right')
+    //         var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
+    //         var loc = this._gameStateManager.playerA.convertPosToCor(pos)
+    //         var rand = Math.floor(Math.random() * 2)+1;
+    //         this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
+    //         if(!this.isNodehasMonsterAbove(loc)){
+    //             this._gameStateManager.playerA._map._mapController.findPath()
+    //             this.addObjectUI(res.treeUI, loc.x, loc.y)
+    //
+    //             // }else{
+    //             //     this.arr[loc.x][loc.y] = 0
+    //         }
+    //
+    //
+    //     }
+    //
+    // },
+    // isNodehasMonsterAbove:function (loc){
+    //
+    //     var children = this.children
+    //     for (i in children) {
+    //         if(children[i]._curNode != undefined ){
+    //             var monsterLocArr = children[i]._curNode.split('-');
+    //             var monsterLoc = new cc.p(parseInt(monsterLocArr[0]), parseInt(monsterLocArr[1]));
+    //             if(monsterLoc.x == loc.x && monsterLoc.y == loc.y){
+    //                 return true
+    //             }
+    //         }
+    //     }
+    //
+    //     return false
+    // },
     initBackGround:function()
     {
         var backg0 = new cc.Sprite(res.mapbackground00);
@@ -219,7 +220,7 @@ var GameUI = cc.Layer.extend({
 
     initCellSlot:function (pos) {
         var arr = this._gameStateManager.playerA._map._mapController.intArray
-        for(var i=0;i<MAP_WIDTH;i++){
+        for(var i=0;i<MAP_WIDTH+1;i++){
             for(var j=0; j <MAP_HEIGHT+1; j++){
                 if(arr[i][j] == -1) {
                     this.addBuffUI(res.buffD, i, j)
@@ -256,8 +257,8 @@ var GameUI = cc.Layer.extend({
     },
 
     update:function (dt) {
-        this.checkTouchRight()
-        this.createObjectByTouch2();
+        // this.checkTouchRight()
+        // this.createObjectByTouch2();
         var children = this.children;
         for (i in children) {
             children[i].update(dt);

@@ -63,7 +63,7 @@ var res = {
     tree1: 'asset/map/map_decoration_tree_0001.png',
     tree2: 'asset/map/map_decoration_tree_0002.png',
     house: 'asset/map/map_house.png',
-    m1: 'asset/map/monster0.png',
+    m1: 'asset/map/boss0.png',
     cell_start1: 'asset/map/cell_start_01.png',
     cell_start2: 'asset/map/cell_start_02.png',
     gate1: 'asset/map/map_monster_gate_enemy.png',

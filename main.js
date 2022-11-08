@@ -30,7 +30,6 @@ cc.game.onStart = function () {
         }
         CELLWIDTH = WIDTHSIZE/8
         cc.view.setDesignResolutionSize(WIDTHSIZE,HEIGHTSIZE, cc.ResolutionPolicy.FIXED_HEIGHT);
-
         // The game will be resized when browser size change
         cc.view.resizeWithBrowserSize(true);
         //socket
@@ -39,7 +38,7 @@ cc.game.onStart = function () {
         //modules
         testnetwork.connector = new testnetwork.Connector(gv.gameClient);
 
-        fr.view(SignInScreen);
+        fr.view(GameUI);
     }, this);
 };
 cc.game.run();
