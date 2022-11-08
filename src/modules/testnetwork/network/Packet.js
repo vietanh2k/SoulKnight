@@ -9,8 +9,11 @@ gv.CMD.USER_LOGIN = 1;
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
+gv.MATCH_REQUEST = 4001;
+gv.MATCH_REPONSE = 4002;
+gv.MATCH_CONFIRM = 4003;
 
-testnetwork = testnetwork||{};
+        testnetwork = testnetwork||{};
 testnetwork.packetMap = {};
 
 
@@ -105,6 +108,23 @@ CmdSendMove = fr.OutPacket.extend(
     }
 )
 
+CmdMatchRequest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_REQUEST);
+
+
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
 /**
  * InPacket
  */
@@ -141,8 +161,8 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             this._super();
         },
         readData:function(){
-            this.playerInfo = new PlayerInfo(this)
-            sharePlayerInfo = this.playerInfo;
+            //this.playerInfo = new PlayerInfo(this)
+            //sharePlayerInfo = this.playerInfo;
 
         }
     }

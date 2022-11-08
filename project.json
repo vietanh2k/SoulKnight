@@ -48,6 +48,8 @@
         "src/Logic/Card.js",
         "src/Logic/Chest.js",
         "src/Logic/PlayerInfo.js",
-        "src/UI/LoginScreen.js"
+        "src/UI/LoginScreen.js",
+        "src/UI/MatchingUI.js",
+        "src/UI/GameUI.js"
     ]
 }
