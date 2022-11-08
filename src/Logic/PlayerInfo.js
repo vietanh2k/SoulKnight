@@ -23,8 +23,25 @@ var PlayerInfo = cc.Class.extend({
             this.deck.push(new Card(byte_buffer))
         }
         // cc.log(JSON.stringify(this))
-    }
+    },
     // todo: thêm các hàm
+    /**
+     * Trả về một đối tượng chest theo id truyền vào
+     * @param {int} chestId: id cura chest
+     * @return {Chest} : chest tìm thấy hoặc null
+     * */
+    getChestById: function (chestId) {
+        var rs = null;
+        if(this.onWaitingChestList!=null){
+            this.onWaitingChestList.map(function (chest) {
+                if(chest.id === chestId){
+                    rs = chest;
+                }
+            })
+        }
+        return rs;
+
+    }
 
 })
 

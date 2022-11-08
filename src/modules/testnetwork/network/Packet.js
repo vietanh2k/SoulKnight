@@ -9,6 +9,7 @@ gv.CMD.USER_LOGIN = 1;
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
+gv.CMD.START_COOL_DOWN = 3002;
 
 testnetwork = testnetwork||{};
 testnetwork.packetMap = {};
@@ -61,6 +62,29 @@ CmdSendOpenChest = fr.OutPacket.extend(
          * send open chest request
          * sử dụng biến sharePlayerInfo.id
          * @param {Chest} chest: the chest to open*/
+        putData:function(chest){
+            //pack
+            this.packHeader();
+            this.putInt(chest.id);
+            this.putInt(sharePlayerInfo.id);
+            //update
+            this.updateSize();
+        }
+    }
+)
+
+CmdSendStartCoolDownChest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.START_COOL_DOWN);
+        },
+        /**
+         * send open START COOL DOWN request
+         * sử dụng biến sharePlayerInfo.id
+         * @param {Chest} chest: the chest to START OPENING*/
         putData:function(chest){
             //pack
             this.packHeader();
@@ -158,6 +182,25 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST_NOW] = fr.InPacket.extend(
             this.status = this.getString();
             this.player_info_is_not_null = this.getBool();
             if(this.player_info_is_not_null)  sharePlayerInfo = new PlayerInfo(this);
+
+        }
+    }
+);
+
+
+testnetwork.packetMap[gv.CMD.START_COOL_DOWN] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            // this.status = this.getString();
+            var chestID = this.getInt();
+
+            this.chest = sharePlayerInfo.getChestById(chestID);
+            this.chest.onStartCoolDown(this);
+            // if(this.player_info_is_not_null)  sharePlayerInfo = new PlayerInfo(this);
 
         }
     }

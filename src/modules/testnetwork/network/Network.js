@@ -37,6 +37,8 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.OPEN_CHEST_NOW:
                 fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
+            case gv.CMD.START_COOL_DOWN:
+
         }
     },
     sendGetUserInfo:function()
@@ -67,7 +69,13 @@ testnetwork.Connector = cc.Class.extend({
         var pk = this.gameClient.getOutPacket(CmdSendOpenChest);
         pk.putData(chest);
         this.gameClient.sendPacket(pk);
-    }
+    },
+    sendStartCoolDownRequest:function (chest){
+        cc.log("SendStartCoolDownChest:" + chest.id);
+        var pk = this.gameClient.getOutPacket(CmdSendStartCoolDownChest);
+        pk.putData(chest);
+        this.gameClient.sendPacket(pk);
+    },
 });
 
 
