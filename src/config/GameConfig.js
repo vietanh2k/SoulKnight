@@ -1,0 +1,10 @@
+var CFG = CFG || {};
+
+CFG.WIDTH = 640;
+CFG.HEIGHT = 960;
+
+CFG.AMOUNT_BTN_GOLD = 1000;
+CFG.AMOUNT_BTN_GEM = 100;
+CFG.LOBBY_MAX_TAB = 5;
+CFG.LOBBY_MAX_CHEST = 4;
+CFG.LOBBY_TAB_NAMES = ['Shop', 'Cards', 'Home', 'Social', 'Clan'];
