@@ -10,6 +10,7 @@ gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOL_DOWN = 3002;
+gv.CMD.UPDATE_PLAYER_INFO = 3003;
 
 testnetwork = testnetwork||{};
 testnetwork.packetMap = {};

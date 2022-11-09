@@ -10,7 +10,7 @@ FAKE.chests = [
         openTimeStarted: 0,
         golds: [10, 20],
         cards: [4, 5],
-        rarities: [1, 2],
+        rarities: [1    , 2],
     },
     {
         openTimeRequired: 3 * 60 * 60 * 1000,
