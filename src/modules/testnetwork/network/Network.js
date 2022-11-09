@@ -21,24 +21,28 @@ testnetwork.Connector = cc.Class.extend({
         switch (cmd)
         {
             case gv.CMD.HAND_SHAKE:
+                cc.log('login succeed==========')
                 this.sendLoginRequest();
                 break;
             case gv.CMD.USER_LOGIN:
+                cc.log('login succeed')
                 this.sendGetUserInfo();
-                fr.getCurrentScreen().onFinishLogin();
+                // fr.getCurrentScreen().onFinishLogin();
                 break;
             case gv.CMD.USER_INFO:
-                fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
+                // fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
                 break;
             case gv.CMD.MOVE:
                 cc.log("MOVE:", packet.x, packet.y);
-                fr.getCurrentScreen().updateMove(packet.x, packet.y);
+                // fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
             case gv.CMD.OPEN_CHEST_NOW:
-                fr.getCurrentScreen().onReceivedServerResponse(packet.status);
+                // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
-            case gv.CMD.MATCH_REQUEST:
-                cc.log('succeededddddddddddd')
+            case gv.CMD.MATCH_REPONSE:
+                cc.log('matching succeededddddddddddd')
+                cc.log(packet.x)
+                this.sendConfirmMatch()
                 break;
         }
     },
@@ -71,8 +75,13 @@ testnetwork.Connector = cc.Class.extend({
     sendMatchRequest:function(){
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);
-        cc.log('===========')
         cc.log(pk)
+        pk.pack(null);
+        this.gameClient.sendPacket(pk);
+    },
+    sendConfirmMatch:function(){
+        cc.log("Match Confirm:");
+        var pk = this.gameClient.getOutPacket(CmdMatchConfirm);
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     }

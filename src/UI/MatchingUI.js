@@ -19,7 +19,7 @@ var MatchingUI = cc.Layer.extend({
 
 
         this.initBackGround();
-        // this.schedule(this.joinGame, 5)
+        // this.schedule(this.joinGame,7)
 
 
 

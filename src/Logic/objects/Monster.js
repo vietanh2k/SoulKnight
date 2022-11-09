@@ -1,6 +1,6 @@
 
 
-var Monster = cc.Sprite.extend({
+var Monster = AnimatedSprite.extend({
     _playerState: null,
     _type:null,
     _monsterType:null,
@@ -13,6 +13,8 @@ var Monster = cc.Sprite.extend({
     atDes:null,
     _speed:null,
     readyRun:null,
+    animationIds:null,
+    animatedSprite:null,
 
     ctor:function (type, playerState) {
         this._playerState = playerState
@@ -20,22 +22,35 @@ var Monster = cc.Sprite.extend({
         this._super(res.m1);
         this.active = true;
         this.visible = true;
-        this.setScale(0.2);
         this._speed = new cc.p(0,0)
         var pos = this._playerState.convertCordinateToPos(0,0)
         this.setPosition(pos)
         this.des = false
         this._speed = new cc.p(0,0)
         this._speedVec = new Vec2(0,0)
-        // this.initAnimation()
+        this.initAnimation()
         return true;
     },
 
     initAnimation:function (){
-        var an1 = new AnimatedSprite(1)
-            an1.load(res.darkgiant_plist, 1,0,7,1)
-            an1.play(0)
+        const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
+        const moveDownRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 12, 23, 1)
+        const moveRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 24, 35, 1)
+        const moveUpRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 36, 47, 1)
+        const moveUpAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 48, 59, 1)
+        const moveUpLeftAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_up_left (%d).png', 1, 12, 1)
+        const moveLeftAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_left (%d).png', 1, 12, 1)
+        const moveDownLeftAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_down_left (%d).png', 1, 12, 1)
+
+        this.animationIds = [
+            [moveDownLeftAnimId,           moveDownAnimId,        moveDownRightAnimId   ],
+            [moveLeftAnimId,             moveUpAnimId,        moveRightAnimId          ],
+            [moveUpLeftAnimId,         moveUpAnimId,         moveUpRightAnimId        ],
+        ]
+        this.play(0)
+
     },
+
     update:function (dt){
         this.updateCurNode()
         if(this.active){
@@ -48,9 +63,9 @@ var Monster = cc.Sprite.extend({
     updateCurNode:function (){
         // this.updatePath()
         var pos = new cc.p(this.x, this.y)
-        var loc = this._playerState.convertPosToCor(pos)
-        this._curNode = loc.x+'-' + loc.y
-        if(loc.x == MAP_WIDTH && loc.y == MAP_HEIGHT && this.active) {
+        var cor = this._playerState.convertPosToCor(pos)
+        this._curNode = cor.x+'-' + cor.y
+        if(cor.x == MAP_WIDTH && cor.y == MAP_HEIGHT && this.active) {
             this.des = true
             this.destroy()
         }
@@ -66,13 +81,18 @@ var Monster = cc.Sprite.extend({
             var nextLocStr = nextNode.split('-');
             var nextLoc = new cc.p(parseInt(nextLocStr[0]), parseInt(nextLocStr[1]));
             var nextPos = this._playerState.convertCordinateToPos(nextLoc.x, nextLoc.y)
-            var dir = this._playerState._map._mapController.path[this._curNode].direc
 
             var nextPosVec = new Vec2(nextPos.x, nextPos.y)
             var curPosVec = new Vec2(curPos.x, curPos.y)
             var curVec = new Vec2(this.x, this.y)
             var desVec = (nextPosVec.add(curPosVec)).div(2)
             this._speedVec = ((desVec.sub(curVec)).normalize()).mul(this.rootSpeed)
+            var dir = (desVec.sub(curVec)).normalize()
+            dir.set(Math.round(dir.x), Math.round(dir.y))
+            if (dir) {
+                const v = this.animationIds[dir.y +1]
+                if (v) this.play(v[dir.x +1])
+            }
         }
         // cc.log(desVec)
         // cc.log(this._speedVec)

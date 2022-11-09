@@ -76,7 +76,8 @@ var res = {
     darkgiant_plist : 'res/darkG.plist',
     darkgiant_png : 'res/darkG.png',
     highlightPath: 'asset/battle/UI/ui_transparent_square.png',
-    iconArrow: 'asset/battle/UI/ui_icon_arrow.png'
+    iconArrow: 'asset/battle/UI/ui_icon_arrow.png',
+    Swordman_plist:'res/swordsman.plist'
 };
 
 var g_resources = [
@@ -135,5 +136,6 @@ var g_resources = [
     res.darkgiant_plist,
     res.darkgiant_png,
     res.highlightPath,
-    res.iconArrow
+    res.iconArrow,
+    res.Swordman_plist
 ];

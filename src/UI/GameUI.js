@@ -28,9 +28,9 @@ var GameUI = cc.Layer.extend({
 
         this.initBackGround();
         this.initCellSlot()
-        this.initPathUI(this._gameStateManager.playerA._map._mapController.path)
+        this.showPathUI(this._gameStateManager.playerA._map._mapController.path)
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
-        this.addChild(this._gameStateManager.playerA._map.monsters[0])
+        this.addChild(this._gameStateManager.playerA._map.monsters[0],1003)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
         // this._gameStateManager.playerA._map.monsters[0].updateDes()
 
@@ -54,13 +54,7 @@ var GameUI = cc.Layer.extend({
                 return true;
 
             }
-            // ,
-            // ofnTouchMoved: function (touch, event){
-            //     cc.log("touch move: "+ touch.getLocationX());
-            //     MW.MOUSE.x = touch.getLocationX();
-            //     MW.MOUSE.y = touch.getLocationY();
-            //
-            // }
+
         } , this);
     },
     checkTouchRight: function (){
@@ -89,6 +83,7 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
             if(!this.isNodehasMonsterAbove(loc)){
                 this._gameStateManager.playerA._map._mapController.findPath()
+                this.showPathUI(this._gameStateManager.playerA._map._mapController.path)
                 this.addObjectUI(res.treeUI, loc.x, loc.y)
 
                 // }else{
@@ -116,18 +111,24 @@ var GameUI = cc.Layer.extend({
     },
 
 
-    initPathUI:function (path){
+    showPathUI:function (path){
+        while(this.getChildByName(res.highlightPath) != null){
+            this.removeChild(this.getChildByName(res.highlightPath))
+        }
+        while(this.getChildByName(res.iconArrow) != null){
+            this.removeChild(this.getChildByName(res.iconArrow))
+        }
         var nodeX = 0
-        var nodey = 0
+        var nodeY = 0
         var count = 0
-        while(nodeX != MAP_WIDTH || nodey != MAP_HEIGHT){
-            var dir = path[nodeX+'-'+nodey].direc
-            this.addBuffUI(res.highlightPath,nodeX,nodey)
-            this.addObjectUI(res.iconArrow,nodeX,nodey,dir)
-            var parent = path[nodeX+'-'+nodey].parent
+        while(nodeX != MAP_WIDTH || nodeY != MAP_HEIGHT){
+            var dir = path[nodeX+'-'+nodeY].direc
+            this.addBuffUI(res.highlightPath,nodeX,nodeY)
+            this.addObjectUI(res.iconArrow,nodeX,nodeY,dir)
+            var parent = path[nodeX+'-'+nodeY].parent
             var parentList = parent.split('-');
             nodeX = parseInt(parentList[0])
-            nodey = parseInt(parentList[1])
+            nodeY = parseInt(parentList[1])
             count++
             if(count>100) break
         }
@@ -269,7 +270,7 @@ var GameUI = cc.Layer.extend({
         object.setScale(CELLWIDTH/object.getContentSize().height)
         var pos  = this._gameStateManager.playerA.convertCordinateToPos(corX,corY)
         object.setPosition(pos)
-        this.addChild(object)
+        this.addChild(object,999,res)
     },
 
     addObjectUI:function (res, corX ,corY,direc) {
@@ -286,7 +287,7 @@ var GameUI = cc.Layer.extend({
         if(direc == 2){
             object.setRotation(270)
         }
-        this.addChild(object)
+        this.addChild(object,1000,res)
     },
 
     update:function (dt) {

@@ -115,8 +115,21 @@ CmdMatchRequest = fr.OutPacket.extend(
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.MATCH_REQUEST);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
 
-
+CmdMatchConfirm = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_CONFIRM);
         },
         pack:function(){
             this.packHeader();
@@ -138,6 +151,18 @@ testnetwork.packetMap[gv.CMD.HAND_SHAKE] = fr.InPacket.extend(
         },
         readData:function(){
             this.token = this.getString();
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            this.x = this.getInt();
         }
     }
 );
