@@ -19,35 +19,55 @@
         "src/**/*.js"
     ],
     "jsList": [
-        "src/data/Resource.js",
-        "src/data/ResourceAnimation.js",
-        "src/framework/AnimationMgr.js",
-        "src/framework/Framework.js",
-        "src/framework/GUI.js",
-        "src/framework/libs/aes.js",
-        "src/framework/libs/crypt.js",
-        "src/framework/libs/md5.js",
-        "src/framework/libs/signals.js",
-        "src/framework/libs/underscore.js",
-        "src/framework/Localization.js",
-        "src/framework/Network.js",
-        "src/framework/PoolObject.js",
-        "src/framework/StringUtils.js",
-        "src/framework/UserData.js",
+        "src/UI/Asset.js",
+
         "src/base/network/GameClient.js",
         "src/base/network/GameClientListener.js",
         "src/base/network/InPacketFactory.js",
         "src/base/Resource.js",
         "src/base/UIFactory.js",
+
+        "src/config/FakeData.js",
+        "src/config/GameConfig.js",
+
+        "src/data/Resource.js",
+        "src/data/ResourceAnimation.js",
+
+        "src/framework/libs/aes.js",
+        "src/framework/libs/crypt.js",
+        "src/framework/libs/md5.js",
+        "src/framework/libs/signals.js",
+        "src/framework/libs/underscore.js",
+        "src/framework/AnimationMgr.js",
+        "src/framework/Framework.js",
+        "src/framework/GUI.js",
+        "src/framework/Localization.js",
+        "src/framework/Network.js",
+        "src/framework/PoolObject.js",
+        "src/framework/StringUtils.js",
+        "src/framework/UserData.js",
+
+        "src/logic/Card.js",
+        "src/logic/Chest.js",
+        "src/logic/PlayerInfo.js",
+
         "src/modules/animation/ScreenDragonbones.js",
         "src/modules/localization/ScreenLocalization.js",
         "src/modules/mainmenu/ScreenMenu.js",
         "src/modules/testnetwork/network/Network.js",
         "src/modules/testnetwork/network/Packet.js",
         "src/modules/testnetwork/ScreenNetwork.js",
-        "src/Logic/Card.js",
-        "src/Logic/Chest.js",
-        "src/Logic/PlayerInfo.js",
-        "src/UI/LoginScreen.js"
+
+        "src/UI/CardSlot.js",
+        "src/UI/CardsUI.js",
+        "src/UI/ChestInfoUI.js",
+        "src/UI/ChestSlot.js",
+        "src/UI/CurrencyPanel.js",
+        "src/UI/HomeUI.js",
+        "src/UI/LobbyScene.js",
+        "src/UI/LoginScreen.js",
+        "src/UI/Toast.js",
+
+        "src/utils/Utils.js"
     ]
 }
