@@ -157,8 +157,27 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             this._super();
         },
         readData: function () {
-            this.playerInfo = new PlayerInfo(this);
-            sharePlayerInfo = this.playerInfo;
+            let id = this.getInt();
+            let name = this.getString();
+            let gold = this.getInt();
+            let gem = this.getInt();
+            let trophy = this.getInt();
+            let collectionSize = this.getInt();
+            let collection = [];
+            for (let i = 0; i < collectionSize; i++) {
+                collection.push(new Card(this));
+            }
+            let chestListSize = this.getInt();
+            let chestList = [];
+            for (let i = 0; i < chestListSize; i++) {
+                chestList.push(new Chest(this));
+            }
+            let deckSize = this.getInt();
+            let deck = [];
+            for (let i = 0; i < deckSize; i++) {
+                deck.push(new Card(this));
+            }
+            sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
             cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
         }
     }
@@ -172,7 +191,9 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST_NOW] = fr.InPacket.extend(
         readData: function () {
             this.status = this.getString();
             this.player_info_is_not_null = this.getBool();
-            if (this.player_info_is_not_null) sharePlayerInfo = new PlayerInfo(this);
+            if (this.player_info_is_not_null) {
+                sharePlayerInfo = new PlayerInfo(this);
+            }
         }
     }
 );
