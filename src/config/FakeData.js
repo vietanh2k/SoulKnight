@@ -2,7 +2,7 @@ var FAKE = FAKE || {};
 
 FAKE.gold = 123456;
 FAKE.gem = 789;
-FAKE.uid = 'UNSTOPABLE_13';
+FAKE.name = 'UNSTOPABLE_13';
 FAKE.trophy = 93774;
 FAKE.chests = [
     {
@@ -10,7 +10,7 @@ FAKE.chests = [
         openTimeStarted: 0,
         golds: [10, 20],
         cards: [4, 5],
-        rarities: [1    , 2],
+        rarities: [1, 2],
     },
     {
         openTimeRequired: 3 * 60 * 60 * 1000,

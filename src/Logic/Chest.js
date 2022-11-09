@@ -37,7 +37,7 @@ var Chest  = cc.Class.extend({
         // đặt lại mốc remaining time cập nhập từ server
         this.setRemainingTime(byte_buffer.getLong());
         // lấy phản hồi
-        res_status = byte_buffer.getString();
+        let res_status = byte_buffer.getString();
         return res_status
 
 

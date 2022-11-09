@@ -5,36 +5,40 @@ var PlayerInfo = cc.Class.extend({
         this.gold = byte_buffer.getInt();
         this.gem = byte_buffer.getInt();
         this.trophy = byte_buffer.getInt();
-        var collection_size = byte_buffer.getInt(), i;
+        let collectionSize = byte_buffer.getInt();
         this.collection = [];
-        for (i = 0; i < collection_size; i++) {
-            this.collection.push(new Card(byte_buffer))
+        let i;
+        for (i = 0; i < collectionSize; i++) {
+            this.collection.push(new Card(byte_buffer));
         }
-        var chest_size = byte_buffer.getInt();
-        this.onWaitingChestList = []
-        for (i = 0; i < chest_size; i++) {
-            this.onWaitingChestList.push(new Chest(byte_buffer))
+        let chestListSize = byte_buffer.getInt();
+        this.chestList = [];
+        for (i = 0; i < chestListSize; i++) {
+            this.chestList.push(new Chest(byte_buffer));
         }
-        cc.log(JSON.stringify(this))
-        var deck_size = byte_buffer.getInt();
-        cc.log(deck_size)
-        this.deck = []
+        let deckSize = byte_buffer.getInt();
+        this.deck = [];
         for (i = 0; i < 3; i++) {
-            this.deck.push(new Card(byte_buffer))
+            this.deck.push(new Card(byte_buffer));
         }
-        // cc.log(JSON.stringify(this))
+
+        // fake data
+        this.name = FAKE.name;
+        this.gold = FAKE.gold;
+        this.gem = FAKE.gem;
+        this.trophy = FAKE.trophy;
     },
     // todo: thêm các hàm
     /**
      * Trả về một đối tượng chest theo id truyền vào
-     * @param {int} chestId: id cura chest
+     * @param {int} chestId: id của chest
      * @return {Chest} : chest tìm thấy hoặc null
      * */
     getChestById: function (chestId) {
         var rs = null;
-        if(this.onWaitingChestList!=null){
+        if (this.onWaitingChestList != null) {
             this.onWaitingChestList.map(function (chest) {
-                if(chest.id === chestId){
+                if (chest.id === chestId) {
                     rs = chest;
                 }
             })

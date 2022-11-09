@@ -1,9 +1,9 @@
-// this.parent: HomeUI
+// this.parent: LobbyScene
 var HomeUI = cc.Layer.extend({
     lobbyHomePlayer: null,
     avatarBorder: null,
     avatar: null,
-    lbPlayerUID: null,
+    lbPlayerName: null,
     trophyBox: null,
     iconTrophy: null,
     lbPlayerTrophy: null,
@@ -51,15 +51,15 @@ var HomeUI = cc.Layer.extend({
         });
         this.lobbyHomePlayer.addChild(this.avatarBorder);
 
-        this.lbPlayerUID = new ccui.Text(FAKE.uid, asset.svnSupercellMagic_ttf, 20);
-        this.lbPlayerUID.attr({
+        this.lbPlayerName = new ccui.Text(sharePlayerInfo.name, asset.svnSupercellMagic_ttf, 20);
+        this.lbPlayerName.attr({
             anchorX: 0,
             x: this.lobbyHomePlayer.height * 0.65,
             y: this.lobbyHomePlayer.height * 0.6,
             color: cc.color(253, 254, 218),
         });
-        this.lbPlayerUID.enableShadow();
-        this.lobbyHomePlayer.addChild(this.lbPlayerUID);
+        this.lbPlayerName.enableShadow();
+        this.lobbyHomePlayer.addChild(this.lbPlayerName);
 
         this.trophyBox = new cc.Sprite(asset.lobbyBox_png);
         this.trophyBox.attr({
@@ -229,7 +229,7 @@ var HomeUI = cc.Layer.extend({
         if (Utils.isOpening(chest)) {
             this.openingChestCounter--;
         }
-        FAKE.gem -= Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
+        sharePlayerInfo.gem -= Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
         this.parent.currencyPanel.updateLabels();
         this.removeChild(this.chestSlots[slot], true);
         this.chestSlots[slot] = new cc.Sprite(asset.treasureEmpty_png);

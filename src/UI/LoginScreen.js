@@ -46,16 +46,10 @@ var SignInScreen = cc.Layer.extend({
      *
      */
     onUserInfo: function () {
-        cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
-        // this.notification.setOpacity(255);
-        // this.notification.setString(JSON.stringify(sharePlayerInfo));
-        // this.notification.runAction(cc.FadeOut.create(3.0));
-        // sharePlayerInfo.onWaitingChestList[0].onOpenNow();
-
         let lobbyScene = new LobbyScene();
         cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
         let date = new Date();
-        cc.log('Current time: ' + Date.now());
+        cc.log('Current client time: ' + Date.now());
     },
     onFinishLogin: function (){
 

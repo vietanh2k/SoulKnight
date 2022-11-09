@@ -1,3 +1,4 @@
+// this.parent: LobbyScene
 var CardsUI = cc.Layer.extend({
     currentScroll: 0,
     lowerbound: 0,

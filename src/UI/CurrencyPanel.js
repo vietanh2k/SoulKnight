@@ -61,7 +61,7 @@ var CurrencyPanel = cc.Layer.extend({
             scale: this.leftBox.height * this.leftBox.scale / this.leftCurrencyBtn.height,
         });
         this.leftCurrencyBtn.addClickEventListener(() => {
-            FAKE.gold += CFG.AMOUNT_BTN_GOLD;
+            sharePlayerInfo.gold += CFG.AMOUNT_BTN_GOLD;
             this.updateLabels();
         });
         this.addChild(this.leftCurrencyBtn, 0);
@@ -73,13 +73,13 @@ var CurrencyPanel = cc.Layer.extend({
             scale: this.rightBox.height * this.rightBox.scale / this.rightCurrencyBtn.height,
         });
         this.rightCurrencyBtn.addClickEventListener(() => {
-            FAKE.gem += CFG.AMOUNT_BTN_GEM;
+            sharePlayerInfo.gem += CFG.AMOUNT_BTN_GEM;
             this.updateLabels();
         });
         this.addChild(this.rightCurrencyBtn, 0);
 
-        this.lbGold = new ccui.Text(Utils.toStringWithDots(FAKE.gold), asset.svnSupercellMagic_ttf, 18);
-        this.lbGem = new ccui.Text(Utils.toStringWithDots(FAKE.gem), asset.svnSupercellMagic_ttf, 18);
+        this.lbGold = new ccui.Text(Utils.toStringWithDots(sharePlayerInfo.gold), asset.svnSupercellMagic_ttf, 18);
+        this.lbGem = new ccui.Text(Utils.toStringWithDots(sharePlayerInfo.gem), asset.svnSupercellMagic_ttf, 18);
         this.updateLbScale();
 
         this.lbGold.attr({
@@ -102,8 +102,8 @@ var CurrencyPanel = cc.Layer.extend({
     },
 
     updateLabels: function () {
-        this.lbGold.setString(Utils.toStringWithDots(FAKE.gold));
-        this.lbGem.setString(Utils.toStringWithDots(FAKE.gem));
+        this.lbGold.setString(Utils.toStringWithDots(sharePlayerInfo.gold));
+        this.lbGem.setString(Utils.toStringWithDots(sharePlayerInfo.gem));
         this.updateLbScale();
         this.lbGold.scale = this.lbScale;
         this.lbGem.scale = this.lbScale;
