@@ -70,7 +70,13 @@ var res = {
     gate2: 'asset/map/map_monster_gate_player.png',
     gridui: 'asset/battle/UI/ui_grid.png',
     deck: 'asset/battle/battle_deck.png',
-    tree3: 'asset/map/map_decoration_tree_0003.png'
+    tree3: 'asset/map/map_decoration_tree_0003.png',
+    ninja_plist : 'res/ninja.plist',
+    ninja_png : 'res/ninja.png',
+    darkgiant_plist : 'res/darkG.plist',
+    darkgiant_png : 'res/darkG.png',
+    highlightPath: 'asset/battle/UI/ui_transparent_square.png',
+    iconArrow: 'asset/battle/UI/ui_icon_arrow.png'
 };
 
 var g_resources = [
@@ -123,5 +129,11 @@ var g_resources = [
     "zcsd/screen_localize.json",
     "zcsd/screen_menu.json",
     "zcsd/screen_network.json",
-    "zcsd/screen_zalo.json"
+    "zcsd/screen_zalo.json",
+    res.ninja_plist,
+    res.ninja_png,
+    res.darkgiant_plist,
+    res.darkgiant_png,
+    res.highlightPath,
+    res.iconArrow
 ];

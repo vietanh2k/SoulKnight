@@ -56,6 +56,9 @@
         "src/Logic/map/GameStateManager.js",
         "src/Logic/map/PlayerState.js",
         "src/Logic/objects/Cell.js",
-        "src/Logic/objects/Monster.js"
+        "src/Logic/objects/Monster.js",
+        "src/Logic/utils/Vec2.js",
+        "src/Logic/utils/AnimatedSprite.js",
+        "src/config/GameConfig.js"
     ]
 }

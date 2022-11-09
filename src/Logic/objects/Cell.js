@@ -6,10 +6,9 @@ var Cell = cc.Class.extend({
     _battle: null,
     _position:null,
     _playerState:null,
-    ctor:function(arg, cordinate, playerState){
-        this._playerState = playerState
+    ctor:function(arg, pos){
         this.type = arg
-        this._position = this._playerState.convertCordinateToPos(cordinate.x, cordinate.y)
+        this._position = pos
 
     },
     init:function () {

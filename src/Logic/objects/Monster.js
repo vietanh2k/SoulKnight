@@ -3,25 +3,17 @@
 var Monster = cc.Sprite.extend({
     _playerState: null,
     _type:null,
-    _battle:null,
     _monsterType:null,
-    listWay: null,
-    _actionList:null,
-    _animList:null,
-    _curAction:null,
     _curNode:null,
     _nextNode:null,
     _preNode:null,
     des:null,
-    _curDir:null,
+    _speedVec:null,
     rootSpeed: 30,
-    _preActionMove:null,
     atDes:null,
     _speed:null,
-    timeMove:null,
     readyRun:null,
-    ind:0,
-    xm:10,
+
     ctor:function (type, playerState) {
         this._playerState = playerState
         this.rootSpeed = 30
@@ -34,22 +26,20 @@ var Monster = cc.Sprite.extend({
         this.setPosition(pos)
         this.des = false
         this._speed = new cc.p(0,0)
-
-
-
-        // this._curAction = this.getActionMove(this._curDir);
-        // this.runAction(this._curAction)
-
-
-
+        this._speedVec = new Vec2(0,0)
+        // this.initAnimation()
         return true;
     },
 
-
+    initAnimation:function (){
+        var an1 = new AnimatedSprite(1)
+            an1.load(res.darkgiant_plist, 1,0,7,1)
+            an1.play(0)
+    },
     update:function (dt){
         this.updateCurNode()
         if(this.active){
-            this.updateDes()
+            this.updateSpeedVec()
             this.updateMove(dt)
         }
 
@@ -66,89 +56,38 @@ var Monster = cc.Sprite.extend({
         }
 
     },
-    updateDes:function (){
-        var nextNode =  this._playerState._map._mapController.path[this._curNode].parent
-        var nextLocStr = nextNode.split('-');
-        var nextLoc = new cc.p(parseInt(nextLocStr[0]), parseInt(nextLocStr[1]));
-        var nextPos = this._playerState.convertCordinateToPos(nextLoc.x, nextLoc.y)
-        var dir = this._playerState._map._mapController.path[this._curNode].direc
-        if(dir == 2){
-            var posX = nextPos.x - this.x
-            var posY = nextPos.y-1.05*CELLWIDTH/2 - this.y
-            if(posX == 0) {
-                this._speed.y = this.rootSpeed
-                this._speed.x = 0
-            }
-            else if(posY ==0) {
-                this._speed.x = this.rootSpeed
-                this._speed.y = 0
-            }else {
-                var rad = posX / posY
-                this._speed.y = +Math.sqrt(Math.pow(this.rootSpeed, 2) / (1 + rad * rad))
-                this._speed.x = this._speed.y * rad
-            }
+    updateSpeedVec:function (){
+        if(this._playerState._map._mapController.path[this._curNode] != undefined) {
+            var curNodeStr = this._curNode.split('-');
+            var curNode = new cc.p(parseInt(curNodeStr[0]), parseInt(curNodeStr[1]));
+            var curPos = this._playerState.convertCordinateToPos(curNode.x, curNode.y)
 
+            var nextNode = this._playerState._map._mapController.path[this._curNode].parent
+            var nextLocStr = nextNode.split('-');
+            var nextLoc = new cc.p(parseInt(nextLocStr[0]), parseInt(nextLocStr[1]));
+            var nextPos = this._playerState.convertCordinateToPos(nextLoc.x, nextLoc.y)
+            var dir = this._playerState._map._mapController.path[this._curNode].direc
+
+            var nextPosVec = new Vec2(nextPos.x, nextPos.y)
+            var curPosVec = new Vec2(curPos.x, curPos.y)
+            var curVec = new Vec2(this.x, this.y)
+            var desVec = (nextPosVec.add(curPosVec)).div(2)
+            this._speedVec = ((desVec.sub(curVec)).normalize()).mul(this.rootSpeed)
         }
-        if(dir == 8){
-            var posX = nextPos.x - this.x
-            var posY = nextPos.y+1.05*CELLWIDTH/2 - this.y
-            if(posX == 0) {
-                this._speed.y = -this.rootSpeed
-                this._speed.x = 0
-            }
-            else if(posY ==0) {
-                this._speed.x = this.rootSpeed
-                this._speed.y = 0
-            }else {
-                var rad = posX / posY
-                this._speed.y = -Math.sqrt(Math.pow(this.rootSpeed, 2) / (1 + rad * rad))
-                this._speed.x = this._speed.y * rad
-            }
-        }
-        if(dir == 6){
-            var posX = nextPos.x-1.05*CELLWIDTH/2 - this.x
-            var posY = nextPos.y - this.y
-            if(posX == 0) {
-                this._speed.y = this.rootSpeed
-                this._speed.x = 0
-            }
-            else if(posY ==0) {
-                this._speed.x = this.rootSpeed
-                this._speed.y = 0
-            }else {
-                var rad =posY / posX
-                this._speed.x = Math.sqrt(Math.pow(this.rootSpeed, 2) / (1 + rad * rad))
-                this._speed.y = this._speed.x * rad
-            }
-        }
-        if(dir == 4){
-            var posX = nextPos.x+1.05*CELLWIDTH/2 - this.x
-            var posY = nextPos.y - this.y
-            if(posX == 0) {
-                this._speed.y = this.rootSpeed
-                this._speed.x = 0
-            }
-            else if(posY ==0) {
-                this._speed.x =- this.rootSpeed
-                this._speed.y = 0
-            }else {
-                var rad = posY / posX
-                this._speed.x = -Math.sqrt(Math.pow(this.rootSpeed, 2) / (1 + rad * rad))
-                this._speed.y = this._speed.x * rad
-            }
-        }
-        // cc.log(nextLoc.x)
-        // cc.log(nextLoc.y)
-        // cc.log(nextPos.x)
+        // cc.log(desVec)
+        // cc.log(this._speedVec)
 
     },
+
+
 
     updateMove:function (dt){
 
         // this.x += (this.des.x-this.x)*dt
         // this.y += (this.des.y-this.y)*dt
-        this.x += this._speed.x*dt
-        this.y += this._speed.y*dt
+        this.x += this._speedVec.x*dt
+        this.y += this._speedVec.y*dt
+        // this.setPosition()
         // this.x += 50*dt
 
     },

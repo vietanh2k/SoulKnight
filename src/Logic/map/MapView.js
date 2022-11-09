@@ -12,7 +12,7 @@ var MapView = cc.Class.extend({
     ctor:function (playerState) {
         this._playerState = playerState
 
-        this._mapController = new MapController(this._playerState)
+        this._mapController = new MapController()
         this.monsters = []
         this.init();
 

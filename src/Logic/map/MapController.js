@@ -3,14 +3,12 @@ var MapController = cc.Class.extend({
     mapArray: null,
     path: null,
     intArray:null,
-    _playerState:null,
     createObjectByTouch:null,
     deleteObjectByTouch: null,
     mapChange:null,
 
 
-    ctor:function (playerState) {
-        this._playerState = playerState
+    ctor:function () {
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this.mapChange = false
@@ -29,14 +27,14 @@ var MapController = cc.Class.extend({
             )
         );
         for(var i=1; i<=MAP_WIDTH;i++){
-            this.intArray[i][0] = 1
+            this.intArray[i][0] = 5
         }
         for(var i=1; i<MAP_HEIGHT;i++){
-            this.intArray[MAP_WIDTH][i] = 1
+            this.intArray[MAP_WIDTH][i] = 5
         }
-        this.intArray[2][3] = -1
+        this.intArray[1][4] = -1
         this.intArray[4][4] = -2
-        this.intArray[4][2] = -3
+        this.intArray[3][2] = -3
         // this.intArray[2][1] = 1
         this.intArray[0][4] = 1
         this.intArray[1][3] = 1
@@ -57,8 +55,8 @@ var MapController = cc.Class.extend({
     initCell:function () {
         for(var i=0; i<MAP_WIDTH; i ++){
             for(var j=0; j<MAP_HEIGHT+1; j++){
-                var cor = new cc.p(i,j)
-                var cell = new Cell(this.intArray[i][j], cor, this._playerState)
+                var pos = this.convertCordinateToPos(i,j)
+                var cell = new Cell(this.intArray[i][j],pos)
                 this.mapArray[i][j] = cell
             }
         }
@@ -100,7 +98,7 @@ var MapController = cc.Class.extend({
         // if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT-1] <= 0) {
         //     startList[start2.locX + '-' + start2.locY] = start2
         // }
-        if(this.intArray[MAP_WIDTH-2][MAP_HEIGHT] <= 0)
+        if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT] <= 0)
         {
             startList[start3.locX + '-' + start3.locY] = start3
         }
@@ -251,7 +249,7 @@ var MapController = cc.Class.extend({
     },
 
     isNearby: function (locX, locY, finalList){
-        if(locX < MAP_WIDTH && locX >=0 && locY <= MAP_HEIGHT && locY >=0) {
+        if(locX <= MAP_WIDTH && locX >=0 && locY <= MAP_HEIGHT && locY >=0) {
             if (this.intArray[locX][locY] <= 0 && finalList[locX + '-' + locY] == undefined) {
                 return true;
             }
@@ -278,6 +276,21 @@ var MapController = cc.Class.extend({
         var nodeClosest = startList[minKey]
         delete startList[minKey]
         return nodeClosest
+    },
+
+    convertCordinateToPos:function (corX, corY) {
+        var x = winSize.width/2 - WIDTHSIZE/2 + (corX+1)*CELLWIDTH
+        var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT- corY+3.5)*CELLWIDTH
+        var p = new cc.p(x,y)
+        return p
+
+    },
+    convertPosToCor:function (pos) {
+        var x = Math.floor((pos.x-winSize.width/2+WIDTHSIZE/2)/CELLWIDTH-0.5)
+        var y = Math.floor(MAP_HEIGHT+3.5 - (pos.y - winSize.height/2 + HEIGHTSIZE/2 )/CELLWIDTH+0.5)
+        var p = new cc.p(x,y)
+        return p
+
     },
 
 });

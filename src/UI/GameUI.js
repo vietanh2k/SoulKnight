@@ -12,6 +12,8 @@ var GameUI = cc.Layer.extend({
     deleteObjectByTouch:null,
 
     ctor:function () {
+        cc.spriteFrameCache.addSpriteFrames(res.darkgiant_plist, res.darkgiant_png);
+        cc.spriteFrameCache.addSpriteFrames(res.ninja_plist, res.ninja_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this._super();
@@ -26,6 +28,7 @@ var GameUI = cc.Layer.extend({
 
         this.initBackGround();
         this.initCellSlot()
+        this.initPathUI(this._gameStateManager.playerA._map._mapController.path)
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
         this.addChild(this._gameStateManager.playerA._map.monsters[0])
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
@@ -33,7 +36,7 @@ var GameUI = cc.Layer.extend({
 
         // this.schedule(this.update, 0.1);
         // var map = new MapController(this)
-        // this.addTouchListener()
+        this.addTouchListener()
 
 
 
@@ -45,9 +48,9 @@ var GameUI = cc.Layer.extend({
             // swallowTouches: true,
             onTouchBegan: function (touch, event){
                 cc.log("touch began2: "+ touch.getLocationX());
-                // MW.MOUSE.x = touch.getLocationX();
-                // MW.MOUSE.y = touch.getLocationY();
-                // MW.TOUCH = true;
+                MW.MOUSE.x = touch.getLocationX();
+                MW.MOUSE.y = touch.getLocationY();
+                MW.TOUCH = true;
                 return true;
 
             }
@@ -60,57 +63,76 @@ var GameUI = cc.Layer.extend({
             // }
         } , this);
     },
-    // checkTouchRight: function (){
-    //     if(MW.TOUCH){
-    //         MW.TOUCH = false
-    //         var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-    //         var loc = this._gameStateManager.playerA.convertPosToCor(pos)
-    //         cc.log(loc.x+'---'+loc.y)
-    //         if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0 ) {
-    //             cc.log('touch right')
-    //             this.createObjectByTouch = true
-    //         }else if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0 ){
-    //             this.deleteObjectByTouch = true
-    //         }
-    //     }
-    //
-    // },
+    checkTouchRight: function (){
+        if(MW.TOUCH){
+            MW.TOUCH = false
+            var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
+            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
+            cc.log(loc.x+'---'+loc.y)
+            if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0 ) {
+                cc.log('touch right')
+                this.createObjectByTouch = true
+            }else if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0 ){
+                this.deleteObjectByTouch = true
+            }
+        }
 
-    // createObjectByTouch2: function (){
-    //     if(this.createObjectByTouch ){
-    //         this.createObjectByTouch = false
-    //         cc.log('creat right')
-    //         var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-    //         var loc = this._gameStateManager.playerA.convertPosToCor(pos)
-    //         var rand = Math.floor(Math.random() * 2)+1;
-    //         this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
-    //         if(!this.isNodehasMonsterAbove(loc)){
-    //             this._gameStateManager.playerA._map._mapController.findPath()
-    //             this.addObjectUI(res.treeUI, loc.x, loc.y)
-    //
-    //             // }else{
-    //             //     this.arr[loc.x][loc.y] = 0
-    //         }
-    //
-    //
-    //     }
-    //
-    // },
-    // isNodehasMonsterAbove:function (loc){
-    //
-    //     var children = this.children
-    //     for (i in children) {
-    //         if(children[i]._curNode != undefined ){
-    //             var monsterLocArr = children[i]._curNode.split('-');
-    //             var monsterLoc = new cc.p(parseInt(monsterLocArr[0]), parseInt(monsterLocArr[1]));
-    //             if(monsterLoc.x == loc.x && monsterLoc.y == loc.y){
-    //                 return true
-    //             }
-    //         }
-    //     }
-    //
-    //     return false
-    // },
+    },
+
+    createObjectByTouch2: function (){
+        if(this.createObjectByTouch ){
+            this.createObjectByTouch = false
+            cc.log('creat right')
+            var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
+            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
+            var rand = Math.floor(Math.random() * 2)+1;
+            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
+            if(!this.isNodehasMonsterAbove(loc)){
+                this._gameStateManager.playerA._map._mapController.findPath()
+                this.addObjectUI(res.treeUI, loc.x, loc.y)
+
+                // }else{
+                //     this.arr[loc.x][loc.y] = 0
+            }
+
+
+        }
+
+    },
+    isNodehasMonsterAbove:function (loc){
+
+        var children = this.children
+        for (i in children) {
+            if(children[i]._curNode != undefined ){
+                var monsterLocArr = children[i]._curNode.split('-');
+                var monsterLoc = new cc.p(parseInt(monsterLocArr[0]), parseInt(monsterLocArr[1]));
+                if(monsterLoc.x == loc.x && monsterLoc.y == loc.y){
+                    return true
+                }
+            }
+        }
+
+        return false
+    },
+
+
+    initPathUI:function (path){
+        var nodeX = 0
+        var nodey = 0
+        var count = 0
+        while(nodeX != MAP_WIDTH || nodey != MAP_HEIGHT){
+            var dir = path[nodeX+'-'+nodey].direc
+            this.addBuffUI(res.highlightPath,nodeX,nodey)
+            this.addObjectUI(res.iconArrow,nodeX,nodey,dir)
+            var parent = path[nodeX+'-'+nodey].parent
+            var parentList = parent.split('-');
+            nodeX = parseInt(parentList[0])
+            nodey = parseInt(parentList[1])
+            count++
+            if(count>100) break
+        }
+    },
+
     initBackGround:function()
     {
         var backg0 = new cc.Sprite(res.mapbackground00);
@@ -241,13 +263,7 @@ var GameUI = cc.Layer.extend({
         }
     },
 
-    addObjectUI:function (res, corX ,corY) {
-        var object = new cc.Sprite(res)
-        object.setScale(0.88*CELLWIDTH/object.getContentSize().height)
-        var pos  = this._gameStateManager.playerA.convertCordinateToPos(corX,corY)
-        object.setPosition(pos)
-        this.addChild(object)
-    },
+
     addBuffUI:function (res, corX ,corY) {
         var object = new cc.Sprite(res)
         object.setScale(CELLWIDTH/object.getContentSize().height)
@@ -256,13 +272,31 @@ var GameUI = cc.Layer.extend({
         this.addChild(object)
     },
 
+    addObjectUI:function (res, corX ,corY,direc) {
+        var object = new cc.Sprite(res)
+        object.setScale(0.88*CELLWIDTH/object.getContentSize().height)
+        var pos  = this._gameStateManager.playerA.convertCordinateToPos(corX,corY)
+        object.setPosition(pos)
+        if(direc == 8){
+            object.setRotation(90)
+        }
+        if(direc == 4){
+            object.setRotation(180)
+        }
+        if(direc == 2){
+            object.setRotation(270)
+        }
+        this.addChild(object)
+    },
+
     update:function (dt) {
-        // this.checkTouchRight()
-        // this.createObjectByTouch2();
+        this.checkTouchRight()
+        this.createObjectByTouch2();
         var children = this.children;
         for (i in children) {
             children[i].update(dt);
         }
+
         if(this._gameStateManager.playerA._map.monsters[0].des){
             this.healthA.setString(this._gameStateManager.playerA.health)
             this._gameStateManager.playerA._map.monsters[0].des = false
