@@ -156,6 +156,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
         ctor: function () {
             this._super();
         },
+
         readData: function () {
             let id = this.getInt();
             let name = this.getString();
@@ -165,20 +166,38 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             let collectionSize = this.getInt();
             let collection = [];
             for (let i = 0; i < collectionSize; i++) {
-                collection.push(new Card(this));
+                collection.push(this.readCardData());
             }
             let chestListSize = this.getInt();
             let chestList = [];
             for (let i = 0; i < chestListSize; i++) {
-                chestList.push(new Chest(this));
+                chestList.push(this.readChestData());
             }
             let deckSize = this.getInt();
             let deck = [];
             for (let i = 0; i < deckSize; i++) {
-                deck.push(new Card(this));
+                deck.push(this.readCardData());
             }
             sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
             cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
+        },
+
+        readCardData: function () {
+            let id = this.getInt();
+            let name = this.getString();
+            let type = this.getByte();
+            let level = this.getInt();
+            let quantity = this.getInt();
+            let attackSpeed = this.getDouble();
+            let attackRange = this.getDouble();
+            return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+        },
+
+        readChestData: function () {
+            let id = this.getInt();
+            let type = this.getByte();
+            let openOnServerTimestamp = this.getLong();
+            return new Chest(id, type, openOnServerTimestamp);
         }
     }
 );

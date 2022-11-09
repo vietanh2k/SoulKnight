@@ -1,12 +1,11 @@
 var Card = cc.Class.extend({
-    ctor: function(byte_buffer) {
-        this.id= byte_buffer.getInt();
-        this.name= byte_buffer.getString();
-        this.type= byte_buffer.getByte();
-        this.level= byte_buffer.getInt();
-        this.quantity= byte_buffer.getInt();
-        this.attackSpeed= byte_buffer.getDouble();
-        this.attackRange= byte_buffer.getDouble();
-    }
-    // todo: thêm các hàm
-})
+    ctor: function (id, name, type, level, quantity, attackSpeed, attackRange) {
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.level = level;
+        this.quantity = quantity;
+        this.attackSpeed = attackSpeed;
+        this.attackRange = attackRange
+    },
+});
