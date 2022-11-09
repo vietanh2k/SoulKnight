@@ -18,7 +18,7 @@ var PlayerInfo = cc.Class.extend({
         }
         let deckSize = byte_buffer.getInt();
         this.deck = [];
-        for (i = 0; i < 3; i++) {
+        for (i = 0; i < deckSize; i++) {
             this.deck.push(new Card(byte_buffer));
         }
 
