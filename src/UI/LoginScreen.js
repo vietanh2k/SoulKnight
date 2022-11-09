@@ -49,7 +49,7 @@ var SignInScreen = cc.Layer.extend({
         let lobbyScene = new LobbyScene();
         cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
         let date = new Date();
-        cc.log('Current client time: ' + Date.now());
+        cc.log('Current time on client: ' + Date.now());
     },
     onFinishLogin: function (){
 

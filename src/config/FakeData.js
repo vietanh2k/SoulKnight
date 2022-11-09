@@ -6,6 +6,7 @@ FAKE.name = 'UNSTOPABLE_13';
 FAKE.trophy = 93774;
 FAKE.chests = [
     {
+        id: 0,
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: 0,
         golds: [10, 20],
@@ -13,6 +14,7 @@ FAKE.chests = [
         rarities: [1, 2],
     },
     {
+        id: 1,
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: 1668007241022,
         golds: [100, 200],
@@ -20,13 +22,21 @@ FAKE.chests = [
         rarities: [1, 2, 3],
     },
     {
+        id: 2,
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: null,
         golds: [200, 400],
         cards: [400, 500],
         rarities: [1, 2, 3, 4],
     },
-    undefined,
+    {
+        id: 3,
+        openTimeRequired: 3 * 60 * 60 * 1000,
+        openTimeStarted: null,
+        golds: [200, 400],
+        cards: [400, 500],
+        rarities: [1, 2, 3, 4],
+    },
 ];
 FAKE.deck = [
     {

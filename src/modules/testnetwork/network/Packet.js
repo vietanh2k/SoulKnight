@@ -178,6 +178,10 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             for (let i = 0; i < deckSize; i++) {
                 deck.push(this.readCardData());
             }
+            let serverNow = this.getLong();
+            cc.log('server now: ' + serverNow)
+            CFG.TIME_DIFF = serverNow - Date.now();
+            chestList.forEach(chest => chest.updateClientTime());
             sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
             cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
         },
@@ -197,6 +201,8 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             let id = this.getInt();
             let type = this.getByte();
             let openOnServerTimestamp = this.getLong();
+            cc.log(openOnServerTimestamp)
+            cc.log(typeof openOnServerTimestamp)
             return new Chest(id, type, openOnServerTimestamp);
         }
     }

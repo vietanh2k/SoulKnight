@@ -14,6 +14,7 @@ var PlayerInfo = cc.Class.extend({
         this.gold = FAKE.gold;
         this.gem = FAKE.gem;
         this.trophy = FAKE.trophy;
+        // this.chestList = FAKE.chests;
     },
     // todo: thêm các hàm
     /**

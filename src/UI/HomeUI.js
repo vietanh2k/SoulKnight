@@ -21,7 +21,7 @@ var HomeUI = cc.Layer.extend({
         this.initLobbyArena();
         this.initChestSlots();
 
-        this.schedule(this.updateChests, 1);
+        this.schedule(this.updateChestTimers, 1);
     },
 
     initLobbyHomePlayer: function () {
@@ -86,7 +86,7 @@ var HomeUI = cc.Layer.extend({
             color: cc.color(249, 216, 70),
             scale: Math.min(
                 this.trophyBox.height * 0.8 / this.lbPlayerTrophy.height,
-                        this.trophyBox.width * 0.9 / this.lbPlayerTrophy.width
+                this.trophyBox.width * 0.9 / this.lbPlayerTrophy.width
             ),
         });
         this.lbPlayerTrophy.enableShadow();
@@ -144,67 +144,80 @@ var HomeUI = cc.Layer.extend({
 
     initChestSlots: function () {
         this.chestSlots = [];
-        for (let i = 0; i < CFG.LOBBY_MAX_CHEST; i++) {
-            let chest = FAKE.chests[i];
+        let emptySlots = [0, 1, 2, 3];
+        for (let i = 0; i < sharePlayerInfo.chestList.length; i++) {
+            let chest = sharePlayerInfo.chestList[i];
             let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
             let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-            let chestX = spaceBetween * (i + 1) + slotWidth * (i + 0.5);
+            let chestX = spaceBetween * (chest.id + 1) + slotWidth * (chest.id + 0.5);
             let chestY = CFG.HEIGHT / 4;
-            if (chest === undefined) {
-                this.chestSlots[i] = new cc.Sprite(asset.treasureEmpty_png);
-                let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
-                textStatus.attr({
-                    x: this.chestSlots[i].width / 2,
-                    y: this.chestSlots[i].height / 2,
-                    color: cc.color(161, 180, 184),
-                });
-                textStatus.enableShadow();
-                this.chestSlots[i].addChild(textStatus, 0);
-            } else {
-                this.chestSlots[i] = new ChestSlot(chest, i);
-                if (this.chestSlots[i].textTime !== undefined && this.chestSlots[i].textOpenCost !== undefined) {
-                    this.openingChestCounter++;
-                }
+            this.chestSlots[chest.id] = new ChestSlot(chest, chest.id);
+            if (this.chestSlots[chest.id].textTime !== undefined && this.chestSlots[chest.id].textOpenCost !== undefined) {
+                this.openingChestCounter++;
             }
-            this.chestSlots[i].attr({
+            const index = emptySlots.indexOf(chest.id);
+            if (index > -1) emptySlots.splice(index, 1);
+            this.chestSlots[chest.id].attr({
                 x: chestX,
                 y: chestY,
-                scale: slotWidth / this.chestSlots[i].width,
+                scale: slotWidth / this.chestSlots[chest.id].width,
             });
-            this.addChild(this.chestSlots[i]);
+            this.addChild(this.chestSlots[chest.id]);
         }
+
+        emptySlots.forEach(emptySlot => {
+            this.chestSlots[emptySlot] = new cc.Sprite(asset.treasureEmpty_png);
+            let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
+            textStatus.attr({
+                x: this.chestSlots[emptySlot].width / 2,
+                y: this.chestSlots[emptySlot].height / 2,
+                color: cc.color(161, 180, 184),
+            });
+            textStatus.enableShadow();
+            this.chestSlots[emptySlot].addChild(textStatus, 0);
+            let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
+            let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
+            let chestX = spaceBetween * (emptySlot + 1) + slotWidth * (emptySlot + 0.5);
+            let chestY = CFG.HEIGHT / 4;
+            this.chestSlots[emptySlot].attr({
+                x: chestX,
+                y: chestY,
+                scale: slotWidth / this.chestSlots[emptySlot].width,
+            });
+            this.addChild(this.chestSlots[emptySlot]);
+        });
     },
 
-    updateChests: function () {
-        for (let i = 0; i < this.chestSlots.length; i++) {
-            let chest = FAKE.chests[i];
+    updateChestTimers: function () {
+        for (let i = 0; i < sharePlayerInfo.chestList.length; i++) {
+            let chest = sharePlayerInfo.chestList[i];
             if (chest === undefined || chest.openTimeStarted === null) {
                 continue;
             }
-            if (this.chestSlots[i].textTime !== undefined && this.chestSlots[i].textOpenCost !== undefined) {
+            if (this.chestSlots[chest.id].textTime !== undefined && this.chestSlots[chest.id].textOpenCost !== undefined) {
                 let openTimeLeft = Utils.getOpenTimeLeft(chest);
                 if (openTimeLeft > 0) {
-                    this.chestSlots[i].textTime.setString(Utils.milisecondsToReadableTime(openTimeLeft));
-                    this.chestSlots[i].textOpenCost.setString(Utils.gemCostToOpenChest(openTimeLeft).toString());
+                    this.chestSlots[chest.id].textTime.setString(Utils.milisecondsToReadableTime(openTimeLeft));
+                    this.chestSlots[chest.id].textOpenCost.setString(Utils.gemCostToOpenChest(openTimeLeft).toString());
                 } else {
-                    this.removeChild(this.chestSlots[i], true);
+                    this.removeChild(this.chestSlots[chest.id], true);
                     this.openingChestCounter--;
-                    this.chestSlots[i] = new ChestSlot(chest, i);
+                    this.chestSlots[chest.id] = new ChestSlot(chest, chest.id);
                     let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
                     let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-                    let chestX = spaceBetween * (i + 1) + slotWidth * (i + 0.5);
+                    let chestX = spaceBetween * (chest.id + 1) + slotWidth * (chest.id + 0.5);
                     let chestY = CFG.HEIGHT / 4;
-                    this.chestSlots[i].attr({
+                    this.chestSlots[chest.id].attr({
                         x: chestX,
                         y: chestY,
-                        scale: slotWidth / this.chestSlots[i].width,
+                        scale: slotWidth / this.chestSlots[chest.id].width,
                     });
-                    this.addChild(this.chestSlots[i]);
+                    this.addChild(this.chestSlots[chest.id]);
                 }
             }
         }
     },
-
+// TODO cập nhật 2 hàm dưới theo chest.id từ chest = sharePlayerInfo.chestList[i]
     openChestSlot: function (slot) {
         let chest = FAKE.chests[slot];
         chest.openTimeStarted = Date.now();
