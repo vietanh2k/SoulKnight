@@ -44,6 +44,9 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log(packet.x)
                 this.sendConfirmMatch()
                 break;
+            case gv.CMD.BATTLE_START:
+                cc.log('battle start succeededddddddddddd')
+                break;
         }
     },
     sendGetUserInfo:function()

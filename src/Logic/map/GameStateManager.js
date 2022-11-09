@@ -3,14 +3,13 @@ var GameStateManager = cc.Class.extend({
     playerA: null,
     playerB: null,
     cellWidth: null,
-    _gameStateManager:null,
 
 
-    ctor:function () {
+    ctor:function (pkg) {
 
         this.init();
         this.playerA = new PlayerState()
-
+        this.readFrom(pkg)
 
     },
     init:function () {
@@ -25,6 +24,10 @@ var GameStateManager = cc.Class.extend({
 
         return true;
     },
+
+    readFrom:function (pkg){
+        this.playerA.readFrom(pkg)
+    }
 
 
 });

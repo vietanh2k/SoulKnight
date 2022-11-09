@@ -11,13 +11,13 @@ var GameUI = cc.Layer.extend({
     createObjectByTouch:null,
     deleteObjectByTouch:null,
 
-    ctor:function () {
+    ctor:function (pkg) {
         cc.spriteFrameCache.addSpriteFrames(res.darkgiant_plist, res.darkgiant_png);
         cc.spriteFrameCache.addSpriteFrames(res.ninja_plist, res.ninja_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this._super();
-        this._gameStateManager = new GameStateManager()
+        this._gameStateManager = new GameStateManager(pkg)
         this.init();
         this.scheduleUpdate();
 

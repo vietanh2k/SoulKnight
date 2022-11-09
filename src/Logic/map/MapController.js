@@ -8,7 +8,7 @@ var MapController = cc.Class.extend({
     mapChange:null,
 
 
-    ctor:function () {
+    ctor:function (arr) {
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this.mapChange = false
@@ -32,13 +32,12 @@ var MapController = cc.Class.extend({
         for(var i=1; i<MAP_HEIGHT;i++){
             this.intArray[MAP_WIDTH][i] = 5
         }
-        this.intArray[1][4] = -1
-        this.intArray[4][4] = -2
-        this.intArray[3][2] = -3
-        // this.intArray[2][1] = 1
-        this.intArray[0][4] = 1
-        this.intArray[1][3] = 1
-        this.intArray[5][3] = 2
+        for(var i=0; i<MAP_WIDTH;i++){
+            for(var j=0; j <MAP_HEIGHT;j++){
+                this.intArray[i][j+1] = arr[i][j]
+            }
+        }
+
         this.findPath()
         this.initCell();
 

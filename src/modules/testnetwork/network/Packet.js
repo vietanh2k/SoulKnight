@@ -12,6 +12,7 @@ gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.MATCH_REQUEST = 4001;
 gv.CMD.MATCH_REPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
+gv.CMD.BATTLE_START = 5001;
 
         testnetwork = testnetwork||{};
 testnetwork.packetMap = {};
@@ -202,6 +203,20 @@ testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
         readData:function(){
             this.x = this.getInt();
             this.y = this.getInt();
+        }
+    }
+);
+testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            var scene = new cc.Scene();
+            scene.addChild(new GameUI(this));
+            cc.director.runScene(new cc.TransitionFade(1.2, scene));
+            cc.log('=================')
         }
     }
 );

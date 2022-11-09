@@ -9,10 +9,10 @@ var MapView = cc.Class.extend({
     _playerState: null,
 
 
-    ctor:function (playerState) {
+    ctor:function (playerState, intArray) {
         this._playerState = playerState
 
-        this._mapController = new MapController()
+        this._mapController = new MapController(intArray)
         this.monsters = []
         this.init();
 
