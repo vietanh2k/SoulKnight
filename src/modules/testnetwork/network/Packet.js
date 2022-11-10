@@ -201,8 +201,6 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             let id = this.getInt();
             let type = this.getByte();
             let openOnServerTimestamp = this.getLong();
-            cc.log(openOnServerTimestamp)
-            cc.log(typeof openOnServerTimestamp)
             return new Chest(id, type, openOnServerTimestamp);
         }
     }

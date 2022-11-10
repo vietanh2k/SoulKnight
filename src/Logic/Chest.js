@@ -14,7 +14,7 @@ var Chest = cc.Class.extend({
 
     updateClientTime: function () {
         this.openTimeRequired = CFG.CHEST_REWARD[this.type].openTimeRequired;
-        if (this.openOnServerTimestamp == CFG.UNOPEN_CHEST_TIMESTAMP) {
+        if (this.openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP) {
             this.openTimeStarted = null;
         } else {
             this.openOnClientTimestamp = this.openOnServerTimestamp - CFG.TIME_DIFF;

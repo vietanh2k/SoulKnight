@@ -10,7 +10,7 @@ CFG.LOBBY_MAX_CHEST = 4;
 CFG.LOBBY_TAB_NAMES = ['Shop', 'Cards', 'Home', 'Social', 'Clan'];
 
 CFG.TIME_DIFF = 0; // = thời gian trên server trừ thời gian trên client
-CFG.UNOPEN_CHEST_TIMESTAMP = -1;
+CFG.UNOPEN_CHEST_TIMESTAMP = '-1';
 CFG.COST_GEMS_PER_HOUR = 2;
 CFG.CHEST_REWARD = [
     {

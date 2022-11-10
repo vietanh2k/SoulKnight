@@ -155,14 +155,15 @@ var HomeUI = cc.Layer.extend({
             if (this.chestSlots[chest.id].textTime !== undefined && this.chestSlots[chest.id].textOpenCost !== undefined) {
                 this.openingChestCounter++;
             }
-            const index = emptySlots.indexOf(chest.id);
-            if (index > -1) emptySlots.splice(index, 1);
             this.chestSlots[chest.id].attr({
                 x: chestX,
                 y: chestY,
                 scale: slotWidth / this.chestSlots[chest.id].width,
             });
             this.addChild(this.chestSlots[chest.id]);
+
+            const index = emptySlots.indexOf(chest.id);
+            if (index > -1) emptySlots.splice(index, 1);
         }
 
         emptySlots.forEach(emptySlot => {
@@ -217,9 +218,9 @@ var HomeUI = cc.Layer.extend({
             }
         }
     },
-// TODO cập nhật 2 hàm dưới theo chest.id từ chest = sharePlayerInfo.chestList[i]
+
     openChestSlot: function (slot) {
-        let chest = FAKE.chests[slot];
+        let chest = this.chestSlots[slot].chest;
         chest.openTimeStarted = Date.now();
         this.removeChild(this.chestSlots[slot], true);
         this.openingChestCounter++;
@@ -238,7 +239,7 @@ var HomeUI = cc.Layer.extend({
 
     consumeChestSlot: function (slot) {
         // TODO nhận được tài nguyên sau khi mở rương
-        let chest = FAKE.chests[slot];
+        let chest = this.chestSlots[slot].chest;
         if (Utils.isOpening(chest)) {
             this.openingChestCounter--;
         }

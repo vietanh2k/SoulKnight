@@ -16,7 +16,7 @@ var PlayerInfo = cc.Class.extend({
         this.trophy = FAKE.trophy;
         // this.chestList = FAKE.chests;
     },
-    // todo: thêm các hàm
+
     /**
      * Trả về một đối tượng chest theo id truyền vào
      * @param {int} chestId: id của chest
