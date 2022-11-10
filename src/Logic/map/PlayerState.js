@@ -1,5 +1,6 @@
 
 var PlayerState = cc.Class.extend({
+    rule:null,
     uid: null,
     energy: null,
     health: null,
@@ -7,7 +8,8 @@ var PlayerState = cc.Class.extend({
     deck:null,
     intArray:null,
 
-    ctor:function () {
+    ctor:function (rule) {
+        this.rule = rule
         this.health = 10
         this.energy = 20
         this.intArray =  Array.from(
@@ -58,17 +60,7 @@ var PlayerState = cc.Class.extend({
         }
         this._map = new MapView(this, this.intArray)
     },
-    readTo:function (bf) {
 
-        bf.getInt();
-        bf.getInt();
-
-        for (var y = 0; y < MAP_HEIGHT; y++) {
-            for (var x = 0; x < MAP_WIDTH; x++) {
-                 this.intArray[y][x] = bf.getInt();
-            }
-        }
-    },
     convertCordinateToPos:function (corX, corY) {
         var x = winSize.width/2 - WIDTHSIZE/2 + (corX+1)*CELLWIDTH
         var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT- corY+3.5)*CELLWIDTH
@@ -79,6 +71,13 @@ var PlayerState = cc.Class.extend({
     convertPosToCor:function (pos) {
         var x = Math.floor((pos.x-winSize.width/2+WIDTHSIZE/2)/CELLWIDTH-0.5)
         var y = Math.floor(MAP_HEIGHT+3.5 - (pos.y - winSize.height/2 + HEIGHTSIZE/2 )/CELLWIDTH+0.5)
+        var p = new cc.p(x,y)
+        return p
+
+    },
+    convertCordinateToPos2:function (corX, corY) {
+        var x = winSize.width/2 - WIDTHSIZE/2 + (7-corX)*CELLWIDTH
+        var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT + corY+3.5)*CELLWIDTH
         var p = new cc.p(x,y)
         return p
 

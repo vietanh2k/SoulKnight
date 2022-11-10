@@ -27,8 +27,10 @@ var GameUI = cc.Layer.extend({
         winSize = cc.director.getWinSize();
 
         this.initBackGround();
-        this.initCellSlot()
-        this.showPathUI(this._gameStateManager.playerA._map._mapController.path)
+        this.initCellSlotMapA(this._gameStateManager.playerA._map._mapController.intArray, this._gameStateManager.playerA.rule)
+        this.initCellSlotMapA(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
+        this.showPathUI(this._gameStateManager.playerA._map._mapController.path, 1)
+        this.showPathUI(this._gameStateManager.playerB._map._mapController.path, 2)
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
         this.addChild(this._gameStateManager.playerA._map.monsters[0],1003)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
@@ -84,7 +86,7 @@ var GameUI = cc.Layer.extend({
             if(!this.isNodehasMonsterAbove(loc)){
                 this._gameStateManager.playerA._map._mapController.findPath()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.path)
-                this.addObjectUI(res.treeUI, loc.x, loc.y)
+                this.addObjectUI(res.treeUI, loc.x, loc.y, 0, 1)
 
                 // }else{
                 //     this.arr[loc.x][loc.y] = 0
@@ -111,20 +113,25 @@ var GameUI = cc.Layer.extend({
     },
 
 
-    showPathUI:function (path){
-        while(this.getChildByName(res.highlightPath) != null){
-            this.removeChild(this.getChildByName(res.highlightPath))
+    showPathUI:function (path, rule){
+        while(this.getChildByName(res.highlightPath+rule) != null){
+            this.removeChild(this.getChildByName(res.highlightPath+rule))
         }
-        while(this.getChildByName(res.iconArrow) != null){
-            this.removeChild(this.getChildByName(res.iconArrow))
+        while(this.getChildByName(res.iconArrow+rule) != null){
+            this.removeChild(this.getChildByName(res.iconArrow+rule))
         }
         var nodeX = 0
         var nodeY = 0
         var count = 0
         while(nodeX != MAP_WIDTH || nodeY != MAP_HEIGHT){
             var dir = path[nodeX+'-'+nodeY].direc
-            this.addBuffUI(res.highlightPath,nodeX,nodeY)
-            this.addObjectUI(res.iconArrow,nodeX,nodeY,dir)
+            this.addBuffUI(res.highlightPath,nodeX,nodeY,rule)
+            this.addObjectUI(res.iconArrow,nodeX,nodeY,dir,rule)
+            if(this.getChildByName(res.iconArrow+'2') != null) {
+                cc.log('llllllllllllllllllllllll')
+                this.getChildByName(res.iconArrow + '2').setFlippedX(true)
+                this.getChildByName(res.iconArrow + '2').setFlippedY(true)
+            }
             var parent = path[nodeX+'-'+nodeY].parent
             var parentList = parent.split('-');
             nodeX = parseInt(parentList[0])
@@ -241,42 +248,54 @@ var GameUI = cc.Layer.extend({
 
     },
 
-    initCellSlot:function (pos) {
+    initCellSlotMapA:function ( mapArray, rule) {
         var arr = this._gameStateManager.playerA._map._mapController.intArray
         for(var i=0;i<MAP_WIDTH+1;i++){
             for(var j=0; j <MAP_HEIGHT+1; j++){
-                if(arr[i][j] == -1) {
-                    this.addBuffUI(res.buffD, i, j)
+                if(mapArray[i][j] == -1) {
+                    this.addBuffUI(res.buffD, i, j, rule)
                 }
-                if(arr[i][j] == -2) {
-                    this.addBuffUI(res.buffS, i, j)
+                if(mapArray[i][j] == -2) {
+                    this.addBuffUI(res.buffS, i, j, rule)
                 }
-                if(arr[i][j] == -3) {
-                    this.addBuffUI(res.buffR, i, j)
+                if(mapArray[i][j] == -3) {
+                    this.addBuffUI(res.buffR, i, j, rule)
                 }
-                if(arr[i][j] == 1) {
-                    this.addObjectUI(res.treeUI, i, j)
+                if(mapArray[i][j] == 1) {
+                    this.addObjectUI(res.treeUI, i, j,0, rule)
                 }
-                if(arr[i][j] == 2) {
-                    this.addObjectUI(res.hole, i, j)
+                if(mapArray[i][j] == 2) {
+                    this.addObjectUI(res.hole, i, j,0, rule)
                 }
             }
         }
     },
 
 
-    addBuffUI:function (res, corX ,corY) {
+    addBuffUI:function (res, corX ,corY, rule) {
         var object = new cc.Sprite(res)
         object.setScale(CELLWIDTH/object.getContentSize().height)
-        var pos  = this._gameStateManager.playerA.convertCordinateToPos(corX,corY)
+        var pos
+        if(rule == 1) {
+            pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY)
+        }
+        else{
+            pos = this._gameStateManager.playerA.convertCordinateToPos2(corX, corY)
+        }
         object.setPosition(pos)
-        this.addChild(object,999,res)
+        this.addChild(object,999,res+rule)
     },
 
-    addObjectUI:function (res, corX ,corY,direc) {
+    addObjectUI:function (res, corX ,corY,direc, rule ) {
         var object = new cc.Sprite(res)
         object.setScale(0.88*CELLWIDTH/object.getContentSize().height)
-        var pos  = this._gameStateManager.playerA.convertCordinateToPos(corX,corY)
+        var pos
+        if(rule == 1) {
+            pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY)
+        }
+        else{
+            pos = this._gameStateManager.playerA.convertCordinateToPos2(corX, corY)
+        }
         object.setPosition(pos)
         if(direc == 8){
             object.setRotation(90)
@@ -287,7 +306,7 @@ var GameUI = cc.Layer.extend({
         if(direc == 2){
             object.setRotation(270)
         }
-        this.addChild(object,1000,res)
+        this.addChild(object,1000,res+rule)
     },
 
     update:function (dt) {
