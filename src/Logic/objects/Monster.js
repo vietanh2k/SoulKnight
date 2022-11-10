@@ -15,10 +15,11 @@ var Monster = AnimatedSprite.extend({
     readyRun:null,
     animationIds:null,
     animatedSprite:null,
+    isDestroy:null,
 
     ctor:function (type, playerState) {
         this._playerState = playerState
-        this.rootSpeed = 30
+        this.rootSpeed = 80
         this._super(res.m1);
         this.active = true;
         this.visible = true;
@@ -28,6 +29,7 @@ var Monster = AnimatedSprite.extend({
         this.des = false
         this._speed = new cc.p(0,0)
         this._speedVec = new Vec2(0,0)
+        this.isDestroy = false
         this.initAnimation()
         return true;
     },
@@ -115,6 +117,7 @@ var Monster = AnimatedSprite.extend({
 
     destroy:function () {
         this._playerState.updatehealth(-1)
+        this.isDestroy = true
         this.visible = false;
         this.active = false;
     },

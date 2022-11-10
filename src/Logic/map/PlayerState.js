@@ -39,7 +39,6 @@ var PlayerState = cc.Class.extend({
 
     },
     readFrom:function (bf) {
-        bf.getInt()
         bf.getInt();
         bf.getInt();
         for (var y = 0; y < MAP_HEIGHT; y++) {
@@ -82,5 +81,9 @@ var PlayerState = cc.Class.extend({
         return p
 
     },
+
+    update:function (dt){
+        this._map.update(dt)
+    }
 
 });

@@ -55,6 +55,7 @@
         "src/Logic/map/MapController.js",
         "src/Logic/map/GameStateManager.js",
         "src/Logic/map/PlayerState.js",
+        "src/Logic/map/Timer.js",
         "src/Logic/objects/Cell.js",
         "src/Logic/utils/AnimatedSprite.js",
         "src/Logic/objects/Monster.js",

@@ -77,7 +77,13 @@ var res = {
     darkgiant_png : 'res/darkG.png',
     highlightPath: 'asset/battle/UI/ui_transparent_square.png',
     iconArrow: 'asset/battle/UI/ui_icon_arrow.png',
-    Swordman_plist:'res/swordsman.plist'
+    Swordman_plist:'res/swordsman.plist',
+    timer1:'asset/battle/battle_timer_background.png',
+    timer2:'asset/battle/battle_timer.png',
+    timer3:'asset/battle/battle_timer_border.png',
+    health_box:'asset/battle_result/battle_result_health_box.png',
+    house_icon: 'asset/common/common_icon_house.png',
+    house_box: 'asset/battle/battle_info_box.png'
 };
 
 var g_resources = [
@@ -137,5 +143,9 @@ var g_resources = [
     res.darkgiant_png,
     res.highlightPath,
     res.iconArrow,
-    res.Swordman_plist
+    res.Swordman_plist,
+    res.timer1,
+    res.timer2,
+    res.timer3,
+    res.health_box
 ];

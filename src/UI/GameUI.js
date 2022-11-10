@@ -32,8 +32,9 @@ var GameUI = cc.Layer.extend({
         this.showPathUI(this._gameStateManager.playerA._map._mapController.path, 1)
         this.showPathUI(this._gameStateManager.playerB._map._mapController.path, 2)
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
-        this.addChild(this._gameStateManager.playerA._map.monsters[0],1003)
+        // this.addChild(this._gameStateManager.playerA._map.monsters[0],2000)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
+        this.callMonster()
         // this._gameStateManager.playerA._map.monsters[0].updateDes()
 
         // this.schedule(this.update, 0.1);
@@ -59,7 +60,7 @@ var GameUI = cc.Layer.extend({
 
         } , this);
     },
-    checkTouchRight: function (){
+    checkTouch: function (){
         if(MW.TOUCH){
             MW.TOUCH = false
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
@@ -70,6 +71,17 @@ var GameUI = cc.Layer.extend({
                 this.createObjectByTouch = true
             }else if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0 ){
                 this.deleteObjectByTouch = true
+            }
+        //check touch time
+            var timer = this.getChildByName(res.timer3)
+            var vecTime = new Vec2(timer.x,timer.y)
+            var vecClick = new Vec2(pos.x, pos.y)
+            var dist = (vecClick.sub(vecTime)).length()
+            if (dist< 0.9*timer.getContentSize().width/2 ){
+                cc.log('timeeeeeeeeeeeeeeeeeeeeeee')
+                if(this._gameStateManager.canTouchNewWave){
+                    this.getNewWave()
+                }
             }
         }
 
@@ -85,8 +97,8 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
             if(!this.isNodehasMonsterAbove(loc)){
                 this._gameStateManager.playerA._map._mapController.findPath()
-                this.showPathUI(this._gameStateManager.playerA._map._mapController.path)
-                this.addObjectUI(res.treeUI, loc.x, loc.y, 0, 1)
+                this.showPathUI(this._gameStateManager.playerA._map._mapController.path,1)
+                this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
 
                 // }else{
                 //     this.arr[loc.x][loc.y] = 0
@@ -115,23 +127,25 @@ var GameUI = cc.Layer.extend({
 
     showPathUI:function (path, rule){
         while(this.getChildByName(res.highlightPath+rule) != null){
+
             this.removeChild(this.getChildByName(res.highlightPath+rule))
         }
+        cc.log(res.highlightPath+rule)
         while(this.getChildByName(res.iconArrow+rule) != null){
             this.removeChild(this.getChildByName(res.iconArrow+rule))
         }
         var nodeX = 0
         var nodeY = 0
         var count = 0
+        var delay = 1
         while(nodeX != MAP_WIDTH || nodeY != MAP_HEIGHT){
             var dir = path[nodeX+'-'+nodeY].direc
-            this.addBuffUI(res.highlightPath,nodeX,nodeY,rule)
-            this.addObjectUI(res.iconArrow,nodeX,nodeY,dir,rule)
-            if(this.getChildByName(res.iconArrow+'2') != null) {
-                cc.log('llllllllllllllllllllllll')
-                this.getChildByName(res.iconArrow + '2').setFlippedX(true)
-                this.getChildByName(res.iconArrow + '2').setFlippedY(true)
-            }
+            this.addObjectUI(res.highlightPath,nodeX,nodeY,1,0,rule)
+
+            var arrow = this.addObjectUI(res.iconArrow,nodeX,nodeY,0.5,dir,rule)
+            var seq = cc.sequence(cc.DelayTime(0.5),cc.fadeOut(0),cc.DelayTime(delay),cc.fadeIn(0), cc.DelayTime(0.5), cc.fadeOut(0.5));
+            arrow.runAction(seq)
+            delay += 0.1
             var parent = path[nodeX+'-'+nodeY].parent
             var parentList = parent.split('-');
             nodeX = parseInt(parentList[0])
@@ -214,10 +228,11 @@ var GameUI = cc.Layer.extend({
         this.healthA = new ccui.Text(10, res.font_magic, 30)
         this.healthA.setScale(WIDTHSIZE/this.healthA.getContentSize().width*1/15)
         this.healthA.setPosition(winSize.width/2 + WIDTHSIZE*3.9/8, winSize.height/2+HEIGHTSIZE*-3.8/15)
-        var blueColor = new cc.Color(255,255,255,255);
-        this.healthA.setTextColor(blueColor)
+        var whiteColor = new cc.Color(255,255,255,255);
+        this.healthA.setTextColor(whiteColor)
         this.addChild(this.healthA)
-
+        this.addTimerUI()
+        this.addHouseBoxUI()
     },
 
     addObjectBackground:function (res, scaleW,scaleH, positionX, positionY) {
@@ -228,8 +243,68 @@ var GameUI = cc.Layer.extend({
             obj.setScale(HEIGHTSIZE/obj.getContentSize().height*scaleH)
         }
         obj.setPosition(winSize.width/2 + WIDTHSIZE*positionX, winSize.height/2+HEIGHTSIZE*positionY)
-        this.addChild(obj);
+        this.addChild(obj,0,res);
+        return obj
+    },
 
+    addTimerUI:function () {
+        this.addObjectBackground(res.timer1,0.8/8,0,0,1/15)
+         // this.addObjectBackground(res.timer2,0.8/8,0,0,1/15)
+        var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
+        timeBar.setBarChangeRate(cc.p(1,0));
+        timeBar.setMidpoint(cc.p(0.5,0.5))
+        timeBar.setScale(WIDTHSIZE/timeBar.getContentSize().width*0.8/8)
+        timeBar.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*1/15);
+        this.addChild(timeBar,0,'timeBar');
+
+
+        var numTime = new ccui.Text(TIME_WAVE, res.font_magic, 24)
+        numTime.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*1/15)
+        var whiteColor = new cc.Color(255,255,255,255);
+        numTime.setTextColor(whiteColor)
+        this.addChild(numTime,0,'time')
+        var time3 = this.addObjectBackground(res.timer3,0.8/8,0,0,1/15)
+        time3.visible = false
+    },
+    addHouseBoxUI:function () {
+        var houseBox = new cc.Sprite(res.house_box)
+        houseBox.setScale(WIDTHSIZE/houseBox.getContentSize().width*2/8)
+        houseBox.setPosition(winSize.width+CELLWIDTH*0.3, winSize.height/2+CELLWIDTH)
+
+        var houseIcon = new cc.Sprite(res.house_icon)
+        houseIcon.setScale(WIDTHSIZE/houseIcon.getContentSize().height*0.8/8)
+        houseIcon.setPosition(winSize.width+CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.05)
+        this.addChild(houseBox)
+        this.addChild(houseIcon)
+
+
+    },
+
+    updateTimer:function (dt) {
+        this._gameStateManager._timer.updateRealTime(dt)
+        var time = Math.floor(this._gameStateManager._timer.curTime+0.5)
+        this.getChildByName('time').setString(time)
+        var percen = 100-this._gameStateManager._timer.curTime/TIME_WAVE*100
+        this.getChildByName('timeBar').setPercentage(percen)
+        if(time == 0){
+            this.getNewWave()
+        }
+        if(this._gameStateManager.canTouchNewWave){
+            this.getChildByName(res.timer3).visible = true
+        }
+    },
+
+    getNewWave:function () {
+        this.getChildByName(res.timer3).visible = false
+        this._gameStateManager.canTouchNewWave = false
+        this._gameStateManager._timer.resetTime(TIME_WAVE)
+        this.callMonster()
+    },
+
+    callMonster:function () {
+        var monster = this._gameStateManager.playerA._map.addMonster()
+        this.addChild(monster,2000)
     },
 
     convertCordinateToPos:function (corX, corY) {
@@ -253,42 +328,28 @@ var GameUI = cc.Layer.extend({
         for(var i=0;i<MAP_WIDTH+1;i++){
             for(var j=0; j <MAP_HEIGHT+1; j++){
                 if(mapArray[i][j] == -1) {
-                    this.addBuffUI(res.buffD, i, j, rule)
+                    this.addObjectUI(res.buffD, i, j, 1,0,rule)
                 }
                 if(mapArray[i][j] == -2) {
-                    this.addBuffUI(res.buffS, i, j, rule)
+                    this.addObjectUI(res.buffS, i, j,1,0, rule)
                 }
                 if(mapArray[i][j] == -3) {
-                    this.addBuffUI(res.buffR, i, j, rule)
+                    this.addObjectUI(res.buffR, i, j, 1,0,rule)
                 }
                 if(mapArray[i][j] == 1) {
-                    this.addObjectUI(res.treeUI, i, j,0, rule)
+                    this.addObjectUI(res.treeUI, i, j,0.85,0, rule)
                 }
                 if(mapArray[i][j] == 2) {
-                    this.addObjectUI(res.hole, i, j,0, rule)
+                    this.addObjectUI(res.hole, i, j,0.85,0, rule)
                 }
             }
         }
     },
-
-
-    addBuffUI:function (res, corX ,corY, rule) {
-        var object = new cc.Sprite(res)
-        object.setScale(CELLWIDTH/object.getContentSize().height)
-        var pos
-        if(rule == 1) {
-            pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY)
-        }
-        else{
-            pos = this._gameStateManager.playerA.convertCordinateToPos2(corX, corY)
-        }
-        object.setPosition(pos)
-        this.addChild(object,999,res+rule)
-    },
-
-    addObjectUI:function (res, corX ,corY,direc, rule ) {
-        var object = new cc.Sprite(res)
-        object.setScale(0.88*CELLWIDTH/object.getContentSize().height)
+    
+    //scale * cellwidth
+    addObjectUI:function (_res, corX ,corY,_scale,direc, rule ) {
+        var object = new cc.Sprite(_res)
+        object.setScale(_scale*CELLWIDTH/object.getContentSize().height)
         var pos
         if(rule == 1) {
             pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY)
@@ -306,21 +367,24 @@ var GameUI = cc.Layer.extend({
         if(direc == 2){
             object.setRotation(270)
         }
-        this.addChild(object,1000,res+rule)
+        if(_res == res.iconArrow && rule == 2) object.setRotation(object.getRotation()+180)
+
+        this.addChild(object,0,_res+rule)
+        return object
     },
 
     update:function (dt) {
-        this.checkTouchRight()
+        this.checkTouch()
         this.createObjectByTouch2();
+        this.updateTimer(dt)
         var children = this.children;
         for (i in children) {
             children[i].update(dt);
         }
+        this._gameStateManager.update(dt)
 
-        if(this._gameStateManager.playerA._map.monsters[0].des){
-            this.healthA.setString(this._gameStateManager.playerA.health)
-            this._gameStateManager.playerA._map.monsters[0].des = false
-        }
+        this.healthA.setString(this._gameStateManager.playerA.health)
+
 
     },
 

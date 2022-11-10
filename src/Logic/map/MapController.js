@@ -122,11 +122,11 @@ var MapController = cc.Class.extend({
         //         cc.log(i+'='+j+' '+weight[i][j])
         //     }
         // }
-        for(key in finalList){
-            var x = finalList[key].locX
-            var y = finalList[key].locY
-            cc.log(x+'='+y+' '+finalList[key].parent+'--'+finalList[key].direc)
-        }
+        // for(key in finalList){
+        //     var x = finalList[key].locX
+        //     var y = finalList[key].locY
+        //     cc.log(x+'='+y+' '+finalList[key].parent+'--'+finalList[key].direc)
+        // }
 
     },
 
