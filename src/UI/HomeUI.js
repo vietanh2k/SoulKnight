@@ -219,6 +219,7 @@ var HomeUI = cc.Layer.extend({
         }
     },
 
+    // TODO request start cooldown - start cooldown response
     openChestSlot: function (slot) {
         let chest = this.chestSlots[slot].chest;
         chest.openTimeStarted = Date.now();
@@ -237,6 +238,7 @@ var HomeUI = cc.Layer.extend({
         this.addChild(this.chestSlots[slot]);
     },
 
+    // TODO request open chest - open chest response
     consumeChestSlot: function (slot) {
         // TODO nhận được tài nguyên sau khi mở rương
         let chest = this.chestSlots[slot].chest;

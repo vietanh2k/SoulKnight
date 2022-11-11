@@ -34,7 +34,7 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.OPEN_CHEST_NOW:
                 fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
-            case gv.CMD.START_COOL_DOWN:
+            case gv.CMD.START_COOLDOWN:
 
         }
     },
@@ -68,7 +68,7 @@ testnetwork.Connector = cc.Class.extend({
     },
     sendStartCoolDownRequest: function (chest) {
         cc.log("SendStartCoolDownChest:" + chest.id);
-        var pk = this.gameClient.getOutPacket(CmdSendStartCoolDownChest);
+        var pk = this.gameClient.getOutPacket(CmdSendStartCooldownChest);
         pk.putData(chest);
         this.gameClient.sendPacket(pk);
     },

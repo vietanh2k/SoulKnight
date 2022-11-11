@@ -9,7 +9,7 @@ gv.CMD.USER_LOGIN = 1;
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
-gv.CMD.START_COOL_DOWN = 3002;
+gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
 
 testnetwork = testnetwork || {};
@@ -71,12 +71,12 @@ CmdSendOpenChest = fr.OutPacket.extend(
     }
 )
 
-CmdSendStartCoolDownChest = fr.OutPacket.extend(
+CmdSendStartCooldownChest = fr.OutPacket.extend(
     {
         ctor: function () {
             this._super();
             this.initData(100);
-            this.setCmdId(gv.CMD.START_COOL_DOWN);
+            this.setCmdId(gv.CMD.START_COOLDOWN);
         },
         /**
          * send open START COOL DOWN request
@@ -176,7 +176,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             let deckSize = this.getInt();
             let deck = [];
             for (let i = 0; i < deckSize; i++) {
-                deck.push(this.readCardData());
+                deck.push(this.readCardTypeData(collection));
             }
             let serverNow = this.getLong();
             cc.log('server now: ' + serverNow)
@@ -202,7 +202,18 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             let type = this.getByte();
             let openOnServerTimestamp = this.getLong();
             return new Chest(id, type, openOnServerTimestamp);
-        }
+        },
+
+        readCardTypeData: function (collection) {
+            let type = this.getByte();
+            for (let i = 0; i < collection.length; i++) {
+                cc.log('card.type is ' + collection[i].type + ' and type is ' + type)
+                if (collection[i].type === type) {
+                    return collection[i];
+                }
+            }
+            return null;
+        },
     }
 );
 
@@ -222,7 +233,7 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST_NOW] = fr.InPacket.extend(
 );
 
 
-testnetwork.packetMap[gv.CMD.START_COOL_DOWN] = fr.InPacket.extend(
+testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend(
     {
         ctor: function () {
             this._super();
