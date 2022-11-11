@@ -12,8 +12,6 @@ var GameUI = cc.Layer.extend({
     deleteObjectByTouch:null,
 
     ctor:function (pkg) {
-        cc.spriteFrameCache.addSpriteFrames(res.darkgiant_plist, res.darkgiant_png);
-        cc.spriteFrameCache.addSpriteFrames(res.ninja_plist, res.ninja_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this._super();
@@ -27,8 +25,8 @@ var GameUI = cc.Layer.extend({
         winSize = cc.director.getWinSize();
 
         this.initBackGround();
-        this.initCellSlotMapA(this._gameStateManager.playerA._map._mapController.intArray, this._gameStateManager.playerA.rule)
-        this.initCellSlotMapA(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
+        this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, this._gameStateManager.playerA.rule)
+        this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
         this.showPathUI(this._gameStateManager.playerA._map._mapController.path, 1)
         this.showPathUI(this._gameStateManager.playerB._map._mapController.path, 2)
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
@@ -66,11 +64,14 @@ var GameUI = cc.Layer.extend({
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = this._gameStateManager.playerA.convertPosToCor(pos)
             cc.log(loc.x+'---'+loc.y)
-            if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0 ) {
-                cc.log('touch right')
-                this.createObjectByTouch = true
-            }else if(this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0 ){
-                this.deleteObjectByTouch = true
+            if(loc.x >=0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
+                loc.y >=0 && loc.y < this._gameStateManager.playerA._map._mapController.intArray[0].length) {
+                if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0) {
+                    cc.log('touch right')
+                    this.createObjectByTouch = true
+                } else if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0) {
+                    this.deleteObjectByTouch = true
+                }
             }
         //check touch time
             var timer = this.getChildByName(res.timer3)
@@ -229,6 +230,8 @@ var GameUI = cc.Layer.extend({
         this.addTimerUI()
         this.addHouseBoxUI()
         this.addWaveUI()
+        this.addEnergyBarUI()
+        this.addDeckUI()
     },
 
     addObjectBackground:function (res, scaleW,scaleH, positionX, positionY) {
@@ -266,14 +269,14 @@ var GameUI = cc.Layer.extend({
     },
     addHealthUI:function () {
         var healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
-        healthA.setScale(WIDTHSIZE/healthA.getContentSize().width*0.8/15)
+        healthA.setScale(WIDTHSIZE/healthA.getContentSize().height*0.8/15)
         healthA.setPosition(winSize.width/2 + WIDTHSIZE*3.9/8, winSize.height/2+HEIGHTSIZE*-4.25/15)
         var blueColor = new cc.Color(34,119,234,255);
         healthA.setTextColor(blueColor)
         healthA.enableShadow()
         this.addChild(healthA, 0 , 'healthA1')
-        var healthB = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
-        healthB.setScale(WIDTHSIZE/healthB.getContentSize().width*0.8/15)
+        var healthB = new ccui.Text(this._gameStateManager.playerB.health, res.font_magic, 30)
+        healthB.setScale(WIDTHSIZE/healthB.getContentSize().height*0.8/15)
         healthB.setPosition(winSize.width/2 + WIDTHSIZE*-3.9/8, winSize.height/2+HEIGHTSIZE*5.7/15)
         var redColor = new cc.Color(242,61,65,255);
         healthB.enableShadow()
@@ -290,14 +293,14 @@ var GameUI = cc.Layer.extend({
         houseIcon.setPosition(winSize.width+CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.02)
 
         var healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
-        healthA.setScale(WIDTHSIZE/healthA.getContentSize().width*0.9/15)
+        healthA.setScale(WIDTHSIZE/healthA.getContentSize().height*0.9/15)
         healthA.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*0.4)
         var blueColor = new cc.Color(34,119,234,255);
         healthA.enableShadow()
         healthA.setTextColor(blueColor)
 
-        var healthB = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
-        healthB.setScale(WIDTHSIZE/healthB.getContentSize().width*0.9/15)
+        var healthB = new ccui.Text(this._gameStateManager.playerB.health, res.font_magic, 30)
+        healthB.setScale(WIDTHSIZE/healthB.getContentSize().height*0.9/15)
         healthB.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.62)
         var redColor = new cc.Color(242,61,65,255);
         healthB.enableShadow()
@@ -307,37 +310,41 @@ var GameUI = cc.Layer.extend({
         this.addChild(houseIcon)
         this.addChild(healthA, 0 , 'healthA2')
         this.addChild(healthB, 0 , 'healthB2')
+
+
     },
     addWaveUI:function () {
         var waveBox = new cc.Sprite(res.house_box)
         waveBox.setScaleX(CELLWIDTH/waveBox.getContentSize().width*1.5)
-        waveBox.setScaleY(CELLWIDTH/waveBox.getContentSize().height*0.75)
-        waveBox.setPosition(CELLWIDTH*0.4, winSize.height/2+CELLWIDTH*1.3)
+        waveBox.setScaleY(CELLWIDTH/waveBox.getContentSize().height*0.85)
+        waveBox.setPosition(CELLWIDTH*0.25, winSize.height/2+CELLWIDTH*1.1)
 
         // var houseIcon = new cc.Sprite(res.house_icon)
         // houseIcon.setScale(WIDTHSIZE/houseIcon.getContentSize().height*0.75/8)
         // houseIcon.setPosition(winSize.width+CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.02)
         //
-        // var healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
-        // healthA.setScale(WIDTHSIZE/healthA.getContentSize().width*0.9/15)
-        // healthA.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*0.4)
-        // var blueColor = new cc.Color(34,119,234,255);
-        // healthA.enableShadow()
-        // healthA.setTextColor(blueColor)
+        var lbWave = new ccui.Text('Lượt:', res.font_magic, 30)
+        lbWave.setScale(CELLWIDTH/lbWave.getContentSize().height*0.25)
+        lbWave.setPosition(CELLWIDTH*0.4, winSize.height/2+CELLWIDTH*1.3)
+        var blueColor2 = new cc.Color(173,194,228,255);
+        lbWave.enableShadow()
+        lbWave.setTextColor(blueColor2)
 
-        // var healthB = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
-        // healthB.setScale(WIDTHSIZE/healthB.getContentSize().width*0.9/15)
-        // healthB.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.62)
-        // var redColor = new cc.Color(242,61,65,255);
-        // healthB.enableShadow()
-        // healthB.setTextColor(redColor)
-        //
+        var strNumWave = this._gameStateManager.curWave +'/'+MAX_WAVE
+        var lbNumWave = new ccui.Text(strNumWave, res.font_magic, 30)
+        lbNumWave.setScale(CELLWIDTH/lbNumWave.getContentSize().height*0.35)
+        lbNumWave.setPosition(CELLWIDTH*0.48, winSize.height/2+CELLWIDTH*0.95)
+        var blueColor = new cc.Color(255,255,248,255);
+        lbNumWave.enableShadow()
+        lbNumWave.setTextColor(blueColor)
+
         this.addChild(waveBox)
-        // this.addChild(houseIcon)
+        this.addChild(lbWave)
+        this.addChild(lbNumWave,0, 'lbNumWave')
         // this.addChild(healthA, 0 , 'healthA2')
         // this.addChild(healthB, 0 , 'healthB2')
     },
-    updateHealth:function (dt) {
+    updateHealthUI:function (dt) {
         if(this.getChildByName('healthA1') != null) {
             this.getChildByName('healthA1').setString(this._gameStateManager.playerA.health)
         }
@@ -345,10 +352,97 @@ var GameUI = cc.Layer.extend({
             this.getChildByName('healthA2').setString(this._gameStateManager.playerA.health)
         }
         if(this.getChildByName('healthB1') != null) {
-            this.getChildByName('healthB1').setString(this._gameStateManager.playerA.health)
+            this.getChildByName('healthB1').setString(this._gameStateManager.playerB.health)
         }
         if(this.getChildByName('healthB2') != null) {
-            this.getChildByName('healthB2').setString(this._gameStateManager.playerA.health)
+            this.getChildByName('healthB2').setString(this._gameStateManager.playerB.health)
+        }
+    },
+
+    addEnergyBarUI:function (){
+        var energy = new cc.Sprite(res.energyIcon)
+        var whiteColor = new cc.Color(255,255,255,255);
+        var blackColor = new cc.Color(0,0,0,255);
+        var lbNumEnergy = new ccui.Text(this._gameStateManager.playerA.energy, res.font_magic, 40)
+        lbNumEnergy.setPosition(energy.getContentSize().width*0.5,energy.getContentSize().height/2)
+        lbNumEnergy.enableShadow()
+        lbNumEnergy.setTextColor(whiteColor)
+        lbNumEnergy.enableOutline(blackColor,1)
+        energy.addChild(lbNumEnergy,0,'numEnergyBar')
+        energy.setScale(CELLWIDTH/energy.getContentSize().height*0.65)
+        energy.setPosition(winSize.width/2- WIDTHSIZE/2+CELLWIDTH*1.3, winSize.height/2- HEIGHTSIZE/2+CELLWIDTH*0.4)
+        this.addChild(energy,0,'iconEnergyBar')
+
+        // var energyBarBackground = new cc.Sprite('asset/lobby/lobby_card_progress_background_deck.png')
+        // energyBarBackground.setScaleY(CELLWIDTH/energyBarBackground.getContentSize().height*0.25)
+        // energyBarBackground.setScaleX(CELLWIDTH/energyBarBackground.getContentSize().width*6)
+        // energyBarBackground.setPosition(winSize.width/2+CELLWIDTH*1, winSize.height/2- HEIGHTSIZE/2+CELLWIDTH*0.4)
+        // this.addChild(energyBarBackground)
+
+    },
+
+    addDeckUI:function (){
+       this.addListCardUI()
+
+
+        var btnChat = ccui.Button('asset/battle/battle_btn_chat.png');
+        btnChat.setScale(CELLWIDTH/btnChat.getNormalTextureSize().width*0.9)
+        btnChat.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*2.6)
+        this.addChild(btnChat,0);
+
+        var lbWave = new ccui.Text('Tiếp theo:', res.font_magic, 30)
+        lbWave.setScale(CELLWIDTH/lbWave.getContentSize().height*0.24)
+        lbWave.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.85)
+        var whiteColor = new cc.Color(245,241,220,255);
+        var blackColor = new cc.Color(0,0,0,255);
+        lbWave.setTextColor(whiteColor)
+        lbWave.enableShadow()
+        lbWave.enableOutline(blackColor,1)
+        this.addChild(lbWave,0);
+
+    },
+
+
+    addListCardUI:function (){
+        for(var i=1;i<=5;i++) {
+            var cardBackGround = new cc.Sprite('asset/card/card_background_4.png')
+            var cardBorder = new cc.Sprite('asset/card/card_border_1.png')
+            var cardAvatar = new cc.Sprite('asset/card/card_tower_wizard.png')
+            cardBorder.setPosition(cardBackGround.getContentSize().width * 0.5, cardBackGround.getContentSize().height / 2)
+            cardAvatar.setPosition(cardBackGround.getContentSize().width * 0.5, cardBackGround.getContentSize().height / 2)
+            var energy = new cc.Sprite(res.energyIcon)
+            var whiteColor = new cc.Color(255, 255, 255, 255);
+            var blackColor = new cc.Color(0, 0, 0, 255);
+            var lbNumEnergy = new ccui.Text(3, res.font_magic, 40)
+            lbNumEnergy.setPosition(energy.getContentSize().width * 0.5, energy.getContentSize().height / 2)
+            lbNumEnergy.enableShadow()
+            lbNumEnergy.setTextColor(whiteColor)
+            lbNumEnergy.enableOutline(blackColor, 1)
+            energy.addChild(lbNumEnergy, 0)
+            energy.setScale(CELLWIDTH / energy.getContentSize().height * 0.7)
+            energy.setPosition(cardBackGround.getContentSize().width * 0.5, 0)
+
+            cardBackGround.addChild(cardBorder,0,'cardBorder'+i)
+            cardBackGround.addChild(cardAvatar,0,'cardAvatar'+i)
+            if(i<=4){
+                cardBackGround.addChild(energy,0,'energy'+i)
+                cardBackGround.setScale(CELLWIDTH / cardBackGround.getContentSize().width * 1.25)
+                cardBackGround.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
+            }else{
+                cardBackGround.setScale(CELLWIDTH / cardBackGround.getContentSize().width * 0.9)
+                cardBackGround.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+            }
+
+            this.addChild(cardBackGround,0,'cardBackGround'+i)
+        }
+
+
+
+    },
+
+    updateEnergyUI:function (dt) {
+        if(this.getChildByName('iconEnergyBar') != null) {
+            this.getChildByName('iconEnergyBar').getChildByName('numEnergyBar').setString(this._gameStateManager.playerA.energy)
         }
     },
 
@@ -368,7 +462,9 @@ var GameUI = cc.Layer.extend({
 
     getNewWave:function () {
         this.getChildByName(res.timer3).visible = false
-        this._gameStateManager.canTouchNewWave = false
+        this._gameStateManager.updateStateNewWave()
+        var strNumWave = this._gameStateManager.curWave +'/'+MAX_WAVE
+        this.getChildByName('lbNumWave').setString(strNumWave)
         this._gameStateManager._timer.resetTime(TIME_WAVE)
         this.callMonster()
     },
@@ -394,7 +490,7 @@ var GameUI = cc.Layer.extend({
 
     },
 
-    initCellSlotMapA:function ( mapArray, rule) {
+    initCellSlot:function ( mapArray, rule) {
         var arr = this._gameStateManager.playerA._map._mapController.intArray
         for(var i=0;i<MAP_WIDTH+1;i++){
             for(var j=0; j <MAP_HEIGHT+1; j++){
@@ -444,6 +540,85 @@ var GameUI = cc.Layer.extend({
         return object
     },
 
+    getEnergyUI:function (pos, numEnergy){
+        var energy = new cc.Sprite(res.energyIcon)
+        energy.setPosition(pos.x, pos.y)
+
+        var lbAddIcon = new ccui.Text('+', res.font_magic, 70)
+        lbAddIcon.setPosition(-energy.getContentSize().width*1/3,energy.getContentSize().height/2)
+        var blueColor2 = new cc.Color(255,255,255,255);
+        lbAddIcon.enableShadow()
+        lbAddIcon.setTextColor(blueColor2)
+
+        var lbNumEnergy = new ccui.Text(numEnergy, res.font_magic, 70)
+        lbNumEnergy.setPosition(energy.getContentSize().width*1.3,energy.getContentSize().height/2)
+        lbNumEnergy.enableShadow()
+        lbNumEnergy.setTextColor(blueColor2)
+
+        energy.addChild(lbAddIcon)
+        energy.addChild(lbNumEnergy)
+        energy.setScale(CELLWIDTH/energy.getContentSize().height*0.3)
+
+        var seq1 = cc.MoveTo(0.3, cc.p(pos.x, pos.y+CELLWIDTH*0.5))
+        var seq2 = cc.fadeOut(0)
+        var seq3 = cc.CallFunc(()=> this.removeChild(energy), this)
+        var seq = cc.sequence(seq1,cc.delayTime(0.5),seq2,seq3)
+        energy.runAction(seq)
+        this.addChild(energy)
+
+    },
+
+    checkEndBattle:function () {
+        if(this._gameStateManager.winner == 1){
+            this.blockEndBattleLayer()
+            this.showResultBattleUI('win')
+        }
+        if(this._gameStateManager.winner == 2){
+            this.blockEndBattleLayer()
+            this.showResultBattleUI('lose')
+        }
+
+    },
+
+    blockEndBattleLayer:function () {
+        this.unscheduleAllCallbacks()
+        var blockLayer = new cc.Sprite(res.house_box)
+        blockLayer.setScaleX(1.3*winSize.width/blockLayer.getContentSize().width)
+        blockLayer.setScaleY(1.3*winSize.height/blockLayer.getContentSize().height)
+        blockLayer.setPosition(winSize.width/2, winSize.height/2)
+        this.addChild(blockLayer,4000)
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
+            onTouchBegan: function (touch, event){
+                cc.log("touch began2333333333: "+ touch.getLocationX());
+
+                return true;
+
+            }
+        } , this);
+
+    },
+    showResultBattleUI:function (resultString) {
+
+        var resultAnimation = new sp.SkeletonAnimation("asset/battle_result/fx/fx_result_"+resultString+".json",
+            "asset/battle_result/fx/fx_result_"+resultString+".atlas")
+        resultAnimation.setScale(8.9*WIDTHSIZE/ resultAnimation.getBoundingBox().width)
+        resultAnimation.setPosition(winSize.width/ 2, winSize.height/2+CELLWIDTH*0.2)
+        resultAnimation.setAnimation(0, "fx_result_"+resultString+"_idle", true)
+        this.addChild(resultAnimation,4001)
+
+        var btnBack = ccui.Button('asset/common/common_btn_blue.png');
+        btnBack.setTitleText('Trở Về')
+        btnBack.setTitleFontName(res.font_magic)
+
+        btnBack.setScale((WIDTHSIZE*1.4/7)/btnBack.getNormalTextureSize().height)
+        btnBack.setTitleFontSize(23)
+        btnBack.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*-3.85/9)
+        this.addChild(btnBack,4002);
+    },
+
+
     update:function (dt) {
         this.checkTouch()
         this.createObjectByTouch2();
@@ -454,7 +629,9 @@ var GameUI = cc.Layer.extend({
         }
         this._gameStateManager.update(dt)
 
-        this.updateHealth(dt)
+        this.updateHealthUI(dt)
+        this.updateEnergyUI(dt)
+        this.checkEndBattle()
 
 
     },

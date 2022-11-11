@@ -5,21 +5,18 @@ var Monster = AnimatedSprite.extend({
     _type:null,
     _monsterType:null,
     _curNode:null,
-    _nextNode:null,
-    _preNode:null,
     des:null,
     _speedVec:null,
     rootSpeed: 30,
-    atDes:null,
+    energyFromDestroy:null,
     _speed:null,
-    readyRun:null,
     animationIds:null,
-    animatedSprite:null,
     isDestroy:null,
 
     ctor:function (type, playerState) {
         this._playerState = playerState
         this.rootSpeed = 80
+        this.energyFromDestroy = 3
         this._super(res.m1);
         this.active = true;
         this.visible = true;
@@ -116,8 +113,12 @@ var Monster = AnimatedSprite.extend({
 
 
     destroy:function () {
-        this._playerState.updatehealth(-1)
+        this._playerState.updateHealth(-1)
+        this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
+        if(this.getParent() != null){
+            this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
+        }
         this.visible = false;
         this.active = false;
     },

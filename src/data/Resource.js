@@ -83,7 +83,9 @@ var res = {
     timer3:'asset/battle/battle_timer_border.png',
     health_box:'asset/battle_result/battle_result_health_box.png',
     house_icon: 'asset/common/common_icon_house.png',
-    house_box: 'asset/battle/battle_info_box.png'
+    house_box: 'asset/battle/battle_info_box.png',
+    energyIcon: 'asset/common/common_icon_energy.png'
+
 };
 
 var g_resources = [
@@ -137,6 +139,8 @@ var g_resources = [
     "zcsd/screen_menu.json",
     "zcsd/screen_network.json",
     "zcsd/screen_zalo.json",
+    "asset/battle_result/fx/fx_result_draw.json",
+    "asset/battle_result/fx/fx_result_draw.atlas",
     res.ninja_plist,
     res.ninja_png,
     res.darkgiant_plist,
@@ -147,5 +151,6 @@ var g_resources = [
     res.timer1,
     res.timer2,
     res.timer3,
-    res.health_box
+    res.health_box,
+    res.energyIcon
 ];

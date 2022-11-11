@@ -1,3 +1,4 @@
+MAX_WAVE = 25;
 
 var GameStateManager = cc.Class.extend({
     playerA: null,
@@ -5,6 +6,8 @@ var GameStateManager = cc.Class.extend({
     cellWidth: null,
     _timer: null,
     canTouchNewWave:null,
+    curWave:null,
+    winner:null,
 
 
     ctor:function (pkg) {
@@ -15,6 +18,8 @@ var GameStateManager = cc.Class.extend({
         this.readFrom(pkg)
         this._timer = new Timer(this)
         this.canTouchNewWave = false
+        this.curWave = 1
+        this.winner = null
 
     },
     init:function () {
@@ -51,9 +56,28 @@ var GameStateManager = cc.Class.extend({
             this.canTouchNewWave = true
         }
     },
+    updateStateNewWave:function (){
+        this.curWave += 1
+        this.canTouchNewWave = false
+    },
+    checkWinner:function (){
+        if(this.playerA.health == 0){
+            if(this.playerB == 0){
+                this.winner = 0
+            }
+            else{
+                this.winner = 2
+            }
+            return
+        }
+        if(this.playerB.health == 0){
+            this.winner = 1
+        }
+    },
     update:function (dt){
         this.playerA.update(dt)
         this.isClearWave()
+        this.checkWinner()
     }
 
 
