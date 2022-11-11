@@ -151,71 +151,70 @@ testnetwork.packetMap[gv.CMD.USER_LOGIN] = fr.InPacket.extend(
 );
 
 
-testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-        },
+testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
 
-        readData: function () {
-            let id = this.getInt();
-            let name = this.getString();
-            let gold = this.getInt();
-            let gem = this.getInt();
-            let trophy = this.getInt();
-            let collectionSize = this.getInt();
-            let collection = [];
-            for (let i = 0; i < collectionSize; i++) {
-                collection.push(this.readCardData());
-            }
-            let chestListSize = this.getInt();
-            let chestList = [];
-            for (let i = 0; i < chestListSize; i++) {
-                chestList.push(this.readChestData());
-            }
-            let deckSize = this.getInt();
-            let deck = [];
-            for (let i = 0; i < deckSize; i++) {
-                deck.push(this.readCardTypeData(collection));
-            }
-            let serverNow = this.getLong();
-            cc.log('server now: ' + serverNow)
-            CFG.TIME_DIFF = serverNow - Date.now();
-            chestList.forEach(chest => chest.updateClientTime());
-            sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
-            cc.log("Loaded user info: " + JSON.stringify(sharePlayerInfo));
-        },
+    ctor: function () {
+        this._super();
+    },
 
-        readCardData: function () {
-            let id = this.getInt();
-            let name = this.getString();
-            let type = this.getByte();
-            let level = this.getInt();
-            let quantity = this.getInt();
-            let attackSpeed = this.getDouble();
-            let attackRange = this.getDouble();
-            return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
-        },
+    readData: function () {
+        let id = this.getInt();
+        let name = this.getString();
+        let gold = this.getInt();
+        let gem = this.getInt();
+        let trophy = this.getInt();
+        let collectionSize = this.getInt();
+        let collection = [];
+        for (let i = 0; i < collectionSize; i++) {
+            collection.push(this.readCardData());
+        }
+        let chestListSize = this.getInt();
+        let chestList = [];
+        for (let i = 0; i < chestListSize; i++) {
+            chestList.push(this.readChestData());
+        }
+        let deckSize = this.getInt();
+        let deck = [];
+        for (let i = 0; i < deckSize; i++) {
+            deck.push(this.readCardTypeData(collection));
+        }
 
-        readChestData: function () {
-            let id = this.getInt();
-            let type = this.getByte();
-            let openOnServerTimestamp = this.getLong();
-            return new Chest(id, type, openOnServerTimestamp);
-        },
+        let serverNow = this.getLong();
+        Utils.updateTimeDiff(serverNow);
 
-        readCardTypeData: function (collection) {
-            let type = this.getByte();
-            for (let i = 0; i < collection.length; i++) {
-                cc.log('card.type is ' + collection[i].type + ' and type is ' + type)
-                if (collection[i].type === type) {
-                    return collection[i];
-                }
+        chestList.forEach(chest => chest.updateClientTime());
+        sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
+        cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo));
+    },
+
+    readCardData: function () {
+        let id = this.getInt();
+        let name = this.getString();
+        let type = this.getByte();
+        let level = this.getInt();
+        let quantity = this.getInt();
+        let attackSpeed = this.getDouble();
+        let attackRange = this.getDouble();
+        return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+    },
+
+    readChestData: function () {
+        let id = this.getInt();
+        let type = this.getByte();
+        let openOnServerTimestamp = this.getLong();
+        return new Chest(id, type, openOnServerTimestamp);
+    },
+
+    readCardTypeData: function (collection) {
+        let type = this.getByte();
+        for (let i = 0; i < collection.length; i++) {
+            if (collection[i].type === type) {
+                return collection[i];
             }
-            return null;
-        },
-    }
-);
+        }
+        return null;
+    },
+});
 
 testnetwork.packetMap[gv.CMD.OPEN_CHEST_NOW] = fr.InPacket.extend(
     {
@@ -233,24 +232,37 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST_NOW] = fr.InPacket.extend(
 );
 
 
-testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-        },
-        readData: function () {
-            // this.status = this.getString();
-            var chestID = this.getInt();
+testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
 
-            this.chest = sharePlayerInfo.getChestById(chestID);
-            if (this.chest != null) {
-                this.chest.onStartCoolDown(this);
-            }
-            // if(this.player_info_is_not_null)  sharePlayerInfo = new PlayerInfo(this);
+    ctor: function () {
+        this._super();
+    },
+    readData: function () {
+        let chestID = this.getInt();
+        let openOnServerTimestamp = this.getLong();
+        cc.log('Received start cooldown response from server. Chest ID: ' + chestID + ', open on server timestamp: ' + openOnServerTimestamp + '.');
 
+        let serverNow = this.getLong();
+        Utils.updateTimeDiff(serverNow);
+
+        if (openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP ||
+            openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP.toString()) {
+            Utils.addToastToRunningScene('Rương chưa được bắt đầu mở!');
+            return;
         }
+        if (chestID === -1 || chestID === '-1') {
+            Utils.addToastToRunningScene('Server không tìm được chest hay user');
+            return;
+        }
+        this.chest = sharePlayerInfo.getChestById(chestID);
+        if (this.chest == null) {
+            Utils.addToastToRunningScene('Client không tìm thấy rương');
+            return;
+        }
+
+        cc.director.getRunningScene().tabUIs[CFG.LOBBY_TAB_HOME].openChestSlot(chestID, openOnServerTimestamp);
     }
-);
+});
 
 testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
     {

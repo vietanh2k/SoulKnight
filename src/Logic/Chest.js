@@ -14,12 +14,19 @@ var Chest = cc.Class.extend({
 
     updateClientTime: function () {
         this.openTimeRequired = CFG.CHEST_REWARD[this.type].openTimeRequired;
-        if (this.openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP) {
+        if (this.openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP ||
+            this.openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP.toString()) {
             this.openTimeStarted = null;
         } else {
             this.openOnClientTimestamp = this.openOnServerTimestamp - CFG.TIME_DIFF;
             this.openTimeStarted = this.openOnClientTimestamp - this.openTimeRequired;
         }
+    },
+
+    updateWhenStartToOpen: function (openOnServerTimestamp) {
+        this.openOnServerTimestamp = openOnServerTimestamp;
+        this.openOnClientTimestamp = this.openOnServerTimestamp - CFG.TIME_DIFF;
+        this.openTimeStarted = this.openOnClientTimestamp - this.openTimeRequired;
     },
 
     // /**
@@ -43,15 +50,15 @@ var Chest = cc.Class.extend({
     /**
      * Gửi yêu cầu bắt đầu cooldown
      * */
-    startCoolDown: function () {
-        testnetwork.connector.sendStartCoolDownRequest(this);
+    startCooldown: function () {
+        testnetwork.connector.sendStartCooldownRequest(this);
     },
 
     /**
      * Xử lý phải hồi yêu cầu bắt đầu cooldown
      * @return{String} status: Phản hồi dạng string từ server
      * */
-    onStartCoolDown: function (byte_buffer) {
+    onStartCooldown: function (byte_buffer) {
         // đặt lại mốc remaining time cập nhập từ server
         this.setRemainingTime(byte_buffer.getLong());
         // lấy phản hồi

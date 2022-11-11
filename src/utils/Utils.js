@@ -51,3 +51,12 @@ Utils.isOpening = function (chest) {
     if (chest.openTimeStarted === null) return false;
     return Utils.getOpenTimeLeft(chest) > 0;
 }
+
+Utils.updateTimeDiff = function (serverNow) {
+    CFG.TIME_DIFF = serverNow - Date.now();
+    cc.log('Time diff updated: ' + CFG.TIME_DIFF);
+}
+
+Utils.addToastToRunningScene = function (message) {
+    cc.director.getRunningScene().addChild(new Toast(message), CFG.TOAST_Z_ORDER);
+}

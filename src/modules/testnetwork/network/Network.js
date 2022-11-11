@@ -35,28 +35,30 @@ testnetwork.Connector = cc.Class.extend({
                 fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
             case gv.CMD.START_COOLDOWN:
-
+                break;
         }
     },
+
     sendGetUserInfo: function () {
         cc.log("sendGetUserInfo");
         var pk = this.gameClient.getOutPacket(CmdSendUserInfo);
         pk.pack();
         this.gameClient.sendPacket(pk);
     },
+
     sendLoginRequest: function () {
         var pk = this.gameClient.getOutPacket(CmdSendLogin);
         pk.pack(this.gameClient._userId);
         this.gameClient.sendPacket(pk);
-
-
     },
+
     sendMove: function (direction) {
         cc.log("SendMove:" + direction);
         var pk = this.gameClient.getOutPacket(CmdSendMove);
         pk.pack(direction);
         this.gameClient.sendPacket(pk);
     },
+
     /**
      * gửi yêu cầu mở chest
      * */
@@ -66,13 +68,11 @@ testnetwork.Connector = cc.Class.extend({
         pk.putData(chest);
         this.gameClient.sendPacket(pk);
     },
-    sendStartCoolDownRequest: function (chest) {
-        cc.log("SendStartCoolDownChest:" + chest.id);
-        var pk = this.gameClient.getOutPacket(CmdSendStartCooldownChest);
+
+    sendStartCooldownRequest: function (chest) {
+        cc.log("Send open chest request for chest ID: " + chest.id);
+        let pk = this.gameClient.getOutPacket(CmdSendStartCooldownChest);
         pk.putData(chest);
         this.gameClient.sendPacket(pk);
     },
 });
-
-
-

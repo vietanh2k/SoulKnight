@@ -2,9 +2,11 @@
 // this.parent.parent: LobbyScene
 var ChestSlot = ccui.Button.extend({
     chest: null,
+    slot: null,
 
     ctor: function (chest, slot) {
         this.chest = chest;
+        this.slot = slot;
         if (chest.openTimeStarted === null) {
             this._super(asset.treasureEmpty_png);
             this.addClickEventListener(() => {

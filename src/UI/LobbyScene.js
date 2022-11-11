@@ -135,8 +135,8 @@ var LobbyScene = cc.Scene.extend({
 
     initTabUIs: function (localZOrder) {
         this.tabUIs = [];
-        this.tabUIs[1] = new CardsUI();
-        this.tabUIs[2] = new HomeUI();
+        this.tabUIs[CFG.LOBBY_TAB_CARDS] = new CardsUI();
+        this.tabUIs[CFG.LOBBY_TAB_HOME] = new HomeUI();
         for (let i = 0; i < CFG.LOBBY_MAX_TAB; i++) {
             if (this.tabUIs[i] !== undefined) {
                 this.addChild(this.tabUIs[i], localZOrder);

@@ -120,14 +120,14 @@ var HomeUI = cc.Layer.extend({
         });
         this.btnBattle.addClickEventListener(() => {
             // TODO remove next line
-            cc.log('opening chest counter: ' + this.openingChestCounter);
+            Utils.addToastToRunningScene('opening chest counter: ' + this.openingChestCounter);
             if (this.parent.allBtnIsActive) {
                 for (let i = 0; i < this.chestSlots.length; i++) {
                     if (this.chestSlots[i].constructor.name === 'Sprite') {
                         return;
                     }
                 }
-                this.addChild(new Toast('Số lượng rương đã đạt tối đa!'));
+                Utils.addToastToRunningScene('Số lượng rương đã đạt tối đa!');
             }
         });
         this.arena.addChild(this.btnBattle);
@@ -219,23 +219,28 @@ var HomeUI = cc.Layer.extend({
         }
     },
 
-    // TODO request start cooldown - start cooldown response
-    openChestSlot: function (slot) {
+    sendRequestOpenChestSlot: function (slot) {
         let chest = this.chestSlots[slot].chest;
-        chest.openTimeStarted = Date.now();
-        this.removeChild(this.chestSlots[slot], true);
+        testnetwork.connector.sendStartCooldownRequest(chest);
+    },
+
+    openChestSlot: function (chestID, openOnServerTimestamp) {
+        let chest = this.chestSlots[chestID].chest;
+        chest.updateWhenStartToOpen(openOnServerTimestamp);
+        this.removeChild(this.chestSlots[chestID], true);
+
         this.openingChestCounter++;
-        this.chestSlots[slot] = new ChestSlot(chest, slot);
+        this.chestSlots[chestID] = new ChestSlot(chest, chestID);
         let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
         let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-        let chestX = spaceBetween * (slot + 1) + slotWidth * (slot + 0.5);
+        let chestX = spaceBetween * (chestID + 1) + slotWidth * (chestID + 0.5);
         let chestY = CFG.HEIGHT / 4;
-        this.chestSlots[slot].attr({
+        this.chestSlots[chestID].attr({
             x: chestX,
             y: chestY,
-            scale: slotWidth / this.chestSlots[slot].width,
+            scale: slotWidth / this.chestSlots[chestID].width,
         });
-        this.addChild(this.chestSlots[slot]);
+        this.addChild(this.chestSlots[chestID]);
     },
 
     // TODO request open chest - open chest response
