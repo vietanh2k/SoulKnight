@@ -225,14 +225,10 @@ var GameUI = cc.Layer.extend({
         this.addObjectBackground(res.house,1/6.5,0,3.9/8,-3.8/15)
         this.addObjectBackground(res.deck,0,2.9/15,0,-6.05/15)
         // this.healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
-        this.healthA = new ccui.Text(10, res.font_magic, 30)
-        this.healthA.setScale(WIDTHSIZE/this.healthA.getContentSize().width*1/15)
-        this.healthA.setPosition(winSize.width/2 + WIDTHSIZE*3.9/8, winSize.height/2+HEIGHTSIZE*-3.8/15)
-        var whiteColor = new cc.Color(255,255,255,255);
-        this.healthA.setTextColor(whiteColor)
-        this.addChild(this.healthA)
+        this.addHealthUI()
         this.addTimerUI()
         this.addHouseBoxUI()
+        this.addWaveUI()
     },
 
     addObjectBackground:function (res, scaleW,scaleH, positionX, positionY) {
@@ -263,22 +259,97 @@ var GameUI = cc.Layer.extend({
         numTime.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*1/15)
         var whiteColor = new cc.Color(255,255,255,255);
         numTime.setTextColor(whiteColor)
+        numTime.enableShadow()
         this.addChild(numTime,0,'time')
         var time3 = this.addObjectBackground(res.timer3,0.8/8,0,0,1/15)
         time3.visible = false
     },
+    addHealthUI:function () {
+        var healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
+        healthA.setScale(WIDTHSIZE/healthA.getContentSize().width*0.8/15)
+        healthA.setPosition(winSize.width/2 + WIDTHSIZE*3.9/8, winSize.height/2+HEIGHTSIZE*-4.25/15)
+        var blueColor = new cc.Color(34,119,234,255);
+        healthA.setTextColor(blueColor)
+        healthA.enableShadow()
+        this.addChild(healthA, 0 , 'healthA1')
+        var healthB = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
+        healthB.setScale(WIDTHSIZE/healthB.getContentSize().width*0.8/15)
+        healthB.setPosition(winSize.width/2 + WIDTHSIZE*-3.9/8, winSize.height/2+HEIGHTSIZE*5.7/15)
+        var redColor = new cc.Color(242,61,65,255);
+        healthB.enableShadow()
+        healthB.setTextColor(redColor)
+        this.addChild(healthB, 0 , 'healthB1')
+    },
     addHouseBoxUI:function () {
         var houseBox = new cc.Sprite(res.house_box)
         houseBox.setScale(WIDTHSIZE/houseBox.getContentSize().width*2/8)
-        houseBox.setPosition(winSize.width+CELLWIDTH*0.3, winSize.height/2+CELLWIDTH)
+        houseBox.setPosition(winSize.width+CELLWIDTH*0.32, winSize.height/2+CELLWIDTH)
 
         var houseIcon = new cc.Sprite(res.house_icon)
-        houseIcon.setScale(WIDTHSIZE/houseIcon.getContentSize().height*0.8/8)
-        houseIcon.setPosition(winSize.width+CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.05)
+        houseIcon.setScale(WIDTHSIZE/houseIcon.getContentSize().height*0.75/8)
+        houseIcon.setPosition(winSize.width+CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.02)
+
+        var healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
+        healthA.setScale(WIDTHSIZE/healthA.getContentSize().width*0.9/15)
+        healthA.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*0.4)
+        var blueColor = new cc.Color(34,119,234,255);
+        healthA.enableShadow()
+        healthA.setTextColor(blueColor)
+
+        var healthB = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
+        healthB.setScale(WIDTHSIZE/healthB.getContentSize().width*0.9/15)
+        healthB.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.62)
+        var redColor = new cc.Color(242,61,65,255);
+        healthB.enableShadow()
+        healthB.setTextColor(redColor)
+
         this.addChild(houseBox)
         this.addChild(houseIcon)
+        this.addChild(healthA, 0 , 'healthA2')
+        this.addChild(healthB, 0 , 'healthB2')
+    },
+    addWaveUI:function () {
+        var waveBox = new cc.Sprite(res.house_box)
+        waveBox.setScaleX(CELLWIDTH/waveBox.getContentSize().width*1.5)
+        waveBox.setScaleY(CELLWIDTH/waveBox.getContentSize().height*0.75)
+        waveBox.setPosition(CELLWIDTH*0.4, winSize.height/2+CELLWIDTH*1.3)
 
+        // var houseIcon = new cc.Sprite(res.house_icon)
+        // houseIcon.setScale(WIDTHSIZE/houseIcon.getContentSize().height*0.75/8)
+        // houseIcon.setPosition(winSize.width+CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.02)
+        //
+        // var healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
+        // healthA.setScale(WIDTHSIZE/healthA.getContentSize().width*0.9/15)
+        // healthA.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*0.4)
+        // var blueColor = new cc.Color(34,119,234,255);
+        // healthA.enableShadow()
+        // healthA.setTextColor(blueColor)
 
+        // var healthB = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
+        // healthB.setScale(WIDTHSIZE/healthB.getContentSize().width*0.9/15)
+        // healthB.setPosition(winSize.width + CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.62)
+        // var redColor = new cc.Color(242,61,65,255);
+        // healthB.enableShadow()
+        // healthB.setTextColor(redColor)
+        //
+        this.addChild(waveBox)
+        // this.addChild(houseIcon)
+        // this.addChild(healthA, 0 , 'healthA2')
+        // this.addChild(healthB, 0 , 'healthB2')
+    },
+    updateHealth:function (dt) {
+        if(this.getChildByName('healthA1') != null) {
+            this.getChildByName('healthA1').setString(this._gameStateManager.playerA.health)
+        }
+        if(this.getChildByName('healthA2') != null) {
+            this.getChildByName('healthA2').setString(this._gameStateManager.playerA.health)
+        }
+        if(this.getChildByName('healthB1') != null) {
+            this.getChildByName('healthB1').setString(this._gameStateManager.playerA.health)
+        }
+        if(this.getChildByName('healthB2') != null) {
+            this.getChildByName('healthB2').setString(this._gameStateManager.playerA.health)
+        }
     },
 
     updateTimer:function (dt) {
@@ -383,7 +454,7 @@ var GameUI = cc.Layer.extend({
         }
         this._gameStateManager.update(dt)
 
-        this.healthA.setString(this._gameStateManager.playerA.health)
+        this.updateHealth(dt)
 
 
     },
