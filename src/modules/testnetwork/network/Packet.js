@@ -60,7 +60,9 @@ CmdSendOpenChest = fr.OutPacket.extend(
         putData: function (chest, gemSpent) {
             //pack
             this.packHeader();
+            cc.log('putInt chest ID: ' + chest.id)
             this.putInt(chest.id);
+            cc.log('putInt gem spent: ' + gemSpent)
             this.putInt(gemSpent);
             // this.putInt(sharePlayerInfo.id);
             //update
@@ -254,9 +256,9 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
 
         readData: function () {
             let status = this.getString();
-            cc.log(status)
+            cc.log('Status: ' + status)
             let newCardsSize = this.getInt();
-            cc.log(newCardsSize)
+            cc.log('Amount of new cards: ' + newCardsSize)
             // let newCards = [];
             // for (let i = 0; i < newCardsSize; i++) {
             //     newCards.push(this.readCardData());
