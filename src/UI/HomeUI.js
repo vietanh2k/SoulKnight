@@ -78,10 +78,10 @@ var HomeUI = cc.Layer.extend({
         });
         this.lobbyHomePlayer.addChild(this.iconTrophy);
 
-        this.lbPlayerTrophy = new ccui.Text(Utils.toStringWithDots(FAKE.trophy), asset.svnSupercellMagic_ttf, 22);
+        this.lbPlayerTrophy = new ccui.Text(Utils.toStringWithDots(sharePlayerInfo.trophy), asset.svnSupercellMagic_ttf, 22);
         this.lbPlayerTrophy.attr({
             anchorX: 0,
-            x: this.lobbyHomePlayer.width * 0.95 - this.trophyBox.width,
+            x: this.lobbyHomePlayer.width * 0.97 - this.trophyBox.width,
             y: this.lobbyHomePlayer.height * 0.6,
             color: cc.color(249, 216, 70),
             scale: Math.min(
@@ -119,8 +119,11 @@ var HomeUI = cc.Layer.extend({
             scale: this.arena.width * 0.9 / this.btnBattle.width,
         });
         this.btnBattle.addClickEventListener(() => {
-            // TODO remove next line
-            Utils.addToastToRunningScene('opening chest counter: ' + this.openingChestCounter);
+            // FIXME hiện tại đang dùng button này để debug
+            Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
+            cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo));
+
+            // đây mới là (một phần) tác dụng thật
             if (this.parent.allBtnIsActive) {
                 for (let i = 0; i < this.chestSlots.length; i++) {
                     if (this.chestSlots[i].constructor.name === 'Sprite') {

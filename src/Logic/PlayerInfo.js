@@ -1,4 +1,5 @@
 var PlayerInfo = cc.Class.extend({
+
     ctor: function (id, name, gold, gem, trophy, collection, chestList, deck) {
         this.id = id;
         this.name = name;
@@ -10,10 +11,10 @@ var PlayerInfo = cc.Class.extend({
         this.deck = deck;
 
         // fake data
-        this.name = FAKE.name;
-        this.gold = FAKE.gold;
-        this.gem = FAKE.gem;
-        this.trophy = FAKE.trophy;
+        // this.name = FAKE.name;
+        // this.gold = FAKE.gold;
+        // this.gem = FAKE.gem;
+        // this.trophy = FAKE.trophy;
         // this.chestList = FAKE.chests;
     },
 
