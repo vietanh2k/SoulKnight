@@ -17,7 +17,7 @@ testnetwork.Connector = cc.Class.extend({
         cc.log("onReceivedPacket:", cmd);
 
         switch (cmd) {
-            case gv.CMD.HAND_SHAKE:
+            case gv.CMD.HANDSHAKE:
                 this.sendLoginRequest();
                 break;
             case gv.CMD.USER_LOGIN:
@@ -31,8 +31,7 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("MOVE:", packet.x, packet.y);
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
-            case gv.CMD.OPEN_CHEST_NOW:
-                fr.getCurrentScreen().onReceivedServerResponse(packet.status);
+            case gv.CMD.OPEN_CHEST:
                 break;
             case gv.CMD.START_COOLDOWN:
                 break;
@@ -59,20 +58,17 @@ testnetwork.Connector = cc.Class.extend({
         this.gameClient.sendPacket(pk);
     },
 
-    /**
-     * gửi yêu cầu mở chest
-     * */
-    sendOpenChestRequest: function (chest) {
-        cc.log("SendOpenChest:" + chest.id);
-        var pk = this.gameClient.getOutPacket(CmdSendOpenChest);
+    sendStartCooldownRequest: function (chest) {
+        cc.log("Send start cooldown request for chest ID: " + chest.id);
+        let pk = this.gameClient.getOutPacket(CmdSendStartCooldownChest);
         pk.putData(chest);
         this.gameClient.sendPacket(pk);
     },
 
-    sendStartCooldownRequest: function (chest) {
-        cc.log("Send open chest request for chest ID: " + chest.id);
-        let pk = this.gameClient.getOutPacket(CmdSendStartCooldownChest);
-        pk.putData(chest);
+    sendOpenChestRequest: function (chest, gemSpent) {
+        cc.log('Send consume chest request for chest ID ' + chest.id + ' by spend ' + gemSpent + ' gem(s).');
+        let pk = this.gameClient.getOutPacket(CmdSendOpenChest);
+        pk.putData(chest, gemSpent);
         this.gameClient.sendPacket(pk);
     },
 });

@@ -250,12 +250,17 @@ var HomeUI = cc.Layer.extend({
     consumeChestSlot: function (slot) {
         // TODO nhận được tài nguyên sau khi mở rương
         let chest = this.chestSlots[slot].chest;
+
+        let gemSpent = Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
+        testnetwork.connector.sendOpenChestRequest(chest, gemSpent);
+
         if (Utils.isOpening(chest)) {
             this.openingChestCounter--;
         }
         sharePlayerInfo.gem -= Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
         this.parent.currencyPanel.updateLabels();
         this.removeChild(this.chestSlots[slot], true);
+
         this.chestSlots[slot] = new cc.Sprite(asset.treasureEmpty_png);
         let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
         textStatus.attr({

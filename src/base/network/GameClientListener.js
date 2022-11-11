@@ -65,7 +65,7 @@ var GameClientListener = cc.Class.extend(
             {
                 case gv.CMD.PACKET_ERROR:
                     break;
-                case gv.CMD.HAND_SHAKE:
+                case gv.CMD.HANDSHAKE:
                     gv.gameClient.sendLoginRequest();
                     break;
                 case gv.CMD.USER_LOGIN:
