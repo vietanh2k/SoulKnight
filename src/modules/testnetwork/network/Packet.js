@@ -266,6 +266,8 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
                 serverNow = this.getLong();
                 Utils.updateTimeDiff(serverNow);
                 cc.director.getRunningScene().tabUIs[CFG.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+            } else {
+                Utils.addToastToRunningScene(status);
             }
         },
 
