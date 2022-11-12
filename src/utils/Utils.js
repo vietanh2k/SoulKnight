@@ -44,7 +44,7 @@ Utils.getOpenTimeLeft = function (chest) {
 
 Utils.gemCostToOpenChest = function (openTimeLeft) {
     if (openTimeLeft <= 0) return 0;
-    return Math.ceil(openTimeLeft / (60 * 60 * 1000) * CFG.COST_GEMS_PER_HOUR);
+    return Math.ceil(openTimeLeft / (60 * 60 * 1000) * cf.COST_GEMS_PER_HOUR);
 }
 
 Utils.isOpening = function (chest) {
@@ -53,10 +53,10 @@ Utils.isOpening = function (chest) {
 }
 
 Utils.updateTimeDiff = function (serverNow) {
-    CFG.TIME_DIFF = serverNow - Date.now();
-    cc.log('Time diff updated: ' + CFG.TIME_DIFF);
+    cf.TIME_DIFF = serverNow - Date.now();
+    cc.log('Time diff updated: ' + cf.TIME_DIFF);
 }
 
 Utils.addToastToRunningScene = function (message) {
-    cc.director.getRunningScene().addChild(new Toast(message), CFG.TOAST_Z_ORDER);
+    cc.director.getRunningScene().addChild(new Toast(message), cf.TOAST_Z_ORDER);
 }

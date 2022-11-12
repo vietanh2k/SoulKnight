@@ -8,8 +8,8 @@ let Toast = cc.Layer.extend({
     ctor: function (message, timeout = 3000) {
         this._super();
         this.zOrder = TOAST_Z_ORDER;
-        this.x = CFG.WIDTH / 2;
-        this.y = CFG.HEIGHT / 2;
+        this.x = cf.WIDTH / 2;
+        this.y = cf.HEIGHT / 2;
 
         this.lbMess = new ccui.Text(message, asset.svnSupercellMagic_ttf, 18);
         this.lbMess.attr({
@@ -24,7 +24,7 @@ let Toast = cc.Layer.extend({
         this.leftNotiBox.attr({
             anchorX: 1,
             x: 1,
-            scale: (CFG.WIDTH + 2) / 856,
+            scale: (cf.WIDTH + 2) / 856,
         });
         this.addChild(this.leftNotiBox);
 
@@ -32,7 +32,7 @@ let Toast = cc.Layer.extend({
         this.rightNotiBox.attr({
             anchorX: 0,
             x: -1,
-            scale: (CFG.WIDTH + 2) / 856,
+            scale: (cf.WIDTH + 2) / 856,
             flippedX: true,
         });
         this.addChild(this.rightNotiBox);

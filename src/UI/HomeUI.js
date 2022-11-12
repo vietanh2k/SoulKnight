@@ -30,8 +30,8 @@ var HomeUI = cc.Layer.extend({
             anchorX: 0,
             anchorY: 1,
             x: 0,
-            y: CFG.HEIGHT - CFG.WIDTH / 854 * 85,
-            scale: CFG.WIDTH / this.lobbyHomePlayer.width,
+            y: cf.HEIGHT - cf.WIDTH / 854 * 85,
+            scale: cf.WIDTH / this.lobbyHomePlayer.width,
         });
         this.addChild(this.lobbyHomePlayer);
 
@@ -97,9 +97,9 @@ var HomeUI = cc.Layer.extend({
         this.arena = new cc.Sprite(asset.commonArenaForest_png);
         this.arena.attr({
             anchorY: 0,
-            x: CFG.WIDTH / 2,
-            y: CFG.HEIGHT * 0.5,
-            scale: CFG.WIDTH * 0.45 / this.arena.width,
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT * 0.5,
+            scale: cf.WIDTH * 0.45 / this.arena.width,
         });
         this.addChild(this.arena);
 
@@ -196,10 +196,10 @@ var HomeUI = cc.Layer.extend({
     },
 
     addChestSlotAsChild: function (slot) {
-        let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-        let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
+        let slotWidth = cf.WIDTH / (cf.LOBBY_MAX_CHEST + 0.5);
+        let spaceBetween = slotWidth / 2 / (cf.LOBBY_MAX_CHEST + 1);
         let chestX = spaceBetween * (slot + 1) + slotWidth * (slot + 0.5);
-        let chestY = CFG.HEIGHT / 4;
+        let chestY = cf.HEIGHT / 4;
         this.chestSlots[slot].attr({
             x: chestX,
             y: chestY,

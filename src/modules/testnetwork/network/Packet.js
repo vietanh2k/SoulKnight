@@ -227,8 +227,8 @@ testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
         let serverNow = this.getLong();
         Utils.updateTimeDiff(serverNow);
 
-        if (openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP ||
-            openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP.toString()) {
+        if (openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP ||
+            openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP.toString()) {
             Utils.addToastToRunningScene('Rương chưa được bắt đầu mở!');
             return;
         }
@@ -242,7 +242,7 @@ testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
             return;
         }
 
-        cc.director.getRunningScene().tabUIs[CFG.LOBBY_TAB_HOME].startCooldownChestSlot(chestID, openOnServerTimestamp);
+        cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].startCooldownChestSlot(chestID, openOnServerTimestamp);
     }
 });
 
@@ -265,7 +265,7 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
                 goldReceived = this.getInt();
                 serverNow = this.getLong();
                 Utils.updateTimeDiff(serverNow);
-                cc.director.getRunningScene().tabUIs[CFG.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+                cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
             } else {
                 Utils.addToastToRunningScene(status);
             }

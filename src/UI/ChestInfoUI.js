@@ -4,15 +4,15 @@ var ChestInfoUI = cc.Layer.extend({
     ctor: function (chest, openingChestCounter, slot) {
         this._super();
 
-        let layerColor = new cc.LayerColor(cc.color(0, 0, 0), CFG.WIDTH, CFG.HEIGHT);
+        let layerColor = new cc.LayerColor(cc.color(0, 0, 0), cf.WIDTH, cf.HEIGHT);
         layerColor.setOpacity(150);
         this.addChild(layerColor);
 
         let panelBackground = new cc.Sprite(asset.panelBackground_png);
         panelBackground.attr({
-            x: CFG.WIDTH / 2,
-            y: CFG.HEIGHT * 0.4,
-            scale: CFG.WIDTH * 0.9 / panelBackground.width,
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT * 0.4,
+            scale: cf.WIDTH * 0.9 / panelBackground.width,
         })
         this.addChild(panelBackground);
 
@@ -164,7 +164,7 @@ var ChestInfoUI = cc.Layer.extend({
             lbGoldBtn.enableShadow();
             openByGoldBtn.addChild(lbGoldBtn, 0);
             openByGoldBtn.addClickEventListener(() => {
-                this.parent.tabUIs[CFG.LOBBY_TAB_HOME].sendRequestStartCooldownChestSlot(slot);
+                this.parent.tabUIs[cf.LOBBY_TAB_HOME].sendRequestStartCooldownChestSlot(slot);
                 this.destroy();
             });
             panelBackground.addChild(openByGoldBtn, 0);
@@ -201,7 +201,7 @@ var ChestInfoUI = cc.Layer.extend({
         lbGemAmount.enableShadow();
         openByGemBtn.addChild(lbGemAmount);
         openByGemBtn.addClickEventListener(() => {
-            this.parent.tabUIs[CFG.LOBBY_TAB_HOME].sendRequestOpenChestSlot(slot);
+            this.parent.tabUIs[cf.LOBBY_TAB_HOME].sendRequestOpenChestSlot(slot);
             this.destroy();
         });
         panelBackground.addChild(openByGemBtn, 0);

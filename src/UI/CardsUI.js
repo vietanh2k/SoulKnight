@@ -12,23 +12,22 @@ var CardsUI = cc.Layer.extend({
     lbCollection: null,
     collectionSlots: null,
 
-
     ctor: function () {
         this._super();
 
         this.initDeckPanel();
         this.initCollection();
 
-        this.addTouchListener();
+        this.addVerticalScrollByTouchListener();
     },
 
     initDeckPanel: function () {
         this.deckPanel = new cc.Sprite(asset.deckPanel_png);
         this.deckPanel.attr({
             anchorY: 1,
-            x: CFG.WIDTH / 2,
-            y: CFG.HEIGHT - CFG.WIDTH / 854 * 85,
-            scale: CFG.WIDTH / this.deckPanel.width,
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT - cf.WIDTH / 854 * 85,
+            scale: cf.WIDTH / this.deckPanel.width,
         });
         this.addChild(this.deckPanel);
         this.lbDeck = new ccui.Text('BỘ BÀI CHIẾN ĐẤU', asset.svnSupercellMagic_ttf, 22);
@@ -67,9 +66,9 @@ var CardsUI = cc.Layer.extend({
         this.collectionPanel = new cc.Sprite(asset.cardBanner_png);
         this.collectionPanel.attr({
             anchorY: 1,
-            x: CFG.WIDTH / 2,
-            y: CFG.HEIGHT - CFG.WIDTH / 854 * 85 - CFG.WIDTH / 682 * 604,
-            scale: CFG.WIDTH / this.collectionPanel.width * (4 + 3 * 0.3) / (4 + 5 * 0.3),
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT - cf.WIDTH / 854 * 85 - cf.WIDTH / 682 * 604,
+            scale: cf.WIDTH / this.collectionPanel.width * (4 + 3 * 0.3) / (4 + 5 * 0.3),
         })
         this.addChild(this.collectionPanel);
         this.lbCollection = new ccui.Text('BỘ SƯU TẬP THẺ BÀI', asset.svnSupercellMagic_ttf, 20);
@@ -90,7 +89,7 @@ var CardsUI = cc.Layer.extend({
     addCardSlotToCollection: function (card, index) {
         let row = Math.floor(index / 4);
         let column = index - row * 4;
-        let slotWidth = CFG.WIDTH / (4 + 5 * 0.3);
+        let slotWidth = cf.WIDTH / (4 + 5 * 0.3);
         let spaceBetween = slotWidth * 0.3;
         let cardSlotX = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
         let cardSlotY = this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * (1.32 + 0.38 * row);
@@ -102,13 +101,13 @@ var CardsUI = cc.Layer.extend({
         });
         this.addChild(newCardSlot);
         this.collectionSlots[index] = newCardSlot;
-        this.upperbound = CFG.WIDTH / (123 / 110 * 4 + 164 / 122) + CFG.WIDTH / (4 + 5 * 0.3) * (186 / 138) - cardSlotY;
+        this.upperbound = cf.WIDTH / (123 / 110 * 4 + 164 / 122) + cf.WIDTH / (4 + 5 * 0.3) * (186 / 138) - cardSlotY;
         if (this.upperbound < 0) {
             this.upperbound = 0;
         }
     },
 
-    addTouchListener: function () {
+    addVerticalScrollByTouchListener: function () {
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: () => {

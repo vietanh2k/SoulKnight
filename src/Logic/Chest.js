@@ -18,25 +18,25 @@ var Chest = cc.Class.extend({
         this.type = type;
         this.openOnServerTimestamp = openOnServerTimestamp;
 
-        this.golds = CFG.CHEST_REWARD[this.type].golds;
-        this.cards = CFG.CHEST_REWARD[this.type].cards;
-        this.rarities = CFG.CHEST_REWARD[this.type].rarities;
+        this.golds = cf.CHEST_REWARD[this.type].golds;
+        this.cards = cf.CHEST_REWARD[this.type].cards;
+        this.rarities = cf.CHEST_REWARD[this.type].rarities;
     },
 
     updateClientTime: function () {
-        this.openTimeRequired = CFG.CHEST_REWARD[this.type].openTimeRequired;
-        if (this.openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP ||
-            this.openOnServerTimestamp === CFG.UNOPEN_CHEST_TIMESTAMP.toString()) {
+        this.openTimeRequired = cf.CHEST_REWARD[this.type].openTimeRequired;
+        if (this.openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP ||
+            this.openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP.toString()) {
             this.openTimeStarted = null;
         } else {
-            this.openOnClientTimestamp = this.openOnServerTimestamp - CFG.TIME_DIFF;
+            this.openOnClientTimestamp = this.openOnServerTimestamp - cf.TIME_DIFF;
             this.openTimeStarted = this.openOnClientTimestamp - this.openTimeRequired;
         }
     },
 
     updateWhenStartToOpen: function (openOnServerTimestamp) {
         this.openOnServerTimestamp = openOnServerTimestamp;
-        this.openOnClientTimestamp = this.openOnServerTimestamp - CFG.TIME_DIFF;
+        this.openOnClientTimestamp = this.openOnServerTimestamp - cf.TIME_DIFF;
         this.openTimeStarted = this.openOnClientTimestamp - this.openTimeRequired;
     },
 

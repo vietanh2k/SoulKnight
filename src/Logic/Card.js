@@ -1,4 +1,5 @@
 var Card = cc.Class.extend({
+
     ctor: function (id, name, type, level, quantity, attackSpeed, attackRange) {
         this.id = id;
         this.name = name;
@@ -6,6 +7,6 @@ var Card = cc.Class.extend({
         this.level = level;
         this.quantity = quantity;
         this.attackSpeed = attackSpeed;
-        this.attackRange = attackRange
+        this.attackRange = attackRange;
     },
 });
