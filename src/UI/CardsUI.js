@@ -40,7 +40,7 @@ var CardsUI = cc.Layer.extend({
         this.deckPanel.addChild(this.lbDeck);
         this.deckSlots = [];
         for (let i = 0; i < 8; i++) {
-            let card = FAKE.deck[i];
+            let card = sharePlayerInfo.deck[i];
             this.addCardSlotToDeckPanel(card, i);
         }
     },
@@ -80,8 +80,8 @@ var CardsUI = cc.Layer.extend({
         this.lbCollection.enableShadow();
         this.collectionPanel.addChild(this.lbCollection);
         this.collectionSlots = [];
-        for (let i = 0; i < FAKE.collection.length; i++) {
-            let card = FAKE.collection[i];
+        for (let i = 0; i < fake.collection.length; i++) {
+            let card = sharePlayerInfo.collection[i];
             this.addCardSlotToCollection(card, i);
         }
     },

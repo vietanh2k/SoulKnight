@@ -16,10 +16,12 @@ var Chest = cc.Class.extend({
         }
         this.id = id;
         this.type = type;
+        this.type = 0; // FIXME (bỏ qua server) hiện tại mới chỉ có 1 loại rương
         this.openOnServerTimestamp = openOnServerTimestamp;
 
         this.golds = cf.CHEST_REWARD[this.type].golds;
         this.cards = cf.CHEST_REWARD[this.type].cards;
+        this.fragments = cf.CHEST_REWARD[this.type].fragments;
         this.rarities = cf.CHEST_REWARD[this.type].rarities;
     },
 
@@ -38,42 +40,5 @@ var Chest = cc.Class.extend({
         this.openOnServerTimestamp = openOnServerTimestamp;
         this.openOnClientTimestamp = this.openOnServerTimestamp - cf.TIME_DIFF;
         this.openTimeStarted = this.openOnClientTimestamp - this.openTimeRequired;
-    },
-
-    // /**
-    //  * Cài thời gian đếm ngược mở rương
-    //  * Nếu rương chưa start cool down, remaining time phải có giá trị 1000000*/
-    // setRemainingTime: function (openOnServerTimestamp) {
-    //     // update UI gì đó.... (nếu có)
-    //     this.openOnServerTimestamp = openOnServerTimestamp;
-    //     this._init_time_stamp = Date.now() / 1000;
-    // },
-
-    onOpenNow: function () {
-        // testnetwork.connector.sendOpenChestRequest(this);
-        if (Date.now() / 1000 - this._init_time_stamp + 1 > this.remainingTimeInSecond) {
-            testnetwork.sendOpenChestRequest(this);
-        } else {
-            cc.log("not time!")
-        }
-    },
-
-    /**
-     * Gửi yêu cầu bắt đầu cooldown
-     * */
-    startCooldown: function () {
-        testnetwork.connector.sendStartCooldownRequest(this);
-    },
-
-    /**
-     * Xử lý phải hồi yêu cầu bắt đầu cooldown
-     * @return{String} status: Phản hồi dạng string từ server
-     * */
-    onStartCooldown: function (byte_buffer) {
-        // đặt lại mốc remaining time cập nhập từ server
-        this.setRemainingTime(byte_buffer.getLong());
-        // lấy phản hồi
-        res_status = byte_buffer.getString();
-        return res_status;
     },
 });

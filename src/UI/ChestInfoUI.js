@@ -119,7 +119,7 @@ var ChestInfoUI = cc.Layer.extend({
         lbGoldAmount.enableShadow();
         leftBox.addChild(lbGoldAmount, 0);
 
-        let lbCardAmount = new ccui.Text(this.readableGoldRange(chest.cards), asset.svnSupercellMagic_ttf, 14);
+        let lbCardAmount = new ccui.Text(this.readableFragmentRange(chest.fragments), asset.svnSupercellMagic_ttf, 14);
         lbCardAmount.attr({
             anchorX: 0,
             x: rightBox.width * 0.15,
@@ -217,7 +217,7 @@ var ChestInfoUI = cc.Layer.extend({
         return '' + golds[0] + ' - ' + golds[1];
     },
 
-    readableCardRange: function (cards) {
-        return 'x' + cards[0] + ' - ' + cards[1];
+    readableFragmentRange: function (fragments) {
+        return 'x' + fragments[0] + ' - ' + fragments[1];
     },
 });
