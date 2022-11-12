@@ -34,6 +34,10 @@ var PlayerInfo = cc.Class.extend({
         }
         return rs;
     },
+
+    addNewCards: function (newCards) {
+        // TODO add new cards after open a chest
+    },
 })
 
 var sharePlayerInfo;

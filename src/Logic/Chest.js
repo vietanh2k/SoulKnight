@@ -1,4 +1,15 @@
 var Chest = cc.Class.extend({
+    id: null,
+    type: null,
+    openOnServerTimestamp: null,
+    golds: null,
+    cards: null,
+    rarities: null,
+    openTimeRequired: null,
+    openTimeStarted: null,
+    openOnClientTimestamp: null,
+    waitingOpenChestResponseWithGems: null,
+
     ctor: function (id, type, openOnServerTimestamp) {
         if (id < 0 || id > 3) {
             cc.log('ID KHÔNG HỢP LỆ! ID của rương là vị trí của nó trên HomeUI.');

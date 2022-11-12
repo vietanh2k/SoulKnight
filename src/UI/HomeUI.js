@@ -150,20 +150,11 @@ var HomeUI = cc.Layer.extend({
         let emptySlots = [0, 1, 2, 3];
         for (let i = 0; i < sharePlayerInfo.chestList.length; i++) {
             let chest = sharePlayerInfo.chestList[i];
-            let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-            let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-            let chestX = spaceBetween * (chest.id + 1) + slotWidth * (chest.id + 0.5);
-            let chestY = CFG.HEIGHT / 4;
             this.chestSlots[chest.id] = new ChestSlot(chest, chest.id);
             if (this.chestSlots[chest.id].textTime !== undefined && this.chestSlots[chest.id].textOpenCost !== undefined) {
                 this.openingChestCounter++;
             }
-            this.chestSlots[chest.id].attr({
-                x: chestX,
-                y: chestY,
-                scale: slotWidth / this.chestSlots[chest.id].width,
-            });
-            this.addChild(this.chestSlots[chest.id]);
+            this.addChestSlotAsChild(chest.id);
 
             const index = emptySlots.indexOf(chest.id);
             if (index > -1) emptySlots.splice(index, 1);
@@ -179,16 +170,7 @@ var HomeUI = cc.Layer.extend({
             });
             textStatus.enableShadow();
             this.chestSlots[emptySlot].addChild(textStatus, 0);
-            let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-            let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-            let chestX = spaceBetween * (emptySlot + 1) + slotWidth * (emptySlot + 0.5);
-            let chestY = CFG.HEIGHT / 4;
-            this.chestSlots[emptySlot].attr({
-                x: chestX,
-                y: chestY,
-                scale: slotWidth / this.chestSlots[emptySlot].width,
-            });
-            this.addChild(this.chestSlots[emptySlot]);
+            this.addChestSlotAsChild(emptySlot);
         });
     },
 
@@ -207,70 +189,13 @@ var HomeUI = cc.Layer.extend({
                     this.removeChild(this.chestSlots[chest.id], true);
                     this.openingChestCounter--;
                     this.chestSlots[chest.id] = new ChestSlot(chest, chest.id);
-                    let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-                    let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-                    let chestX = spaceBetween * (chest.id + 1) + slotWidth * (chest.id + 0.5);
-                    let chestY = CFG.HEIGHT / 4;
-                    this.chestSlots[chest.id].attr({
-                        x: chestX,
-                        y: chestY,
-                        scale: slotWidth / this.chestSlots[chest.id].width,
-                    });
-                    this.addChild(this.chestSlots[chest.id]);
+                    this.addChestSlotAsChild(chest.id);
                 }
             }
         }
     },
 
-    sendRequestOpenChestSlot: function (slot) {
-        let chest = this.chestSlots[slot].chest;
-        testnetwork.connector.sendStartCooldownRequest(chest);
-    },
-
-    openChestSlot: function (chestID, openOnServerTimestamp) {
-        let chest = this.chestSlots[chestID].chest;
-        chest.updateWhenStartToOpen(openOnServerTimestamp);
-        this.removeChild(this.chestSlots[chestID], true);
-
-        this.openingChestCounter++;
-        this.chestSlots[chestID] = new ChestSlot(chest, chestID);
-        let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-        let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-        let chestX = spaceBetween * (chestID + 1) + slotWidth * (chestID + 0.5);
-        let chestY = CFG.HEIGHT / 4;
-        this.chestSlots[chestID].attr({
-            x: chestX,
-            y: chestY,
-            scale: slotWidth / this.chestSlots[chestID].width,
-        });
-        this.addChild(this.chestSlots[chestID]);
-    },
-
-    // TODO request open chest - open chest response
-    consumeChestSlot: function (slot) {
-        // TODO nhận được tài nguyên sau khi mở rương
-        let chest = this.chestSlots[slot].chest;
-
-        let gemSpent = Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
-        testnetwork.connector.sendOpenChestRequest(chest, gemSpent);
-
-        if (Utils.isOpening(chest)) {
-            this.openingChestCounter--;
-        }
-        sharePlayerInfo.gem -= Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
-        this.parent.currencyPanel.updateLabels();
-        this.removeChild(this.chestSlots[slot], true);
-
-        this.chestSlots[slot] = new cc.Sprite(asset.treasureEmpty_png);
-        let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
-        textStatus.attr({
-            x: this.chestSlots[slot].width / 2,
-            y: this.chestSlots[slot].height / 2,
-            color: cc.color(161, 180, 184),
-        });
-        textStatus.enableShadow();
-        this.chestSlots[slot].addChild(textStatus, 0);
-
+    addChestSlotAsChild: function (slot) {
         let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
         let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
         let chestX = spaceBetween * (slot + 1) + slotWidth * (slot + 0.5);
@@ -281,5 +206,57 @@ var HomeUI = cc.Layer.extend({
             scale: slotWidth / this.chestSlots[slot].width,
         });
         this.addChild(this.chestSlots[slot]);
+    },
+
+    sendRequestStartCooldownChestSlot: function (slot) {
+        let chest = this.chestSlots[slot].chest;
+        testnetwork.connector.sendStartCooldownRequest(chest);
+    },
+
+    startCooldownChestSlot: function (chestID, openOnServerTimestamp) {
+        let chest = this.chestSlots[chestID].chest;
+        chest.updateWhenStartToOpen(openOnServerTimestamp);
+        this.removeChild(this.chestSlots[chestID], true);
+
+        this.openingChestCounter++;
+        this.chestSlots[chestID] = new ChestSlot(chest, chestID);
+        this.addChestSlotAsChild(chestID);
+    },
+
+    sendRequestOpenChestSlot: function (slot) {
+        let chest = this.chestSlots[slot].chest;
+        let gemSpent = Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
+        chest.waitingOpenChestResponseWithGems = gemSpent;
+        testnetwork.connector.sendOpenChestRequest(chest, gemSpent);
+    },
+
+    openChestSlot: function (chestID, newCards, goldReceived) {
+        // FIXME chờ API cập nhật rồi kiểm tra lại
+        let chest = this.chestSlots[chestID].chest;
+        if (chest.waitingOpenChestResponseWithGems == null) {
+            return;
+        }
+
+        if (Utils.isOpening(chest)) {
+            this.openingChestCounter--;
+        }
+
+        sharePlayerInfo.addNewCards(newCards);
+        sharePlayerInfo.gem -= chest.waitingOpenChestResponseWithGems;
+        sharePlayerInfo.gold += goldReceived;
+        this.parent.currencyPanel.updateLabels();
+
+        this.removeChild(this.chestSlots[chestID], true);
+
+        this.chestSlots[chestID] = new cc.Sprite(asset.treasureEmpty_png);
+        let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
+        textStatus.attr({
+            x: this.chestSlots[chestID].width / 2,
+            y: this.chestSlots[chestID].height / 2,
+            color: cc.color(161, 180, 184),
+        });
+        textStatus.enableShadow();
+        this.chestSlots[chestID].addChild(textStatus, 0);
+        this.addChestSlotAsChild(chestID);
     },
 });

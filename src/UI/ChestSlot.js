@@ -90,7 +90,7 @@ var ChestSlot = ccui.Button.extend({
                 this._super(asset.treasureFinished_png);
                 this.addClickEventListener(() => {
                     if (this.parent.parent.allBtnIsActive) {
-                        this.parent.consumeChestSlot(slot);
+                        this.parent.sendRequestOpenChestSlot(slot);
                     } else {
                         cc.log('allBtnIsActive is false');
                     }

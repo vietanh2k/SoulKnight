@@ -66,7 +66,7 @@ testnetwork.Connector = cc.Class.extend({
     },
 
     sendOpenChestRequest: function (chest, gemSpent) {
-        cc.log('Send consume chest request for chest ID ' + chest.id + ' by spend ' + gemSpent + ' gem(s).');
+        cc.log('Send open chest request for chest ID ' + chest.id + ' by spend ' + gemSpent + ' gem(s).');
         let pk = this.gameClient.getOutPacket(CmdSendOpenChest);
         pk.putData(chest, gemSpent);
         this.gameClient.sendPacket(pk);

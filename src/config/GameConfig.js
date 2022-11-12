@@ -19,7 +19,7 @@ CFG.LOBBY_TAB_CLAN = 4;
 
 CFG.TIME_DIFF = 0; // = thời gian trên server trừ thời gian trên client
 CFG.UNOPEN_CHEST_TIMESTAMP = -1;
-CFG.COST_GEMS_PER_HOUR = 2;
+CFG.COST_GEMS_PER_HOUR = 6;
 CFG.CHEST_REWARD = [
     {
         openTimeRequired: 3 * 60 * 60 * 1000,

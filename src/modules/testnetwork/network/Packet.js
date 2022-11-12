@@ -60,9 +60,7 @@ CmdSendOpenChest = fr.OutPacket.extend(
         putData: function (chest, gemSpent) {
             //pack
             this.packHeader();
-            cc.log('putInt chest ID: ' + chest.id)
             this.putInt(chest.id);
-            cc.log('putInt gem spent: ' + gemSpent)
             this.putInt(gemSpent);
             // this.putInt(sharePlayerInfo.id);
             //update
@@ -244,7 +242,7 @@ testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
             return;
         }
 
-        cc.director.getRunningScene().tabUIs[CFG.LOBBY_TAB_HOME].openChestSlot(chestID, openOnServerTimestamp);
+        cc.director.getRunningScene().tabUIs[CFG.LOBBY_TAB_HOME].startCooldownChestSlot(chestID, openOnServerTimestamp);
     }
 });
 
@@ -255,18 +253,21 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
         },
 
         readData: function () {
+            // FIXME chờ API cập nhật rồi kiểm tra lại
+            let chestID = this.getInt();
             let status = this.getString();
-            cc.log('Status: ' + status)
             let newCardsSize = this.getInt();
-            cc.log('Amount of new cards: ' + newCardsSize)
-            // let newCards = [];
-            // for (let i = 0; i < newCardsSize; i++) {
-            //     newCards.push(this.readCardData());
-            // }
-            // let goldReceived = this.getInt();
-            // let serverNow = this.getLong();
-            //
-            // cc.log(status, newCardsSize, JSON.stringify(newCards), goldReceived, serverNow);
+            cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and amount of new cards is ' + newCardsSize + '.');
+            let newCards = [], goldReceived, serverNow;
+            if (status === "Success") {
+                for (let i = 0; i < newCardsSize; i++) {
+                    newCards.push(this.readCardData());
+                }
+                goldReceived = this.getInt();
+                serverNow = this.getLong();
+                Utils.updateTimeDiff(serverNow);
+                cc.director.getRunningScene().tabUIs[CFG.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+            }
         },
 
         readCardData: function () {

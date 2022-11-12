@@ -164,7 +164,7 @@ var ChestInfoUI = cc.Layer.extend({
             lbGoldBtn.enableShadow();
             openByGoldBtn.addChild(lbGoldBtn, 0);
             openByGoldBtn.addClickEventListener(() => {
-                this.parent.tabUIs[CFG.LOBBY_TAB_HOME].sendRequestOpenChestSlot(slot);
+                this.parent.tabUIs[CFG.LOBBY_TAB_HOME].sendRequestStartCooldownChestSlot(slot);
                 this.destroy();
             });
             panelBackground.addChild(openByGoldBtn, 0);
@@ -201,7 +201,7 @@ var ChestInfoUI = cc.Layer.extend({
         lbGemAmount.enableShadow();
         openByGemBtn.addChild(lbGemAmount);
         openByGemBtn.addClickEventListener(() => {
-            this.parent.tabUIs[CFG.LOBBY_TAB_HOME].consumeChestSlot(slot);
+            this.parent.tabUIs[CFG.LOBBY_TAB_HOME].sendRequestOpenChestSlot(slot);
             this.destroy();
         });
         panelBackground.addChild(openByGemBtn, 0);
