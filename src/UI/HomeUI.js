@@ -121,7 +121,7 @@ var HomeUI = cc.Layer.extend({
         this.btnBattle.addClickEventListener(() => {
             // FIXME hiện tại đang dùng button này để debug
             Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
-            cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo));
+            cc.log("User data: " + JSON.stringify(sharePlayerInfo));
 
             // đây mới là (một phần) tác dụng thật
             if (this.parent.allBtnIsActive) {
@@ -231,7 +231,6 @@ var HomeUI = cc.Layer.extend({
     },
 
     openChestSlot: function (chestID, newCards, goldReceived) {
-        // FIXME chờ API cập nhật rồi kiểm tra lại
         let chest = this.chestSlots[chestID].chest;
         if (chest.waitingOpenChestResponseWithGems == null) {
             return;

@@ -253,11 +253,10 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
         },
 
         readData: function () {
-            // FIXME chờ API cập nhật rồi kiểm tra lại
-            let chestID = this.getInt();
             let status = this.getString();
+            let chestID = this.getInt();
             let newCardsSize = this.getInt();
-            cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and amount of new cards is ' + newCardsSize + '.');
+            cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and the amount of new cards is ' + newCardsSize + '.');
             let newCards = [], goldReceived, serverNow;
             if (status === "Success") {
                 for (let i = 0; i < newCardsSize; i++) {
