@@ -27,9 +27,32 @@ var Card = cc.Class.extend({
         if (levelConfig === undefined) {
             cc.log('WARNING: levelConfig is undefined');
         } else {
-            this.reqGold = levelConfig.gold;
-            this.reqFrag = levelConfig.fragment;
             this.rarity = levelConfig.rarity;
         }
+
+        if (this.level === 10) {
+            this.reqGold = 0;
+            this.reqFrag = 0;
+        } else {
+            let nextLevelConfig = cf.CARD_LEVEL.find(element => element.level === this.level + 1);
+            if (nextLevelConfig === undefined) {
+                cc.log('WARNING: nextLevelConfig is undefined');
+            } else {
+                this.reqGold = nextLevelConfig.gold;
+                this.reqFrag = nextLevelConfig.fragment;
+            }
+        }
+    },
+
+    isTower: function () {
+        return ('' + this.id)[0] === '1';
+    },
+
+    isMonster: function () {
+        return ('' + this.id)[0] === '2';
+    },
+
+    isSpell: function () {
+        return ('' + this.id)[0] === '3';
     },
 });

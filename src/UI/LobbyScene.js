@@ -92,6 +92,8 @@ var LobbyScene = cc.Scene.extend({
             newTab.addClickEventListener(() => {
                 if (this.allBtnIsActive) {
                     this.changeToTab(j);
+                } else {
+                    cc.log('allBtnIsActive is false');
                 }
             });
             newTab.addChild(newTabIcon);

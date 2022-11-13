@@ -90,6 +90,7 @@ var asset = {
     progressGlow_png: 'asset/lobby/lobby_card_progress_glow.png',
     progressMax_png: 'asset/lobby/lobby_card_progress_max.png',
     cardBanner_png: 'asset/lobby/lobby_card_banner.png',
+    cardSwitchArrow_png: 'asset/lobby/lobby_card_switch_arrow.png',
 
     cardTowerAttackSpeed_png: 'asset/card/card_tower_attack_speed.png',
     cardTowerBoomerang_png: 'asset/card/card_tower_boomerang.png',

@@ -15,6 +15,8 @@ var CardsUI = cc.Layer.extend({
     sortByEnergyBtn: null,
     sortByEnergyAsc: null,
 
+    isShowingAddCardToDeck: false,
+
     ctor: function () {
         this._super();
 
@@ -116,7 +118,7 @@ var CardsUI = cc.Layer.extend({
         let spaceBetween = slotWidth * 0.3;
         let cardSlotX = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
         let cardSlotY = this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * (1.32 + 0.38 * row);
-        let newCardSlot = new CardSlot(card, true);
+        let newCardSlot = new CardSlot(card, false);
         newCardSlot.attr({
             x: cardSlotX,
             y: cardSlotY,
@@ -124,10 +126,7 @@ var CardsUI = cc.Layer.extend({
         });
         this.addChild(newCardSlot);
         this.collectionSlots[index] = newCardSlot;
-        this.upperbound = cf.WIDTH / (123 / 110 * 4 + 164 / 122) + cf.WIDTH / (4 + 5 * 0.3) * (186 / 138) - cardSlotY;
-        if (this.upperbound < 0) {
-            this.upperbound = 0;
-        }
+        this.setUpperboundBasedOnTheLowestItem(cardSlotY);
     },
 
     sortCollectionSlotsByEnergy: function () {
@@ -140,23 +139,109 @@ var CardsUI = cc.Layer.extend({
         }
     },
 
+    showAddCardToDeck: function (card) {
+        this.parent.allBtnIsActive = false;
+        this.isShowingAddCardToDeck = true;
+        this.collectionSlots.forEach(collectionSlot => collectionSlot.visible = false);
+        this.collectionPanel.visible = false;
+        this.scrollToTop();
+        this.pendingCardId = card.id;
+
+        this.arrow = new cc.Sprite(asset.cardSwitchArrow_png);
+        this.arrow.attr({
+            x: cf.WIDTH / 2,
+            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.05,
+            scale: cf.HEIGHT * 0.05 / this.arrow.height,
+        });
+        this.addChild(this.arrow);
+
+        this.swapInCardSlot = new CardSlot(card, false);
+        this.swapInCardSlot.attr({
+            x: cf.WIDTH / 2,
+            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.27,
+            scale: cf.WIDTH / (4 + 5 * 0.3) / this.swapInCardSlot.width,
+        });
+        this.addChild(this.swapInCardSlot);
+
+        this.lbInstruction = new ccui.Text('Chọn một thẻ bài thay thế', asset.svnSupercellMagic_ttf, 20);
+        this.lbInstruction.attr({
+            x: cf.WIDTH / 2,
+            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.51,
+        });
+        this.addChild(this.lbInstruction);
+
+        this.exitBtn = new ccui.Button(asset.btnRed_png);
+        this.exitBtn.setZoomScale(0);
+        this.exitBtn.attr({
+            x: cf.WIDTH / 2,
+            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.61,
+            scale: cf.WIDTH / (4 + 5 * 0.3) / this.exitBtn.width,
+        });
+        this.addChild(this.exitBtn);
+
+        this.exitBtn.addClickEventListener(() => {
+            this.quitAddCardToDeck();
+        });
+
+        let lbExit = new ccui.Text('Thoát', asset.svnSupercellMagic_ttf, 24);
+        lbExit.enableShadow();
+        lbExit.setPosition(this.exitBtn.width / 2, this.exitBtn.height / 2);
+        this.exitBtn.addChild(lbExit);
+
+        this.setUpperboundBasedOnTheLowestItem(this.exitBtn.y);
+    },
+
+    quitAddCardToDeck: function () {
+        this.pendingCardId = undefined;
+        this.removeChild(this.arrow);
+        this.removeChild(this.swapInCardSlot);
+        this.removeChild(this.lbInstruction);
+        this.removeChild(this.exitBtn);
+        this.parent.allBtnIsActive = true;
+        this.isShowingAddCardToDeck = false;
+        this.collectionSlots.forEach(collectionSlot => collectionSlot.visible = true);
+        this.collectionPanel.visible = true;
+        let lastCardSlot = this.collectionSlots[this.collectionSlots.length - 1];
+        this.setUpperboundBasedOnTheLowestItem(lastCardSlot.y);
+    },
+
+    updateDeckSlot: function (slot) {
+        this.deckPanel.removeChild(this.deckSlots[slot]);
+        let newCard = sharePlayerInfo.deck[slot];
+        this.addCardSlotToDeckPanel(newCard, slot);
+        this.quitAddCardToDeck();
+    },
+
+    setUpperboundBasedOnTheLowestItem: function (itemY) {
+        this.upperbound = this.currentScroll + cf.WIDTH / (123 / 110 * 4 + 164 / 122) + cf.WIDTH / (4 + 5 * 0.3) * (186 / 138) - itemY;
+        if (this.upperbound < 0) {
+            this.upperbound = 0;
+        }
+    },
+
+    scrollToTop: function () {
+        let distance = - this.currentScroll;
+        this.currentScroll += distance;
+        this.getChildren().forEach(child => child.y += distance);
+    },
+
     addVerticalScrollByTouchListener: function () {
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: () => {
-                if (!this.visible) return false;
+                if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
                 this.scrollTouching = true;
                 return true;
             },
             onTouchMoved: (event) => {
-                if (!this.visible || !this.scrollTouching) return;
+                if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck) || !this.scrollTouching) return;
                 let distance = event.getDelta().y;
                 this.currentScroll += distance;
                 this.getChildren().forEach(child => child.y += distance);
                 return true;
             },
             onTouchEnded: () => {
-                if (!this.visible) return false;
+                if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
                 this.scrollTouching = false;
                 if (this.currentScroll < this.lowerbound) {
                     this.getChildren().forEach(child => {
