@@ -39,11 +39,11 @@ var PlayerInfo = cc.Class.extend({
     /**
      * Sort collection by energy, ascending or descending order.
      *
-     * @param {boolean} asc order
+     * @param {boolean} isAscOrder sort by ascending order?
      * @return {void}
      */
-    sortCollectionByEnergy: function (asc) {
-        this.collection.sort((a, b) => (a.energy - b.energy) * (2 * asc - 1));
+    sortCollectionByEnergy: function (isAscOrder) {
+        this.collection.sort((a, b) => (a.energy - b.energy) * (2 * isAscOrder - 1));
     },
 })
 
