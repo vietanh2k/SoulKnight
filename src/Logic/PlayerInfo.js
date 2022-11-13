@@ -15,9 +15,9 @@ var PlayerInfo = cc.Class.extend({
         // this.gold = FAKE.gold;
         // this.gem = FAKE.gem;
         // this.trophy = FAKE.trophy;
-        this.collection = fake.collection;
+        // this.collection = fake.collection;
         // this.chestList = FAKE.chests;
-        this.deck = fake.deck;
+        // this.deck = fake.deck;
     },
 
     /**

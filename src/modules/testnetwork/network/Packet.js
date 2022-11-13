@@ -163,8 +163,8 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         let trophy = this.getInt();
         let collectionSize = this.getInt();
         let collection = [];
-        for (let i = 0; i < collectionSize; i++) {
-            collection.push(this.readCardData());
+        for (let i = 0; i < 18; i++) { // fake data
+            collection.push(this.readCardData(i)); // fake data
         }
         let chestListSize = this.getInt();
         let chestList = [];
@@ -173,27 +173,30 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         }
         let deckSize = this.getInt();
         let deck = [];
-        for (let i = 0; i < deckSize; i++) {
-            deck.push(this.readCardTypeData(collection));
+        for (let i = 0; i < 8; i++) { // fake data
+            deck.push(this.readCardTypeData(collection, i)); // fake data
         }
 
         let serverNow = this.getLong();
         Utils.updateTimeDiff(serverNow);
-
         chestList.forEach(chest => chest.updateClientTime());
+
         sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
         cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo));
     },
 
-    readCardData: function () {
-        let id = this.getInt();
-        let name = this.getString();
-        let type = this.getByte();
-        let level = this.getInt();
-        let quantity = this.getInt();
-        let attackSpeed = this.getDouble();
-        let attackRange = this.getDouble();
-        return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+    readCardData: function (i) { // fake data
+        if (i < 10) { // fake data
+            let id = this.getInt();
+            let name = this.getString();
+            let type = this.getByte();
+            let level = this.getInt();
+            let quantity = this.getInt();
+            let attackSpeed = this.getDouble();
+            let attackRange = this.getDouble();
+        }
+        // return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+        return new Card(fake.collection[i].id, fake.collection[i].level, fake.collection[i].fragment); // fake data
     },
 
     readChestData: function () {
@@ -203,14 +206,17 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         return new Chest(id, type, openOnServerTimestamp);
     },
 
-    readCardTypeData: function (collection) {
+    readCardTypeData: function (collection, i) {
         let type = this.getByte();
-        for (let i = 0; i < collection.length; i++) {
-            if (collection[i].type === type) {
-                return collection[i];
-            }
-        }
-        return null;
+        // for (let i = 0; i < collection.length; i++) {
+        //     if (collection[i].type === type) {
+        //         return collection[i];
+        //     }
+        // }
+        // return null;
+        return collection.find(card => {
+            return card.id === fake.deck[i].id;
+        }); // fake data
     },
 });
 
