@@ -20,11 +20,6 @@ var PlayerInfo = cc.Class.extend({
         // this.deck = fake.deck;
     },
 
-    /**
-     * Trả về một đối tượng chest theo id truyền vào
-     * @param {int} chestId: id của chest
-     * @return {Chest} : chest tìm thấy hoặc null
-     * */
     getChestById: function (chestId) {
         let rs = null;
         if (this.chestList != null) {
@@ -39,6 +34,16 @@ var PlayerInfo = cc.Class.extend({
 
     addNewCards: function (newCards) {
         // TODO add new cards after open a chest
+    },
+
+    /**
+     * Sort collection by energy, ascending or descending order.
+     *
+     * @param {boolean} asc order
+     * @return {void}
+     */
+    sortCollectionByEnergy: function (asc) {
+        this.collection.sort((a, b) => (a.energy - b.energy) * (2 * asc - 1));
     },
 })
 

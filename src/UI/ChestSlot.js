@@ -105,6 +105,7 @@ var ChestSlot = ccui.Button.extend({
                 this.addChild(textOpen);
             }
         }
+        this.setZoomScale(0);
     },
 
     addIconChest: function () {

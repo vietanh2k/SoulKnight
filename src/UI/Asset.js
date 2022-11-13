@@ -66,6 +66,7 @@ var asset = {
     btnGreen_png: 'asset/common/common_btn_green.png',
     btnOrange_png: 'asset/common/common_btn_orange.png',
     btnRed_png: 'asset/common/common_btn_red.png',
+    notificationDot_png: 'asset/common/common_notification_dot.png',
 
 
     deckPanel_png: 'asset/lobby/lobby_card_deck.png',
@@ -78,8 +79,8 @@ var asset = {
     cardBackgrounds_png: [
         'asset/card/card_background_1.png',
         'asset/card/card_background_2.png',
-        'asset/card/card_background_3.png',
         'asset/card/card_background_4.png',
+        'asset/card/card_background_3.png',
     ],
     iconEnergy_png: 'asset/card/stat_icon/stat_icon_energy_gain.png',
     cardLevel_png: 'asset/card/card_level.png',

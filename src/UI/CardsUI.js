@@ -12,6 +12,9 @@ var CardsUI = cc.Layer.extend({
     lbCollection: null,
     collectionSlots: null,
 
+    sortByEnergyBtn: null,
+    sortByEnergyAsc: null,
+
     ctor: function () {
         this._super();
 
@@ -30,6 +33,7 @@ var CardsUI = cc.Layer.extend({
             scale: cf.WIDTH / this.deckPanel.width,
         });
         this.addChild(this.deckPanel);
+
         this.lbDeck = new ccui.Text('BỘ BÀI CHIẾN ĐẤU', asset.svnSupercellMagic_ttf, 22);
         this.lbDeck.attr({
             x: this.deckPanel.width / 3,
@@ -38,8 +42,9 @@ var CardsUI = cc.Layer.extend({
         });
         this.lbDeck.enableShadow();
         this.deckPanel.addChild(this.lbDeck);
+
         this.deckSlots = [];
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < sharePlayerInfo.deck.length; i++) {
             let card = sharePlayerInfo.deck[i];
             this.addCardSlotToDeckPanel(card, i);
         }
@@ -71,6 +76,7 @@ var CardsUI = cc.Layer.extend({
             scale: cf.WIDTH / this.collectionPanel.width * (4 + 3 * 0.3) / (4 + 5 * 0.3),
         })
         this.addChild(this.collectionPanel);
+
         this.lbCollection = new ccui.Text('BỘ SƯU TẬP THẺ BÀI', asset.svnSupercellMagic_ttf, 20);
         this.lbCollection.attr({
             x: this.collectionPanel.width * 0.3,
@@ -79,8 +85,25 @@ var CardsUI = cc.Layer.extend({
         });
         this.lbCollection.enableShadow();
         this.collectionPanel.addChild(this.lbCollection);
+
+        this.sortByEnergyBtn = new ccui.Button(asset.iconEnergy_png);
+        this.sortByEnergyBtn.attr({
+            x: this.collectionPanel.width * 0.92,
+            y: this.collectionPanel.height / 2,
+            scale: this.collectionPanel.height * 0.6 / this.sortByEnergyBtn.height,
+        });
+        this.sortByEnergyBtn.addClickEventListener(() => {
+            if (this.sortByEnergyAsc == null) {
+                this.sortByEnergyAsc = true;
+            } else {
+                this.sortByEnergyAsc = !this.sortByEnergyAsc;
+            }
+            this.sortCollectionSlotsByEnergy();
+        });
+        this.collectionPanel.addChild(this.sortByEnergyBtn);
+
         this.collectionSlots = [];
-        for (let i = 0; i < fake.collection.length; i++) {
+        for (let i = 0; i < sharePlayerInfo.collection.length; i++) {
             let card = sharePlayerInfo.collection[i];
             this.addCardSlotToCollection(card, i);
         }
@@ -104,6 +127,16 @@ var CardsUI = cc.Layer.extend({
         this.upperbound = cf.WIDTH / (123 / 110 * 4 + 164 / 122) + cf.WIDTH / (4 + 5 * 0.3) * (186 / 138) - cardSlotY;
         if (this.upperbound < 0) {
             this.upperbound = 0;
+        }
+    },
+
+    sortCollectionSlotsByEnergy: function () {
+        this.collectionSlots.forEach(collectionSlot => this.removeChild(collectionSlot));
+        sharePlayerInfo.sortCollectionByEnergy(this.sortByEnergyAsc);
+
+        for (let i = 0; i < sharePlayerInfo.collection.length; i++) {
+            let card = sharePlayerInfo.collection[i];
+            this.addCardSlotToCollection(card, i);
         }
     },
 
