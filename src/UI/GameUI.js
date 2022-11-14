@@ -110,7 +110,7 @@ var GameUI = cc.Layer.extend({
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
             if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
-                this._gameStateManager.playerA._map._mapController.findPath()
+                this._gameStateManager.playerA._map._mapController.findPathBFS()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.path,1)
                 var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
                 this.addChild(tree,0,res.treeUI+1)
@@ -128,9 +128,8 @@ var GameUI = cc.Layer.extend({
 
         var children = this.children
         for (i in children) {
-            if(children[i]._curNode != undefined ){
-                var monsterLocArr = children[i]._curNode.split('-');
-                var monsterLoc = new cc.p(parseInt(monsterLocArr[0]), parseInt(monsterLocArr[1]));
+            if(children[i]._curNode2 != undefined ){
+                var monsterLoc = children[i]._curNode2;
                 if(monsterLoc.x == loc.x && monsterLoc.y == loc.y){
                     return true
                 }

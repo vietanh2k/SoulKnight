@@ -18,6 +18,12 @@ var MapController = cc.Class.extend({
                 {length:MAP_HEIGHT+1}
             )
         );
+        this.listPath =  Array.from(
+            {length:MAP_WIDTH+1},
+            ()=>Array.from(
+                {length:MAP_HEIGHT+1}
+            )
+        );
         this.path = {}
         this.intArray =  Array.from(
             {length:MAP_WIDTH+1},
@@ -172,66 +178,13 @@ var MapController = cc.Class.extend({
             cou++
             if(cou>100) break
         }
-
+        this.listPath = listPath
         for(var i=0;i<=MAP_WIDTH;i++){
             for(j=0; j<= MAP_HEIGHT; j++){
                 if(listPath[i][j] != undefined)
                 cc.log(i+'_'+j+'=='+listPath[i][j].x+'_'+listPath[i][j].y)
             }
         }
-        // for(var i=0; i<listPath.length;i++){
-        //     cc.log(listPath[i].x+'_'+listPath[i].y+'=='+listPath[i].nextNode.x+'_'+listPath[i].nextNode.y)
-        // }
-
-
-    },
-
-    getWay:function (finalList, weight){
-        var corX = 0
-        var corY = 0
-        var parentX = 0
-        var parentY = 1
-        var cou = 0
-        while(corX != MAP_WIDTH-1 || corY != MAP_HEIGHT){
-
-            if(weight[corX][corY] - weight[parentX][parentY] == 50){
-                var tmpX = (parentX*2-corX)
-                var tmpY = (parentY*2-corY)
-                finalList[parentX+'-'+parentY].parent = tmpX+'-'+tmpY
-                corX = parentX
-                corY = parentY
-                parentX = tmpX
-                parentY = tmpY
-            }else if(weight[corX][corY] - weight[parentX][parentY] > 50){
-                var tmpX = 0
-                var tmpY = 0
-                if(parentX + parentY- corY <0 || parentX + parentY- corY>=MAP_WIDTH || parentY+parentX-corX<0 || parentY+parentX-corX >MAP_HEIGHT){
-                    tmpX = parentX - parentY+corY
-                    tmpY = parentY - parentX + corX
-                }else if(parentX - parentY+corY <0 || parentX - parentY+corY>=MAP_WIDTH || parentY-parentX+corX<0 || parentY-parentX+corX >MAP_HEIGHT){
-                    tmpX = parentX + parentY- corY
-                    tmpY = parentY + parentX - corX
-                }
-                else if(weight[parentX + parentY- corY][parentY+parentX-corX] < weight[parentX - parentY+ corY][parentY-parentX+corX] ){
-                    tmpX = parentX + parentY- corY
-                    tmpY = parentY + parentX - corX
-                }else {
-                    tmpX = parentX - parentY+corY
-                    tmpY = parentY - parentX + corX
-                }
-                finalList[parentX+'-'+parentY].parent = tmpX+'-'+tmpY
-                corX = parentX
-                corY = parentY
-                parentX = tmpX
-                parentY = tmpY
-
-            }
-
-            cou++
-            if(cou>100) break
-        }
-        return finalList
-
     },
 
     addNearby: function (node, startList, finalList, weight){

@@ -12,6 +12,7 @@ var Monster = AnimatedSprite.extend({
     _speed:null,
     animationIds:null,
     isDestroy:null,
+    _curNode2:null,
 
     ctor:function (type, playerState) {
         this._playerState = playerState
@@ -28,6 +29,7 @@ var Monster = AnimatedSprite.extend({
         this._speed = new cc.p(0,0)
         this._speedVec = new Vec2(0,0)
         this.isDestroy = false
+        this._curNode2 =new Vec2(0, 0)
         this.initAnimation()
         return true;
     },
@@ -44,7 +46,7 @@ var Monster = AnimatedSprite.extend({
 
         this.animationIds = [
             [moveDownLeftAnimId,           moveDownAnimId,        moveDownRightAnimId   ],
-            [moveLeftAnimId,             moveUpAnimId,        moveRightAnimId          ],
+            [moveLeftAnimId,           moveUpAnimId,        moveRightAnimId          ],
             [moveUpLeftAnimId,         moveUpAnimId,         moveUpRightAnimId        ],
         ]
         this.play(0)
@@ -54,21 +56,39 @@ var Monster = AnimatedSprite.extend({
     update:function (dt){
         this.updateCurNode()
         if(this.active){
-            this.updateSpeedVec()
+            this.updateSpeedVec2()
             this.updateMove(dt)
         }
 
     },
 
     updateCurNode:function (){
-        // this.updatePath()
         var pos = new cc.p(this.x, this.y)
         var cor = this._playerState.convertPosToCor2(pos,this.rule)
-        this._curNode = cor.x+'-' + cor.y
+        this._curNode2.x = cor.x
+        this._curNode2.y = cor.y
         if(cor.x == MAP_WIDTH && cor.y == MAP_HEIGHT && this.active) {
             this.des = true
             this.destroy()
         }
+    },
+    updateSpeedVec2:function (){
+            var nextNode = this._playerState._map._mapController.listPath[this._curNode2.x][this._curNode2.y]
+            var curPos = this._playerState.convertCordinateToPos2(this._curNode2.x, this._curNode2.y, this.rule)
+            var nextPos = this._playerState.convertCordinateToPos2(nextNode.x, nextNode.y, this.rule)
+            var nextPosVec = new Vec2(nextPos.x, nextPos.y)
+            var curPosVec = new Vec2(curPos.x, curPos.y)
+            var curVec = new Vec2(this.x, this.y)
+            var desVec = (nextPosVec.add(curPosVec)).div(2)
+            this._speedVec = ((desVec.sub(curVec)).normalize()).mul(this.rootSpeed)
+            var dir = (desVec.sub(curVec)).normalize()
+            dir.set(Math.round(dir.x), Math.round(dir.y))
+            if (dir) {
+                const v = this.animationIds[dir.y +1]
+                if (v) this.play(v[dir.x +1])
+            }
+
+
 
     },
     updateSpeedVec:function (){
@@ -102,13 +122,8 @@ var Monster = AnimatedSprite.extend({
 
 
     updateMove:function (dt){
-
-        // this.x += (this.des.x-this.x)*dt
-        // this.y += (this.des.y-this.y)*dt
         this.x += this._speedVec.x*dt
         this.y += this._speedVec.y*dt
-        // this.setPosition()
-        // this.x += 50*dt
 
     },
 
