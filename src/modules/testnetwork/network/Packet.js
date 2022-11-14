@@ -9,6 +9,7 @@ gv.CMD.USER_LOGIN = 1;
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST = 3001;
+gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
 gv.CMD.MATCH_REQUEST = 4001;
@@ -353,6 +354,17 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
             scene.addChild(new GameUI(this));
             cc.director.runScene(new cc.TransitionFade(1.2, scene));
             cc.log('=================')
+        }
+    }
+);
+testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            this.x = this.getInt();
         }
     }
 );
