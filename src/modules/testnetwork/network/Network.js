@@ -2,41 +2,39 @@
  * Created by KienVN on 10/2/2017.
  */
 
-var gv = gv||{};
-var testnetwork = testnetwork||{};
+var gv = gv || {};
+var testnetwork = testnetwork || {};
 
 testnetwork.Connector = cc.Class.extend({
-    ctor:function(gameClient)
-    {
+    ctor: function (gameClient) {
         this.gameClient = gameClient;
         gameClient.packetFactory.addPacketMap(testnetwork.packetMap);
         gameClient.receivePacketSignal.add(this.onReceivedPacket, this);
         this._userName = "username";
     },
 
-    onReceivedPacket:function(cmd, packet)
-    {
+    onReceivedPacket: function (cmd, packet) {
         cc.log("onReceivedPacket:", cmd);
 
-        switch (cmd)
-        {
+        switch (cmd) {
             case gv.CMD.HAND_SHAKE:
-                cc.log('login succeed==========')
                 this.sendLoginRequest();
                 break;
             case gv.CMD.USER_LOGIN:
-                cc.log('login succeed')
                 this.sendGetUserInfo();
-                // fr.getCurrentScreen().onFinishLogin();
+                fr.getCurrentScreen().onFinishLogin();
                 break;
             case gv.CMD.USER_INFO:
-                // fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
+                fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
                 break;
             case gv.CMD.MOVE:
                 cc.log("MOVE:", packet.x, packet.y);
-                // fr.getCurrentScreen().updateMove(packet.x, packet.y);
+                fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
             case gv.CMD.OPEN_CHEST_NOW:
+                fr.getCurrentScreen().onReceivedServerResponse(packet.status);
+                break;
+            case gv.CMD.START_COOL_DOWN:
                 // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
             case gv.CMD.MATCH_REPONSE:
@@ -47,10 +45,10 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')
                 break;
+
         }
     },
-    sendGetUserInfo:function()
-    {
+    sendGetUserInfo: function () {
         cc.log("sendGetUserInfo");
         var pk = this.gameClient.getOutPacket(CmdSendUserInfo);
         pk.pack();
@@ -63,16 +61,26 @@ testnetwork.Connector = cc.Class.extend({
 
 
     },
-    sendMove:function(direction){
+    sendMove: function (direction) {
         cc.log("SendMove:" + direction);
         var pk = this.gameClient.getOutPacket(CmdSendMove);
         pk.pack(direction);
         this.gameClient.sendPacket(pk);
     },
-    sendOpnChestRequest:function (chest){
-        cc.log("SendOpenChest:" + chest.id);
-        var pk = this.gameClient.getOutPacket(CmdSendOpenChest);
-        pk.pack(chest);
+
+    sendStartCooldownRequest: function (chest) {
+        cc.log("Send start cooldown request for chest ID: " + chest.id);
+        let pk = this.gameClient.getOutPacket(CmdSendStartCooldownChest);
+        pk.putData(chest);
+        this.gameClient.sendPacket(pk);
+    },
+    /**
+     * gửi yêu cầu mở chest
+     * */
+    sendOpenChestRequest: function (chest, gemSpent) {
+        cc.log('Send open chest request for chest ID ' + chest.id + ' by spend ' + gemSpent + ' gem(s).');
+        let pk = this.gameClient.getOutPacket(CmdSendOpenChest);
+        pk.putData(chest, gemSpent);
         this.gameClient.sendPacket(pk);
     },
     sendMatchRequest:function(){

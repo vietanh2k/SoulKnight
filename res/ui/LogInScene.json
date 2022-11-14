@@ -28,27 +28,29 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 321.8498,
-              "Y": 574.7969
+              "X": 320.0,
+              "Y": 568.0
             },
             "Scale": {
-              "ScaleX": 0.7545,
-              "ScaleY": 0.8547
+              "ScaleX": 0.7675,
+              "ScaleY": 0.8681
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.5029,
-              "Y": 0.506
+              "X": 0.5,
+              "Y": 0.5
             },
             "PreSize": {
               "X": 1.3312,
               "Y": 1.1629
             },
-            "LeftMargin": -104.1502,
-            "RightMargin": -107.8498,
-            "TopMargin": -99.2969,
-            "BottomMargin": -85.7031,
+            "LeftMargin": -106.0,
+            "RightMargin": -106.0,
+            "TopMargin": -92.5,
+            "BottomMargin": -92.5,
             "Tag": 3,
             "ActionTag": 1249290797,
             "Size": {
@@ -61,7 +63,7 @@
           {
             "FileData": {
               "Type": "Normal",
-              "Path": "lobby/lobby_page_btn_selecting.png",
+              "Path": "lobby/lobby_box.png",
               "Plist": ""
             },
             "BlendFunc": {
@@ -73,34 +75,36 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 305.3562,
-              "Y": 574.2279
+              "X": 320.0,
+              "Y": 568.0
             },
             "Scale": {
-              "ScaleX": 2.7163,
-              "ScaleY": 0.53
+              "ScaleX": 2.2286,
+              "ScaleY": 1.0
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.4771,
-              "Y": 0.5055
+              "X": 0.5,
+              "Y": 0.5
             },
             "PreSize": {
-              "X": 0.2562,
-              "Y": 0.1074
+              "X": 0.2188,
+              "Y": 0.0352
             },
-            "LeftMargin": 223.3562,
-            "RightMargin": 252.6438,
-            "TopMargin": 500.7721,
-            "BottomMargin": 513.2279,
+            "LeftMargin": 250.0,
+            "RightMargin": 250.0,
+            "TopMargin": 548.0,
+            "BottomMargin": 548.0,
             "Tag": 7,
-            "ActionTag": 717036015,
+            "ActionTag": 270372861,
             "Size": {
-              "X": 164.0,
-              "Y": 122.0
+              "X": 140.0,
+              "Y": 40.0
             },
-            "Name": "lobby_page_btn_selecting_3",
+            "Name": "lobby_box_1",
             "ctype": "SpriteObjectData"
           },
           {
@@ -121,40 +125,46 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 355.8192,
-              "Y": 574.5277
+              "X": 320.0,
+              "Y": 568.0
             },
             "Scale": {
-              "ScaleX": 4.3388,
+              "ScaleX": 3.5531,
               "ScaleY": 2.1459
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.556,
-              "Y": 0.5057
+              "X": 0.5,
+              "Y": 0.5
             },
+            "PercentWidthEnable": true,
+            "PercentHeightEnable": true,
+            "PercentWidthEnabled": true,
+            "PercentHeightEnabled": true,
             "PreSize": {
-              "X": 0.1312,
+              "X": 0.1313,
               "Y": 0.0202
             },
-            "LeftMargin": 313.8192,
-            "RightMargin": 242.1808,
-            "TopMargin": 549.9723,
-            "BottomMargin": 563.0277,
+            "LeftMargin": 277.984,
+            "RightMargin": 277.984,
+            "TopMargin": 556.5264,
+            "BottomMargin": 556.5264,
             "CallBackType": "Touch",
             "Tag": 6,
             "ActionTag": 1175307647,
             "Size": {
-              "X": 84.0,
-              "Y": 23.0
+              "X": 84.032,
+              "Y": 22.9472
             },
             "Name": "IdField",
             "ctype": "TextFieldObjectData"
           },
           {
-            "FontSize": 48,
-            "ButtonText": "Log in",
+            "FontSize": 36,
+            "ButtonText": "Đăng nhập",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Supercell Magic.ttf",
@@ -166,13 +176,13 @@
               "B": 0
             },
             "DisabledFileData": {
-              "Type": "Default",
-              "Path": "Default/Button_Disable.png",
+              "Type": "Normal",
+              "Path": "lobby/lobby_home_btn_battle.png",
               "Plist": ""
             },
             "PressedFileData": {
-              "Type": "Default",
-              "Path": "Default/Button_Press.png",
+              "Type": "Normal",
+              "Path": "lobby/lobby_home_btn_battle_pressing.png",
               "Plist": ""
             },
             "NormalFileData": {
@@ -202,8 +212,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 307.9586,
-              "Y": 423.0769
+              "X": 307.968,
+              "Y": 423.0464
             },
             "Scale": {
               "ScaleX": 0.725,
@@ -211,36 +221,43 @@
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.4812,
               "Y": 0.3724
             },
+            "PercentWidthEnable": true,
+            "PercentHeightEnable": true,
+            "PercentWidthEnabled": true,
+            "PercentHeightEnabled": true,
             "PreSize": {
               "X": 0.6516,
               "Y": 0.1593
             },
-            "LeftMargin": 99.4586,
-            "RightMargin": 123.5414,
-            "TopMargin": 622.4231,
-            "BottomMargin": 332.5769,
+            "LeftMargin": 99.456,
+            "RightMargin": 123.52,
+            "TopMargin": 622.4712,
+            "BottomMargin": 332.564,
             "Tag": 10,
             "ActionTag": 2011914341,
             "Size": {
-              "X": 417.0,
-              "Y": 181.0
+              "X": 417.024,
+              "Y": 180.9648
             },
             "Name": "LogIn",
             "ctype": "ButtonObjectData"
           },
           {
-            "FontSize": 7,
-            "LabelText": "Some Error",
+            "FontSize": 10,
+            "LabelText": "Error wjnjnsj",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Avo bold.ttf",
               "Plist": ""
             },
             "HorizontalAlignmentType": "HT_Center",
+            "VerticalAlignmentType": "VT_Center",
             "OutlineColor": {
               "G": 0,
               "B": 0
@@ -257,8 +274,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 297.9979,
-              "Y": 134.3911
+              "X": 297.984,
+              "Y": 134.3888
             },
             "Scale": {
               "ScaleX": 2.0843,
@@ -266,26 +283,114 @@
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.4656,
               "Y": 0.1183
             },
             "PreSize": {
-              "X": 0.0719,
-              "Y": 0.0246
+              "X": 0.0938,
+              "Y": 0.0123
             },
-            "LeftMargin": 274.9979,
-            "RightMargin": 319.0021,
-            "TopMargin": 987.6089,
-            "BottomMargin": 120.3911,
+            "LeftMargin": 267.984,
+            "RightMargin": 312.016,
+            "TopMargin": 994.6112,
+            "BottomMargin": 127.3888,
             "Tag": 7,
             "ActionTag": -1447284197,
             "Size": {
-              "X": 46.0,
-              "Y": 28.0
+              "X": 60.0,
+              "Y": 14.0
             },
             "Name": "Notification",
             "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 36,
+            "ButtonText": "Tìm trận đấu",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "TextColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "DisabledFileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_home_btn_battle.png",
+              "Plist": ""
+            },
+            "PressedFileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_home_btn_battle_pressing.png",
+              "Plist": ""
+            },
+            "NormalFileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_home_btn_battle.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 387,
+            "Scale9Height": 159,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 306.6479,
+              "Y": 280.4296
+            },
+            "Scale": {
+              "ScaleX": 0.725,
+              "ScaleY": 0.5968
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.4791,
+              "Y": 0.2469
+            },
+            "PercentWidthEnable": true,
+            "PercentHeightEnable": true,
+            "PercentWidthEnabled": true,
+            "PercentHeightEnabled": true,
+            "PreSize": {
+              "X": 0.6516,
+              "Y": 0.1593
+            },
+            "LeftMargin": 98.1359,
+            "RightMargin": 124.8401,
+            "TopMargin": 765.088,
+            "BottomMargin": 189.9472,
+            "Tag": 52,
+            "ActionTag": 105821767,
+            "Size": {
+              "X": 417.024,
+              "Y": 180.9648
+            },
+            "Name": "StartMatch",
+            "ctype": "ButtonObjectData"
           }
         ],
         "Size": {
@@ -296,13 +401,12 @@
         "ctype": "SingleNodeObjectData"
       },
       "UsedResources": [
-        "../Default/Button_Disable.png",
-        "../Default/Button_Press.png",
         "../font/SVN-Avo bold.ttf",
         "../font/SVN-Supercell Magic.ttf",
         "../lobby/lobby_background.png",
+        "../lobby/lobby_box.png",
         "../lobby/lobby_home_btn_battle.png",
-        "../lobby/lobby_page_btn_selecting.png"
+        "../lobby/lobby_home_btn_battle_pressing.png"
       ],
       "ctype": "GameFileData"
     }

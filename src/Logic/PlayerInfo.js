@@ -1,31 +1,50 @@
 var PlayerInfo = cc.Class.extend({
-    ctor: function (byte_buffer) {
-        this.id = byte_buffer.getInt();
-        this.name = byte_buffer.getString();
-        this.gold = byte_buffer.getInt();
-        this.gem = byte_buffer.getInt();
-        this.trophy = byte_buffer.getInt();
-        var collection_size = byte_buffer.getInt(), i;
-        this.collection = [];
-        for(i=0; i<collection_size; i++){
-            this.collection.push(new Card(byte_buffer))
-        }
-        var chest_size = byte_buffer.getInt();
-        this.onWaitingChestList = []
-        for(i=0; i<chest_size; i++){
-            this.onWaitingChestList.push(new Chest(byte_buffer))
-        }
-        cc.log(JSON.stringify(this))
-        var deck_size = byte_buffer.getInt();
-        cc.log(deck_size)
-        this.deck = []
-        for(i=0; i<3; i++){
-            this.deck.push(new Card(byte_buffer))
-        }
-        // cc.log(JSON.stringify(this))
-    }
-    // todo: thêm các hàm
 
+    ctor: function (id, name, gold, gem, trophy, collection, chestList, deck) {
+        this.id = id;
+        this.name = name;
+        this.gold = gold;
+        this.gem = gem;
+        this.trophy = trophy;
+        this.collection = collection;
+        this.chestList = chestList;
+        this.deck = deck;
+
+        // fake data
+        // this.name = FAKE.name;
+        // this.gold = FAKE.gold;
+        // this.gem = FAKE.gem;
+        // this.trophy = FAKE.trophy;
+        // this.collection = fake.collection;
+        // this.chestList = FAKE.chests;
+        // this.deck = fake.deck;
+    },
+
+    getChestById: function (chestId) {
+        let rs = null;
+        if (this.chestList != null) {
+            this.chestList.map(function (chest) {
+                if (chest.id === chestId) {
+                    rs = chest;
+                }
+            })
+        }
+        return rs;
+    },
+
+    addNewCards: function (newCards) {
+        // TODO add new cards after open a chest
+    },
+
+    /**
+     * Sort collection by energy, ascending or descending order.
+     *
+     * @param {boolean} isAscOrder sort by ascending order?
+     * @return {void}
+     */
+    sortCollectionByEnergy: function (isAscOrder) {
+        this.collection.sort((a, b) => (a.energy - b.energy) * (2 * isAscOrder - 1));
+    },
 })
 
 var sharePlayerInfo;

@@ -1,0 +1,236 @@
+{
+  "id": 44,
+  "name": "username_44",
+  "gold": 0,
+  "gem": 0,
+  "trophy": 0,
+  "collection": [
+    {
+      "id": 1,
+      "name": "card",
+      "type": 0,
+      "level": 1,
+      "quantity": 0,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 1,
+      "level": 1,
+      "quantity": 5,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 2,
+      "level": 1,
+      "quantity": 10,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 3,
+      "level": 1,
+      "quantity": 15,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 4,
+      "level": 1,
+      "quantity": 20,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 5,
+      "level": 1,
+      "quantity": 25,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 6,
+      "level": 1,
+      "quantity": 30,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 7,
+      "level": 1,
+      "quantity": 35,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 8,
+      "level": 1,
+      "quantity": 40,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 9,
+      "level": 1,
+      "quantity": 45,
+      "attackSpeed": 1,
+      "attackRange": 1
+    }
+  ],
+  "chestList": [
+    {
+      "id": 0,
+      "type": 0,
+      "openOnServerTimestamp": "1668245011959",
+      "golds": [
+        10,
+        20
+      ],
+      "cards": [
+        4,
+        5
+      ],
+      "rarities": [
+        1,
+        2
+      ],
+      "openTimeRequired": 10800000,
+      "openOnClientTimestamp": 1668245011977,
+      "openTimeStarted": 1668234211977
+    },
+    {
+      "id": 1,
+      "type": 1,
+      "openOnServerTimestamp": "1668244981959",
+      "golds": [
+        100,
+        200
+      ],
+      "cards": [
+        40,
+        50
+      ],
+      "rarities": [
+        1,
+        2,
+        3
+      ],
+      "openTimeRequired": 10800000,
+      "openOnClientTimestamp": 1668244981977,
+      "openTimeStarted": 1668234181977
+    },
+    {
+      "id": 3,
+      "type": 3,
+      "openOnServerTimestamp": "-1",
+      "golds": [
+        10,
+        90
+      ],
+      "cards": [
+        6,
+        8
+      ],
+      "rarities": [
+        2,
+        3,
+        4
+      ],
+      "openTimeRequired": 10800000,
+      "openTimeStarted": null
+    }
+  ],
+  "deck": [
+    {
+      "id": 1,
+      "name": "card",
+      "type": 0,
+      "level": 1,
+      "quantity": 0,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 1,
+      "level": 1,
+      "quantity": 5,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 2,
+      "level": 1,
+      "quantity": 10,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 3,
+      "level": 1,
+      "quantity": 15,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 4,
+      "level": 1,
+      "quantity": 20,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 5,
+      "level": 1,
+      "quantity": 25,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 6,
+      "level": 1,
+      "quantity": 30,
+      "attackSpeed": 1,
+      "attackRange": 1
+    },
+    {
+      "id": 1,
+      "name": "card",
+      "type": 7,
+      "level": 1,
+      "quantity": 35,
+      "attackSpeed": 1,
+      "attackRange": 1
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 
 
-var Card = cc.Sprite.extend({
+var MCard = cc.Sprite.extend({
 
 
     ctor:function (cardID) {
@@ -14,6 +14,7 @@ var Card = cc.Sprite.extend({
     },
     
     initCardUI:function (cardID){
+        cc.log("cardID "+ cardID);
         this.setTexture(CardConfig[cardID].resCardBackGround)
         this.cardID = CardConfig[cardID].cardID
         var cardBorder = new cc.Sprite(CardConfig[cardID].resCardBorder)
