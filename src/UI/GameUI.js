@@ -499,7 +499,6 @@ var GameUI = cc.Layer.extend({
     },
 
     updateCardSlot:function (numEnergy) {
-        cc.log('aaaaaaaaaaaaaaaaaaaa')
         if(this.cardTouchSlot>=0 && this._gameStateManager.playerA.energy >= numEnergy) {
             this._gameStateManager.playerA.energy -= numEnergy
             this.cardInQueue.push(this.listCard[this.cardTouchSlot - 1].cardID)

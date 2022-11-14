@@ -39,6 +39,7 @@ var MapController = cc.Class.extend({
         }
 
         this.findPath()
+        this.findPathBFS()
         this.initCell();
 
 
@@ -127,6 +128,61 @@ var MapController = cc.Class.extend({
         //     var y = finalList[key].locY
         //     cc.log(x+'='+y+' '+finalList[key].parent+'--'+finalList[key].direc)
         // }
+
+    },
+
+    findPathBFS: function (){
+        var listPath = Array.from(
+            {length:MAP_WIDTH+1},
+            ()=>Array.from(
+                {length:MAP_HEIGHT+1}
+            )
+        );
+        var arr =Array.from(
+            {length:MAP_WIDTH+1},
+            ()=>Array.from(
+                {length:MAP_HEIGHT+1},
+                ()=>0
+            )
+        );
+        for(var i=0; i<=MAP_WIDTH;i++){
+            for(var j=0; j<=MAP_HEIGHT; j++){
+                if(this.intArray[i][j] <= 0) arr[i][j] = 0
+                else arr[i][j] = 1
+            }
+        }
+        var offsetX = [1, 0,-1, 0]
+        var offsetY = [0, 1, 0,-1]
+        var queue = []
+        var des = new Vec2(MAP_WIDTH,MAP_HEIGHT)
+        listPath[des.x][des.y] = des
+        queue.push(des)
+        var cou =0
+        while (queue.length >0){
+            var node = queue[0]
+            for(var i=0; i<4;i++){
+                var direc= new Vec2(offsetX[i], offsetY[i])
+                var adj = node.add(direc)
+                if (adj.x >= 0 && adj.y >= 0 && adj.x <= MAP_WIDTH && adj.y <= MAP_HEIGHT && arr[adj.x][adj.y] == 0 && listPath[adj.x][adj.y] == undefined) {
+                    listPath[adj.x][adj.y] = node
+                    queue.push(adj)
+                }
+            }
+            queue.shift()
+            cou++
+            if(cou>100) break
+        }
+
+        for(var i=0;i<=MAP_WIDTH;i++){
+            for(j=0; j<= MAP_HEIGHT; j++){
+                if(listPath[i][j] != undefined)
+                cc.log(i+'_'+j+'=='+listPath[i][j].x+'_'+listPath[i][j].y)
+            }
+        }
+        // for(var i=0; i<listPath.length;i++){
+        //     cc.log(listPath[i].x+'_'+listPath[i].y+'=='+listPath[i].nextNode.x+'_'+listPath[i].nextNode.y)
+        // }
+
 
     },
 
