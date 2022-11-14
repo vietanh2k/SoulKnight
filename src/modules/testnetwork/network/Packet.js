@@ -9,10 +9,12 @@ gv.CMD.USER_LOGIN = 1;
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
-gv.CMD.START_COOL_DOWN = 3002;
-gv.CMD.UPDATE_PLAYER_INFO = 3003;
+gv.CMD.MATCH_REQUEST = 4001;
+gv.CMD.MATCH_REPONSE = 4002;
+gv.CMD.MATCH_CONFIRM = 4003;
+gv.CMD.BATTLE_START = 5001;
 
-testnetwork = testnetwork||{};
+        testnetwork = testnetwork||{};
 testnetwork.packetMap = {};
 
 
@@ -74,29 +76,6 @@ CmdSendOpenChest = fr.OutPacket.extend(
     }
 )
 
-CmdSendStartCoolDownChest = fr.OutPacket.extend(
-    {
-        ctor:function()
-        {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.START_COOL_DOWN);
-        },
-        /**
-         * send open START COOL DOWN request
-         * sử dụng biến sharePlayerInfo.id
-         * @param {Chest} chest: the chest to START OPENING*/
-        putData:function(chest){
-            //pack
-            this.packHeader();
-            this.putInt(chest.id);
-            this.putInt(sharePlayerInfo.id);
-            //update
-            this.updateSize();
-        }
-    }
-)
-
 CmdSendLogin = fr.OutPacket.extend(
     {
         ctor:function()
@@ -130,6 +109,36 @@ CmdSendMove = fr.OutPacket.extend(
     }
 )
 
+CmdMatchRequest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_REQUEST);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
+CmdMatchConfirm = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_CONFIRM);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
 /**
  * InPacket
  */
@@ -143,6 +152,18 @@ testnetwork.packetMap[gv.CMD.HAND_SHAKE] = fr.InPacket.extend(
         },
         readData:function(){
             this.token = this.getString();
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            this.x = this.getInt();
         }
     }
 );
@@ -166,44 +187,8 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend(
             this._super();
         },
         readData:function(){
-            this.playerInfo = new PlayerInfo(this)
-            sharePlayerInfo = this.playerInfo;
-
-        }
-    }
-);
-
-testnetwork.packetMap[gv.CMD.OPEN_CHEST_NOW] = fr.InPacket.extend(
-    {
-        ctor:function()
-        {
-            this._super();
-        },
-        readData:function(){
-            this.status = this.getString();
-            this.player_info_is_not_null = this.getBool();
-            if(this.player_info_is_not_null)  sharePlayerInfo = new PlayerInfo(this);
-
-        }
-    }
-);
-
-
-testnetwork.packetMap[gv.CMD.START_COOL_DOWN] = fr.InPacket.extend(
-    {
-        ctor:function()
-        {
-            this._super();
-        },
-        readData:function(){
-            // this.status = this.getString();
-            var chestID = this.getInt();
-
-            this.chest = sharePlayerInfo.getChestById(chestID);
-            if(this.chest !=null){
-                this.chest.onStartCoolDown(this);
-            }
-            // if(this.player_info_is_not_null)  sharePlayerInfo = new PlayerInfo(this);
+            //this.playerInfo = new PlayerInfo(this)
+            //sharePlayerInfo = this.playerInfo;
 
         }
     }
@@ -218,6 +203,20 @@ testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
         readData:function(){
             this.x = this.getInt();
             this.y = this.getInt();
+        }
+    }
+);
+testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            var scene = new cc.Scene();
+            scene.addChild(new GameUI(this));
+            cc.director.runScene(new cc.TransitionFade(1.2, scene));
+            cc.log('=================')
         }
     }
 );
