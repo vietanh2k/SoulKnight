@@ -28,8 +28,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 315.8632,
-              "Y": 572.2537
+              "X": 320.0,
+              "Y": 568.0
             },
             "Scale": {
               "ScaleX": 0.7675,
@@ -37,18 +37,20 @@
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.4935,
-              "Y": 0.5037
+              "X": 0.5,
+              "Y": 0.5
             },
             "PreSize": {
               "X": 1.3312,
               "Y": 1.1629
             },
-            "LeftMargin": -110.1368,
-            "RightMargin": -101.8632,
-            "TopMargin": -96.7537,
-            "BottomMargin": -88.2463,
+            "LeftMargin": -106.0,
+            "RightMargin": -106.0,
+            "TopMargin": -92.5,
+            "BottomMargin": -92.5,
             "Tag": 3,
             "ActionTag": 1249290797,
             "Size": {
@@ -73,8 +75,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 308.6104,
-              "Y": 575.1412
+              "X": 320.0,
+              "Y": 568.0
             },
             "Scale": {
               "ScaleX": 2.2286,
@@ -82,20 +84,20 @@
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.4822,
-              "Y": 0.5063
+              "X": 0.5,
+              "Y": 0.5
             },
             "PreSize": {
               "X": 0.2188,
               "Y": 0.0352
             },
-            "HorizontalEdge": "BothEdge",
-            "VerticalEdge": "BothEdge",
-            "LeftMargin": 238.6104,
-            "RightMargin": 261.3896,
-            "TopMargin": 540.8588,
-            "BottomMargin": 555.1412,
+            "LeftMargin": 250.0,
+            "RightMargin": 250.0,
+            "TopMargin": 548.0,
+            "BottomMargin": 548.0,
             "Tag": 7,
             "ActionTag": 270372861,
             "Size": {
@@ -123,8 +125,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 308.6104,
-              "Y": 574.5261
+              "X": 320.0,
+              "Y": 568.0
             },
             "Scale": {
               "ScaleX": 3.5531,
@@ -132,26 +134,30 @@
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.4822,
-              "Y": 0.5057
+              "X": 0.5,
+              "Y": 0.5
             },
+            "PercentWidthEnable": true,
+            "PercentHeightEnable": true,
+            "PercentWidthEnabled": true,
+            "PercentHeightEnabled": true,
             "PreSize": {
-              "X": 0.1312,
+              "X": 0.1313,
               "Y": 0.0202
             },
-            "HorizontalEdge": "BothEdge",
-            "VerticalEdge": "BothEdge",
-            "LeftMargin": 266.6104,
-            "RightMargin": 289.3896,
-            "TopMargin": 549.9739,
-            "BottomMargin": 563.0261,
+            "LeftMargin": 277.984,
+            "RightMargin": 277.984,
+            "TopMargin": 556.5264,
+            "BottomMargin": 556.5264,
             "CallBackType": "Touch",
             "Tag": 6,
             "ActionTag": 1175307647,
             "Size": {
-              "X": 84.0,
-              "Y": 23.0
+              "X": 84.032,
+              "Y": 22.9472
             },
             "Name": "IdField",
             "ctype": "TextFieldObjectData"
@@ -206,8 +212,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 307.9586,
-              "Y": 423.0769
+              "X": 307.968,
+              "Y": 423.0464
             },
             "Scale": {
               "ScaleX": 0.725,
@@ -215,23 +221,29 @@
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.4812,
               "Y": 0.3724
             },
+            "PercentWidthEnable": true,
+            "PercentHeightEnable": true,
+            "PercentWidthEnabled": true,
+            "PercentHeightEnabled": true,
             "PreSize": {
               "X": 0.6516,
               "Y": 0.1593
             },
-            "LeftMargin": 99.4586,
-            "RightMargin": 123.5414,
-            "TopMargin": 622.4231,
-            "BottomMargin": 332.5769,
+            "LeftMargin": 99.456,
+            "RightMargin": 123.52,
+            "TopMargin": 622.4712,
+            "BottomMargin": 332.564,
             "Tag": 10,
             "ActionTag": 2011914341,
             "Size": {
-              "X": 417.0,
-              "Y": 181.0
+              "X": 417.024,
+              "Y": 180.9648
             },
             "Name": "LogIn",
             "ctype": "ButtonObjectData"
@@ -262,8 +274,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 297.9979,
-              "Y": 134.3911
+              "X": 297.984,
+              "Y": 134.3888
             },
             "Scale": {
               "ScaleX": 2.0843,
@@ -271,6 +283,8 @@
             },
             "CColor": {},
             "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
             "PrePosition": {
               "X": 0.4656,
               "Y": 0.1183
@@ -279,10 +293,10 @@
               "X": 0.0938,
               "Y": 0.0123
             },
-            "LeftMargin": 267.9979,
-            "RightMargin": 312.0021,
-            "TopMargin": 994.6089,
-            "BottomMargin": 127.3911,
+            "LeftMargin": 267.984,
+            "RightMargin": 312.016,
+            "TopMargin": 994.6112,
+            "BottomMargin": 127.3888,
             "Tag": 7,
             "ActionTag": -1447284197,
             "Size": {
