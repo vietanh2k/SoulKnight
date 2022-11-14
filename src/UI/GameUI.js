@@ -467,7 +467,7 @@ var GameUI = cc.Layer.extend({
             cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
             this.addChild(cardBox)
             var arr = this.cardPlayable
-            var card = new Card(arr[i-1])
+            var card = new MCard(arr[i-1])
             card.setScale(CELLWIDTH / card.getContentSize().width * 1.25)
             card.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
             this.addChild(card,0,'cardBackGround'+i)
@@ -486,7 +486,7 @@ var GameUI = cc.Layer.extend({
 
 
         }
-        var card5 = new Card(this.cardInQueue[0])
+        var card5 = new MCard(this.cardInQueue[0])
         card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.9)
         card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
         this.addChild(card5,0,'cardBackGroundd')

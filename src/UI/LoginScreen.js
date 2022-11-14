@@ -7,11 +7,13 @@ var SignInScreen = cc.Layer.extend({
         var mainscene = ccs.load(res.LoginScene_json, "").node;
         this.addChild(mainscene);
         this.login_button = mainscene.getChildByName("LogIn");
+        this.findmatch_button = mainscene.getChildByName('StartMatch');
         this.textField  = mainscene.getChildByName("IdField");
         this.notification = mainscene.getChildByName("Notification");
         // this.notification.visible = false;
         this.notification.setOpacity(0);
         this.login_button.addClickEventListener(this.onSelectLogin.bind(this));
+        this.findmatch_button.addClickEventListener(this.onSelectMatch.bind(this));
         return true;
     },
     /**

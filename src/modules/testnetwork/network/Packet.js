@@ -233,7 +233,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
             let attackSpeed = this.getDouble();
             let attackRange = this.getDouble();
         }
-        // return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+        // return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
         return new Card(fake.collection[i].id, fake.collection[i].level, fake.collection[i].fragment); // fake data
     },
 
@@ -291,7 +291,7 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
             let quantity = this.getInt();
             let attackSpeed = this.getDouble();
             let attackRange = this.getDouble();
-            return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+            return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
         },
     }
 );

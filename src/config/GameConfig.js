@@ -109,8 +109,8 @@ MW.menuHeight = 36;
 MW.menuWidth = 123;
 var cf = cf || {};
 
-cf.WIDTH = DESIGN_RESOLUTION_WIDTH;
-cf.HEIGHT = DESIGN_RESOLUTION_HEIGHT;
+cf.WIDTH = WIDTHSIZE;
+cf.HEIGHT = HEIGHTSIZE;
 
 cf.TOAST_Z_ORDER = 1000;
 
@@ -141,7 +141,7 @@ cf.CHEST_REWARD = [
     },
 ];
 
-// Card.xlsx
+// MCard.xlsx
 cf.CARD_LEVEL = [
     {
         level: 1,
