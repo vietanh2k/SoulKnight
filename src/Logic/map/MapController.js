@@ -277,6 +277,60 @@ var MapController = cc.Class.extend({
         return nodeClosest
     },
 
+    isExistPath:function (){
+        var weight =  Array.from(
+            {length:MAP_WIDTH+1},
+            ()=>Array.from(
+                {length:MAP_HEIGHT+1},
+                ()=> 999999
+            )
+        );
+
+        weight[MAP_WIDTH][MAP_HEIGHT] = 0
+        weight[MAP_WIDTH-1][MAP_HEIGHT] = 50
+        // weight[MAP_WIDTH-2][MAP_HEIGHT] = 50
+        var startList = {};
+        let finalList = {};
+        var start = {
+            locX: MAP_WIDTH,
+            locY: MAP_HEIGHT,
+            parent: MAP_WIDTH+'-'+MAP_HEIGHT,
+            direc: 6
+        }
+        var start2 = {
+            locX: MAP_WIDTH-1,
+            locY: MAP_HEIGHT-1,
+            parent: (MAP_WIDTH-1)+'-'+MAP_HEIGHT,
+            direc: 8
+        }
+        var start3 = {
+            locX: MAP_WIDTH-1,
+            locY: MAP_HEIGHT,
+            parent: MAP_WIDTH+'-'+MAP_HEIGHT,
+            direc: 6
+        }
+        // if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT-1] <= 0) {
+        //     startList[start2.locX + '-' + start2.locY] = start2
+        // }
+        if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT] <= 0)
+        {
+            startList[start3.locX + '-' + start3.locY] = start3
+        }
+        finalList[start.locX+'-'+start.locY] = start
+        var cou = 0
+        while(Object.keys(startList).length >0){
+            var nodeClosest = this.getClosestToFinal(startList, weight, finalList)
+            this.addNearby(nodeClosest, startList, finalList, weight);
+            cou++
+            if(cou>100) break
+        }
+        if(weight[0][0] < 9999){
+            return true
+        }
+        return false
+
+    },
+
     convertCordinateToPos:function (corX, corY) {
         var x = winSize.width/2 - WIDTHSIZE/2 + (corX+1)*CELLWIDTH
         var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT- corY+3.5)*CELLWIDTH
