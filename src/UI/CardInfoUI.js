@@ -20,7 +20,7 @@ var CardInfoUI = cc.Layer.extend({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.4,
             scale: cf.WIDTH * 0.9 / midPanelBackground.width,
-        })
+        });
         this.addChild(midPanelBackground);
 
         let topDescriptionPanel = cc.Sprite(asset.panelFront_png, cc.rect(0, 0, 424, 114));
@@ -55,7 +55,7 @@ var CardInfoUI = cc.Layer.extend({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.4 + midPanelBackground.height * midPanelBackground.scale,
             scale: cf.WIDTH * 0.9 / topPanelBackground.width,
-        })
+        });
         this.addChild(topPanelBackground);
 
         let closeBtn = new ccui.Button(asset.panelBtnClose_png);
@@ -63,11 +63,30 @@ var CardInfoUI = cc.Layer.extend({
             x: topPanelBackground.width * 0.935,
             y: topPanelBackground.height * 0.865,
             scale: topPanelBackground.width * 0.07 / closeBtn.width,
-        })
+        });
         closeBtn.addClickEventListener(() => {
             this.destroy();
         });
         topPanelBackground.addChild(closeBtn, 0);
+
+        if (card.isMonster()) {
+            this.miniature = cc.Sprite(card.miniature);
+            this.miniature.attr({
+                x: cf.WIDTH / 2,
+                y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
+                scale: cf.WIDTH * 0.25 / this.miniature.width,
+            });
+            this.addChild(this.miniature);
+        } else if (card.isTower()) {
+            this.miniature = cc.Sprite(card.miniature[card.evolution]);
+            this.miniature.attr({
+                x: cf.WIDTH / 2,
+                y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
+                scale: cf.WIDTH * 0.25 / this.miniature.width,
+            });
+            this.addChild(this.miniature);
+            // todo button xem các miniature khác
+        }
 
         // bottom panel
         let botPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 294.75, 453, 98.25));
@@ -75,7 +94,7 @@ var CardInfoUI = cc.Layer.extend({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.4 - midPanelBackground.height * midPanelBackground.scale * 0.75,
             scale: cf.WIDTH * 0.9 / botPanelBackground.width,
-        })
+        });
         this.addChild(botPanelBackground);
 
         let botBtnX = [undefined, undefined, undefined], counter = 0;

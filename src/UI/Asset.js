@@ -112,4 +112,46 @@ var asset = {
     cardPotionPower_png: 'asset/card/card_potion_power.png',
     cardPotionSpeedUp_png: 'asset/card/card_potion_speed_up.png',
     cardPotionTrap_png: 'asset/card/card_potion_trap.png',
+
+    miniatureMonsterAssassin_png: 'asset/card/miniature_monster_assassin.png',
+    miniatureMonsterBat_png: 'asset/card/miniature_monster_bat.png',
+    miniatureMonsterGiant_png: 'asset/card/miniature_monster_giant.png',
+    miniatureMonsterNinja_png: 'asset/card/miniature_monster_ninja.png',
+    miniatureMonsterSwordsman_png: 'asset/card/miniature_monster_swordsman.png',
+
+    miniaturesTowerAttackSpeed_png: [
+        'asset/card/miniature_tower_attack_speed_1.png',
+        'asset/card/miniature_tower_attack_speed_2.png',
+        'asset/card/miniature_tower_attack_speed_3.png',
+    ],
+    miniaturesTowerBoomerang_png: [
+        'asset/card/miniature_tower_boomerang_1.png',
+        'asset/card/miniature_tower_boomerang_2.png',
+        'asset/card/miniature_tower_boomerang_3.png',
+    ],
+    miniaturesTowerCannon_png: [
+        'asset/card/miniature_tower_cannon_1.png',
+        'asset/card/miniature_tower_cannon_2.png',
+        'asset/card/miniature_tower_cannon_3.png',
+    ],
+    miniaturesTowerDamage_png: [
+        'asset/card/miniature_tower_damage_1.png',
+        'asset/card/miniature_tower_damage_2.png',
+        'asset/card/miniature_tower_damage_3.png',
+    ],
+    miniaturesTowerIceGun_png: [
+        'asset/card/miniature_tower_ice_gun_1.png',
+        'asset/card/miniature_tower_ice_gun_2.png',
+        'asset/card/miniature_tower_ice_gun_3.png',
+    ],
+    miniaturesTowerOilGun_png: [
+        'asset/card/miniature_tower_oil_gun_1.png',
+        'asset/card/miniature_tower_oil_gun_2.png',
+        'asset/card/miniature_tower_oil_gun_3.png',
+    ],
+    miniaturesTowerWizard_png: [
+        'asset/card/miniature_tower_wizard_1.png',
+        'asset/card/miniature_tower_wizard_2.png',
+        'asset/card/miniature_tower_wizard_3.png',
+    ],
 };

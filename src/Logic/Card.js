@@ -21,6 +21,8 @@ var Card = cc.Class.extend({
         } else {
             this.energy = cardConfig.energy;
             this.texture = cardConfig.texture;
+            this.miniature = cardConfig.miniature;
+            this.name = cardConfig.name;
             this.description = cardConfig.description;
         }
 
@@ -29,6 +31,7 @@ var Card = cc.Class.extend({
             cc.log('WARNING: levelConfig is undefined');
         } else {
             this.rarity = levelConfig.rarity;
+            this.evolution = Math.min(this.rarity, 2);
         }
 
         if (this.level === 10) {

@@ -1,7 +1,7 @@
 var cf = cf || {};
 
-cf.WIDTH = 640;
-cf.HEIGHT = 960;
+cf.WIDTH = DESIGN_RESOLUTION_WIDTH;
+cf.HEIGHT = DESIGN_RESOLUTION_HEIGHT;
 
 cf.TOAST_Z_ORDER = 1000;
 
@@ -24,7 +24,7 @@ cf.COST_GEMS_PER_HOUR = 6;
 // Treasure.json
 cf.CHEST_REWARD = [
     {
-        openTimeRequired: 3 * 60 * 60 * 1000,
+        openTimeRequired: 3 * 60 * 60 * 1000,   // fixme 3 phút
         golds: [10, 20],
         fragments: [10, 20],
         cards: 2,
@@ -100,27 +100,33 @@ cf.CARD_LEVEL = [
 cf.CARD = [
     // towers
     {
-        id: 101,
+        id: 100,
         energy: 8,
         texture: asset.cardTowerCannon_png,
+        miniature: asset.miniaturesTowerCannon_png,
+        name: 'Pháo Cú',
         description:
             'Bắn đơn một mục tiêu,\n' +
             'đạn sẽ bay theo mục tiêu,\n' +
             'tốc độ đạn nhanh',
     },
     {
-        id: 102,
+        id: 101,
         energy: 12,
         texture: asset.cardTowerWizard_png,
+        miniature: asset.miniaturesTowerWizard_png,
+        name: 'Quạ Pháp Sư',
         description:
             'Bắn cầu lửa vào vị trí xác định\n' +
             'mục tiêu, gây sát thương lan,\n' +
             'tốc độ đạn chậm',
     },
     {
-        id: 103,
+        id: 102,
         energy: 10,
         texture: asset.cardTowerBoomerang_png,
+        miniature: asset.miniaturesTowerBoomerang_png,
+        name: 'Ếch Đồ Tể',
         description:
             'Bắn dao phay vào vị trí xác định\n' +
             'của mục tiêu, dao phay sẽ bay\n' +
@@ -129,9 +135,11 @@ cf.CARD = [
             'gây tiếp sát thương',
     },
     {
-        id: 104,
+        id: 103,
         energy: 12,
         texture: asset.cardTowerOilGun_png,
+        miniature: asset.miniaturesTowerOilGun_png,
+        name: 'Thỏ Xả Nhớt',
         description:
             'Bắn đạn nhớt của sên\n' +
             'vào vị trí xác định,\n' +
@@ -139,26 +147,32 @@ cf.CARD = [
             'quái trong vùng ảnh hưởng',
     },
     {
-        id: 105,
+        id: 104,
         energy: 10,
         texture: asset.cardTowerIceGun_png,
+        miniature: asset.miniaturesTowerIceGun_png,
+        name: 'Gấu Bắc Cực',
         description:
             'Bắn đạn băng vào một mục tiêu,\n' +
             'mục tiêu trúng sẽ bị đóng băng\n' +
             'trong một khoảng thời gian',
     },
     {
-        id: 106,
+        id: 105,
         energy: 12,
         texture: asset.cardTowerAttackSpeed_png,
+        miniature: asset.miniaturesTowerAttackSpeed_png,
+        name: 'Rắn Tóc Đỏ',
         description:
             'Tăng Tốc bắn cho các Tháp\n' +
             'nằm trong vùng Tháp',
     },
     {
-        id: 107,
+        id: 106,
         energy: 12,
         texture: asset.cardTowerDamage_png,
+        miniature: asset.miniaturesTowerDamage_png,
+        name: 'Dê Phát Động',
         description:
             'Tăng Sát thương cho các Tháp\n' +
             'nằm trong vùng Tháp',
@@ -166,49 +180,61 @@ cf.CARD = [
 
     // monsters
     {
-        id: 201,
+        id: 200,
         energy: 1,
         texture: asset.cardMonsterSwordsman_png,
+        miniature: asset.miniatureMonsterSwordsman_png,
+        name: 'Kiếm Ma',
         description: 'Máu thường, tốc độ thường',
     },
     {
-        id: 202,
+        id: 201,
         energy: 1,
         texture: asset.cardMonsterAssassin_png,
+        miniature: asset.miniatureMonsterAssassin_png,
+        name: 'Quạ Xương',
         description: 'Máu thấp, chạy rất nhanh',
     },
     {
-        id: 203,
+        id: 202,
         energy: 3,
         texture: asset.cardMonsterGiant_png,
+        miniature: asset.miniatureMonsterGiant_png,
+        name: 'Khổng Lồ',
         description: 'Máu cao, đi chậm',
     },
     {
-        id: 204,
+        id: 203,
         energy: 2,
         texture: asset.cardMonsterBat_png,
+        miniature: asset.miniatureMonsterBat_png,
+        name: 'Dơi Quỷ',
         description: 'Máu thường, tốc độ thường',
     },
     {
-        id: 205,
+        id: 204,
         energy: 1,
         texture: asset.cardMonsterNinja_png,
+        miniature: asset.miniatureMonsterNinja_png,
+        name: 'Xương Độn Thổ',
         description: 'Máu thường, tốc độ thường',
     },
 
     // spells
     {
-        id: 301,
+        id: 300,
         energy: 8,
         texture: asset.cardPotionFireball_png,
+        name: 'Cầu Lửa',
         description:
             'Thả cầu lửa gây sát thương\n' +
             'một vùng ngay lập tức',
     },
     {
-        id: 302,
+        id: 301,
         energy: 8,
         texture: asset.cardPotionFrozen_png,
+        name: 'Đóng Băng',
         description:
             'Thả phép đóng băng gây\n' +
             'sát thương một vùng ngay\n' +
@@ -217,35 +243,39 @@ cf.CARD = [
             'trụ đối thủ trong vùng đó',
     },
     {
-        id: 303,
+        id: 302,
         energy: 12,
         texture: asset.cardPotionHeal_png,
+        name: 'Hồi Máu',
         description:
             'Thả phép tạo vùng hồi máu,\n' +
             'quái đi vào sẽ được\n' +
             'hồi máu một thời gian',
     },
     {
-        id: 304,
+        id: 303,
         energy: 12,
         texture: asset.cardPotionSpeedUp_png,
+        name: 'Tăng Tốc',
         description:
             'Thả phép tạo một vùng tăng tốc,\n' +
             'quái đi vào sẽ tăng tốc độ chạy',
     },
     {
-        id: 305,
+        id: 304,
         energy: 10,
         texture: asset.cardPotionTrap_png,
+        name: 'Lò Xo',
         description:
             'Đặt lò xo trên bản đồ,\n' +
             'quái di chuyển vào lò xo\n' +
             'sẽ bị bật trở lại cổng ra quái',
     },
     {
-        id: 306,
+        id: 305,
         energy: 10,
         texture: asset.cardPotionPower_png,
+        name: 'Tăng Sức Mạnh Trụ',
         description:
             'Tạo một vùng tăng sức mạnh,\n' +
             'trụ nằm trong vùng này\n' +

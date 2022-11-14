@@ -40,6 +40,9 @@ fake.chests = [
 ];
 fake.deck = [
     {
+        id: 100,
+    },
+    {
         id: 101,
     },
     {
@@ -58,100 +61,97 @@ fake.deck = [
         id: 106,
     },
     {
-        id: 107,
-    },
-    {
-        id: 201,
+        id: 200,
     },
 ];
 fake.collection = [
     {
-        id: 101,
+        id: 100,
         level: 1,
         fragment: 12,
     },
     {
-        id: 102,
+        id: 101,
         level: 2,
         fragment: 2,
     },
     {
-        id: 103,
+        id: 102,
         level: 3,
         fragment: 3,
     },
     {
-        id: 104,
+        id: 103,
         level: 4,
         fragment: 4,
     },
     {
-        id: 105,
+        id: 104,
         level: 5,
         fragment: 5,
     },
     {
-        id: 106,
+        id: 105,
         level: 6,
         fragment: 6,
     },
     {
-        id: 107,
+        id: 106,
         level: 7,
         fragment: 7,
     },
     {
-        id: 201,
+        id: 200,
         level: 1,
         fragment: 1,
+    },
+    {
+        id: 201,
+        level: 2,
+        fragment: 2,
     },
     {
         id: 202,
-        level: 2,
-        fragment: 2,
-    },
-    {
-        id: 203,
         level: 3,
         fragment: 3,
     },
     {
-        id: 204,
+        id: 203,
         level: 4,
         fragment: 4,
     },
     {
-        id: 205,
+        id: 204,
         level: 5,
         fragment: 5,
     },
     {
-        id: 301,
+        id: 300,
         level: 1,
         fragment: 1,
     },
     {
-        id: 302,
+        id: 301,
         level: 2,
         fragment: 2,
     },
     {
-        id: 303,
+        id: 302,
         level: 3,
         fragment: 3,
     },
     {
-        id: 304,
+        id: 303,
         level: 4,
         fragment: 4,
     },
     {
-        id: 305,
+        id: 304,
         level: 5,
         fragment: 5,
     },
     {
-        id: 306,
+        id: 305,
         level: 6,
         fragment: 6,
     },
