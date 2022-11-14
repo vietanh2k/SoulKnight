@@ -1,6 +1,7 @@
 MAP_WIDTH = 7;
 MAP_HEIGHT = 5;
 MAP_RATIO = 15/8;
+NUM_CARD_PLAYABLE = 4
 
 var GameUI = cc.Layer.extend({
     mapWidth: null,
@@ -14,6 +15,10 @@ var GameUI = cc.Layer.extend({
     ctor:function (pkg) {
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
+        this.cardTouchSlot = -1
+        this.listCard = []
+        this.cardInQueue = [1,7,0,6]
+        this.cardPlayable = [2,3,5,4]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -67,11 +72,18 @@ var GameUI = cc.Layer.extend({
             if(loc.x >=0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
                 loc.y >=0 && loc.y < this._gameStateManager.playerA._map._mapController.intArray[0].length) {
                 if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0) {
-                    cc.log('touch right')
-                    this.createObjectByTouch = true
+                    if(this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot-1].energy )
+                    {
+                        cc.log('touch right')
+                        this.createObjectByTouch = true
+                    }else{
+                        this.resetCardTouchState()
+                    }
                 } else if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0) {
                     this.deleteObjectByTouch = true
                 }
+            }else{
+                this.resetCardTouchState()
             }
         //check touch time
             var timer = this.getChildByName(res.timer3)
@@ -95,14 +107,17 @@ var GameUI = cc.Layer.extend({
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = this._gameStateManager.playerA.convertPosToCor(pos)
             var rand = Math.floor(Math.random() * 2)+1;
+            var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
-            if(!this.isNodehasMonsterAbove(loc)){
+            if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
                 this._gameStateManager.playerA._map._mapController.findPath()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.path,1)
-                this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
-
-                // }else{
-                //     this.arr[loc.x][loc.y] = 0
+                var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
+                this.addChild(tree,0,res.treeUI+1)
+                this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
+                }else{
+                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
+                this.resetCardTouchState()
             }
 
 
@@ -141,9 +156,11 @@ var GameUI = cc.Layer.extend({
         var delay = 1
         while(nodeX != MAP_WIDTH || nodeY != MAP_HEIGHT){
             var dir = path[nodeX+'-'+nodeY].direc
-            this.addObjectUI(res.highlightPath,nodeX,nodeY,1,0,rule)
+            var obj = this.addObjectUI(res.highlightPath,nodeX,nodeY,1,0,rule)
+            this.addChild(obj,0,res.highlightPath+rule)
 
             var arrow = this.addObjectUI(res.iconArrow,nodeX,nodeY,0.5,dir,rule)
+            this.addChild(arrow,0,res.iconArrow+rule)
             var seq = cc.sequence(cc.DelayTime(0.5),cc.fadeOut(0),cc.DelayTime(delay),cc.fadeIn(0), cc.DelayTime(0.5), cc.fadeOut(0.5));
             arrow.runAction(seq)
             delay += 0.1
@@ -232,6 +249,7 @@ var GameUI = cc.Layer.extend({
         this.addWaveUI()
         this.addEnergyBarUI()
         this.addDeckUI()
+        this.addInforBoxUI()
     },
 
     addObjectBackground:function (res, scaleW,scaleH, positionX, positionY) {
@@ -319,10 +337,6 @@ var GameUI = cc.Layer.extend({
         waveBox.setScaleY(CELLWIDTH/waveBox.getContentSize().height*0.85)
         waveBox.setPosition(CELLWIDTH*0.25, winSize.height/2+CELLWIDTH*1.1)
 
-        // var houseIcon = new cc.Sprite(res.house_icon)
-        // houseIcon.setScale(WIDTHSIZE/houseIcon.getContentSize().height*0.75/8)
-        // houseIcon.setPosition(winSize.width+CELLWIDTH*-0.35, winSize.height/2+CELLWIDTH*1.02)
-        //
         var lbWave = new ccui.Text('Lượt:', res.font_magic, 30)
         lbWave.setScale(CELLWIDTH/lbWave.getContentSize().height*0.25)
         lbWave.setPosition(CELLWIDTH*0.4, winSize.height/2+CELLWIDTH*1.3)
@@ -341,8 +355,7 @@ var GameUI = cc.Layer.extend({
         this.addChild(waveBox)
         this.addChild(lbWave)
         this.addChild(lbNumWave,0, 'lbNumWave')
-        // this.addChild(healthA, 0 , 'healthA2')
-        // this.addChild(healthB, 0 , 'healthB2')
+
     },
     updateHealthUI:function (dt) {
         if(this.getChildByName('healthA1') != null) {
@@ -381,10 +394,13 @@ var GameUI = cc.Layer.extend({
 
     },
 
+    addInforBoxUI:function (){
+
+
+    },
+
     addDeckUI:function (){
        this.addListCardUI()
-
-
         var btnChat = ccui.Button('asset/battle/battle_btn_chat.png');
         btnChat.setScale(CELLWIDTH/btnChat.getNormalTextureSize().width*0.9)
         btnChat.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*2.6)
@@ -402,43 +418,117 @@ var GameUI = cc.Layer.extend({
 
     },
 
-
     addListCardUI:function (){
-        for(var i=1;i<=5;i++) {
-            var cardBackGround = new cc.Sprite('asset/card/card_background_4.png')
-            var cardBorder = new cc.Sprite('asset/card/card_border_1.png')
-            var cardAvatar = new cc.Sprite('asset/card/card_tower_wizard.png')
-            cardBorder.setPosition(cardBackGround.getContentSize().width * 0.5, cardBackGround.getContentSize().height / 2)
-            cardAvatar.setPosition(cardBackGround.getContentSize().width * 0.5, cardBackGround.getContentSize().height / 2)
-            var energy = new cc.Sprite(res.energyIcon)
-            var whiteColor = new cc.Color(255, 255, 255, 255);
-            var blackColor = new cc.Color(0, 0, 0, 255);
-            var lbNumEnergy = new ccui.Text(3, res.font_magic, 40)
-            lbNumEnergy.setPosition(energy.getContentSize().width * 0.5, energy.getContentSize().height / 2)
-            lbNumEnergy.enableShadow()
-            lbNumEnergy.setTextColor(whiteColor)
-            lbNumEnergy.enableOutline(blackColor, 1)
-            energy.addChild(lbNumEnergy, 0)
-            energy.setScale(CELLWIDTH / energy.getContentSize().height * 0.7)
-            energy.setPosition(cardBackGround.getContentSize().width * 0.5, 0)
+        var listener1 = cc.EventListener.create({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
+            onTouchBegan: function (touch, event) {
+                var target = event.getCurrentTarget();
+                var locationInNode = target.convertToNodeSpace(touch.getLocation());
+                var s = target.getContentSize();
+                var rect = cc.rect(0, 0, s.width, s.height);
+                if (cc.rectContainsPoint(rect, locationInNode)) {
+                    return true;
+                }
+                return false;
+            },
+            // onTouchMoved: function (touch, event) {
+            //     // var target = event.getCurrentTarget();
+            //     // var delta = touch.getDelta();
+            //     // target.x += delta.x;
+            //     // target.y += delta.y;
+            // },
+            onTouchEnded: function (touch, event) {
+                var target = event.getCurrentTarget();
+                if(target.getParent() != null){
+                    if(target.getParent().cardTouchSlot != target.numSlot){
+                        target.getParent().resetCardTouchState()
+                        target.x += 0
+                        target.y += CELLWIDTH*0.5
+                        target.onTouch = true
+                        target.getParent().cardTouchSlot= target.numSlot
+                        target.setCardUpUI()
+                        target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
+                    }else if(target.onTouch == true){
+                        target.x += 0
+                        target.y -= CELLWIDTH*0.5
+                        target.onTouch = false
+                        target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
+                        target.getParent().cardTouchSlot = -1
+                        target.setCardDownUI()
 
-            cardBackGround.addChild(cardBorder,0,'cardBorder'+i)
-            cardBackGround.addChild(cardAvatar,0,'cardAvatar'+i)
-            if(i<=4){
-                cardBackGround.addChild(energy,0,'energy'+i)
-                cardBackGround.setScale(CELLWIDTH / cardBackGround.getContentSize().width * 1.25)
-                cardBackGround.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
-            }else{
-                cardBackGround.setScale(CELLWIDTH / cardBackGround.getContentSize().width * 0.9)
-                cardBackGround.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+                    }
+                }
             }
-
-            this.addChild(cardBackGround,0,'cardBackGround'+i)
+        });
+        for(var i=1;i<=NUM_CARD_PLAYABLE;i++) {
+            var cardBox = new cc.Sprite('asset/battle/battle_card_box.png')
+            cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.5)
+            cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
+            this.addChild(cardBox)
+            var arr = this.cardPlayable
+            var card = new Card(arr[i-1])
+            card.setScale(CELLWIDTH / card.getContentSize().width * 1.25)
+            card.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
+            this.addChild(card,0,'cardBackGround'+i)
+            card.numSlot = i
+            this.listCard.push(card)
+            cc.eventManager.addListener(listener1.clone(), card);
         }
+        for(var i=1;i<=NUM_CARD_PLAYABLE;i++) {
+
+            var btnRemoveCard =new ccui.Button('asset/battle/battle_btn_destroy.png');
+            btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.55)
+            btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+            btnRemoveCard.visible = false
+            btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(3));
+            this.addChild(btnRemoveCard, 0 , 'btnRemoveCard'+i);
+
+
+        }
+        var card5 = new Card(this.cardInQueue[0])
+        card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.9)
+        card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+        this.addChild(card5,0,'cardBackGroundd')
+
+
+
 
 
 
     },
+
+    updateCardSlot:function (numEnergy) {
+        cc.log('aaaaaaaaaaaaaaaaaaaa')
+        if(this.cardTouchSlot>=0 && this._gameStateManager.playerA.energy >= numEnergy) {
+            this._gameStateManager.playerA.energy -= numEnergy
+            this.cardInQueue.push(this.listCard[this.cardTouchSlot - 1].cardID)
+            this.listCard[this.cardTouchSlot - 1].updateNewCard(this.cardInQueue[0])
+            this.cardInQueue.shift()
+            this.getChildByName('cardBackGroundd').updateNewCard(this.cardInQueue[0])
+            this.cardPlayable[this.cardTouchSlot - 1] = this.listCard[this.cardTouchSlot - 1].cardID
+
+        }
+        this.resetCardTouchState()
+
+
+
+    },
+    resetCardTouchState:function () {
+        for(var i=1; i<=NUM_CARD_PLAYABLE; i++){
+            var card = this.getChildByName('cardBackGround'+i)
+            if(card.onTouch == true){
+                card.x += 0
+                card.y -= CELLWIDTH*0.5
+                card.onTouch = false
+                card.setCardDownUI()
+                this.getChildByName('btnRemoveCard'+this.cardTouchSlot).visible = false
+                this.cardTouchSlot = -1
+            }
+        }
+    },
+
+
 
     updateEnergyUI:function (dt) {
         if(this.getChildByName('iconEnergyBar') != null) {
@@ -472,6 +562,8 @@ var GameUI = cc.Layer.extend({
     callMonster:function () {
         var monster = this._gameStateManager.playerA._map.addMonster()
         this.addChild(monster,2000)
+        var monster2 = this._gameStateManager.playerB._map.addMonster()
+        this.addChild(monster2,2000)
     },
 
     convertCordinateToPos:function (corX, corY) {
@@ -495,19 +587,24 @@ var GameUI = cc.Layer.extend({
         for(var i=0;i<MAP_WIDTH+1;i++){
             for(var j=0; j <MAP_HEIGHT+1; j++){
                 if(mapArray[i][j] == -1) {
-                    this.addObjectUI(res.buffD, i, j, 1,0,rule)
+                    var obj = this.addObjectUI(res.buffD, i, j, 1,0,rule)
+                    this.addChild(obj,0,res.buffD+rule)
                 }
                 if(mapArray[i][j] == -2) {
-                    this.addObjectUI(res.buffS, i, j,1,0, rule)
+                    var obj = this.addObjectUI(res.buffS, i, j,1,0, rule)
+                    this.addChild(obj,0,res.buffD+rule)
                 }
                 if(mapArray[i][j] == -3) {
-                    this.addObjectUI(res.buffR, i, j, 1,0,rule)
+                    var obj = this.addObjectUI(res.buffR, i, j, 1,0,rule)
+                    this.addChild(obj,0,res.buffD+rule)
                 }
                 if(mapArray[i][j] == 1) {
-                    this.addObjectUI(res.treeUI, i, j,0.85,0, rule)
+                    var obj = this.addObjectUI(res.treeUI, i, j,0.85,0, rule)
+                    this.addChild(obj,0,res.buffD+rule)
                 }
                 if(mapArray[i][j] == 2) {
-                    this.addObjectUI(res.hole, i, j,0.85,0, rule)
+                    var obj = this.addObjectUI(res.hole, i, j,0.85,0, rule)
+                    this.addChild(obj,0,res.buffD+rule)
                 }
             }
         }
@@ -522,7 +619,7 @@ var GameUI = cc.Layer.extend({
             pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY)
         }
         else{
-            pos = this._gameStateManager.playerA.convertCordinateToPos2(corX, corY)
+            pos = this._gameStateManager.playerA.convertCordinateToPos2(corX, corY,2)
         }
         object.setPosition(pos)
         if(direc == 8){
@@ -535,8 +632,6 @@ var GameUI = cc.Layer.extend({
             object.setRotation(270)
         }
         if(_res == res.iconArrow && rule == 2) object.setRotation(object.getRotation()+180)
-
-        this.addChild(object,0,_res+rule)
         return object
     },
 
@@ -577,6 +672,10 @@ var GameUI = cc.Layer.extend({
             this.blockEndBattleLayer()
             this.showResultBattleUI('lose')
         }
+        if(this._gameStateManager.winner == 0){
+            this.blockEndBattleLayer()
+            this.showResultBattleUI('draw')
+        }
 
     },
 
@@ -596,7 +695,7 @@ var GameUI = cc.Layer.extend({
                 return true;
 
             }
-        } , this);
+        } , blockLayer);
 
     },
     showResultBattleUI:function (resultString) {
