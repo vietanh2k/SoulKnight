@@ -1,3 +1,4 @@
+// this.parent: LobbyScene
 var CurrencyPanel = cc.Layer.extend({
     currencyBackground: null,
     leftBox: null,
@@ -17,23 +18,23 @@ var CurrencyPanel = cc.Layer.extend({
         this.currencyBackground.attr({
             anchorX: 0,
             anchorY: 1,
-            y: CFG.HEIGHT,
-            scale: CFG.WIDTH / this.currencyBackground.width,
+            y: cf.HEIGHT,
+            scale: cf.WIDTH / this.currencyBackground.width,
         });
         this.addChild(this.currencyBackground, 0);
 
         this.leftBox = new cc.Sprite(asset.lobbyBox_png);
         this.leftBox.attr({
-            x: CFG.WIDTH * 0.35,
-            y: CFG.HEIGHT - this.currencyBackground.height * this.currencyBackground.scale * 0.4,
+            x: cf.WIDTH * 0.35,
+            y: cf.HEIGHT - this.currencyBackground.height * this.currencyBackground.scale * 0.4,
             scale: this.currencyBackground.height * this.currencyBackground.scale * 0.6 / this.leftBox.height,
         });
         this.addChild(this.leftBox, 0);
 
         this.rightBox = new cc.Sprite(asset.lobbyBox_png);
         this.rightBox.attr({
-            x: CFG.WIDTH * 0.65,
-            y: CFG.HEIGHT - this.currencyBackground.height * this.currencyBackground.scale * 0.4,
+            x: cf.WIDTH * 0.65,
+            y: cf.HEIGHT - this.currencyBackground.height * this.currencyBackground.scale * 0.4,
             scale: this.currencyBackground.height * this.currencyBackground.scale * 0.6 / this.leftBox.height,
         });
         this.addChild(this.rightBox, 0);
@@ -61,8 +62,12 @@ var CurrencyPanel = cc.Layer.extend({
             scale: this.leftBox.height * this.leftBox.scale / this.leftCurrencyBtn.height,
         });
         this.leftCurrencyBtn.addClickEventListener(() => {
-            sharePlayerInfo.gold += CFG.AMOUNT_BTN_GOLD;
-            this.updateLabels();
+            if (this.parent.allBtnIsActive) {
+                sharePlayerInfo.gold += cf.AMOUNT_BTN_GOLD;
+                this.updateLabels();
+            } else {
+                cc.log('allBtnIsActive is false');
+            }
         });
         this.addChild(this.leftCurrencyBtn, 0);
 
@@ -73,8 +78,12 @@ var CurrencyPanel = cc.Layer.extend({
             scale: this.rightBox.height * this.rightBox.scale / this.rightCurrencyBtn.height,
         });
         this.rightCurrencyBtn.addClickEventListener(() => {
-            sharePlayerInfo.gem += CFG.AMOUNT_BTN_GEM;
-            this.updateLabels();
+            if (this.parent.allBtnIsActive) {
+                sharePlayerInfo.gem += cf.AMOUNT_BTN_GEM;
+                this.updateLabels();
+            } else {
+                cc.log('allBtnIsActive is false');
+            }
         });
         this.addChild(this.rightCurrencyBtn, 0);
 

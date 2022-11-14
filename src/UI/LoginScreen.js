@@ -20,7 +20,23 @@ var SignInScreen = cc.Layer.extend({
      * Ngược lại sẽ thông báo lỗi và không connect nào được thiết lập (kể cả hand shake)
      *
      */
-    onSelectLogin:function(sender)
+    onSelectLogin: function (sender) {
+        cc.log("current test is :" + this.textField.getString())
+        cc.log("sendLoginRequest");
+        try {
+            gv.gameClient._userId = parseInt(this.textField.getString());
+            if (!isNaN(gv.gameClient._userId)) {
+                gv.gameClient.connect();
+            } else {
+                this.OnError("User_ID_must_be_number!");
+            }
+
+        } catch (e) {
+            this.OnError("User_ID_must_be_number!");
+        }
+
+    },
+    onSelectMatch:function(sender)
     {
         cc.log("current test is2 :" + this.textField.getString())
         cc.log("sendLoginRequest");
@@ -52,23 +68,23 @@ var SignInScreen = cc.Layer.extend({
     onUserInfo: function () {
         let lobbyScene = new LobbyScene();
         cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
-        let date = new Date();
-        cc.log('Current client time: ' + Date.now());
+        cc.log('Current time on client: ' + Date.now());
     },
-    onFinishLogin: function (){
+    onFinishLogin: function () {
 
     },
     /**
      * Thông báo lỗi lên màn hình bằng 1 dòng animation kéo dài 3 giây
      * @param {string}  error: nội dung thông báo
      * */
-    OnError: function (error){
+    OnError: function (error) {
         this.notification.setOpacity(255);
         this.notification.setString(error);
         this.notification.runAction(cc.FadeOut.create(3.0));
-        cc.log("Notification: "+error)
+        cc.log("Notification: " + error)
     },
-    onReceivedServerResponse: function (status, playerInfo){
+
+    onReceivedServerResponse: function (status, playerInfo) {
         this.OnError(status);
         this.notification.setString(JSON.stringify(sharePlayerInfo));
 

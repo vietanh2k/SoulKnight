@@ -21,7 +21,7 @@ var HomeUI = cc.Layer.extend({
         this.initLobbyArena();
         this.initChestSlots();
 
-        this.schedule(this.updateChests, 1);
+        this.schedule(this.updateChestTimers, 1);
     },
 
     initLobbyHomePlayer: function () {
@@ -30,8 +30,8 @@ var HomeUI = cc.Layer.extend({
             anchorX: 0,
             anchorY: 1,
             x: 0,
-            y: CFG.HEIGHT - CFG.WIDTH / 854 * 85,
-            scale: CFG.WIDTH / this.lobbyHomePlayer.width,
+            y: cf.HEIGHT - cf.WIDTH / 854 * 85,
+            scale: cf.WIDTH / this.lobbyHomePlayer.width,
         });
         this.addChild(this.lobbyHomePlayer);
 
@@ -78,15 +78,15 @@ var HomeUI = cc.Layer.extend({
         });
         this.lobbyHomePlayer.addChild(this.iconTrophy);
 
-        this.lbPlayerTrophy = new ccui.Text(Utils.toStringWithDots(FAKE.trophy), asset.svnSupercellMagic_ttf, 22);
+        this.lbPlayerTrophy = new ccui.Text(Utils.toStringWithDots(sharePlayerInfo.trophy), asset.svnSupercellMagic_ttf, 22);
         this.lbPlayerTrophy.attr({
             anchorX: 0,
-            x: this.lobbyHomePlayer.width * 0.95 - this.trophyBox.width,
+            x: this.lobbyHomePlayer.width * 0.97 - this.trophyBox.width,
             y: this.lobbyHomePlayer.height * 0.6,
             color: cc.color(249, 216, 70),
             scale: Math.min(
                 this.trophyBox.height * 0.8 / this.lbPlayerTrophy.height,
-                        this.trophyBox.width * 0.9 / this.lbPlayerTrophy.width
+                this.trophyBox.width * 0.9 / this.lbPlayerTrophy.width
             ),
         });
         this.lbPlayerTrophy.enableShadow();
@@ -97,9 +97,9 @@ var HomeUI = cc.Layer.extend({
         this.arena = new cc.Sprite(asset.commonArenaForest_png);
         this.arena.attr({
             anchorY: 0,
-            x: CFG.WIDTH / 2,
-            y: CFG.HEIGHT * 0.5,
-            scale: CFG.WIDTH * 0.45 / this.arena.width,
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT * 0.5,
+            scale: cf.WIDTH * 0.45 / this.arena.width,
         });
         this.addChild(this.arena);
 
@@ -119,15 +119,18 @@ var HomeUI = cc.Layer.extend({
             scale: this.arena.width * 0.9 / this.btnBattle.width,
         });
         this.btnBattle.addClickEventListener(() => {
-            // TODO remove next line
-            cc.log('opening chest counter: ' + this.openingChestCounter);
+            // FIXME hiện tại đang dùng button này để debug
+            Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
+            cc.log("User data: " + JSON.stringify(sharePlayerInfo));
+
+            // đây mới là (một phần) tác dụng thật
             if (this.parent.allBtnIsActive) {
                 for (let i = 0; i < this.chestSlots.length; i++) {
                     if (this.chestSlots[i].constructor.name === 'Sprite') {
                         return;
                     }
                 }
-                this.addChild(new Toast('Số lượng rương đã đạt tối đa!'));
+                Utils.addToastToRunningScene('Số lượng rương đã đạt tối đa!');
             }
         });
         this.arena.addChild(this.btnBattle);
@@ -144,77 +147,59 @@ var HomeUI = cc.Layer.extend({
 
     initChestSlots: function () {
         this.chestSlots = [];
-        for (let i = 0; i < CFG.LOBBY_MAX_CHEST; i++) {
-            let chest = FAKE.chests[i];
-            let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-            let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-            let chestX = spaceBetween * (i + 1) + slotWidth * (i + 0.5);
-            let chestY = CFG.HEIGHT / 4;
-            if (chest === undefined) {
-                this.chestSlots[i] = new cc.Sprite(asset.treasureEmpty_png);
-                let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
-                textStatus.attr({
-                    x: this.chestSlots[i].width / 2,
-                    y: this.chestSlots[i].height / 2,
-                    color: cc.color(161, 180, 184),
-                });
-                textStatus.enableShadow();
-                this.chestSlots[i].addChild(textStatus, 0);
-            } else {
-                this.chestSlots[i] = new ChestSlot(chest, i);
-                if (this.chestSlots[i].textTime !== undefined && this.chestSlots[i].textOpenCost !== undefined) {
-                    this.openingChestCounter++;
-                }
+        let emptySlots = [0, 1, 2, 3];
+        for (let i = 0; i < sharePlayerInfo.chestList.length; i++) {
+            let chest = sharePlayerInfo.chestList[i];
+            this.chestSlots[chest.id] = new ChestSlot(chest, chest.id);
+            if (this.chestSlots[chest.id].textTime !== undefined && this.chestSlots[chest.id].textOpenCost !== undefined) {
+                this.openingChestCounter++;
             }
-            this.chestSlots[i].attr({
-                x: chestX,
-                y: chestY,
-                scale: slotWidth / this.chestSlots[i].width,
-            });
-            this.addChild(this.chestSlots[i]);
+            this.addChestSlotAsChild(chest.id);
+
+            const index = emptySlots.indexOf(chest.id);
+            if (index > -1) emptySlots.splice(index, 1);
         }
+
+        emptySlots.forEach(emptySlot => {
+            this.chestSlots[emptySlot] = new cc.Sprite(asset.treasureEmpty_png);
+            let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
+            textStatus.attr({
+                x: this.chestSlots[emptySlot].width / 2,
+                y: this.chestSlots[emptySlot].height / 2,
+                color: cc.color(161, 180, 184),
+            });
+            textStatus.enableShadow();
+            this.chestSlots[emptySlot].addChild(textStatus, 0);
+            this.addChestSlotAsChild(emptySlot);
+        });
     },
 
-    updateChests: function () {
-        for (let i = 0; i < this.chestSlots.length; i++) {
-            let chest = FAKE.chests[i];
+    updateChestTimers: function () {
+        for (let i = 0; i < sharePlayerInfo.chestList.length; i++) {
+            let chest = sharePlayerInfo.chestList[i];
             if (chest === undefined || chest.openTimeStarted === null) {
                 continue;
             }
-            if (this.chestSlots[i].textTime !== undefined && this.chestSlots[i].textOpenCost !== undefined) {
+            if (this.chestSlots[chest.id].textTime !== undefined && this.chestSlots[chest.id].textOpenCost !== undefined) {
                 let openTimeLeft = Utils.getOpenTimeLeft(chest);
                 if (openTimeLeft > 0) {
-                    this.chestSlots[i].textTime.setString(Utils.milisecondsToReadableTime(openTimeLeft));
-                    this.chestSlots[i].textOpenCost.setString(Utils.gemCostToOpenChest(openTimeLeft).toString());
+                    this.chestSlots[chest.id].textTime.setString(Utils.milisecondsToReadableTime(openTimeLeft));
+                    this.chestSlots[chest.id].textOpenCost.setString(Utils.gemCostToOpenChest(openTimeLeft).toString());
                 } else {
-                    this.removeChild(this.chestSlots[i], true);
+                    this.removeChild(this.chestSlots[chest.id], true);
                     this.openingChestCounter--;
-                    this.chestSlots[i] = new ChestSlot(chest, i);
-                    let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-                    let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-                    let chestX = spaceBetween * (i + 1) + slotWidth * (i + 0.5);
-                    let chestY = CFG.HEIGHT / 4;
-                    this.chestSlots[i].attr({
-                        x: chestX,
-                        y: chestY,
-                        scale: slotWidth / this.chestSlots[i].width,
-                    });
-                    this.addChild(this.chestSlots[i]);
+                    this.chestSlots[chest.id] = new ChestSlot(chest, chest.id);
+                    this.addChestSlotAsChild(chest.id);
                 }
             }
         }
     },
 
-    openChestSlot: function (slot) {
-        let chest = FAKE.chests[slot];
-        chest.openTimeStarted = Date.now();
-        this.removeChild(this.chestSlots[slot], true);
-        this.openingChestCounter++;
-        this.chestSlots[slot] = new ChestSlot(chest, slot);
-        let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-        let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
+    addChestSlotAsChild: function (slot) {
+        let slotWidth = cf.WIDTH / (cf.LOBBY_MAX_CHEST + 0.5);
+        let spaceBetween = slotWidth / 2 / (cf.LOBBY_MAX_CHEST + 1);
         let chestX = spaceBetween * (slot + 1) + slotWidth * (slot + 0.5);
-        let chestY = CFG.HEIGHT / 4;
+        let chestY = cf.HEIGHT / 4;
         this.chestSlots[slot].attr({
             x: chestX,
             y: chestY,
@@ -223,34 +208,54 @@ var HomeUI = cc.Layer.extend({
         this.addChild(this.chestSlots[slot]);
     },
 
-    consumeChestSlot: function (slot) {
-        // TODO nhận được tài nguyên sau khi mở rương
-        let chest = FAKE.chests[slot];
+    sendRequestStartCooldownChestSlot: function (slot) {
+        let chest = this.chestSlots[slot].chest;
+        testnetwork.connector.sendStartCooldownRequest(chest);
+    },
+
+    startCooldownChestSlot: function (chestID, openOnServerTimestamp) {
+        let chest = this.chestSlots[chestID].chest;
+        chest.updateWhenStartToOpen(openOnServerTimestamp);
+        this.removeChild(this.chestSlots[chestID], true);
+
+        this.openingChestCounter++;
+        this.chestSlots[chestID] = new ChestSlot(chest, chestID);
+        this.addChestSlotAsChild(chestID);
+    },
+
+    sendRequestOpenChestSlot: function (slot) {
+        let chest = this.chestSlots[slot].chest;
+        let gemSpent = Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
+        chest.waitingOpenChestResponseWithGems = gemSpent;
+        testnetwork.connector.sendOpenChestRequest(chest, gemSpent);
+    },
+
+    openChestSlot: function (chestID, newCards, goldReceived) {
+        let chest = this.chestSlots[chestID].chest;
+        if (chest.waitingOpenChestResponseWithGems == null) {
+            return;
+        }
+
         if (Utils.isOpening(chest)) {
             this.openingChestCounter--;
         }
-        sharePlayerInfo.gem -= Utils.gemCostToOpenChest(Utils.getOpenTimeLeft(chest));
+
+        sharePlayerInfo.addNewCards(newCards);
+        sharePlayerInfo.gem -= chest.waitingOpenChestResponseWithGems;
+        sharePlayerInfo.gold += goldReceived;
         this.parent.currencyPanel.updateLabels();
-        this.removeChild(this.chestSlots[slot], true);
-        this.chestSlots[slot] = new cc.Sprite(asset.treasureEmpty_png);
+
+        this.removeChild(this.chestSlots[chestID], true);
+
+        this.chestSlots[chestID] = new cc.Sprite(asset.treasureEmpty_png);
         let textStatus = new ccui.Text('Ô Trống', asset.svnSupercellMagic_ttf, 18);
         textStatus.attr({
-            x: this.chestSlots[slot].width / 2,
-            y: this.chestSlots[slot].height / 2,
+            x: this.chestSlots[chestID].width / 2,
+            y: this.chestSlots[chestID].height / 2,
             color: cc.color(161, 180, 184),
         });
         textStatus.enableShadow();
-        this.chestSlots[slot].addChild(textStatus, 0);
-
-        let slotWidth = CFG.WIDTH / (CFG.LOBBY_MAX_CHEST + 0.5);
-        let spaceBetween = slotWidth / 2 / (CFG.LOBBY_MAX_CHEST + 1);
-        let chestX = spaceBetween * (slot + 1) + slotWidth * (slot + 0.5);
-        let chestY = CFG.HEIGHT / 4;
-        this.chestSlots[slot].attr({
-            x: chestX,
-            y: chestY,
-            scale: slotWidth / this.chestSlots[slot].width,
-        });
-        this.addChild(this.chestSlots[slot]);
+        this.chestSlots[chestID].addChild(textStatus, 0);
+        this.addChestSlotAsChild(chestID);
     },
 });

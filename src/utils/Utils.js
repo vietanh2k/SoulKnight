@@ -44,11 +44,19 @@ Utils.getOpenTimeLeft = function (chest) {
 
 Utils.gemCostToOpenChest = function (openTimeLeft) {
     if (openTimeLeft <= 0) return 0;
-    // FIXME hiện tại đang để gem ~ thời gian mở, 1 gem/h
-    return Math.ceil(openTimeLeft / (24 * 60 * 60 * 1000) * 24);
+    return Math.ceil(openTimeLeft / (60 * 60 * 1000) * cf.COST_GEMS_PER_HOUR);
 }
 
 Utils.isOpening = function (chest) {
     if (chest.openTimeStarted === null) return false;
     return Utils.getOpenTimeLeft(chest) > 0;
+}
+
+Utils.updateTimeDiff = function (serverNow) {
+    cf.TIME_DIFF = serverNow - Date.now();
+    cc.log('Time diff updated: ' + cf.TIME_DIFF);
+}
+
+Utils.addToastToRunningScene = function (message) {
+    cc.director.getRunningScene().addChild(new Toast(message), cf.TOAST_Z_ORDER);
 }

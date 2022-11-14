@@ -1,4 +1,5 @@
 var PlayerInfo = cc.Class.extend({
+
     ctor: function (id, name, gold, gem, trophy, collection, chestList, deck) {
         this.id = id;
         this.name = name;
@@ -10,17 +11,15 @@ var PlayerInfo = cc.Class.extend({
         this.deck = deck;
 
         // fake data
-        this.name = FAKE.name;
-        this.gold = FAKE.gold;
-        this.gem = FAKE.gem;
-        this.trophy = FAKE.trophy;
+        // this.name = FAKE.name;
+        // this.gold = FAKE.gold;
+        // this.gem = FAKE.gem;
+        // this.trophy = FAKE.trophy;
+        // this.collection = fake.collection;
+        // this.chestList = FAKE.chests;
+        // this.deck = fake.deck;
     },
-    // todo: thêm các hàm
-    /**
-     * Trả về một đối tượng chest theo id truyền vào
-     * @param {int} chestId: id của chest
-     * @return {Chest} : chest tìm thấy hoặc null
-     * */
+
     getChestById: function (chestId) {
         let rs = null;
         if (this.chestList != null) {
@@ -31,6 +30,20 @@ var PlayerInfo = cc.Class.extend({
             })
         }
         return rs;
+    },
+
+    addNewCards: function (newCards) {
+        // TODO add new cards after open a chest
+    },
+
+    /**
+     * Sort collection by energy, ascending or descending order.
+     *
+     * @param {boolean} isAscOrder sort by ascending order?
+     * @return {void}
+     */
+    sortCollectionByEnergy: function (isAscOrder) {
+        this.collection.sort((a, b) => (a.energy - b.energy) * (2 * isAscOrder - 1));
     },
 })
 

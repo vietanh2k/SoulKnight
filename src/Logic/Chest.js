@@ -1,49 +1,44 @@
 var Chest = cc.Class.extend({
-    ctor: function (byte_buffer) {
-        this.id = byte_buffer.getInt();
-        this.type = byte_buffer.getByte();
-        this.setRemainingTime(byte_buffer.getLong());
-        // this.openTimeInSecond= byte_buffer.getLong(); //thời gian mở rương cố định: ví d: 3600s, 7200s,...
+    id: null,
+    type: null,
+    openOnServerTimestamp: null,
+    golds: null,
+    cards: null,
+    rarities: null,
+    openTimeRequired: null,
+    openTimeStarted: null,
+    openOnClientTimestamp: null,
+    waitingOpenChestResponseWithGems: null,
 
+    ctor: function (id, type, openOnServerTimestamp) {
+        if (id < 0 || id > 3) {
+            cc.log('ID KHÔNG HỢP LỆ! ID của rương là vị trí của nó trên HomeUI.');
+        }
+        this.id = id;
+        this.type = type;
+        this.type = 0; // FIXME (bỏ qua server) hiện tại mới chỉ có 1 loại rương
+        this.openOnServerTimestamp = openOnServerTimestamp;
+
+        this.golds = cf.CHEST_REWARD[this.type].golds;
+        this.cards = cf.CHEST_REWARD[this.type].cards;
+        this.fragments = cf.CHEST_REWARD[this.type].fragments;
+        this.rarities = cf.CHEST_REWARD[this.type].rarities;
     },
-    /**
-     * Cài thời gian đếm ngược mở rương
-     * Nếu rương chưa start cool down, remaining time phải có giá trị 1000000*/
-    setRemainingTime: function (time_in_second) {
-        // update UI gì đó.... (nếu có)
-        this.openOnServerTimeStamp = time_in_second;
-        this._init_time_stamp = Date.now() / 1000
-    },
-    // todo: thêm các hàm
-    onOpenNow: function () {
-        // testnetwork.connector.sendOpenChestRequest(this);
-        if (Date.now() / 1000 - this._init_time_stamp + 1 > this.remainingTimeInSecond) {
-            testnetwork.sendOpenChestRequest(this);
+
+    updateClientTime: function () {
+        this.openTimeRequired = cf.CHEST_REWARD[this.type].openTimeRequired;
+        if (this.openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP ||
+            this.openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP.toString()) {
+            this.openTimeStarted = null;
         } else {
-            cc.log("not time!")
+            this.openOnClientTimestamp = this.openOnServerTimestamp - cf.TIME_DIFF;
+            this.openTimeStarted = this.openOnClientTimestamp - this.openTimeRequired;
         }
     },
-    /**
-     * Gửi yêu cầu bắt đầu cooldown
-     * */
-    startCoolDown: function () {
-        testnetwork.connector.sendStartCoolDownRequest(this);
+
+    updateWhenStartToOpen: function (openOnServerTimestamp) {
+        this.openOnServerTimestamp = openOnServerTimestamp;
+        this.openOnClientTimestamp = this.openOnServerTimestamp - cf.TIME_DIFF;
+        this.openTimeStarted = this.openOnClientTimestamp - this.openTimeRequired;
     },
-    /**
-     * Xử lý phải hồi yêu cầu bắt đầu cooldown
-     * @return{String} status: Phản hồi dạng string từ server
-     * */
-    onStartCoolDown: function (byte_buffer) {
-        // đặt lại mốc remaining time cập nhập từ server
-        this.setRemainingTime(byte_buffer.getLong());
-        // lấy phản hồi
-        res_status = byte_buffer.getString();
-        return res_status;
-    },
-    getGemToOpen: function () {
-        return 20;
-    },
-    getGoldToOpen: function () {
-        return 20;
-    }
-})
+});

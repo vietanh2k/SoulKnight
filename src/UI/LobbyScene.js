@@ -26,10 +26,10 @@ var LobbyScene = cc.Scene.extend({
     initBackGround: function (localZOrder) {
         this.background = new cc.Sprite(asset.lobbyBackground_png);
         this.background.attr({
-            x: CFG.WIDTH / 2,
-            y: CFG.HEIGHT / 2,
-            scaleX: CFG.WIDTH / this.background.width,
-            scaleY: CFG.HEIGHT / this.background.height,
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT / 2,
+            scaleX: cf.WIDTH / this.background.width,
+            scaleY: cf.HEIGHT / this.background.height,
         });
         this.addChild(this.background, localZOrder);
     },
@@ -41,8 +41,8 @@ var LobbyScene = cc.Scene.extend({
 
     calcTabBtnSize: function () {
         const ACTIVE_INACTIVE_WIDTH_RATIO = 164 / 122 / 123 * 110;
-        this.inactiveTabBtnWidth = CFG.WIDTH / (CFG.LOBBY_MAX_TAB - 1 + ACTIVE_INACTIVE_WIDTH_RATIO);
-        this.activeTabBtnWidth = CFG.WIDTH / (1 + (CFG.LOBBY_MAX_TAB - 1) / ACTIVE_INACTIVE_WIDTH_RATIO);
+        this.inactiveTabBtnWidth = cf.WIDTH / (cf.LOBBY_MAX_TAB - 1 + ACTIVE_INACTIVE_WIDTH_RATIO);
+        this.activeTabBtnWidth = cf.WIDTH / (1 + (cf.LOBBY_MAX_TAB - 1) / ACTIVE_INACTIVE_WIDTH_RATIO);
         this.tabBtnHeight = this.inactiveTabBtnWidth / 123 * 110;
     },
 
@@ -51,7 +51,7 @@ var LobbyScene = cc.Scene.extend({
             return (tab + 0.5) * this.inactiveTabBtnWidth;
         }
         if (tab > this.activeTab) {
-            return CFG.WIDTH - (CFG.LOBBY_MAX_TAB - tab - 0.5) * this.inactiveTabBtnWidth;
+            return cf.WIDTH - (cf.LOBBY_MAX_TAB - tab - 0.5) * this.inactiveTabBtnWidth;
         }
         return tab * this.inactiveTabBtnWidth + 0.5 * this.activeTabBtnWidth;
     },
@@ -60,10 +60,10 @@ var LobbyScene = cc.Scene.extend({
         this.tabBtns = [];
         this.tabIcons = [];
         this.tabTexts = [];
-        for (let i = 0; i < CFG.LOBBY_MAX_TAB; i++) {
+        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
             let newTab;
             let newTabIcon = cc.Sprite(asset.lobbyPageIcons_png[i]);
-            let newTabText = ccui.Text(CFG.LOBBY_TAB_NAMES[i], asset.svnSupercellMagic_ttf, 16);
+            let newTabText = ccui.Text(cf.LOBBY_TAB_NAMES[i], asset.svnSupercellMagic_ttf, 16);
             newTabText.enableShadow();
             if (i === this.activeTab) {
                 newTab = new ccui.Button(asset.lobbyPageBtnSelecting_png);
@@ -92,6 +92,8 @@ var LobbyScene = cc.Scene.extend({
             newTab.addClickEventListener(() => {
                 if (this.allBtnIsActive) {
                     this.changeToTab(j);
+                } else {
+                    cc.log('allBtnIsActive is false');
                 }
             });
             newTab.addChild(newTabIcon);
@@ -113,7 +115,7 @@ var LobbyScene = cc.Scene.extend({
     },
 
     resizeTabs: function () {
-        for (let i = 0; i < CFG.LOBBY_MAX_TAB; i++) {
+        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
             if (i === this.activeTab) {
                 this.tabBtns[i].loadTextures(asset.lobbyPageBtnSelecting_png, asset.lobbyPageBtnSelecting_png, asset.lobbyPageBtnSelecting_png);
                 this.tabIcons[i].y = this.tabBtns[i].height / 2 * 1.2;
@@ -135,9 +137,9 @@ var LobbyScene = cc.Scene.extend({
 
     initTabUIs: function (localZOrder) {
         this.tabUIs = [];
-        this.tabUIs[1] = new CardsUI();
-        this.tabUIs[2] = new HomeUI();
-        for (let i = 0; i < CFG.LOBBY_MAX_TAB; i++) {
+        this.tabUIs[cf.LOBBY_TAB_CARDS] = new CardsUI();
+        this.tabUIs[cf.LOBBY_TAB_HOME] = new HomeUI();
+        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
             if (this.tabUIs[i] !== undefined) {
                 this.addChild(this.tabUIs[i], localZOrder);
             }
@@ -147,7 +149,7 @@ var LobbyScene = cc.Scene.extend({
     },
 
     updateTabUIsVisibility: function () {
-        for (let i = 0; i < CFG.LOBBY_MAX_TAB; i++) {
+        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
             if (this.tabUIs[i] !== undefined) {
                 this.tabUIs[i].visible = i === this.activeTab;
             }

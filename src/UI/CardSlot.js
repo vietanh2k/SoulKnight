@@ -1,6 +1,14 @@
+// if inDeck is true:
+// this.parent: DeckPanel
+// this.parent.parent: CardsUI
+// this.parent.parent.parent: LobbyScene
+// if inDeck is false:
+// this.parent: CardsUI
+// this.parent.parent: LobbyScene
 var CardSlot = ccui.Button.extend({
+    card: null,
     inDeck: null,
-    background: null,
+    texture: null,
     levelPanel: null,
     lbLevel: null,
     border: null,
@@ -11,24 +19,56 @@ var CardSlot = ccui.Button.extend({
     progressGlow: null,
 
     ctor: function (card, inDeck) {
-        this._super(card.texture);
+        this.card = card;
+        this._super(asset.cardBackgrounds_png[card.rarity]);
+        this.setZoomScale(0);
 
         this.inDeck = inDeck;
 
-        this.background = new cc.Sprite(asset.cardBackgrounds_png[card.rarity]);
-        this.background.attr({
+        if (this.inDeck) {
+            this.addClickEventListener(() => {
+                if (this.parent.parent.parent.allBtnIsActive) {
+                    this.parent.parent.parent.addChild(new CardInfoUI(card), 4);
+                    this.parent.parent.parent.allBtnIsActive = false;
+                } else if (this.parent.parent.isShowingAddCardToDeck) {
+                    let i;
+                    for (i = 0; i < sharePlayerInfo.deck.length; i++) {
+                        if (sharePlayerInfo.deck[i].id === this.card.id) {
+                            sharePlayerInfo.deck[i] = sharePlayerInfo.collection.find(element => element.id === this.parent.parent.pendingCardId);
+                            break;
+                        }
+                    }
+                    this.parent.parent.updateDeckSlot(i);
+                }
+                else {
+                    cc.log('allBtnIsActive is false and CardsUI is not showing add card to deck');
+                }
+            });
+        } else {
+            this.addClickEventListener(() => {
+                if (this.parent.parent.allBtnIsActive) {
+                    this.parent.parent.addChild(new CardInfoUI(card), 4);
+                    this.parent.parent.allBtnIsActive = false;
+                } else {
+                    cc.log('allBtnIsActive is false');
+                }
+            });
+        }
+
+        this.texture = new cc.Sprite(card.texture);
+        this.texture.attr({
             x: this.width / 2,
             y: this.height / 2,
-            scaleX: this.width / this.background.width,
-            scaleY: this.height / this.background.height,
+            scaleX: this.width / this.texture.width,
+            scaleY: this.height / this.texture.height,
         })
-        this.addChild(this.background, -1);
+        this.addChild(this.texture);
 
         this.levelPanel = new cc.Sprite(asset.cardLevel_png);
         this.levelPanel.attr({
             anchorY: 0,
             x: this.width / 2,
-            y: this.height * 0.05,
+            y: this.height * 0.07,
             scale: this.width / this.levelPanel.width,
         })
         this.addChild(this.levelPanel);
@@ -54,7 +94,7 @@ var CardSlot = ccui.Button.extend({
         this.iconEnergy.attr({
             x: this.width * 0.05,
             y: this.height * 0.95,
-            scale: this.width * 0.4 / this.iconEnergy.width,
+            scale: this.width * 0.45 / this.iconEnergy.width,
         })
         this.addChild(this.iconEnergy);
 
@@ -63,7 +103,7 @@ var CardSlot = ccui.Button.extend({
             x: this.iconEnergy.width / 2,
             y: this.iconEnergy.height / 2,
         })
-        this.lbEnergy.enableShadow();
+        this.lbEnergy.enableOutline(cc.color(0, 0, 0));
         this.iconEnergy.addChild(this.lbEnergy);
 
         if (this.inDeck) {

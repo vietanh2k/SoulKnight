@@ -66,10 +66,10 @@ var asset = {
     btnGreen_png: 'asset/common/common_btn_green.png',
     btnOrange_png: 'asset/common/common_btn_orange.png',
     btnRed_png: 'asset/common/common_btn_red.png',
+    notificationDot_png: 'asset/common/common_notification_dot.png',
 
 
     deckPanel_png: 'asset/lobby/lobby_card_deck.png',
-    cardTowerCannon_png: 'asset/card/card_tower_cannon.png',
     cardBorders_png: [
         'asset/card/card_border_1.png',
         'asset/card/card_border_2.png',
@@ -79,8 +79,8 @@ var asset = {
     cardBackgrounds_png: [
         'asset/card/card_background_1.png',
         'asset/card/card_background_2.png',
-        'asset/card/card_background_3.png',
         'asset/card/card_background_4.png',
+        'asset/card/card_background_3.png',
     ],
     iconEnergy_png: 'asset/card/stat_icon/stat_icon_energy_gain.png',
     cardLevel_png: 'asset/card/card_level.png',
@@ -90,19 +90,68 @@ var asset = {
     progressGlow_png: 'asset/lobby/lobby_card_progress_glow.png',
     progressMax_png: 'asset/lobby/lobby_card_progress_max.png',
     cardBanner_png: 'asset/lobby/lobby_card_banner.png',
+    cardSwitchArrow_png: 'asset/lobby/lobby_card_switch_arrow.png',
 
-    plists: [
-        'asset/monster/frame/golem/golem.plist',
-        'asset/monster/frame/assassin/assassin.plist',
-        'asset/monster/frame/satyr/satyr.plist',
+    cardTowerAttackSpeed_png: 'asset/card/card_tower_attack_speed.png',
+    cardTowerBoomerang_png: 'asset/card/card_tower_boomerang.png',
+    cardTowerCannon_png: 'asset/card/card_tower_cannon.png',
+    cardTowerDamage_png: 'asset/card/card_tower_damage.png',
+    cardTowerIceGun_png: 'asset/card/card_tower_ice_gun.png',
+    cardTowerOilGun_png: 'asset/card/card_tower_oil_gun.png',
+    cardTowerWizard_png: 'asset/card/card_tower_wizard.png',
+
+    cardMonsterAssassin_png: 'asset/card/card_monster_assassin.png',
+    cardMonsterBat_png: 'asset/card/card_monster_bat.png',
+    cardMonsterGiant_png: 'asset/card/card_monster_giant.png',
+    cardMonsterNinja_png: 'asset/card/card_monster_ninja.png',
+    cardMonsterSwordsman_png: 'asset/card/card_monster_swordsman.png',
+
+    cardPotionFireball_png: 'asset/card/card_potion_fireball.png',
+    cardPotionFrozen_png: 'asset/card/card_potion_frozen.png',
+    cardPotionHeal_png: 'asset/card/card_potion_heal.png',
+    cardPotionPower_png: 'asset/card/card_potion_power.png',
+    cardPotionSpeedUp_png: 'asset/card/card_potion_speed_up.png',
+    cardPotionTrap_png: 'asset/card/card_potion_trap.png',
+
+    miniatureMonsterAssassin_png: 'asset/card/miniature_monster_assassin.png',
+    miniatureMonsterBat_png: 'asset/card/miniature_monster_bat.png',
+    miniatureMonsterGiant_png: 'asset/card/miniature_monster_giant.png',
+    miniatureMonsterNinja_png: 'asset/card/miniature_monster_ninja.png',
+    miniatureMonsterSwordsman_png: 'asset/card/miniature_monster_swordsman.png',
+
+    miniaturesTowerAttackSpeed_png: [
+        'asset/card/miniature_tower_attack_speed_1.png',
+        'asset/card/miniature_tower_attack_speed_2.png',
+        'asset/card/miniature_tower_attack_speed_3.png',
     ],
-
-    golemInit_png: 'asset/monster/frame/golem/monster_golem_run_0035.png',
-    prefixGolem: 'monster_golem_run_',
-
-    assassinInit_png: 'asset/monster/frame/assassin/monster_assassin_run_0017.png',
-    prefixAssassin: 'monster_assassin_run_',
-
-    satyrInit_png: 'asset/monster/frame/satyr/monster_satyr_run_0014.png',
-    prefixSatyr: 'monster_satyr_run_',
+    miniaturesTowerBoomerang_png: [
+        'asset/card/miniature_tower_boomerang_1.png',
+        'asset/card/miniature_tower_boomerang_2.png',
+        'asset/card/miniature_tower_boomerang_3.png',
+    ],
+    miniaturesTowerCannon_png: [
+        'asset/card/miniature_tower_cannon_1.png',
+        'asset/card/miniature_tower_cannon_2.png',
+        'asset/card/miniature_tower_cannon_3.png',
+    ],
+    miniaturesTowerDamage_png: [
+        'asset/card/miniature_tower_damage_1.png',
+        'asset/card/miniature_tower_damage_2.png',
+        'asset/card/miniature_tower_damage_3.png',
+    ],
+    miniaturesTowerIceGun_png: [
+        'asset/card/miniature_tower_ice_gun_1.png',
+        'asset/card/miniature_tower_ice_gun_2.png',
+        'asset/card/miniature_tower_ice_gun_3.png',
+    ],
+    miniaturesTowerOilGun_png: [
+        'asset/card/miniature_tower_oil_gun_1.png',
+        'asset/card/miniature_tower_oil_gun_2.png',
+        'asset/card/miniature_tower_oil_gun_3.png',
+    ],
+    miniaturesTowerWizard_png: [
+        'asset/card/miniature_tower_wizard_1.png',
+        'asset/card/miniature_tower_wizard_2.png',
+        'asset/card/miniature_tower_wizard_3.png',
+    ],
 };

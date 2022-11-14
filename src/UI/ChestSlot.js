@@ -1,8 +1,12 @@
 // this.parent: HomeUI
 // this.parent.parent: LobbyScene
 var ChestSlot = ccui.Button.extend({
+    chest: null,
+    slot: null,
 
     ctor: function (chest, slot) {
+        this.chest = chest;
+        this.slot = slot;
         if (chest.openTimeStarted === null) {
             this._super(asset.treasureEmpty_png);
             this.addClickEventListener(() => {
@@ -86,7 +90,7 @@ var ChestSlot = ccui.Button.extend({
                 this._super(asset.treasureFinished_png);
                 this.addClickEventListener(() => {
                     if (this.parent.parent.allBtnIsActive) {
-                        this.parent.consumeChestSlot(slot);
+                        this.parent.sendRequestOpenChestSlot(slot);
                     } else {
                         cc.log('allBtnIsActive is false');
                     }
@@ -101,6 +105,7 @@ var ChestSlot = ccui.Button.extend({
                 this.addChild(textOpen);
             }
         }
+        this.setZoomScale(0);
     },
 
     addIconChest: function () {
