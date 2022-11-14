@@ -1,8 +1,11 @@
 // this.parent: LobbyScene
 var CardInfoUI = cc.Layer.extend({
+    card: null,
 
     ctor: function (card) {
         this._super();
+
+        this.card = card;
 
         let inDeck = sharePlayerInfo.deck.find(element => element.id === card.id);
         inDeck = inDeck !== undefined;
@@ -37,6 +40,14 @@ var CardInfoUI = cc.Layer.extend({
             scale: midPanelBackground.height * 0.5 / botDescriptionPanel.height,
         });
         midPanelBackground.addChild(botDescriptionPanel);
+
+        let lbDescription = ccui.Text(this.card.description, asset.svnAvoBold_ttf, 16);
+        lbDescription.attr({
+            x: midPanelBackground.width / 2,
+            y: midPanelBackground.height / 2,
+            color: cc.color(35, 65, 155),
+        });
+        midPanelBackground.addChild(lbDescription);
 
         // top panel
         let topPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 0, 453, 196.5));

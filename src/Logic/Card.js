@@ -21,6 +21,7 @@ var Card = cc.Class.extend({
         } else {
             this.energy = cardConfig.energy;
             this.texture = cardConfig.texture;
+            this.description = cardConfig.description;
         }
 
         let levelConfig = cf.CARD_LEVEL.find(element => element.level === this.level);
