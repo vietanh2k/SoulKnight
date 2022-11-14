@@ -40,6 +40,7 @@ var GameClient = cc.Class.extend(
 
         },
         sendPacket: function (pk) {
+            cc.log('===========')
             this.getNetwork().send(pk);
             gv.poolObjects.push(pk);
         },
@@ -83,6 +84,7 @@ var GameClient = cc.Class.extend(
         onReceivedPacket:function(cmd, packet)
         {
             this.receivePacketSignal.dispatch(cmd, packet);
-        }
+        },
+
     }
 );

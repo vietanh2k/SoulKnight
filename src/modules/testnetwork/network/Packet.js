@@ -2,7 +2,7 @@
  * Created by KienVN on 10/2/2017.
  */
 
-gv.CMD = gv.CMD || {};
+gv.CMD = gv.CMD ||{};
 gv.CMD.HAND_SHAKE = 0;
 gv.CMD.USER_LOGIN = 1;
 
@@ -11,8 +11,12 @@ gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOL_DOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
+gv.CMD.MATCH_REQUEST = 4001;
+gv.CMD.MATCH_REPONSE = 4002;
+gv.CMD.MATCH_CONFIRM = 4003;
+gv.CMD.BATTLE_START = 5001;
 
-testnetwork = testnetwork || {};
+testnetwork = testnetwork||{};
 testnetwork.packetMap = {};
 
 
@@ -21,13 +25,14 @@ testnetwork.packetMap = {};
 //Handshake
 CmdSendHandshake = fr.OutPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
             this.initData(100);
             this.setControllerId(gv.CONTROLLER_ID.SPECIAL_CONTROLLER);
             this.setCmdId(gv.CMD.HAND_SHAKE);
         },
-        putData: function () {
+        putData:function(){
             //pack
             this.packHeader();
             //update
@@ -37,12 +42,13 @@ CmdSendHandshake = fr.OutPacket.extend(
 )
 CmdSendUserInfo = fr.OutPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.USER_INFO);
         },
-        pack: function () {
+        pack:function(){
             this.packHeader();
             this.updateSize();
         }
@@ -51,7 +57,8 @@ CmdSendUserInfo = fr.OutPacket.extend(
 
 CmdSendOpenChest = fr.OutPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.OPEN_CHEST_NOW);
@@ -60,7 +67,7 @@ CmdSendOpenChest = fr.OutPacket.extend(
          * send open chest request
          * sử dụng biến sharePlayerInfo.id
          * @param {Chest} chest: the chest to open*/
-        putData: function (chest) {
+        putData:function(chest){
             //pack
             this.packHeader();
             this.putInt(chest.id);
@@ -73,7 +80,8 @@ CmdSendOpenChest = fr.OutPacket.extend(
 
 CmdSendStartCoolDownChest = fr.OutPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.START_COOL_DOWN);
@@ -82,7 +90,7 @@ CmdSendStartCoolDownChest = fr.OutPacket.extend(
          * send open START COOL DOWN request
          * sử dụng biến sharePlayerInfo.id
          * @param {Chest} chest: the chest to START OPENING*/
-        putData: function (chest) {
+        putData:function(chest){
             //pack
             this.packHeader();
             this.putInt(chest.id);
@@ -95,12 +103,13 @@ CmdSendStartCoolDownChest = fr.OutPacket.extend(
 
 CmdSendLogin = fr.OutPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.USER_LOGIN);
         },
-        pack: function (userId) {
+        pack:function(userId){
             this.packHeader();
             this.putString("section");
             this.putInt(userId)
@@ -111,18 +120,51 @@ CmdSendLogin = fr.OutPacket.extend(
 
 CmdSendMove = fr.OutPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.MOVE);
         },
-        pack: function (direction) {
+        pack:function(direction){
             this.packHeader();
             this.putShort(direction);
             this.updateSize();
         }
     }
 )
+
+
+CmdMatchRequest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_REQUEST);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
+CmdMatchConfirm = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_CONFIRM);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
 
 /**
  * InPacket
@@ -131,10 +173,11 @@ CmdSendMove = fr.OutPacket.extend(
 //Handshake
 testnetwork.packetMap[gv.CMD.HAND_SHAKE] = fr.InPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
         },
-        readData: function () {
+        readData:function(){
             this.token = this.getString();
         }
     }
@@ -142,10 +185,11 @@ testnetwork.packetMap[gv.CMD.HAND_SHAKE] = fr.InPacket.extend(
 
 testnetwork.packetMap[gv.CMD.USER_LOGIN] = fr.InPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
         },
-        readData: function () {
+        readData:function(){
         }
     }
 );
@@ -218,17 +262,35 @@ testnetwork.packetMap[gv.CMD.START_COOL_DOWN] = fr.InPacket.extend(
     }
 );
 
+
 testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
     {
-        ctor: function () {
+        ctor:function()
+        {
             this._super();
         },
-        readData: function () {
+        readData:function(){
             this.x = this.getInt();
             this.y = this.getInt();
         }
     }
 );
+testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            var scene = new cc.Scene();
+            scene.addChild(new GameUI(this));
+            cc.director.runScene(new cc.TransitionFade(1.2, scene));
+            cc.log('=================')
+        }
+    }
+);
+
+
 
 
 

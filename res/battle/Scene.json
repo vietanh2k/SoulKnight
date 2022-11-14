@@ -1,7 +1,7 @@
 {
-  "ID": "a2ee0952-26b5-49ae-8bf9-4f1d6279b798",
+  "ID": "5e15a87f-85cb-4680-b8eb-1f93b90b6c17",
   "Version": "3.10.0.0",
-  "Name": "MainScene",
+  "Name": "Scene",
   "Content": {
     "Content": {
       "Animation": {
@@ -12,6 +12,7 @@
       },
       "AnimationList": [],
       "ObjectData": {
+        "Tag": 3,
         "Children": [
           {
             "FileData": {
@@ -28,31 +29,31 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 320.0,
-              "Y": 568.0
+              "X": 321.6235,
+              "Y": 566.654
             },
             "Scale": {
-              "ScaleX": 0.7675,
-              "ScaleY": 0.8681
+              "ScaleX": 0.7598,
+              "ScaleY": 0.8629
             },
             "CColor": {},
             "IconVisible": false,
-            "PositionPercentXEnabled": true,
-            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.5,
-              "Y": 0.5
+              "X": 0.5025,
+              "Y": 0.4988
             },
             "PreSize": {
               "X": 1.3312,
               "Y": 1.1629
             },
-            "LeftMargin": -106.0,
-            "RightMargin": -106.0,
-            "TopMargin": -92.5,
-            "BottomMargin": -92.5,
-            "Tag": 3,
-            "ActionTag": 1249290797,
+            "HorizontalEdge": "BothEdge",
+            "VerticalEdge": "BothEdge",
+            "LeftMargin": -104.3765,
+            "RightMargin": -107.6235,
+            "TopMargin": -91.1541,
+            "BottomMargin": -93.846,
+            "Tag": 4,
+            "ActionTag": -1307740800,
             "Size": {
               "X": 852.0,
               "Y": 1321.0
@@ -75,36 +76,36 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 320.0,
-              "Y": 568.0
+              "X": 323.5896,
+              "Y": 496.7157
             },
             "Scale": {
-              "ScaleX": 2.2286,
-              "ScaleY": 1.0
+              "ScaleX": 3.4733,
+              "ScaleY": 2.7519
             },
             "CColor": {},
             "IconVisible": false,
-            "PositionPercentXEnabled": true,
-            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.5,
-              "Y": 0.5
+              "X": 0.5056,
+              "Y": 0.4372
             },
             "PreSize": {
               "X": 0.2188,
               "Y": 0.0352
             },
-            "LeftMargin": 250.0,
-            "RightMargin": 250.0,
-            "TopMargin": 548.0,
-            "BottomMargin": 548.0,
-            "Tag": 7,
-            "ActionTag": 270372861,
+            "HorizontalEdge": "BothEdge",
+            "VerticalEdge": "BothEdge",
+            "LeftMargin": 253.5896,
+            "RightMargin": 246.4104,
+            "TopMargin": 619.2843,
+            "BottomMargin": 476.7157,
+            "Tag": 13,
+            "ActionTag": -1178113676,
             "Size": {
               "X": 140.0,
               "Y": 40.0
             },
-            "Name": "lobby_box_1",
+            "Name": "lobby_box_5",
             "ctype": "SpriteObjectData"
           },
           {
@@ -113,53 +114,48 @@
               "Path": "font/SVN-Supercell Magic.ttf",
               "Plist": ""
             },
-            "FontSize": 14,
+            "FontSize": 10,
             "IsCustomSize": true,
             "LabelText": "",
-            "PlaceHolderText": "######",
+            "PlaceHolderText": "##########",
             "MaxLengthEnable": true,
-            "MaxLengthText": 6,
+            "MaxLengthText": 7,
             "TouchEnable": true,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 320.0,
-              "Y": 568.0
+              "X": 325.6418,
+              "Y": 496.7047
             },
             "Scale": {
-              "ScaleX": 3.5531,
-              "ScaleY": 2.1459
+              "ScaleX": 5.2693,
+              "ScaleY": 3.3299
             },
             "CColor": {},
             "IconVisible": false,
-            "PositionPercentXEnabled": true,
-            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.5,
-              "Y": 0.5
+              "X": 0.5088,
+              "Y": 0.4372
             },
-            "PercentWidthEnable": true,
-            "PercentHeightEnable": true,
-            "PercentWidthEnabled": true,
-            "PercentHeightEnabled": true,
             "PreSize": {
-              "X": 0.1313,
+              "X": 0.1312,
               "Y": 0.0202
             },
-            "LeftMargin": 277.984,
-            "RightMargin": 277.984,
-            "TopMargin": 556.5264,
-            "BottomMargin": 556.5264,
-            "CallBackType": "Touch",
-            "Tag": 6,
-            "ActionTag": 1175307647,
+            "HorizontalEdge": "BothEdge",
+            "VerticalEdge": "BothEdge",
+            "LeftMargin": 283.6418,
+            "RightMargin": 272.3582,
+            "TopMargin": 627.7953,
+            "BottomMargin": 485.2047,
+            "Tag": 12,
+            "ActionTag": 1319809328,
             "Size": {
-              "X": 84.032,
-              "Y": 22.9472
+              "X": 84.0,
+              "Y": 23.0
             },
-            "Name": "IdField",
+            "Name": "Textfield",
             "ctype": "TextFieldObjectData"
           },
           {
@@ -171,9 +167,9 @@
               "Plist": ""
             },
             "TextColor": {
-              "R": 0,
-              "G": 0,
-              "B": 0
+              "R": 65,
+              "G": 65,
+              "B": 70
             },
             "DisabledFileData": {
               "Type": "Normal",
@@ -212,99 +208,37 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 307.968,
-              "Y": 423.0464
+              "X": 323.5839,
+              "Y": 358.6197
             },
             "Scale": {
-              "ScaleX": 0.725,
-              "ScaleY": 0.5968
+              "ScaleX": 0.7012,
+              "ScaleY": 0.623
             },
             "CColor": {},
             "IconVisible": false,
-            "PositionPercentXEnabled": true,
-            "PositionPercentYEnabled": true,
             "PrePosition": {
-              "X": 0.4812,
-              "Y": 0.3724
+              "X": 0.5056,
+              "Y": 0.3157
             },
-            "PercentWidthEnable": true,
-            "PercentHeightEnable": true,
-            "PercentWidthEnabled": true,
-            "PercentHeightEnabled": true,
             "PreSize": {
               "X": 0.6516,
               "Y": 0.1593
             },
-            "LeftMargin": 99.456,
-            "RightMargin": 123.52,
-            "TopMargin": 622.4712,
-            "BottomMargin": 332.564,
-            "Tag": 10,
-            "ActionTag": 2011914341,
+            "HorizontalEdge": "BothEdge",
+            "VerticalEdge": "BottomEdge",
+            "LeftMargin": 115.0839,
+            "RightMargin": 107.9161,
+            "TopMargin": 686.8802,
+            "BottomMargin": 268.1197,
+            "Tag": 15,
+            "ActionTag": -1091696427,
             "Size": {
-              "X": 417.024,
-              "Y": 180.9648
+              "X": 417.0,
+              "Y": 181.0
             },
-            "Name": "LogIn",
+            "Name": "LoginButton",
             "ctype": "ButtonObjectData"
-          },
-          {
-            "FontSize": 10,
-            "LabelText": "Error wjnjnsj",
-            "FontResource": {
-              "Type": "Normal",
-              "Path": "font/SVN-Avo bold.ttf",
-              "Plist": ""
-            },
-            "HorizontalAlignmentType": "HT_Center",
-            "VerticalAlignmentType": "VT_Center",
-            "OutlineColor": {
-              "G": 0,
-              "B": 0
-            },
-            "ShadowColor": {
-              "R": 110,
-              "G": 110,
-              "B": 110
-            },
-            "ShadowOffsetX": 2.0,
-            "ShadowOffsetY": -2.0,
-            "AnchorPoint": {
-              "ScaleX": 0.5,
-              "ScaleY": 0.5
-            },
-            "Position": {
-              "X": 297.984,
-              "Y": 134.3888
-            },
-            "Scale": {
-              "ScaleX": 2.0843,
-              "ScaleY": 2.1315
-            },
-            "CColor": {},
-            "IconVisible": false,
-            "PositionPercentXEnabled": true,
-            "PositionPercentYEnabled": true,
-            "PrePosition": {
-              "X": 0.4656,
-              "Y": 0.1183
-            },
-            "PreSize": {
-              "X": 0.0938,
-              "Y": 0.0123
-            },
-            "LeftMargin": 267.984,
-            "RightMargin": 312.016,
-            "TopMargin": 994.6112,
-            "BottomMargin": 127.3888,
-            "Tag": 7,
-            "ActionTag": -1447284197,
-            "Size": {
-              "X": 60.0,
-              "Y": 14.0
-            },
-            "Name": "Notification",
-            "ctype": "TextObjectData"
           }
         ],
         "Size": {
@@ -315,7 +249,6 @@
         "ctype": "SingleNodeObjectData"
       },
       "UsedResources": [
-        "../font/SVN-Avo bold.ttf",
         "../font/SVN-Supercell Magic.ttf",
         "../lobby/lobby_background.png",
         "../lobby/lobby_box.png",
