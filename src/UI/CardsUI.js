@@ -173,6 +173,20 @@ var CardsUI = cc.Layer.extend({
         });
         this.addChild(this.swapInCardSlot);
 
+        this.swapInCardSlot.outline = new cc.Sprite(asset.cardSwitchOutline_png);
+        this.swapInCardSlot.outline.attr({
+            x: this.swapInCardSlot.width / 2,
+            y: this.swapInCardSlot.height / 2,
+            scale: this.swapInCardSlot.height * 1.15 / this.swapInCardSlot.outline.height,
+        });
+        this.swapInCardSlot.addChild(this.swapInCardSlot.outline, -1);
+
+        let fadeSequence = cc.sequence(
+            cc.FadeOut(0.5),
+            cc.FadeIn(0.5)
+        ).repeatForever();
+        this.swapInCardSlot.outline.runAction(fadeSequence);
+
         this.lbInstruction = new ccui.Text('Chọn một thẻ bài thay thế', asset.svnSupercellMagic_ttf, 20);
         this.lbInstruction.attr({
             x: cf.WIDTH / 2,
@@ -233,7 +247,7 @@ var CardsUI = cc.Layer.extend({
                     y: cardSlotY,
                     scale: slotWidth / this.swapInCardSlot.width,
                 });
-                // todo convert to node space instead of things above
+                this.swapInCardSlot.outline.removeFromParent(true);
                 this.swapInCardSlot.parent = null;
                 this.deckPanel.addChild(this.swapInCardSlot);
                 this.deckSlots[slot] = this.swapInCardSlot;
