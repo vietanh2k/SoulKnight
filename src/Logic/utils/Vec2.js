@@ -147,3 +147,8 @@ const AARect = function (x, y, w, h) {
             + this.h + ')'
     }
 }
+
+let euclid_distance = function (self, another){
+    var euclid_distance = Math.sqrt(Math.pow(self.x-another.x, 2) + Math.pow(self.y-another.y, 2));
+    return euclid_distance;
+}
