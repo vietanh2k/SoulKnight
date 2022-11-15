@@ -4,6 +4,8 @@ var gv = gv || {};
 var WIDTHSIZE = 640;
 var HEIGHTSIZE = 1136;
 var CELLWIDTH = 80;
+var DESIGN_RESOLUTION_WIDTH = 640;
+var DESIGN_RESOLUTION_HEIGHT = 960;
 cc.game.onStart = function () {
     if (!cc.sys.isNative && document.getElementById("cocosLoading")) //If referenced loading.js, please remove it
         document.body.removeChild(document.getElementById("cocosLoading"));
@@ -28,8 +30,17 @@ cc.game.onStart = function () {
             HEIGHTSIZE = WIDTHSIZE*1.875
 
         }
+
         CELLWIDTH = WIDTHSIZE/8
-        cc.view.setDesignResolutionSize(WIDTHSIZE,HEIGHTSIZE, cc.ResolutionPolicy.SHOW_ALL);
+        if(ratio < 16/9){
+            DESIGN_RESOLUTION_HEIGHT = frameSize.height
+            DESIGN_RESOLUTION_WIDTH = DESIGN_RESOLUTION_HEIGHT/(16/9)
+        }else{
+            DESIGN_RESOLUTION_WIDTH = frameSize.width
+            DESIGN_RESOLUTION_HEIGHT = DESIGN_RESOLUTION_WIDTH*(16/9)
+
+        }
+        cc.view.setDesignResolutionSize(DESIGN_RESOLUTION_WIDTH,DESIGN_RESOLUTION_HEIGHT, cc.ResolutionPolicy.SHOW_ALL);
         // The game will be resized when browser size change
         cc.view.resizeWithBrowserSize(true);
         //socket
