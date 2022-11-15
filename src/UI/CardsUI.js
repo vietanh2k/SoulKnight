@@ -177,11 +177,10 @@ var CardsUI = cc.Layer.extend({
             y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.61,
             scale: cf.WIDTH / (4 + 5 * 0.3) / this.exitBtn.width,
         });
-        this.addChild(this.exitBtn);
-
         this.exitBtn.addClickEventListener(() => {
             this.quitAddCardToDeck();
         });
+        this.addChild(this.exitBtn);
 
         let lbExit = new ccui.Text('Thoát', asset.svnSupercellMagic_ttf, 24);
         lbExit.enableShadow();

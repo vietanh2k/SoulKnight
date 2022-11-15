@@ -67,6 +67,7 @@
         "src/UI/HomeUI.js",
         "src/UI/LobbyScene.js",
         "src/UI/LoginScreen.js",
+        "src/UI/OpenChestAnimationUI.js",
         "src/UI/Toast.js",
 
         "src/utils/Utils.js"

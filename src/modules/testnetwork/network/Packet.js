@@ -269,9 +269,13 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
                     newCards.push(this.readCardData());
                 }
                 goldReceived = this.getInt();
+
+                newCards = fake.OPEN_CHEST_NEW_CARDS; // fake data
+
                 serverNow = this.getLong();
                 Utils.updateTimeDiff(serverNow);
-                cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+
+                cc.director.getRunningScene().runOpenChestAnimation(chestID, newCards, goldReceived);
             } else {
                 Utils.addToastToRunningScene(status);
             }

@@ -103,6 +103,14 @@ var HomeUI = cc.Layer.extend({
         });
         this.addChild(this.arena);
 
+        this.arenaParticle = new cc.ParticleSystem(asset.arenaParticle_plist);
+        this.arenaParticle.attr({
+            x: cf.WIDTH / 2,
+            y: this.arena.y + this.arena.height * this.arena.scale / 2,
+            scale: cf.WIDTH * 1.5 / this.arena.width,
+        });
+        this.addChild(this.arenaParticle);
+
         this.lbArena = new ccui.Text('ĐỒI NGỦ YÊN', asset.svnSupercellMagic_ttf, 60);
         this.lbArena.attr({
             anchorY: 0,
@@ -119,12 +127,12 @@ var HomeUI = cc.Layer.extend({
             scale: this.arena.width * 0.9 / this.btnBattle.width,
         });
         this.btnBattle.addClickEventListener(() => {
-            // FIXME hiện tại đang dùng button này để debug
-            Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
-            cc.log("User data: " + JSON.stringify(sharePlayerInfo));
-
-            // đây mới là (một phần) tác dụng thật
             if (this.parent.allBtnIsActive) {
+                // FIXME hiện tại đang dùng nút này để debug
+                Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
+                cc.log("User data: " + JSON.stringify(sharePlayerInfo));
+
+                // đây mới là (một phần) tác dụng thật
                 for (let i = 0; i < this.chestSlots.length; i++) {
                     if (this.chestSlots[i].constructor.name === 'Sprite') {
                         return;

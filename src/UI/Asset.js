@@ -44,7 +44,8 @@ var asset = {
     btnBattle_png: 'asset/lobby/lobby_home_btn_battle.png',
     btnBattlePressing_png: 'asset/lobby/lobby_home_btn_battle_pressing.png',
     btnBattleTxt_png: 'asset/lobby/lobby_home_btn_battle_txt.png',
-    commonTreasure_png: 'asset/common/common_treasure.png',
+    commonTreasure_png: 'asset/lobby/treasure/common_treasure_tutorial.png',
+    commonTreasureTrue_png: 'asset/common/common_treasure.png',
     treasureEmpty_png: 'asset/lobby/lobby_home_treasure_empty.png',
     treasureFinished_png: 'asset/lobby/lobby_home_treasure_finished.png',
     treasureOpening_png: 'asset/lobby/lobby_home_treasure_opening.png',
@@ -67,7 +68,10 @@ var asset = {
     btnOrange_png: 'asset/common/common_btn_orange.png',
     btnRed_png: 'asset/common/common_btn_red.png',
     notificationDot_png: 'asset/common/common_notification_dot.png',
-
+    fxVip_json: 'asset/lobby/treasure/fx/fx_vip.json',
+    fxVip_atlas: 'asset/lobby/treasure/fx/fx_vip.atlas',
+    fxChest_json: 'asset/lobby/treasure/fx/fx_chest_lv1.json',
+    fxChest_atlas: 'asset/lobby/treasure/fx/fx_chest_lv1.atlas',
 
     deckPanel_png: 'asset/lobby/lobby_card_deck.png',
     cardBorders_png: [

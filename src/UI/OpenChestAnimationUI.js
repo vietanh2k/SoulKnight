@@ -1,0 +1,167 @@
+// this.parent: LobbyScene
+var OpenChestAnimationUI = cc.Layer.extend({
+    chestID: null,
+    newCards: null,
+    goldReceived: null,
+
+    ctor: function (chestID, newCards, goldReceived) {
+        this._super();
+
+        this.chestID = chestID;
+        this.newCards = newCards;
+        this.goldReceived = goldReceived;
+
+        let background = new cc.Sprite(asset.lobbyBackground_png);
+        background.attr({
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT / 2,
+            scaleX: cf.WIDTH / background.width,
+            scaleY: cf.HEIGHT / background.height,
+        });
+        this.addChild(background);
+
+        let fxChest = new sp.SkeletonAnimation(asset.fxChest_json, asset.fxChest_atlas);
+        fxChest.attr({
+            x: cf.WIDTH / 2,
+            y: 0,
+            scale: cf.WIDTH / fxChest.getBoundingBox().width,
+        });
+        this.addChild(fxChest);
+
+        let newCardsSize = newCards.length;
+        let index = 0;
+        this.initRewards();
+
+        let initSequence = cc.sequence(
+            cc.callFunc(() => fxChest.setAnimation(0, 'init', false)),
+            cc.delayTime(1.25),
+            cc.callFunc(() => {
+                this.showReward(index);
+                index++;
+            }),
+            cc.delayTime(1.75)
+        );
+
+        let openingSequence = cc.sequence(
+            cc.callFunc(() => fxChest.setAnimation(0, 'opening', false)),
+            cc.delayTime(0.25),
+            cc.callFunc(() => {
+                this.showReward(index);
+                index++;
+            }),
+            cc.delayTime(1.75)
+        ).repeat(newCardsSize - 1);
+
+        let addExitBtnSequence = cc.sequence(
+            cc.callFunc(() => {
+                this.showAllRewards();
+            }),
+            cc.callFunc(() => this.addExitBtn())
+        );
+
+        let sequence = cc.sequence(initSequence, openingSequence, addExitBtnSequence);
+        this.runAction(sequence);
+    },
+
+    initRewards: function () {
+        this.rewardSlots = [];
+        let i = 0;
+        for (i = 0; i < this.newCards.length + 1; i++) {
+            let slotWidth = cf.WIDTH / (3 + 4);
+            let newElement;
+            if (i < this.newCards.length) {
+                let card = new Card(this.newCards[i].id, 1, 0);
+                newElement = new CardSlot(card, false);
+                newElement.setZoomScale(0);
+                newElement.levelPanel.visible = false;
+                newElement.iconEnergy.visible = false;
+                newElement.progressPanel.visible = false;
+                newElement.addClickEventListener(() => {});
+                // amount
+                this.addAmount(newElement, this.newCards[i].fragment);
+            } else {
+                newElement = new cc.Sprite(asset.iconGold_png);
+                this.addAmount(newElement, this.goldReceived);
+            }
+            newElement.attr({
+                x: this.getSlotPosition(i).x,
+                y: this.getSlotPosition(i).y,
+                scale: slotWidth / newElement.width,
+            });
+            this.addChild(newElement);
+            this.rewardSlots[i] = newElement;
+            newElement.visible = false;
+        }
+    },
+
+    getSlotPosition: function (i) {
+        let res = {};
+        let row = Math.floor(i / 3);
+        let column = i - row * 3;
+        let slotWidth = cf.WIDTH / (3 + 4);
+        let spaceBetween = slotWidth;
+        res.x = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
+        res.y = cf.HEIGHT * (0.8 - 0.2 * row);
+        return res;
+    },
+
+    addAmount: function (node, amount) {
+        let lbAmount = new ccui.Text('x' + amount, asset.svnSupercellMagic_ttf, 30);
+        lbAmount.enableShadow();
+        lbAmount.attr({
+            x: node.width,
+            y: 0,
+            scale: 1 / node.scale,
+        });
+        node.addChild(lbAmount);
+    },
+
+    showReward: function (index) {
+        let reward = this.rewardSlots[index];
+        let sequence = cc.sequence(
+            cc.callFunc(() => {
+                reward.setPosition(cf.WIDTH / 2, cf.HEIGHT * 0.9);
+                reward.visible = true;
+            }),
+            cc.moveBy(0.5, cc.p(0, - cf.HEIGHT * 0.1)),
+            cc.DelayTime(1),
+            cc.callFunc(() => {
+                reward.visible = false;
+                reward.setPosition(this.getSlotPosition(index).x, this.getSlotPosition(index).y);
+            })
+        );
+        reward.runAction(sequence);
+    },
+
+    showAllRewards: function () {
+        for (let i = 0; i < this.rewardSlots.length; i++) {
+            this.rewardSlots[i].visible = true;
+        }
+    },
+
+    addExitBtn: function () {
+        let exitBtn = new ccui.Button(asset.btnGreen_png);
+        exitBtn.setZoomScale(0);
+        exitBtn.attr({
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT * 0.1,
+            scale: cf.HEIGHT * 0.1 / exitBtn.height,
+        });
+        exitBtn.addClickEventListener(() => {
+            this.destroy();
+        });
+        this.addChild(exitBtn);
+
+        let lbExit = new ccui.Text('Nhận', asset.svnSupercellMagic_ttf, 24);
+        lbExit.enableShadow();
+        lbExit.setPosition(exitBtn.width / 2, exitBtn.height / 2);
+        exitBtn.addChild(lbExit);
+    },
+
+    destroy: function () {
+        this.visible = false;
+        this.parent.allBtnIsActive = true;
+        this.parent.tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(this.chestID, this.newCards, this.goldReceived);
+        this.removeFromParent();
+    },
+});

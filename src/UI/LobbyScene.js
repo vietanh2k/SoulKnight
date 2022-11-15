@@ -155,4 +155,9 @@ var LobbyScene = cc.Scene.extend({
             }
         }
     },
+
+    runOpenChestAnimation: function (chestID, newCards, goldReceived) {
+        this.addChild(new OpenChestAnimationUI(chestID, newCards, goldReceived), 3);
+        this.allBtnIsActive = false;
+    },
 });

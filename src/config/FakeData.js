@@ -156,3 +156,18 @@ fake.collection = [
         fragment: 6,
     },
 ];
+
+fake.OPEN_CHEST_NEW_CARDS = [
+    {
+        id: 102,
+        fragment: 10,
+    },
+    {
+        id: 304,
+        fragment: 20,
+    },
+    {
+        id: 201,
+        fragment: 15,
+    }
+];
