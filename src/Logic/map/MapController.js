@@ -46,8 +46,8 @@ var MapController = cc.Class.extend({
         }
 
         // this.findPath()
-        this.findPathBFS()
-        this.initCell();
+        //this.findPathBFS()
+        //this.initCell();
 
 
 
@@ -164,9 +164,9 @@ var MapController = cc.Class.extend({
         var des = new Vec2(MAP_WIDTH,MAP_HEIGHT)
         listPath[des.x][des.y] = des
         queue.push(des)
-        var cou =0
+
         while (queue.length >0){
-            var node = queue[0]
+            var node = queue.shift()
             for(var i=0; i<4;i++){
                 var direc= new Vec2(offsetX[i], offsetY[i])
                 var adj = node.add(direc)
@@ -175,10 +175,8 @@ var MapController = cc.Class.extend({
                     queue.push(adj)
                 }
             }
-            queue.shift()
-            cou++
-            if(cou>100) break
         }
+
         this.listPath = listPath
         for(var i=0;i<=MAP_WIDTH;i++){
             for(j=0; j<= MAP_HEIGHT; j++){
@@ -186,6 +184,10 @@ var MapController = cc.Class.extend({
                 cc.log(i+'_'+j+'=='+listPath[i][j].x+'_'+listPath[i][j].y)
             }
         }
+    },
+
+    getParents: function () {
+        return this.listPath
     },
 
     addNearby: function (node, startList, finalList, weight){

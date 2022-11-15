@@ -83,7 +83,7 @@
         "src/Logic/map/GameStateManager.js",
         "src/Logic/map/PlayerState.js",
         "src/Logic/map/Timer.js",
-        "src/Logic/objects/Cell.js",
+
         "src/Logic/objects/MCard.js",
         "src/Logic/utils/AnimatedSprite.js",
         "src/Logic/objects/Monster.js",
@@ -93,6 +93,10 @@
         "src/Logic/utils/Number.js",
         "src/Logic/utils/Convert.js",
         "src/config/GameConfig.js",
-        "src/config/CardConfig.js"
+        "src/config/CardConfig.js",
+
+        "src/Logic/map/MAP_CONFIG.js",
+        "src/Logic/map/Cell.js"
+
     ]
 }

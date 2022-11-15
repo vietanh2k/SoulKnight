@@ -110,7 +110,8 @@ var GameUI = cc.Layer.extend({
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
             if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
-                this._gameStateManager.playerA._map._mapController.findPathBFS()
+                //this._gameStateManager.playerA._map._mapController.findPathBFS()
+                this._gameStateManager.playerA._map.updatePathForCells()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath,1)
                 var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
                 this.addChild(tree,0,res.treeUI+1)
@@ -398,7 +399,7 @@ var GameUI = cc.Layer.extend({
     },
 
     addInforBoxUI:function (){
-        cc.load()
+        //cc.load()
 
     },
 
