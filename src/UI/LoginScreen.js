@@ -85,12 +85,6 @@ var SignInScreen = cc.Layer.extend({
         this.notification.runAction(cc.FadeOut.create(3.0));
         cc.log("Notification: " + error)
     },
-
-    onReceivedServerResponse: function (status, playerInfo) {
-        this.OnError(status);
-        this.notification.setString(JSON.stringify(sharePlayerInfo));
-
-    }
 });
 
 var SignInScene = cc.Scene.extend({

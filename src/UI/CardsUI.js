@@ -16,9 +16,14 @@ var CardsUI = cc.Layer.extend({
     sortByEnergyAsc: null,
 
     isShowingAddCardToDeck: false,
+    isScrolling: false,
+    DISTANCE_SCROLL_ACCEPT: 5,
 
     ctor: function () {
         this._super();
+
+        this.isShowingAddCardToDeck = false;
+        this.isScrolling = false;
 
         this.initDeckPanel();
         this.initCollection();
@@ -147,18 +152,23 @@ var CardsUI = cc.Layer.extend({
         this.scrollToTop();
         this.pendingCardId = card.id;
 
-        this.arrow = new cc.Sprite(asset.cardSwitchArrow_png);
-        this.arrow.attr({
-            x: cf.WIDTH / 2,
-            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.05,
-            scale: cf.HEIGHT * 0.05 / this.arrow.height,
-        });
-        this.addChild(this.arrow);
+        this.arrows = [];
+        for (let i = 0; i < 3; ++i) {
+            this.arrows[i] = new cc.Sprite(asset.cardSwitchArrow_png);
+
+            this.arrows[i].attr({
+                x: cf.WIDTH / 2,
+                y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * (1.05 + 0.05 * i),
+                scale: cf.HEIGHT * 0.05 / this.arrows[i].height,
+                opacity: 255 - 100 * i,
+            });
+            this.addChild(this.arrows[i]);
+        }
 
         this.swapInCardSlot = new CardSlot(card, false);
         this.swapInCardSlot.attr({
             x: cf.WIDTH / 2,
-            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.27,
+            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.37,
             scale: cf.WIDTH / (4 + 5 * 0.3) / this.swapInCardSlot.width,
         });
         this.addChild(this.swapInCardSlot);
@@ -166,7 +176,7 @@ var CardsUI = cc.Layer.extend({
         this.lbInstruction = new ccui.Text('Chọn một thẻ bài thay thế', asset.svnSupercellMagic_ttf, 20);
         this.lbInstruction.attr({
             x: cf.WIDTH / 2,
-            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.51,
+            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.6,
         });
         this.addChild(this.lbInstruction);
 
@@ -174,7 +184,7 @@ var CardsUI = cc.Layer.extend({
         this.exitBtn.setZoomScale(0);
         this.exitBtn.attr({
             x: cf.WIDTH / 2,
-            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.61,
+            y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.7,
             scale: cf.WIDTH / (4 + 5 * 0.3) / this.exitBtn.width,
         });
         this.exitBtn.addClickEventListener(() => {
@@ -192,8 +202,7 @@ var CardsUI = cc.Layer.extend({
 
     quitAddCardToDeck: function () {
         this.pendingCardId = undefined;
-        this.removeChild(this.arrow);
-        this.removeChild(this.swapInCardSlot);
+        this.arrows.forEach(arrow => this.removeChild(arrow));
         this.removeChild(this.lbInstruction);
         this.removeChild(this.exitBtn);
         this.parent.allBtnIsActive = true;
@@ -205,10 +214,44 @@ var CardsUI = cc.Layer.extend({
     },
 
     updateDeckSlot: function (slot) {
+        let destination = {};
+        destination.x = this.deckPanel.x - (this.deckPanel.width / 2 - this.deckSlots[slot].x) * this.deckPanel.scale;
+        destination.y = this.deckPanel.y - (this.deckPanel.height - this.deckSlots[slot].y) * this.deckPanel.scale;
         this.deckPanel.removeChild(this.deckSlots[slot]);
-        let newCard = sharePlayerInfo.deck[slot];
-        this.addCardSlotToDeckPanel(newCard, slot);
+
+        let sequence = cc.sequence(
+            cc.moveTo(0.25, cc.p(destination.x, destination.y)),
+            cc.callFunc(() => {
+                let row = Math.floor(slot / 4);
+                let column = slot - row * 4;
+                let slotWidth = this.deckPanel.width / (4 + 5 * 0.3);
+                let spaceBetween = slotWidth * 0.3;
+                let cardSlotX = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
+                let cardSlotY = this.deckPanel.height * (0.7 - 0.37 * row);
+                this.swapInCardSlot.attr({
+                    x: cardSlotX,
+                    y: cardSlotY,
+                    scale: slotWidth / this.swapInCardSlot.width,
+                });
+                // todo convert to node space instead of things above
+                this.swapInCardSlot.parent = null;
+                this.deckPanel.addChild(this.swapInCardSlot);
+                this.deckSlots[slot] = this.swapInCardSlot;
+                this.swapInCardSlot.inDeck = true;
+            })
+        );
+        this.swapInCardSlot.runAction(sequence);
         this.quitAddCardToDeck();
+    },
+
+    updateAllCardSlots: function () {
+        this.collectionSlots.forEach(collectionSlot => this.removeChild(collectionSlot));
+        this.initCollection();
+        this.deckSlots.forEach(deckSlot => this.deckPanel.removeChild(deckSlot));
+        for (let i = 0; i < sharePlayerInfo.deck.length; i++) {
+            let card = sharePlayerInfo.deck[i];
+            this.addCardSlotToDeckPanel(card, i);
+        }
     },
 
     setUpperboundBasedOnTheLowestItem: function (itemY) {
@@ -229,14 +272,18 @@ var CardsUI = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: () => {
                 if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
+                this.isScrolling = false;
                 this.scrollTouching = true;
                 return true;
             },
             onTouchMoved: (event) => {
                 if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck) || !this.scrollTouching) return;
-                let distance = event.getDelta().y;
-                this.currentScroll += distance;
-                this.getChildren().forEach(child => child.y += distance);
+                let delta = event.getDelta();
+                this.currentScroll += delta.y;
+                this.getChildren().forEach(child => child.y += delta.y);
+                if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.DISTANCE_SCROLL_ACCEPT) {
+                    this.isScrolling = true;
+                }
                 return true;
             },
             onTouchEnded: () => {

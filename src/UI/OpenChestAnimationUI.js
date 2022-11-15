@@ -101,7 +101,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
         let slotWidth = cf.WIDTH / (3 + 4);
         let spaceBetween = slotWidth;
         res.x = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
-        res.y = cf.HEIGHT * (0.8 - 0.2 * row);
+        res.y = cf.HEIGHT * (0.85 - 0.2 * row);
         return res;
     },
 
@@ -136,6 +136,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
     showAllRewards: function () {
         for (let i = 0; i < this.rewardSlots.length; i++) {
             this.rewardSlots[i].visible = true;
+            this.rewardSlots[i].runAction(new cc.moveBy(0.25, cc.p(0, - cf.HEIGHT * 0.05)));
         }
     },
 

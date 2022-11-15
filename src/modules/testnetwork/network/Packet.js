@@ -76,12 +76,12 @@ CmdSendOpenChest = fr.OutPacket.extend(
     }
 )
 
-CmdSendStartCoolDownChest = fr.OutPacket.extend(
+CmdSendStartCooldownChest = fr.OutPacket.extend(
     {
         ctor: function () {
             this._super();
             this.initData(100);
-            this.setCmdId(gv.CMD.START_COOL_DOWN);
+            this.setCmdId(gv.CMD.START_COOLDOWN);
         },
         /**
          * send open START COOL DOWN request

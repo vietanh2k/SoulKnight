@@ -33,7 +33,11 @@ var PlayerInfo = cc.Class.extend({
     },
 
     addNewCards: function (newCards) {
-        // TODO add new cards after open a chest
+        for (let i = 0; i < newCards.length; i++) {
+            let card = sharePlayerInfo.collection.find(card => card.id === newCards[i].id);
+            card.fragment += newCards[i].fragment;
+        }
+        cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateAllCardSlots();
     },
 
     /**
