@@ -74,6 +74,7 @@
         "src/UI/LobbyScene.js",
         "src/UI/LoginScreen.js",
         "src/UI/Toast.js",
+        "src/UI/ShopUI.js",
 
         "src/utils/Utils.js",
         "src/UI/MatchingUI.js",

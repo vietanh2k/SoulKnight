@@ -3,7 +3,7 @@
        "isLandscape": false,
        "isWindowTop": false,
        "name": "HelloJavascript",
-       "width": 1136,
+       "width": 1080,
        "height": 1136,
        "entry": "main.js",
        "consolePort": 6050,

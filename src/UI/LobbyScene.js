@@ -138,6 +138,7 @@ var LobbyScene = cc.Scene.extend({
 
     initTabUIs: function (localZOrder) {
         this.tabUIs = [];
+        this.tabUIs[cf.LOBBY_TAB_SHOP] = new ShopUI();
         this.tabUIs[cf.LOBBY_TAB_CARDS] = new CardsUI();
         this.tabUIs[cf.LOBBY_TAB_HOME] = new HomeUI();
         for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {

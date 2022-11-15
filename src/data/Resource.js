@@ -22,6 +22,8 @@ var res = {
     Slot1_png : "zcsd/slot1.png",
     LoginScene_json : "ui/LogInScene.json",
     scene : "Scene.json",
+    shopScene : "shopScene.json",
+    shopItem : "shopItem.json",
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',
     font_normal : 'asset/font/SVN-Avo bold.ttf',
