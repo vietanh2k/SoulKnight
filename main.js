@@ -1,8 +1,9 @@
 
 var gv = gv || {};
 
-var DESIGN_RESOLUTION_WIDTH = 640;
-var DESIGN_RESOLUTION_HEIGHT = 960;
+var WIDTHSIZE = 640;
+var HEIGHTSIZE = 1136;
+var CELLWIDTH = 80;
 cc.game.onStart = function () {
     if (!cc.sys.isNative && document.getElementById("cocosLoading")) //If referenced loading.js, please remove it
         document.body.removeChild(document.getElementById("cocosLoading"));
@@ -18,13 +19,17 @@ cc.game.onStart = function () {
         cc.director.setDisplayStats(true);
         // Setup the resolution policy and design resolution size
         var frameSize = cc.view.getFrameSize();
-        var ratio = frameSize.width/frameSize.height;
-        if(ratio < 2){
-            cc.view.setDesignResolutionSize(DESIGN_RESOLUTION_WIDTH,DESIGN_RESOLUTION_HEIGHT, cc.ResolutionPolicy.FIXED_HEIGHT);
+        var ratio = frameSize.height/frameSize.width;
+        if(ratio < 1.875){
+            HEIGHTSIZE = frameSize.height
+            WIDTHSIZE = HEIGHTSIZE/1.875
         }else{
-            cc.view.setDesignResolutionSize(DESIGN_RESOLUTION_WIDTH,DESIGN_RESOLUTION_WIDTH/2, cc.ResolutionPolicy.SHOW_ALL);
-        }
+            WIDTHSIZE = frameSize.width
+            HEIGHTSIZE = WIDTHSIZE*1.875
 
+        }
+        CELLWIDTH = WIDTHSIZE/8
+        cc.view.setDesignResolutionSize(WIDTHSIZE,HEIGHTSIZE, cc.ResolutionPolicy.FIXED_HEIGHT);
         // The game will be resized when browser size change
         cc.view.resizeWithBrowserSize(true);
         //socket
@@ -32,7 +37,7 @@ cc.game.onStart = function () {
         gv.poolObjects = new PoolObject();
         //modules
         testnetwork.connector = new testnetwork.Connector(gv.gameClient);
-
+        //SignInScreen
         fr.view(SignInScreen);
     }, this);
 };

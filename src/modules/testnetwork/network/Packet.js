@@ -3,14 +3,19 @@
  */
 
 gv.CMD = gv.CMD || {};
-gv.CMD.HANDSHAKE = 0;
+gv.CMD.HAND_SHAKE = 0;
 gv.CMD.USER_LOGIN = 1;
 
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST = 3001;
+gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
+gv.CMD.MATCH_REQUEST = 4001;
+gv.CMD.MATCH_REPONSE = 4002;
+gv.CMD.MATCH_CONFIRM = 4003;
+gv.CMD.BATTLE_START = 5001;
 
 testnetwork = testnetwork || {};
 testnetwork.packetMap = {};
@@ -25,7 +30,7 @@ CmdSendHandshake = fr.OutPacket.extend(
             this._super();
             this.initData(100);
             this.setControllerId(gv.CONTROLLER_ID.SPECIAL_CONTROLLER);
-            this.setCmdId(gv.CMD.HANDSHAKE);
+            this.setCmdId(gv.CMD.HAND_SHAKE);
         },
         putData: function () {
             //pack
@@ -54,27 +59,29 @@ CmdSendOpenChest = fr.OutPacket.extend(
         ctor: function () {
             this._super();
             this.initData(100);
-            this.setCmdId(gv.CMD.OPEN_CHEST);
+            this.setCmdId(gv.CMD.OPEN_CHEST_NOW);
         },
-
-        putData: function (chest, gemSpent) {
+        /**
+         * send open chest request
+         * sử dụng biến sharePlayerInfo.id
+         * @param {Chest} chest: the chest to open*/
+        putData: function (chest) {
             //pack
             this.packHeader();
             this.putInt(chest.id);
-            this.putInt(gemSpent);
-            // this.putInt(sharePlayerInfo.id);
+            this.putInt(sharePlayerInfo.id);
             //update
             this.updateSize();
         }
     }
 )
 
-CmdSendStartCooldownChest = fr.OutPacket.extend(
+CmdSendStartCoolDownChest = fr.OutPacket.extend(
     {
         ctor: function () {
             this._super();
             this.initData(100);
-            this.setCmdId(gv.CMD.START_COOLDOWN);
+            this.setCmdId(gv.CMD.START_COOL_DOWN);
         },
         /**
          * send open START COOL DOWN request
@@ -84,7 +91,7 @@ CmdSendStartCooldownChest = fr.OutPacket.extend(
             //pack
             this.packHeader();
             this.putInt(chest.id);
-            // this.putInt(sharePlayerInfo.id);
+            this.putInt(sharePlayerInfo.id);
             //update
             this.updateSize();
         }
@@ -122,12 +129,44 @@ CmdSendMove = fr.OutPacket.extend(
     }
 )
 
+
+CmdMatchRequest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_REQUEST);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
+CmdMatchConfirm = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_CONFIRM);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
+
 /**
  * InPacket
  */
 
 //Handshake
-testnetwork.packetMap[gv.CMD.HANDSHAKE] = fr.InPacket.extend(
+testnetwork.packetMap[gv.CMD.HAND_SHAKE] = fr.InPacket.extend(
     {
         ctor: function () {
             this._super();
@@ -195,7 +234,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
             let attackSpeed = this.getDouble();
             let attackRange = this.getDouble();
         }
-        // return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+        // return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
         return new Card(fake.collection[i].id, fake.collection[i].level, fake.collection[i].fragment); // fake data
     },
 
@@ -218,38 +257,6 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
             return card.id === fake.deck[i].id;
         }); // fake data
     },
-});
-
-testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
-
-    ctor: function () {
-        this._super();
-    },
-    readData: function () {
-        let chestID = this.getInt();
-        let openOnServerTimestamp = this.getLong();
-        cc.log('Received start cooldown response from server. Chest ID: ' + chestID + ', open on server timestamp: ' + openOnServerTimestamp + '.');
-
-        let serverNow = this.getLong();
-        Utils.updateTimeDiff(serverNow);
-
-        if (openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP ||
-            openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP.toString()) {
-            Utils.addToastToRunningScene('Rương chưa được bắt đầu mở!');
-            return;
-        }
-        if (chestID === -1 || chestID === '-1') {
-            Utils.addToastToRunningScene('Server không tìm được chest hay user');
-            return;
-        }
-        this.chest = sharePlayerInfo.getChestById(chestID);
-        if (this.chest == null) {
-            Utils.addToastToRunningScene('Client không tìm thấy rương');
-            return;
-        }
-
-        cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].startCooldownChestSlot(chestID, openOnServerTimestamp);
-    }
 });
 
 testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
@@ -289,10 +296,44 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
             let quantity = this.getInt();
             let attackSpeed = this.getDouble();
             let attackRange = this.getDouble();
-            return new Card(id, name, type, level, quantity, attackSpeed, attackRange);
+            return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
         },
     }
 );
+
+
+
+testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
+
+    ctor: function () {
+        this._super();
+    },
+    readData: function () {
+        let chestID = this.getInt();
+        let openOnServerTimestamp = this.getLong();
+        cc.log('Received start cooldown response from server. Chest ID: ' + chestID + ', open on server timestamp: ' + openOnServerTimestamp + '.');
+
+        let serverNow = this.getLong();
+        Utils.updateTimeDiff(serverNow);
+
+        if (openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP ||
+            openOnServerTimestamp === cf.UNOPEN_CHEST_TIMESTAMP.toString()) {
+            Utils.addToastToRunningScene('Rương chưa được bắt đầu mở!');
+            return;
+        }
+        if (chestID === -1 || chestID === '-1') {
+            Utils.addToastToRunningScene('Server không tìm được chest hay user');
+            return;
+        }
+        this.chest = sharePlayerInfo.getChestById(chestID);
+        if (this.chest == null) {
+            Utils.addToastToRunningScene('Client không tìm thấy rương');
+            return;
+        }
+
+        cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].startCooldownChestSlot(chestID, openOnServerTimestamp);
+    }
+});
 
 testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
     {
@@ -302,6 +343,32 @@ testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
         readData: function () {
             this.x = this.getInt();
             this.y = this.getInt();
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            var scene = new cc.Scene();
+            scene.addChild(new GameUI(this));
+            cc.director.runScene(new cc.TransitionFade(1.2, scene));
+            cc.log('=================')
+        }
+    }
+);
+testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            this.x = this.getInt();
         }
     }
 );

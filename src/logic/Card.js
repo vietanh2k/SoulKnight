@@ -14,7 +14,6 @@ var Card = cc.Class.extend({
         this.id = id;
         this.level = level;
         this.fragment = fragment;
-
         let cardConfig = cf.CARD.find(element => element.id === this.id);
         if (cardConfig === undefined) {
             cc.log('WARNING: cardConfig is undefined');
