@@ -91,6 +91,7 @@
 
         "src/Logic/utils/String.js",
         "src/Logic/utils/Number.js",
+        "src/Logic/utils/Convert.js",
         "src/config/GameConfig.js",
         "src/config/CardConfig.js"
     ]

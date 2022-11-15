@@ -32,8 +32,8 @@ var GameUI = cc.Layer.extend({
         this.initBackGround();
         this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, this._gameStateManager.playerA.rule)
         this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
-        this.showPathUI(this._gameStateManager.playerA._map._mapController.path, 1)
-        this.showPathUI(this._gameStateManager.playerB._map._mapController.path, 2)
+        this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
+        this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
         // this.addChild(this._gameStateManager.playerA._map.monsters[0],2000)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
@@ -67,7 +67,7 @@ var GameUI = cc.Layer.extend({
         if(MW.TOUCH){
             MW.TOUCH = false
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
+            var loc = convertPosToIndex(pos, 1)
             cc.log(loc.x+'---'+loc.y)
             if(loc.x >=0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
                 loc.y >=0 && loc.y < this._gameStateManager.playerA._map._mapController.intArray[0].length) {
@@ -105,13 +105,13 @@ var GameUI = cc.Layer.extend({
             this.createObjectByTouch = false
             cc.log('creat right')
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
+            var loc = convertPosToIndex(pos,1)
             var rand = Math.floor(Math.random() * 2)+1;
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
             if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
                 this._gameStateManager.playerA._map._mapController.findPathBFS()
-                this.showPathUI(this._gameStateManager.playerA._map._mapController.path,1)
+                this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath,1)
                 var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
                 this.addChild(tree,0,res.treeUI+1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
@@ -139,7 +139,6 @@ var GameUI = cc.Layer.extend({
         return false
     },
 
-
     showPathUI:function (path, rule){
         while(this.getChildByName(res.highlightPath+rule) != null){
 
@@ -149,28 +148,33 @@ var GameUI = cc.Layer.extend({
         while(this.getChildByName(res.iconArrow+rule) != null){
             this.removeChild(this.getChildByName(res.iconArrow+rule))
         }
-        var nodeX = 0
-        var nodeY = 0
+        var node = new Vec2(0,0)
         var count = 0
         var delay = 1
-        while(nodeX != MAP_WIDTH || nodeY != MAP_HEIGHT){
-            var dir = path[nodeX+'-'+nodeY].direc
-            var obj = this.addObjectUI(res.highlightPath,nodeX,nodeY,1,0,rule)
+        while(node.x != MAP_WIDTH || node.y != MAP_HEIGHT){
+            var dir = path[node.x][node.y].sub(node)
+            var numDir
+            if(dir.x == 1 && dir.y == 0) numDir = 6
+            if(dir.x == -1 && dir.y == 0) numDir = 4
+            if(dir.x == 0 && dir.y == -1) numDir = 2
+            if(dir.x == 0 && dir.y == 1) numDir = 8
+
+            var obj = this.addObjectUI(res.highlightPath,node.x,node.y,1,0,rule)
             this.addChild(obj,0,res.highlightPath+rule)
 
-            var arrow = this.addObjectUI(res.iconArrow,nodeX,nodeY,0.5,dir,rule)
+            var arrow = this.addObjectUI(res.iconArrow,node.x,node.y,0.5,numDir,rule)
             this.addChild(arrow,0,res.iconArrow+rule)
             var seq = cc.sequence(cc.DelayTime(0.5),cc.fadeOut(0),cc.DelayTime(delay),cc.fadeIn(0), cc.DelayTime(0.5), cc.fadeOut(0.5));
             arrow.runAction(seq)
             delay += 0.1
-            var parent = path[nodeX+'-'+nodeY].parent
-            var parentList = parent.split('-');
-            nodeX = parseInt(parentList[0])
-            nodeY = parseInt(parentList[1])
+            var nodeNext = path[node.x][node.y]
+            node.x = nodeNext.x
+            node.y = nodeNext.y
             count++
             if(count>100) break
         }
     },
+
 
     initBackGround:function()
     {
@@ -394,7 +398,7 @@ var GameUI = cc.Layer.extend({
     },
 
     addInforBoxUI:function (){
-
+        cc.load()
 
     },
 
@@ -564,22 +568,6 @@ var GameUI = cc.Layer.extend({
         this.addChild(monster2,2000)
     },
 
-    convertCordinateToPos:function (corX, corY) {
-        var x = winSize.width/2 - WIDTHSIZE/2 + (corX+1)*this.cellWidth
-        var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT- corY+3.5)*this.cellWidth
-        var p = new cc.p(x,y)
-        return p
-
-    },
-
-    convertPosToCor:function (pos) {
-        var x = Math.floor((pos.x - winSize.width/2 + WIDTHSIZE/2 )/this.cellWidth - 0.5)
-        var y = Math.floor((pos.y - winSize.height/2+HEIGHTSIZE/2)/this.cellWidth)
-        var p = new cc.p(x,y)
-        return p
-
-    },
-
     initCellSlot:function ( mapArray, rule) {
         var arr = this._gameStateManager.playerA._map._mapController.intArray
         for(var i=0;i<MAP_WIDTH+1;i++){
@@ -610,15 +598,10 @@ var GameUI = cc.Layer.extend({
     
     //scale * cellwidth
     addObjectUI:function (_res, corX ,corY,_scale,direc, rule ) {
+        var convert
         var object = new cc.Sprite(_res)
         object.setScale(_scale*CELLWIDTH/object.getContentSize().height)
-        var pos
-        if(rule == 1) {
-            pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY)
-        }
-        else{
-            pos = this._gameStateManager.playerA.convertCordinateToPos2(corX, corY,2)
-        }
+        var pos = convertIndexToPos(corX, corY, rule)
         object.setPosition(pos)
         if(direc == 8){
             object.setRotation(90)
@@ -721,9 +704,9 @@ var GameUI = cc.Layer.extend({
         this.createObjectByTouch2();
         this.updateTimer(dt)
         var children = this.children;
-        for (i in children) {
-            children[i].update(dt);
-        }
+        // for (i in children) {
+        //     children[i].update(dt);
+        // }
         this._gameStateManager.update(dt)
 
         this.updateHealthUI(dt)

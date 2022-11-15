@@ -8,10 +8,11 @@ var MapController = cc.Class.extend({
     mapChange:null,
 
 
-    ctor:function (arr) {
+    ctor:function (arr, rule) {
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this.mapChange = false
+        this.rule = rule
         this.mapArray =  Array.from(
             {length:MAP_WIDTH+1},
             ()=>Array.from(
@@ -44,7 +45,7 @@ var MapController = cc.Class.extend({
             }
         }
 
-        this.findPath()
+        // this.findPath()
         this.findPathBFS()
         this.initCell();
 
@@ -61,7 +62,7 @@ var MapController = cc.Class.extend({
     initCell:function () {
         for(var i=0; i<MAP_WIDTH; i ++){
             for(var j=0; j<MAP_HEIGHT+1; j++){
-                var pos = this.convertCordinateToPos(i,j)
+                var pos = convertIndexToPos(i,j,this.rule)
                 var cell = new Cell(this.intArray[i][j],pos)
                 this.mapArray[i][j] = cell
             }
@@ -287,72 +288,53 @@ var MapController = cc.Class.extend({
     },
 
     isExistPath:function (){
-        var weight =  Array.from(
+        var listPath = Array.from(
+            {length:MAP_WIDTH+1},
+            ()=>Array.from(
+                {length:MAP_HEIGHT+1}
+            )
+        );
+        var arr =Array.from(
             {length:MAP_WIDTH+1},
             ()=>Array.from(
                 {length:MAP_HEIGHT+1},
-                ()=> 999999
+                ()=>0
             )
         );
-
-        weight[MAP_WIDTH][MAP_HEIGHT] = 0
-        weight[MAP_WIDTH-1][MAP_HEIGHT] = 50
-        // weight[MAP_WIDTH-2][MAP_HEIGHT] = 50
-        var startList = {};
-        let finalList = {};
-        var start = {
-            locX: MAP_WIDTH,
-            locY: MAP_HEIGHT,
-            parent: MAP_WIDTH+'-'+MAP_HEIGHT,
-            direc: 6
+        for(var i=0; i<=MAP_WIDTH;i++){
+            for(var j=0; j<=MAP_HEIGHT; j++){
+                if(this.intArray[i][j] <= 0) arr[i][j] = 0
+                else arr[i][j] = 1
+            }
         }
-        var start2 = {
-            locX: MAP_WIDTH-1,
-            locY: MAP_HEIGHT-1,
-            parent: (MAP_WIDTH-1)+'-'+MAP_HEIGHT,
-            direc: 8
-        }
-        var start3 = {
-            locX: MAP_WIDTH-1,
-            locY: MAP_HEIGHT,
-            parent: MAP_WIDTH+'-'+MAP_HEIGHT,
-            direc: 6
-        }
-        // if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT-1] <= 0) {
-        //     startList[start2.locX + '-' + start2.locY] = start2
-        // }
-        if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT] <= 0)
-        {
-            startList[start3.locX + '-' + start3.locY] = start3
-        }
-        finalList[start.locX+'-'+start.locY] = start
-        var cou = 0
-        while(Object.keys(startList).length >0){
-            var nodeClosest = this.getClosestToFinal(startList, weight, finalList)
-            this.addNearby(nodeClosest, startList, finalList, weight);
+        var offsetX = [1, 0,-1, 0]
+        var offsetY = [0, 1, 0,-1]
+        var queue = []
+        var des = new Vec2(MAP_WIDTH,MAP_HEIGHT)
+        listPath[des.x][des.y] = des
+        queue.push(des)
+        var cou =0
+        while (queue.length >0){
+            var node = queue[0]
+            for(var i=0; i<4;i++){
+                var direc= new Vec2(offsetX[i], offsetY[i])
+                var adj = node.add(direc)
+                if (adj.x >= 0 && adj.y >= 0 && adj.x <= MAP_WIDTH && adj.y <= MAP_HEIGHT && arr[adj.x][adj.y] == 0 && listPath[adj.x][adj.y] == undefined) {
+                    listPath[adj.x][adj.y] = node
+                    queue.push(adj)
+                }
+            }
+            queue.shift()
             cou++
             if(cou>100) break
         }
-        if(weight[0][0] < 9999){
-            return true
+        if(listPath[0][0] == undefined){
+            return false
         }
-        return false
+        return true
+
 
     },
 
-    convertCordinateToPos:function (corX, corY) {
-        var x = winSize.width/2 - WIDTHSIZE/2 + (corX+1)*CELLWIDTH
-        var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT- corY+3.5)*CELLWIDTH
-        var p = new cc.p(x,y)
-        return p
-
-    },
-    convertPosToCor:function (pos) {
-        var x = Math.floor((pos.x-winSize.width/2+WIDTHSIZE/2)/CELLWIDTH-0.5)
-        var y = Math.floor(MAP_HEIGHT+3.5 - (pos.y - winSize.height/2 + HEIGHTSIZE/2 )/CELLWIDTH+0.5)
-        var p = new cc.p(x,y)
-        return p
-
-    },
 
 });

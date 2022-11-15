@@ -7,12 +7,13 @@ var MapView = cc.Class.extend({
     towers:null,
     _mapController:null,
     _playerState: null,
+    rule:null,
 
 
-    ctor:function (playerState, intArray) {
+    ctor:function (playerState, intArray, rule) {
         this._playerState = playerState
-
-        this._mapController = new MapController(intArray)
+        this.rule = rule
+        this._mapController = new MapController(intArray,this.rule)
         this.monsters = []
         this.init();
 
@@ -29,17 +30,17 @@ var MapView = cc.Class.extend({
 
         return true;
     },
-    updateMonster:function () {
+    updateMonster:function (dt) {
         var leng = this.monsters.length
         for (i in this.monsters){
-
+            this.monsters[i].update(dt,this._mapController.listPath)
             if(this.monsters[leng-i-1].isDestroy){
                 this.monsters.splice(leng-i-1, 1)
             }
         }
     },
     update:function (dt){
-        this.updateMonster()
+        this.updateMonster(dt)
     },
 
     addMonster:function (){

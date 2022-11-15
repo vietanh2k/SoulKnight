@@ -20,10 +20,8 @@ var Monster = AnimatedSprite.extend({
         this.rootSpeed = 80
         this.energyFromDestroy = 6
         this._super(res.m1);
-        this.active = true;
-        this.visible = true;
         this._speed = new cc.p(0,0)
-        var pos = this._playerState.convertCordinateToPos2(0,0,this.rule)
+        var pos = convertIndexToPos(0,0,this.rule)
         this.setPosition(pos)
         this.des = false
         this._speed = new cc.p(0,0)
@@ -31,6 +29,7 @@ var Monster = AnimatedSprite.extend({
         this.isDestroy = false
         this._curNode2 =new Vec2(0, 0)
         this.initAnimation()
+        this.active = true
         return true;
     },
 
@@ -53,18 +52,19 @@ var Monster = AnimatedSprite.extend({
 
     },
 
-    update:function (dt){
+    update:function (dt, path){
         this.updateCurNode()
         if(this.active){
-            this.updateSpeedVec2()
+            this.updateSpeedVec2(path)
             this.updateMove(dt)
         }
 
     },
 
     updateCurNode:function (){
+
         var pos = new cc.p(this.x, this.y)
-        var cor = this._playerState.convertPosToCor2(pos,this.rule)
+        var cor = convertPosToIndex(pos,this.rule)
         this._curNode2.x = cor.x
         this._curNode2.y = cor.y
         if(cor.x == MAP_WIDTH && cor.y == MAP_HEIGHT && this.active) {
@@ -72,10 +72,11 @@ var Monster = AnimatedSprite.extend({
             this.destroy()
         }
     },
-    updateSpeedVec2:function (){
-            var nextNode = this._playerState._map._mapController.listPath[this._curNode2.x][this._curNode2.y]
-            var curPos = this._playerState.convertCordinateToPos2(this._curNode2.x, this._curNode2.y, this.rule)
-            var nextPos = this._playerState.convertCordinateToPos2(nextNode.x, nextNode.y, this.rule)
+    updateSpeedVec2:function (path){
+        if(this.active) {
+            var nextNode = path[this._curNode2.x][this._curNode2.y]
+            var curPos = convertIndexToPos(this._curNode2.x, this._curNode2.y, this.rule)
+            var nextPos = convertIndexToPos(nextNode.x, nextNode.y, this.rule)
             var nextPosVec = new Vec2(nextPos.x, nextPos.y)
             var curPosVec = new Vec2(curPos.x, curPos.y)
             var curVec = new Vec2(this.x, this.y)
@@ -84,42 +85,14 @@ var Monster = AnimatedSprite.extend({
             var dir = (desVec.sub(curVec)).normalize()
             dir.set(Math.round(dir.x), Math.round(dir.y))
             if (dir) {
-                const v = this.animationIds[dir.y +1]
-                if (v) this.play(v[dir.x +1])
-            }
-
-
-
-    },
-    updateSpeedVec:function (){
-        if(this._playerState._map._mapController.path[this._curNode] != undefined) {
-            var curNodeStr = this._curNode.split('-');
-            var curNode = new cc.p(parseInt(curNodeStr[0]), parseInt(curNodeStr[1]));
-            var curPos = this._playerState.convertCordinateToPos2(curNode.x, curNode.y, this.rule)
-
-            var nextNode = this._playerState._map._mapController.path[this._curNode].parent
-            var nextLocStr = nextNode.split('-');
-            var nextLoc = new cc.p(parseInt(nextLocStr[0]), parseInt(nextLocStr[1]));
-            var nextPos = this._playerState.convertCordinateToPos2(nextLoc.x, nextLoc.y, this.rule)
-
-            var nextPosVec = new Vec2(nextPos.x, nextPos.y)
-            var curPosVec = new Vec2(curPos.x, curPos.y)
-            var curVec = new Vec2(this.x, this.y)
-            var desVec = (nextPosVec.add(curPosVec)).div(2)
-            this._speedVec = ((desVec.sub(curVec)).normalize()).mul(this.rootSpeed)
-            var dir = (desVec.sub(curVec)).normalize()
-            dir.set(Math.round(dir.x), Math.round(dir.y))
-            if (dir) {
-                const v = this.animationIds[dir.y +1]
-                if (v) this.play(v[dir.x +1])
+                const v = this.animationIds[dir.y + 1]
+                if (v) this.play(v[dir.x + 1])
             }
         }
-        // cc.log(desVec)
-        // cc.log(this._speedVec)
+
+
 
     },
-
-
 
     updateMove:function (dt){
         this.x += this._speedVec.x*dt
