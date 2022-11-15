@@ -31,7 +31,7 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("MOVE:", packet.x, packet.y);
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
-            case gv.CMD.OPEN_CHEST_NOW:
+                case gv.CMD.OPEN_CHEST_NOW:
                 fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
             case gv.CMD.START_COOL_DOWN:

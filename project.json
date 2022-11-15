@@ -65,6 +65,7 @@
         "src/modules/testnetwork/network/Packet.js",
         "src/modules/testnetwork/ScreenNetwork.js",
 
+        "src/UI/CardInfoUI.js",
         "src/UI/CardSlot.js",
         "src/UI/CardsUI.js",
         "src/UI/ChestInfoUI.js",

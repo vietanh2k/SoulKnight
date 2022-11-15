@@ -120,7 +120,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
         let reward = this.rewardSlots[index];
         let sequence = cc.sequence(
             cc.callFunc(() => {
-                reward.setPosition(cf.WIDTH / 2, cf.HEIGHT * 0.9);
+                reward.setPosition(cf.WIDTH / 2, cf.HEIGHT * 0.85);
                 reward.visible = true;
             }),
             cc.moveBy(0.5, cc.p(0, - cf.HEIGHT * 0.1)),

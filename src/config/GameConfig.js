@@ -107,10 +107,12 @@ MW.HEIGHT = 720;
 MW.FONTCOLOR = "#1f2d96";
 MW.menuHeight = 36;
 MW.menuWidth = 123;
+
+
 var cf = cf || {};
 
-cf.WIDTH = WIDTHSIZE;
-cf.HEIGHT = HEIGHTSIZE;
+// cf.WIDTH = WIDTHSIZE;
+// cf.HEIGHT = HEIGHTSIZE;
 
 cf.TOAST_Z_ORDER = 1000;
 
