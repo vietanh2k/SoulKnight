@@ -9,9 +9,9 @@ gv.CMD.USER_LOGIN = 1;
 gv.CMD.USER_INFO = 1001;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST = 3001;
-gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
+gv.CMD.ADD_CURRENCY = 3004;
 gv.CMD.MATCH_REQUEST = 4001;
 gv.CMD.MATCH_REPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
@@ -20,26 +20,51 @@ gv.CMD.BATTLE_START = 5001;
 testnetwork = testnetwork || {};
 testnetwork.packetMap = {};
 
-
-/** Outpacket */
-
-//Handshake
-CmdSendHandshake = fr.OutPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-            this.initData(100);
-            this.setControllerId(gv.CONTROLLER_ID.SPECIAL_CONTROLLER);
-            this.setCmdId(gv.CMD.HAND_SHAKE);
-        },
-        putData: function () {
-            //pack
-            this.packHeader();
-            //update
-            this.updateSize();
-        }
+// HAND_SHAKE
+CmdSendHandshake = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setControllerId(gv.CONTROLLER_ID.SPECIAL_CONTROLLER);
+        this.setCmdId(gv.CMD.HAND_SHAKE);
+    },
+    putData: function () {
+        this.packHeader();
+        this.updateSize();
     }
-)
+});
+testnetwork.packetMap[gv.CMD.HAND_SHAKE] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+    readData: function () {
+        this.token = this.getString();
+    }
+});
+
+// USER_LOGIN
+CmdSendLogin = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.USER_LOGIN);
+    },
+    pack: function (userId) {
+        this.packHeader();
+        this.putString("section");
+        this.putInt(userId)
+        this.updateSize();
+    }
+});
+testnetwork.packetMap[gv.CMD.USER_LOGIN] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+    readData: function () {
+    }
+});
+
+// USER_INFO
 CmdSendUserInfo = fr.OutPacket.extend(
     {
         ctor: function () {
@@ -52,144 +77,8 @@ CmdSendUserInfo = fr.OutPacket.extend(
             this.updateSize();
         }
     }
-)
-
-CmdSendOpenChest = fr.OutPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.OPEN_CHEST_NOW);
-        },
-        /**
-         * send open chest request
-         * sử dụng biến sharePlayerInfo.id
-         * @param {Chest} chest: the chest to open*/
-        putData: function (chest) {
-            //pack
-            this.packHeader();
-            this.putInt(chest.id);
-            this.putInt(sharePlayerInfo.id);
-            //update
-            this.updateSize();
-        }
-    }
-)
-
-CmdSendStartCooldownChest = fr.OutPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.START_COOLDOWN);
-        },
-        /**
-         * send open START COOL DOWN request
-         * sử dụng biến sharePlayerInfo.id
-         * @param {Chest} chest: the chest to START OPENING*/
-        putData: function (chest) {
-            //pack
-            this.packHeader();
-            this.putInt(chest.id);
-            this.putInt(sharePlayerInfo.id);
-            //update
-            this.updateSize();
-        }
-    }
-)
-
-CmdSendLogin = fr.OutPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.USER_LOGIN);
-        },
-        pack: function (userId) {
-            this.packHeader();
-            this.putString("section");
-            this.putInt(userId)
-            this.updateSize();
-        }
-    }
-)
-
-CmdSendMove = fr.OutPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.MOVE);
-        },
-        pack: function (direction) {
-            this.packHeader();
-            this.putShort(direction);
-            this.updateSize();
-        }
-    }
-)
-
-
-CmdMatchRequest = fr.OutPacket.extend(
-    {
-        ctor:function()
-        {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.MATCH_REQUEST);
-        },
-        pack:function(){
-            this.packHeader();
-            this.updateSize();
-        }
-    }
-)
-
-CmdMatchConfirm = fr.OutPacket.extend(
-    {
-        ctor:function()
-        {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.MATCH_CONFIRM);
-        },
-        pack:function(){
-            this.packHeader();
-            this.updateSize();
-        }
-    }
-)
-
-
-/**
- * InPacket
- */
-
-//Handshake
-testnetwork.packetMap[gv.CMD.HAND_SHAKE] = fr.InPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-        },
-        readData: function () {
-            this.token = this.getString();
-        }
-    }
 );
-
-testnetwork.packetMap[gv.CMD.USER_LOGIN] = fr.InPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-        },
-        readData: function () {
-        }
-    }
-);
-
-
 testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
-
     ctor: function () {
         this._super();
     },
@@ -226,15 +115,10 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
 
     readCardData: function (i) { // fake data
         if (i < 10) { // fake data
-            let id = this.getInt();
-            let name = this.getString();
             let type = this.getByte();
             let level = this.getInt();
-            let quantity = this.getInt();
-            let attackSpeed = this.getDouble();
-            let attackRange = this.getDouble();
+            let fragment = this.getInt();
         }
-        // return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
         return new Card(fake.collection[i].id, fake.collection[i].level, fake.collection[i].fragment); // fake data
     },
 
@@ -259,8 +143,31 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
     },
 });
 
-testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
+// OPEN_CHEST_NOW
+CmdSendOpenChest = fr.OutPacket.extend(
     {
+        ctor: function () {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.OPEN_CHEST);
+        },
+        /**
+         * send open chest request
+         * sử dụng biến sharePlayerInfo.id
+         * @param {int} gemSpent gem spent
+         * @param {Chest} chest the chest to open
+         */
+        putData: function (chest, gemSpent) {
+            //pack
+            this.packHeader();
+            this.putInt(chest.id);
+            this.putInt(gemSpent);
+            //update
+            this.updateSize();
+        }
+    }
+);
+testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
         ctor: function () {
             this._super();
         },
@@ -289,25 +196,36 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend(
         },
 
         readCardData: function () {
-            let id = this.getInt();
-            let name = this.getString();
             let type = this.getByte();
             let level = this.getInt();
-            let quantity = this.getInt();
-            let attackSpeed = this.getDouble();
-            let attackRange = this.getDouble();
-            return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
+            let fragment = this.getInt();
+            return new Card(type, level, fragment);
         },
     }
 );
 
+// START_COOLDOWN
+CmdSendStartCooldownChest = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.START_COOLDOWN);
+    },
 
-
+    putData: function (chest) {
+        //pack
+        this.packHeader();
+        this.putInt(chest.id);
+        this.putInt(sharePlayerInfo.id);
+        //update
+        this.updateSize();
+    }
+});
 testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
-
     ctor: function () {
         this._super();
     },
+
     readData: function () {
         let chestID = this.getInt();
         let openOnServerTimestamp = this.getLong();
@@ -335,43 +253,122 @@ testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
     }
 });
 
-testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
+// ADD_CURRENCY
+CmdSendAddCurrency = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.ADD_CURRENCY);
+    },
+
+    putData: function (isGem, amount) {
+        this.packHeader();
+        this.putInt(0 + isGem);
+        this.putInt(amount);
+        this.updateSize();
+    },
+});
+testnetwork.packetMap[gv.CMD.ADD_CURRENCY] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+
+    readData: function () {
+        let type = this.getByte();
+        let amount = this.getInt();
+        let status = this.getString();
+        cc.log('Get add currency response from server. type: ' + type + ', amount: ' + amount + ', status: ' + status + '.');
+
+        let serverNow = this.getLong();
+        Utils.updateTimeDiff(serverNow);
+
+        if (status === "Success") {
+            this.updatePlayerResource(type, amount);
+            cc.director.getRunningScene().currencyPanel.updateLabels();
+        } else {
+            Utils.addToastToRunningScene(status);
+        }
+    },
+
+    updatePlayerResource: function (type, amount) {
+        if (type === 0) sharePlayerInfo.gem += amount;
+        else sharePlayerInfo.gold += amount;
+    },
+});
+
+// MOVE
+CmdSendMove = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.MOVE);
+    },
+    pack: function (direction) {
+        this.packHeader();
+        this.putShort(direction);
+        this.updateSize();
+    }
+});
+testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+    readData: function () {
+        this.x = this.getInt();
+        this.y = this.getInt();
+    }
+});
+
+// MATCH_REQUEST
+CmdMatchRequest = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.MATCH_REQUEST);
+    },
+    pack: function () {
+        this.packHeader();
+        this.updateSize();
+    }
+});
+
+// MATCH_CONFIRM
+CmdMatchConfirm = fr.OutPacket.extend(
     {
         ctor: function () {
             this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.MATCH_CONFIRM);
         },
-        readData: function () {
-            this.x = this.getInt();
-            this.y = this.getInt();
+        pack: function () {
+            this.packHeader();
+            this.updateSize();
         }
-    }
-);
+    });
 
-testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
-    {
-        ctor:function()
-        {
-            this._super();
-        },
-        readData:function(){
-            var scene = new cc.Scene();
-            scene.addChild(new GameUI(this));
-            cc.director.runScene(new cc.TransitionFade(1.2, scene));
-            cc.log('=================')
-        }
+
+testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+    readData: function () {
+        this.x = this.getInt();
     }
-);
-testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
-    {
-        ctor:function()
-        {
-            this._super();
-        },
-        readData:function(){
-            this.x = this.getInt();
-        }
+});
+
+
+testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+    readData: function () {
+        var scene = new cc.Scene();
+        scene.addChild(new GameUI(this));
+        cc.director.runScene(new cc.TransitionFade(1.2, scene));
+        cc.log('=================')
     }
-);
+});
+
 
 
 

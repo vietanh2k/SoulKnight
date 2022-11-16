@@ -31,10 +31,10 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("MOVE:", packet.x, packet.y);
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
-            case gv.CMD.OPEN_CHEST_NOW:
+            case gv.CMD.OPEN_CHEST:
                     cc.log('receive open chest now response') // todo chuyển các lời gọi hàm từ Packet.js sang đây
                 break;
-            case gv.CMD.START_COOL_DOWN:
+            case gv.CMD.START_COOLDOWN:
                 // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
             case gv.CMD.MATCH_REPONSE:
@@ -74,15 +74,21 @@ testnetwork.Connector = cc.Class.extend({
         pk.putData(chest);
         this.gameClient.sendPacket(pk);
     },
-    /**
-     * gửi yêu cầu mở chest
-     * */
+
     sendOpenChestRequest: function (chest, gemSpent) {
         cc.log('Send open chest request for chest ID ' + chest.id + ' by spend ' + gemSpent + ' gem(s).');
         let pk = this.gameClient.getOutPacket(CmdSendOpenChest);
         pk.putData(chest, gemSpent);
         this.gameClient.sendPacket(pk);
     },
+
+    sendAddCurrencyRequest: function (isGem, amount) {
+        cc.log('Send add currency request: isGem: ' + isGem + ', amount:' + amount + '.');
+        let pk = this.gameClient.getOutPacket(CmdSendAddCurrency);
+        pk.putData(isGem, amount);
+        this.gameClient.sendPacket(pk);
+    },
+
     sendMatchRequest:function(){
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);
@@ -90,6 +96,7 @@ testnetwork.Connector = cc.Class.extend({
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
+
     sendConfirmMatch:function(){
         cc.log("Match Confirm:");
         var pk = this.gameClient.getOutPacket(CmdMatchConfirm);

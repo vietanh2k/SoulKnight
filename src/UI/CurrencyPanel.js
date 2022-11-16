@@ -63,8 +63,7 @@ var CurrencyPanel = cc.Layer.extend({
         });
         this.leftCurrencyBtn.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                sharePlayerInfo.gold += cf.AMOUNT_BTN_GOLD;
-                this.updateLabels();
+                testnetwork.connector.sendAddCurrencyRequest(false, cf.AMOUNT_BTN_GOLD);
             } else {
                 cc.log('allBtnIsActive is false');
             }
@@ -79,8 +78,7 @@ var CurrencyPanel = cc.Layer.extend({
         });
         this.rightCurrencyBtn.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                sharePlayerInfo.gem += cf.AMOUNT_BTN_GEM;
-                this.updateLabels();
+                testnetwork.connector.sendAddCurrencyRequest(true, cf.AMOUNT_BTN_GEM);
             } else {
                 cc.log('allBtnIsActive is false');
             }
