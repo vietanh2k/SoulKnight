@@ -123,7 +123,8 @@ var CardSlot = ccui.Button.extend({
             });
             this.progress.addChild(this.progressGlow);
             this.progress.attr({
-                x: this.progressPanel.width / 2 * ratio,
+                anchorX: 0,
+                x: this.progressPanel.width * 0.025,
                 y: this.progressPanel.height / 2,
                 scaleX: this.progressPanel.width * 0.95 * ratio / this.progress.width,
                 scaleY: this.progressPanel.height * 0.8 / this.progress.height,
