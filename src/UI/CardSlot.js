@@ -126,6 +126,14 @@ var CardSlot = ccui.Button.extend({
         })
         this.lbFragment.enableShadow();
         this.progressPanel.addChild(this.lbFragment);
+
+        this.rarityParticle = new cc.ParticleSystem(asset.miniatureRaritiesParticle_plist[card.rarity]);
+        this.rarityParticle.attr({
+            x: this.width / 2,
+            y: this.height / 2,
+            scale: 1,
+        });
+        this.addChild(this.rarityParticle);
     },
 
     updateClickEventListener: function () {

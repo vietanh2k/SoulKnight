@@ -202,6 +202,7 @@ var CardsUI = cc.Layer.extend({
             scale: cf.WIDTH / (4 + 5 * 0.3) / this.exitBtn.width,
         });
         this.exitBtn.addClickEventListener(() => {
+            this.swapInCardSlot.removeFromParent(true);
             this.quitAddCardToDeck();
         });
         this.addChild(this.exitBtn);

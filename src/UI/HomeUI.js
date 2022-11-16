@@ -103,14 +103,6 @@ var HomeUI = cc.Layer.extend({
         });
         this.addChild(this.arena);
 
-        this.arenaParticle = new cc.ParticleSystem(asset.arenaParticle_plist);
-        this.arenaParticle.attr({
-            x: cf.WIDTH / 2,
-            y: this.arena.y + this.arena.height * this.arena.scale / 2,
-            scale: cf.WIDTH * 1.5 / this.arena.width,
-        });
-        this.addChild(this.arenaParticle);
-
         this.lbArena = new ccui.Text('ĐỒI NGỦ YÊN', asset.svnSupercellMagic_ttf, 60);
         this.lbArena.attr({
             anchorY: 0,
@@ -118,6 +110,14 @@ var HomeUI = cc.Layer.extend({
         });
         this.lbPlayerTrophy.enableShadow();
         this.arena.addChild(this.lbArena);
+
+        this.arenaParticle = new cc.ParticleSystem(asset.arenaParticle_plist);
+        this.arenaParticle.attr({
+            x: cf.WIDTH / 2,
+            y: this.arena.y + this.arena.height * this.arena.scale / 2,
+            scale: 2,
+        });
+        this.addChild(this.arenaParticle);
 
         this.btnBattle = new ccui.Button(asset.btnBattle_png, asset.btnBattlePressing_png, asset.btnBattle_png);
         this.btnBattle.attr({
