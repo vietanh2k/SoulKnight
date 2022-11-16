@@ -24,6 +24,8 @@ var GameUI = cc.Layer.extend({
         this.init();
         this.scheduleUpdate();
 
+        GameUI.instance = this
+
     },
     init:function () {
 
@@ -37,7 +39,7 @@ var GameUI = cc.Layer.extend({
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
         // this.addChild(this._gameStateManager.playerA._map.monsters[0],2000)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
-        this.callMonster()
+        //this.callMonster()
         // this._gameStateManager.playerA._map.monsters[0].updateDes()
 
         // this.schedule(this.update, 0.1);
@@ -93,7 +95,8 @@ var GameUI = cc.Layer.extend({
             if (dist< 0.9*timer.getContentSize().width/2 ){
                 cc.log('timeeeeeeeeeeeeeeeeeeeeeee')
                 if(this._gameStateManager.canTouchNewWave){
-                    this.getNewWave()
+                    //this.getNewWave()
+                    testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);
                 }
             }
         }
@@ -559,13 +562,20 @@ var GameUI = cc.Layer.extend({
         var strNumWave = this._gameStateManager.curWave +'/'+MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)
         this._gameStateManager._timer.resetTime(TIME_WAVE)
-        this.callMonster()
+        //this.callMonster()
     },
 
     callMonster:function () {
         var monster = this._gameStateManager.playerA._map.addMonster()
         this.addChild(monster,2000)
         var monster2 = this._gameStateManager.playerB._map.addMonster()
+        this.addChild(monster2,2000)
+    },
+
+    addMonsterToBoth: function () {
+        const monster = this._gameStateManager.playerA._map.addMonster()
+        this.addChild(monster,2000)
+        const monster2 = this._gameStateManager.playerB._map.addMonster()
         this.addChild(monster2,2000)
     },
 
@@ -725,3 +735,5 @@ GameUI.scene = function () {
     scene.addChild(layer);
     return scene;
 };
+
+GameUI.instance = null

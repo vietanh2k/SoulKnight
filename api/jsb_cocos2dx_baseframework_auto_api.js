@@ -388,7 +388,7 @@ int
  * @param {long long} arg0
  * @return {fr.OutPacket}
  */
-putLong : function (
+putLong : function (long
 )
 {
     return fr.OutPacket;

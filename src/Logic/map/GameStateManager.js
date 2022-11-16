@@ -1,5 +1,7 @@
 MAX_WAVE = 25;
 
+let GameStateManagerInstance = null
+
 var GameStateManager = cc.Class.extend({
     playerA: null,
     playerB: null,
@@ -9,8 +11,13 @@ var GameStateManager = cc.Class.extend({
     curWave:null,
     winner:null,
 
+    UPDATE_TYPE_NORMAL: 0,
+    UPDATE_TYPE_NO_UPDATE: 1,
+    UPDATE_TYPE_UPDATE_TO_FRAME_N: 2,
+
 
     ctor:function (pkg) {
+        GameStateManagerInstance = this
 
         this.init();
         this.playerA = new PlayerState(1)
@@ -20,6 +27,15 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false
         this.curWave = 1
         this.winner = null
+
+        this.sumDt = 0;
+        this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME
+        this.frameCount = 0
+
+        this.updateType = this.UPDATE_TYPE_NORMAL
+        this.updateToFrameN = 0
+
+        this.waveCount = 0
 
     },
     init:function () {
@@ -74,12 +90,36 @@ var GameStateManager = cc.Class.extend({
             this.winner = 1
         }
     },
-    update:function (dt){
-        this.playerA.update(dt)
-        this.playerB.update(dt)
+
+    frameUpdate: function () {
+        this.playerA.update(this.dt)
+        this.playerB.update(this.dt)
         this.isClearWave()
         this.checkWinner()
-    }
+        this.frameCount++
+    },
+
+    update:function (ccDt){
+        if (this.updateType == this.UPDATE_TYPE_NO_UPDATE) {
+            return
+        }
+
+        /*if (this.updateType == this.UPDATE_TYPE_UPDATE_TO_FRAME_N) {
+            let remainFrame = this.updateToFrameN - this.frameCount
+            for (let i = 0; i < remainFrame; i++) {
+                this.frameUpdate()
+            }
+            return
+        }*/
+
+        if (this.updateType == this.UPDATE_TYPE_NORMAL) {
+            this.sumDt += ccDt;
+            while (this.sumDt > this.dt) {
+                this.frameUpdate()
+                this.sumDt -= this.dt
+            }
+        }
+    },
 
 
 });
