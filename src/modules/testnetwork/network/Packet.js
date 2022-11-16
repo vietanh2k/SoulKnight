@@ -226,13 +226,13 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
 
     readCardData: function (i) { // fake data
         if (i < 10) { // fake data
-            let id = this.getInt();
-            let name = this.getString();
+            // let id = this.getInt();
+            // let name = this.getString();
             let type = this.getByte();
             let level = this.getInt();
-            let quantity = this.getInt();
-            let attackSpeed = this.getDouble();
-            let attackRange = this.getDouble();
+            let fragment = this.getInt();
+            // let attackSpeed = this.getDouble();
+            // let attackRange = this.getDouble();
         }
         // return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
         return new Card(fake.collection[i].id, fake.collection[i].level, fake.collection[i].fragment); // fake data
