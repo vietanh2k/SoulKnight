@@ -4,7 +4,8 @@ var Tower = cc.Class.extends({
             this.attackCoolDown = 0;
             this.map = map;
             this.target = [];
-
+            this.position = {x: 0, y: 0}
+            this.physicbox = null;
 
         },
         getAttackSpeed: function () {
@@ -47,7 +48,7 @@ var Tower = cc.Class.extends({
                 active = false;
             }
             if (active) {
-                if (getPending() > 0) {
+                if (this.getPending() > 0) {
                     self.updatePending(dt);
                 } else {
                     this.target = [];
@@ -70,14 +71,40 @@ var Tower = cc.Class.extends({
         },
         checkIsTarget: function (another) {
             return false;
+        },
+        getLevel: function () {
+            return this.level;
+        },
+        getAttackSpeed: function () {
+            return 0;
+        },
+        getRange: function () {
+            return 0;
+        },
+        getConfig: function (){
+            return {};
         }
 
     }
 )
+
+Tower.TOWER_FACTORY = {}
+
 Tower.prototype.readConfig = function () {
-    var fileUtil = cc.FileUtils.getInstance();
-    var data = fileUtil.getStringFromFile('res/config/Tower.json');
-    var jData = JSON.parse(data);
-    return jData;
+    if (Tower.CONFIG == undefined) {
+        Tower.CONFIG = cc.load('res/config/Tower.json')
+    }
+    return Tower.CONFIG;
+}
+
+/**
+ * @param {Card} card
+ * @return {Tower} tower
+ * */
+Tower.prototype.getOrCreate = function (card) {
+    if (Tower.TOWER_FACTORY == undefined) {
+        Tower.TOWER_FACTORY = {}
+    }
+    return Tower.TOWER_FACTORY[card.id]();
 }
 
