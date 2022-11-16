@@ -248,10 +248,11 @@ var CardsUI = cc.Layer.extend({
                     scale: slotWidth / this.swapInCardSlot.width,
                 });
                 this.swapInCardSlot.outline.removeFromParent(true);
-                this.swapInCardSlot.parent = null;
+                this.swapInCardSlot.removeFromParent(false);
                 this.deckPanel.addChild(this.swapInCardSlot);
                 this.deckSlots[slot] = this.swapInCardSlot;
                 this.swapInCardSlot.inDeck = true;
+                this.swapInCardSlot.updateClickEventListener();
             })
         );
         this.swapInCardSlot.runAction(sequence);

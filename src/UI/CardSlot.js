@@ -25,39 +25,7 @@ var CardSlot = ccui.Button.extend({
         this.setSwallowTouches(false);
 
         this.inDeck = inDeck;
-
-        if (this.inDeck) {
-            this.addClickEventListener(() => {
-                if (!this.parent.parent.isScrolling) {
-                    if (this.parent.parent.parent.allBtnIsActive) {
-                        this.parent.parent.parent.addChild(new CardInfoUI(card), 4);
-                        this.parent.parent.parent.allBtnIsActive = false;
-                    } else if (this.parent.parent.isShowingAddCardToDeck) {
-                        let i;
-                        for (i = 0; i < sharePlayerInfo.deck.length; i++) {
-                            if (sharePlayerInfo.deck[i].id === this.card.id) {
-                                sharePlayerInfo.deck[i] = sharePlayerInfo.collection.find(element => element.id === this.parent.parent.pendingCardId);
-                                break;
-                            }
-                        }
-                        this.parent.parent.updateDeckSlot(i);
-                    } else {
-                        cc.log('allBtnIsActive is false and CardsUI is not showing add card to deck');
-                    }
-                }
-            });
-        } else {
-            this.addClickEventListener(() => {
-                if (!this.parent.isScrolling) {
-                    if (this.parent.parent.allBtnIsActive) {
-                        this.parent.parent.addChild(new CardInfoUI(card), 4);
-                        this.parent.parent.allBtnIsActive = false;
-                    } else {
-                        cc.log('allBtnIsActive is false');
-                    }
-                }
-            });
-        }
+        this.updateClickEventListener();
 
         this.texture = new cc.Sprite(card.texture);
         this.texture.attr({
@@ -158,5 +126,40 @@ var CardSlot = ccui.Button.extend({
         })
         this.lbFragment.enableShadow();
         this.progressPanel.addChild(this.lbFragment);
+    },
+
+    updateClickEventListener: function () {
+        if (this.inDeck) {
+            this.addClickEventListener(() => {
+                if (!this.parent.parent.isScrolling) {
+                    if (this.parent.parent.parent.allBtnIsActive) {
+                        this.parent.parent.parent.addChild(new CardInfoUI(this.card), 4);
+                        this.parent.parent.parent.allBtnIsActive = false;
+                    } else if (this.parent.parent.isShowingAddCardToDeck) {
+                        let i;
+                        for (i = 0; i < sharePlayerInfo.deck.length; i++) {
+                            if (sharePlayerInfo.deck[i].id === this.card.id) {
+                                sharePlayerInfo.deck[i] = sharePlayerInfo.collection.find(element => element.id === this.parent.parent.pendingCardId);
+                                break;
+                            }
+                        }
+                        this.parent.parent.updateDeckSlot(i);
+                    } else {
+                        cc.log('allBtnIsActive is false and CardsUI is not showing add card to deck');
+                    }
+                }
+            });
+        } else {
+            this.addClickEventListener(() => {
+                if (!this.parent.isScrolling) {
+                    if (this.parent.parent.allBtnIsActive) {
+                        this.parent.parent.addChild(new CardInfoUI(this.card), 4);
+                        this.parent.parent.allBtnIsActive = false;
+                    } else {
+                        cc.log('allBtnIsActive is false');
+                    }
+                }
+            });
+        }
     },
 });
