@@ -162,7 +162,7 @@ getError : function (
 getLong : function (
 )
 {
-    return long long;
+    return long;
 },
 
 /**
