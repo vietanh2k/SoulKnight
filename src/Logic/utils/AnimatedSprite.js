@@ -77,6 +77,41 @@ const AnimatedSprite = cc.Sprite.extend({
 
         return ret
     },
+    // return loaded animation id
+    /**
+     * Load animation từ một list các file
+     * @param {Array} filenames: tên file
+     * @param {String} name: tên animation
+     * @param {Number} delay: thời gian giữa 2 frame tinhs bằng milisecond
+     * */
+    loadFromMultiFile: function(filenames, name,delay = 1) {
+        filenames.map(filename=>{
+            if(cc.SpriteFrameCache.getInstance().getSpriteFrame(filename)==null){
+                cc.SpriteFrameCache.getInstance().addSpriteFrame(new cc.SpriteFrame(filename), filename);
+            }
+        })
+
+        const animationName = name
+        let animation = cc.animationCache.getAnimation(animationName)
+
+        if (animation == null) {
+            const animationFrames = [];
+            filenames.map(filename=>{
+                animationFrames.push(cc.SpriteFrameCache.getInstance().getSpriteFrame(filename))
+            })
+
+            animation = new cc.Animation(animationFrames, delay/1000)
+            cc.animationCache.addAnimation(animation, animationName)
+        }
+
+        const ret = this.animations.length
+        this.animations.push(animation)
+        this.animates.push(new cc.Animate(this.animations[ret]))
+        this.animateActions.push(new cc.RepeatForever(this.animates[ret]))
+        this.animateActions[ret].retain()
+
+        return ret
+    },
 
     // play animation id
     play: function (animationId) {

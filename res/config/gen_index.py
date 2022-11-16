@@ -5,6 +5,7 @@ import json
 index = {}
 for path, concept in zip(paths, concepts):
 	js = json.load(open(path))
+	print(js)
 	for k in js[concept]:
 		_type = len(index)		
 		index[_type] = {

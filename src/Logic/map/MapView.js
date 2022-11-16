@@ -1,4 +1,6 @@
-
+/**
+ * Đối tượng Map trong thiết kế
+ * */
 var MapView = cc.Class.extend({
     trees: null,
     monsters: null,
@@ -15,6 +17,8 @@ var MapView = cc.Class.extend({
         this.rule = rule
         this._mapController = new MapController(intArray,this.rule)
         this.monsters = []
+        this.towers = []
+        this.bullets = []
         this.init();
 
         this.cells = []
@@ -148,14 +152,37 @@ var MapView = cc.Class.extend({
         }
     },
 
+    updateTower:function (dt) {
+        try {
+            var leng = this.towers.length
+            for (i in this.towers){
+                this.towers[i].logicUpdate(this._playerState, dt)
+                if(this.towers[leng-i-1].isDestroy){
+                    this.towers.splice(leng-i-1, 1)
+                }
+            }
+        } catch (e) {
+            cc.log(e)
+            cc.log(e.stack)
+        }
+    },
+
     renderMonster: function () {
         for (i in this.monsters){
             this.monsters[i].render(this._playerState)
         }
     },
+    renderTower: function () {
+        for (i in this.towers){
+            this.towers[i].render(this._playerState)
+        }
+    },
 
     update:function (dt){
+        this.updateTower(dt)
         this.updateMonster(dt)
+
+        this.renderTower()
         this.renderMonster()
     },
 
@@ -163,6 +190,17 @@ var MapView = cc.Class.extend({
         var monster = new Monster(1, this._playerState)
         this.monsters.push(monster)
         return monster
+    },
+    deployTower: function (card, position){
+        cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
+        var cell = this.getCellAtPosition(position);
+        var tower = new Tower("1", this._playerState, position);
+        this.towers.push(tower)
+        if(cell.objectOn==undefined || cell.objectOn==null ){
+            cell.objectOn = tower;
+        }
+
+        return tower
     },
 
     getCellAtPosition: function (position) {
@@ -174,6 +212,24 @@ var MapView = cc.Class.extend({
         }
 
         return null;
+    },
+    /**Lấy danh sách đối tượng trong 1 range
+     * todo: update logic
+     * @param {Vec2} objectA: vị trí trên map
+     * @param {Number} range: độ dài tính theo ô*/
+    getObjectInRange: function (objectA, range){
+        return []
+
+    },
+    /**
+     * Thêm 1 bullet vào map
+     * @param {Bullet} bullet*/
+    addNewBullet: function (bullet){
+        if(this.bullets==undefined){
+            this.bullets = [bullet]
+        } else {
+            this.bullets.push(bullet)
+        }
     }
 
 

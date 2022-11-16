@@ -1,37 +1,56 @@
-var Bullet = ActiveGameObject.extend({
+var Bullet = cc.Class.extend({
+    ctor: function (target, speed, damage, radius) {
+        this._super();
+        this.target = target
+        this.speed = speed
+        this.damage = damage
+        this.radius = radius
 
-    abstract float getSpeed();
-    abstract float getDamage();
-    abstract float getRadius();
-    abstract Vec2 getTargetPosition();
-    abstract boolean canAttack(ActiveGameObject object);
+    },
 
-    @Override
-    public void update(PlayerState playerState, float dt) {
-    if(this.active){
-    if(euclid_distance(position, getTargetPosition())> getSpeed()){
-    Vec2 direction = getTargetPosition().sub(position).l2norm();
-    this.position.x += direction.x * getSpeed();
-    this.position.y += direction.y * getSpeed();
-}
-else {
-    explose(playerState);
-    active = false;
-}
-}
-// TODO Auto-generated method stub
+    getSpeed: function () {
+        return this.speed
+    },
+    getDamage: function () {
+        return this.damage;
+    },
+    getRadius: function () {
+        return this.radius;
+    },
+    getTargetPosition: function () {
+        if (this.target.hasOwnProperty("position")) {
+            return this.target.position
+        } else {
+            return this.target
+        }
+    },
+    canAttack: function (object) {
+        return false;
 
-}
+    },
+    logicUpdate: function (playerState, dt) {
+        if (this.active) {
+            if (euclid_distance(position, getTargetPosition()) > getSpeed()) {
+                let direction = this.getTargetPosition().sub(position).l2norm();
+                this.position.x += direction.x * this.getSpeed() * dt;
+                this.position.y += direction.y * this.getSpeed() * dt;
+            } else {
+                this.explose(playerState);
+                active = false;
+            }
+        }
 
-explose(PlayerState playerState){
-    Map map = playerState.getMap();
-    List<ActiveGameObject> objectList = map.getObjectInRange(getTargetPosition(), getRadius());
-    for (ActiveGameObject object: objectList ) {
-        if(canAttack(object)){
-            object.health -= getDamage();
+    },
+
+    explose: function (playerState) {
+        const map = playerState.getMap();
+        let objectList = map.getObjectInRange(this.getTargetPosition(), this.getRadius());
+        for (let object of objectList) {
+            if (this.canAttack(object)) {
+                object.health -= this.getDamage();
+            }
         }
     }
-}
 
 
 })

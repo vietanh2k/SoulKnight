@@ -3,7 +3,7 @@ var TWizard = Tower.extend({
     ctor: function (map) {
         this._super(map)
         if(TWizard.CONFIG == undefined){
-            TWizard.CONFIG = Tower.prototype.readConfig()["1"]
+            TWizard.CONFIG = Tower.readConfig()["1"]
         }
 
     },
