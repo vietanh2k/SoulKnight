@@ -524,7 +524,7 @@ cc.NodeLoader = cc.Class.extend({
 
         // Support for stripping relative file paths, since ios doesn't currently
         // know what to do with them, since its pulling from bundle.
-        // Eventually this should be handled by a client side assets manager
+        // Eventually this should be handled by a client side asset manager
         // interface which figured out what resources to load.
         // TODO Does this problem exist in C++?
         animation = cc.BuilderReader.lastPathComponent(animation);
