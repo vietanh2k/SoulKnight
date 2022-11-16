@@ -24,6 +24,7 @@ var res = {
     scene : "Scene.json",
     shopScene : "shopScene.json",
     shopItem : "shopItem.json",
+    popupGold : "popupGold.json",
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',
     font_normal : 'asset/font/SVN-Avo bold.ttf',
