@@ -49,6 +49,17 @@ testnetwork.Connector = cc.Class.extend({
                 fr.getCurrentScreen().updateShop(packet);
                 cc.log('offer reponse succeededddddddddddd')
                 break;
+            case gv.CMD.BATTLE_SYNC_START:
+                cc.log("=========================gv.CMD.BATTLE_SYNC_START================================")
+                this.sendSyncStartConfirm(packet.syncN)
+                break
+            case gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N:
+                cc.log("=========================gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N================================")
+                this.sendSyncUpdateToFrameNConfirm(packet.syncN, packet.frameN)
+                break
+            case gv.CMD.BATTLE_ACTIONS:
+                cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
+                break
 
         }
     },
@@ -99,6 +110,37 @@ testnetwork.Connector = cc.Class.extend({
         var pk = this.gameClient.getOutPacket(CmdMatchConfirm);
         pk.pack(null);
         this.gameClient.sendPacket(pk);
+    },
+
+    sendSyncStartConfirm: function(syncN){
+        cc.log("sendSyncStartConfirm");
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleSyncStartConfirm);
+        pk.pack(syncN, GameStateManagerInstance.frameCount);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendSyncUpdateToFrameNConfirm: function(syncN, maxFrame){
+        cc.log("sendSyncUpdateToFrameNConfirm");
+
+        const remain = maxFrame - GameStateManagerInstance.frameCount
+        for (let i = 0; i < remain; i++) {
+            GameStateManagerInstance.frameUpdate()
+        }
+
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleSyncClientUpdateToFrameNConfirm);
+        pk.pack(syncN);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendActions: function (actions) {
+        cc.log("sendActions");
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleActions);
+        pk.pack(actions);
+        this.gameClient.sendPacket(pk);
+    }
     },
     sendRequestOffer:function(){
         var pk = this.gameClient.getOutPacket(CmdOfferRequest);

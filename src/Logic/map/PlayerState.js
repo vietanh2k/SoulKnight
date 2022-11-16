@@ -4,7 +4,7 @@ var PlayerState = cc.Class.extend({
     uid: null,
     energy: null,
     health: null,
-    _map:null,
+    //_map:null,
     deck:null,
     intArray:null,
 
@@ -19,7 +19,7 @@ var PlayerState = cc.Class.extend({
             )
         );
         this.init();
-
+        this._map = null
 
     },
     init:function () {
@@ -67,6 +67,10 @@ var PlayerState = cc.Class.extend({
 
     update:function (dt){
         this._map.update(dt)
+    },
+
+    getMap: function () {
+        return this._map
     }
 
 });
