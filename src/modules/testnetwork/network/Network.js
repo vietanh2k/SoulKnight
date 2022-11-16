@@ -32,7 +32,7 @@ testnetwork.Connector = cc.Class.extend({
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
             case gv.CMD.OPEN_CHEST:
-                    cc.log('receive open chest now response') // todo chuyển các lời gọi hàm từ Packet.js sang đây
+                    cc.log('receive open chest now response')
                 break;
             case gv.CMD.START_COOLDOWN:
                 // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
