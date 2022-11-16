@@ -1,38 +1,22 @@
-
-
-var Monster = AnimatedSprite.extend({
-    _playerState: null,
-    _type:null,
-    _monsterType:null,
-    _curNode:null,
-    des:null,
-    _speedVec:null,
-    rootSpeed: 30,
-    energyFromDestroy:null,
-    _speed:null,
-    animationIds:null,
-    isDestroy:null,
-
-    ctor:function (type, playerState) {
-        this._playerState = playerState
-        this.rule = this._playerState.rule
-        this.rootSpeed = 80
-        this.energyFromDestroy = 6
+const Monster = AnimatedSprite.extend({
+    ctor: function (type, playerState) {
         this._super(res.m1);
-        this.active = true;
-        this.visible = true;
-        this._speed = new cc.p(0,0)
-        var pos = this._playerState.convertCordinateToPos2(0,0,this.rule)
-        this.setPosition(pos)
-        this.des = false
-        this._speed = new cc.p(0,0)
-        this._speedVec = new Vec2(0,0)
+        this._playerState = playerState
         this.isDestroy = false
         this.initAnimation()
+        this.active = true
+        this.visible = true
+        this.energyFromDestroy = 6
+        this.renderRule = this._playerState.rule
+
+        this.position = new Vec2(MAP_CONFIG.CELL_WIDTH / 2.0, MAP_CONFIG.CELL_HEIGHT / 2.0)
+        this.prevPosition = new Vec2(0,0)
+        this.speed = 30.0
+
         return true;
     },
 
-    initAnimation:function (){
+    initAnimation: function (){
         const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
         const moveDownRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 12, 23, 1)
         const moveRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 24, 35, 1)
@@ -43,77 +27,103 @@ var Monster = AnimatedSprite.extend({
         const moveDownLeftAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_down_left (%d).png', 1, 12, 1)
 
         this.animationIds = [
-            [moveDownLeftAnimId,           moveDownAnimId,        moveDownRightAnimId   ],
-            [moveLeftAnimId,             moveUpAnimId,        moveRightAnimId          ],
-            [moveUpLeftAnimId,         moveUpAnimId,         moveUpRightAnimId        ],
+            [ moveDownLeftAnimId,       moveDownAnimId,          moveDownRightAnimId ],
+            [ moveLeftAnimId,           moveUpAnimId,            moveRightAnimId     ],
+            [ moveUpLeftAnimId,         moveUpAnimId,            moveUpRightAnimId   ],
         ]
         this.play(0)
-
     },
 
-    update:function (dt){
-        this.updateCurNode()
-        if(this.active){
-            this.updateSpeedVec()
-            this.updateMove(dt)
-        }
-
-    },
-
-    updateCurNode:function (){
-        // this.updatePath()
-        var pos = new cc.p(this.x, this.y)
-        var cor = this._playerState.convertPosToCor2(pos,this.rule)
-        this._curNode = cor.x+'-' + cor.y
-        if(cor.x == MAP_WIDTH && cor.y == MAP_HEIGHT && this.active) {
-            this.des = true
+    debug: function (map) {
+        const currentCell = map.getCellAtPosition(this.position);
+        if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
             this.destroy()
+            cc.log('destroy')
+
+            /*while (true) {
+                const c = map.getCellAtPosition(this.position);
+                let x = 0
+                x++
+            }*/
+        }
+    },
+
+    logicUpdate: function (playerState, dt){
+        this.prevPosition.set(this.position.x, this.position.y)
+
+        const map = playerState.getMap()
+        const distance = this.speed * dt
+        this.route(map, distance, null)
+
+        this.debug(map)
+    },
+
+    route: function (map, distance, prevCell) {
+        let currentCell = map.getCellAtPosition(this.position);
+
+        if (currentCell === prevCell) {
+            currentCell = currentCell.getNextCell()
         }
 
-    },
-    updateSpeedVec:function (){
-        if(this._playerState._map._mapController.path[this._curNode] != undefined) {
-            var curNodeStr = this._curNode.split('-');
-            var curNode = new cc.p(parseInt(curNodeStr[0]), parseInt(curNodeStr[1]));
-            var curPos = this._playerState.convertCordinateToPos2(curNode.x, curNode.y, this.rule)
+        if (currentCell == null) return;
 
-            var nextNode = this._playerState._map._mapController.path[this._curNode].parent
-            var nextLocStr = nextNode.split('-');
-            var nextLoc = new cc.p(parseInt(nextLocStr[0]), parseInt(nextLocStr[1]));
-            var nextPos = this._playerState.convertCordinateToPos2(nextLoc.x, nextLoc.y, this.rule)
+        const targetPosition = currentCell.getEdgePositionWithNextCell();
 
-            var nextPosVec = new Vec2(nextPos.x, nextPos.y)
-            var curPosVec = new Vec2(curPos.x, curPos.y)
-            var curVec = new Vec2(this.x, this.y)
-            var desVec = (nextPosVec.add(curPosVec)).div(2)
-            this._speedVec = ((desVec.sub(curVec)).normalize()).mul(this.rootSpeed)
-            var dir = (desVec.sub(curVec)).normalize()
-            dir.set(Math.round(dir.x), Math.round(dir.y))
-            if (dir) {
-                const v = this.animationIds[dir.y +1]
-                if (v) this.play(v[dir.x +1])
-            }
+        if (targetPosition == null) return;
+
+        const direction = targetPosition.sub(this.position);
+        const length = direction.length();
+        direction.x /= length;
+        direction.y /= length;
+
+        if (length < distance) {
+            const remain = distance - length;
+            this.position.set(targetPosition.x, targetPosition.y, currentCell);
+            this.route(map, remain, currentCell);
+            return;
         }
-        // cc.log(desVec)
-        // cc.log(this._speedVec)
 
+        const lastPos = this.position.add(direction.mul(distance));
+        this.position.set(lastPos.x, lastPos.y);
     },
 
+    render: function (playerState) {
+        if (this.position.isApprox(this.prevPosition)) return;
 
+        const dir = (this.position.sub(this.prevPosition)).normalize()
 
-    updateMove:function (dt){
+        dir.set(Math.round(dir.x), Math.round(dir.y))
 
-        // this.x += (this.des.x-this.x)*dt
-        // this.y += (this.des.y-this.y)*dt
-        this.x += this._speedVec.x*dt
-        this.y += this._speedVec.y*dt
-        // this.setPosition()
-        // this.x += 50*dt
+        if (this.renderRule === 1) {
+            dir.set(dir.x, -dir.y)
+            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
+            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
+            let height = dy + CELLWIDTH * 5
+            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
+            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
 
+            this.x = dx + x
+            this.y = height - y
+        } else {
+            dir.set(-dir.x, dir.y)
+            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
+            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
+            let height = dy + CELLWIDTH * 6
+            let width = dx + CELLWIDTH * 7
+
+            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
+            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
+
+            this.setPosition(width - x, height + y)
+        }
+
+        if (dir) {
+            const v = this.animationIds[dir.y +1]
+            if (v) this.play(v[dir.x +1])
+        }
     },
 
-
-    destroy:function () {
+    destroy: function () {
         this._playerState.updateHealth(-1)
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
@@ -123,9 +133,6 @@ var Monster = AnimatedSprite.extend({
         this.visible = false;
         this.active = false;
     },
-
-
-
 
 });
 

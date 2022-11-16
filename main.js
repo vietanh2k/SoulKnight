@@ -29,7 +29,7 @@ cc.game.onStart = function () {
 
         }
         CELLWIDTH = WIDTHSIZE/8
-        cc.view.setDesignResolutionSize(WIDTHSIZE,HEIGHTSIZE, cc.ResolutionPolicy.FIXED_HEIGHT);
+        cc.view.setDesignResolutionSize(WIDTHSIZE,HEIGHTSIZE, cc.ResolutionPolicy.SHOW_ALL);
         // The game will be resized when browser size change
         cc.view.resizeWithBrowserSize(true);
         //socket
