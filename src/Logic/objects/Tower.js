@@ -1,13 +1,13 @@
 var _TOWER_CONFIG;
 var RES_SOURCE_PATH = 'asset/tower/frame/'
-var Tower = cc.Sprite.extend({
+var Tower = AnimatedSprite.extend({
         /**
          * Khởi tạo
          * @param {String} type: loại tháp
          * @param {PlayerState} playerState: trạng thái người chơi
          * @param {Vec2} position: vị trí deploy*/
         ctor: function (type, playerState, position) {
-            this._super(res.treeUI);
+            this._super(res.m1);
             cc.log("Create new Tower: Type="+type+ "player state"+ playerState+ "position" + position )
 
             this._playerState = playerState
@@ -39,6 +39,7 @@ var Tower = cc.Sprite.extend({
                 n_level = 3;
             var level, status, direction, n_frame;
             this.animation = []
+            const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
 
             // const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
             // this.play(0)
@@ -62,14 +63,9 @@ var Tower = cc.Sprite.extend({
             //
             // }
 
-            // this.play(0)
+            this.play(0)
         },
     render: function (playerState) {
-            // if (this.position.isApprox(this.prevPosition)) return;
-            //
-            // const dir = (this.position.sub(this.prevPosition)).normalize()
-            //
-            // dir.set(Math.round(dir.x), Math.round(dir.y))
             this.renderRule = playerState.rule
             if (this.renderRule === 1) {
                 // dir.set(dir.x, -dir.y)
