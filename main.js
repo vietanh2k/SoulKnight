@@ -40,7 +40,7 @@ cc.game.onStart = function () {
         }
         cf.WIDTH = DESIGN_RESOLUTION_WIDTH;
         cf.HEIGHT = DESIGN_RESOLUTION_HEIGHT;
-        cc.view.setDesignResolutionSize(DESIGN_RESOLUTION_WIDTH,DESIGN_RESOLUTION_HEIGHT, cc.ResolutionPolicy.SHOW_ALL);
+        cc.view.setDesignResolutionSize(DESIGN_RESOLUTION_WIDTH,DESIGN_RESOLUTION_HEIGHT, cc.ResolutionPolicy.FIXED_WIDTH);
         // The game will be resized when browser size change
         cc.view.resizeWithBrowserSize(true);
         //socket

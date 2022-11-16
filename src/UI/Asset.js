@@ -102,6 +102,9 @@ var asset = {
     cardBanner_png: 'asset/lobby/lobby_card_banner.png',
     cardSwitchArrow_png: 'asset/lobby/lobby_card_switch_arrow.png',
     cardSwitchOutline_png: 'asset/lobby/lobby_card_switch_outline.png',
+    cardUpgradeReady_atlas: 'asset/lobby/fx/card_upgrade_ready.atlas',
+    cardUpgradeReady_json: 'asset/lobby/fx/card_upgrade_ready.json',
+
 
     cardTowerAttackSpeed_png: 'asset/card/card_tower_attack_speed.png',
     cardTowerBoomerang_png: 'asset/card/card_tower_boomerang.png',

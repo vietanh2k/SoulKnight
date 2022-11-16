@@ -95,7 +95,13 @@ var CardSlot = ccui.Button.extend({
         else ratio = card.fragment / card.reqFrag;
         if (ratio > 1) ratio = 1;
         if (ratio === 1) {
-            this.progress = new cc.Sprite(asset.progressMax_png);
+            this.progress = new sp.SkeletonAnimation(asset.cardUpgradeReady_json, asset.cardUpgradeReady_atlas);
+            this.progress.setAnimation(0, 'card_upgrade_ready', true);
+            this.progress.attr({
+                x: this.progressPanel.width / 2,
+                y: this.progressPanel.height / 2,
+            });
+            this.progressPanel.addChild(this.progress);
         } else {
             this.progress = new cc.Sprite(asset.progress_png);
             this.progressGlow = new cc.Sprite(asset.progressGlow_png);
@@ -106,14 +112,14 @@ var CardSlot = ccui.Button.extend({
                 scaleY: this.progress.height / this.progressGlow.height,
             });
             this.progress.addChild(this.progressGlow);
+            this.progress.attr({
+                x: this.progressPanel.width / 2 * ratio,
+                y: this.progressPanel.height / 2,
+                scaleX: this.progressPanel.width * 0.95 * ratio / this.progress.getBoundingBox().width,
+                scaleY: this.progressPanel.height * 0.8 / this.progress.getBoundingBox().height,
+            });
+            this.progressPanel.addChild(this.progress);
         }
-        this.progress.attr({
-            x: this.progressPanel.width / 2 * ratio,
-            y: this.progressPanel.height / 2,
-            scaleX: this.progressPanel.width * 0.95 * ratio / this.progress.width,
-            scaleY: this.progressPanel.height * 0.8 / this.progress.height,
-        });
-        this.progressPanel.addChild(this.progress);
 
         if (card.reqFrag === 0) {
             this.lbFragment = new ccui.Text('MAX', asset.svnSupercellMagic_ttf, 16);
