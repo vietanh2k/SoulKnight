@@ -353,15 +353,15 @@
             },
             "LeftMargin": 237.144,
             "RightMargin": -284.144,
-            "TopMargin": -141.29,
-            "BottomMargin": 94.29,
+            "TopMargin": -141.2886,
+            "BottomMargin": 94.2886,
             "Tag": 78,
             "ActionTag": 1847372395,
             "Size": {
               "X": 47.0,
               "Y": 47.0
             },
-            "Name": "Button_4",
+            "Name": "btnBack",
             "ctype": "ButtonObjectData"
           },
           {
@@ -427,63 +427,6 @@
             "BottomMargin": -284.58,
             "Tag": 79,
             "Children": [
-              {
-                "FontSize": 44,
-                "LabelText": "50",
-                "FontResource": {
-                  "Type": "Normal",
-                  "Path": "font/SVN-Supercell Magic.ttf",
-                  "Plist": ""
-                },
-                "OutlineSize": 2,
-                "OutlineColor": {
-                  "R": 26,
-                  "G": 26,
-                  "B": 26
-                },
-                "OutlineEnabled": true,
-                "ShadowColor": {
-                  "R": 0,
-                  "G": 0,
-                  "B": 0
-                },
-                "ShadowOffsetX": 2.0,
-                "ShadowOffsetY": -3.0,
-                "AnchorPoint": {
-                  "ScaleX": 0.5,
-                  "ScaleY": 0.5
-                },
-                "Position": {
-                  "X": 235.78,
-                  "Y": 81.0757
-                },
-                "Scale": {
-                  "ScaleX": 1.0,
-                  "ScaleY": 1.0
-                },
-                "CColor": {},
-                "IconVisible": false,
-                "PrePosition": {
-                  "X": 0.5793,
-                  "Y": 0.5005
-                },
-                "PreSize": {
-                  "X": 0.1966,
-                  "Y": 0.3951
-                },
-                "LeftMargin": 195.78,
-                "RightMargin": 131.22,
-                "TopMargin": 48.9243,
-                "BottomMargin": 49.0757,
-                "Tag": 80,
-                "ActionTag": 1088096528,
-                "Size": {
-                  "X": 80.0,
-                  "Y": 64.0
-                },
-                "Name": "num",
-                "ctype": "TextObjectData"
-              },
               {
                 "FileData": {
                   "Type": "Normal",
@@ -597,6 +540,63 @@
               "Y": 51.0
             },
             "Name": "numGold",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 22,
+            "LabelText": "50",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 26,
+              "G": 26,
+              "B": 26
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -3.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 22.7764,
+              "Y": -203.9226
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 1.7764,
+            "RightMargin": -43.7764,
+            "TopMargin": 186.9226,
+            "BottomMargin": -220.9226,
+            "Tag": 80,
+            "ActionTag": 1088096528,
+            "Size": {
+              "X": 42.0,
+              "Y": 34.0
+            },
+            "Name": "numCost",
             "ctype": "TextObjectData"
           }
         ],

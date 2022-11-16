@@ -107,6 +107,9 @@ var LobbyScene = cc.Scene.extend({
     },
 
     changeToTab: function (newTab) {
+        if(newTab == cf.LOBBY_TAB_SHOP) {
+            this.requestOffer()
+        }
         if (newTab === this.activeTab) {
             return;
         }
@@ -155,6 +158,17 @@ var LobbyScene = cc.Scene.extend({
             if (this.tabUIs[i] !== undefined) {
                 this.tabUIs[i].visible = i === this.activeTab;
             }
+        }
+    },
+
+    requestOffer: function () {
+        cc.log("sendRequestOffer");
+        try{
+            testnetwork.connector.sendRequestOffer();
+
+
+        } catch (e){
+            cc.log('errrrrrrrrrrror')
         }
     },
 });

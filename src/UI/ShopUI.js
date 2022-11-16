@@ -3,45 +3,21 @@ var ShopUI = cc.Layer.extend({
 
     ctor:function () {
         this._super();
-        this.init()
+
         this.m = 45
         this.s = 10
 
         this.popupGold = null
-        this.listener1 = null
+        this.goldItemID = null
+        this.init()
         this.scheduleUpdate();
     },
     init:function () {
 
         winSize = cc.director.getWinSize();
-        this.listener1 = cc.EventListener.create({
-            event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            swallowTouches: true,
-            onTouchBegan: function (touch, event) {
-                cc.log('bbbbbbbbbbbbbbbbb')
-                var target = event.getCurrentTarget();
-                var locationInNode = target.convertToNodeSpace(touch.getLocation());
-                var s = target.getContentSize();
-                var rect = cc.rect(0, 0, s.width, s.height);
-                if (cc.rectContainsPoint(rect, locationInNode)) {
-                    return true;
-                }
-                return false;
-            },
 
-            onTouchEnded: function (touch, event) {
-                cc.log('aaaaaaaaaaaaaaaaa')
-                var target = event.getCurrentTarget();
-                if(target.getParent().getParent().getParent() != null){
-                    target.getParent().getParent().getParent().showPopup()
 
-                }else{
-                    target.visible = false
-                }
-            }
-        });
-
-        this.initBackGround();
+        this.initItemUI();
 
 
 
@@ -50,7 +26,7 @@ var ShopUI = cc.Layer.extend({
 
 
 
-    initBackGround:function()
+    initItemUI:function()
     {
         var mainscene = ccs.load(res.shopScene, "").node;
         var item1 = ccs.load(res.shopItem, "").node
@@ -61,14 +37,14 @@ var ShopUI = cc.Layer.extend({
         mainscene.getChildByName('nodeItem3').addChild(item3)
 
         this.addChild(mainscene,0,'scene');
-        // this.getChildByName('scene').getChildByName('goldItem1').addClickEventListener(() => {
-        //     this.addBlockLayer();
-        // });
-        // this.addBlockLayer()
-        for(var i=1;i<=3; i++) {
-            var itemGold = this.getChildByName('scene').getChildByName('goldItem'+i).getChildByName('Image_1')
-            cc.eventManager.addListener(this.listener1.clone(), itemGold);
-        }
+        var golditem1 = mainscene.getChildByName('goldItem1')
+        golditem1.getChildByName('button').addClickEventListener(()=>this.showPopup(golditem1))
+        var golditem2 = mainscene.getChildByName('goldItem2')
+        golditem2.getChildByName('button').addClickEventListener(()=>this.showPopup(golditem2))
+        var golditem3 = mainscene.getChildByName('goldItem3')
+        golditem3.getChildByName('button').addClickEventListener(()=>this.showPopup(golditem3))
+
+
         // this.showPopup()
 
     },
@@ -79,6 +55,21 @@ var ShopUI = cc.Layer.extend({
             this.m -= 1
         }
     },
+
+    showPopup:function (itemNode){
+        cc.log(itemNode)
+        cc.log('rrrrrrrrrrrrrrrrrrrrrrr')
+        if(this.popupGold == null){
+            this.popupGold = new PopupGold(itemNode)
+            this.popupGold.setPosition(320,600)
+            this.addChild(this.popupGold)
+        }
+
+
+
+
+    },
+
 
     updateTimeUI:function (dt){
         var str
@@ -94,35 +85,9 @@ var ShopUI = cc.Layer.extend({
         this.updateRealTime(dt)
         this.updateTimeUI()
     },
-    showPopup:function (){
-        if(this.popupGold == null) {
-            this.popupGold = ccs.load(res.popupGold, "").node
-            this.popupGold.setPosition(winSize.width/2,winSize.height*2/5)
-            this.addChild(this.popupGold)
-        }
-        // this.popupGold.opacity = 0
-        // this.popupGold.scale = 0.2
-        // cc.tween(this.popupGold)
-        //     .to(0.5, {scale: 1, opacity: 255},{easing: "quartInOut"})
-        //     .start();
-    },
-    hidePopup:function (){
 
-    },
-    addBlockLayer:function () {
-        // this.unscheduleAllCallbacks()
-        var blockLayer = new cc.Sprite(res.house_box)
-        blockLayer.setScaleX(1.3*winSize.width/blockLayer.getContentSize().width)
-        blockLayer.setScaleY(1.3*winSize.height/blockLayer.getContentSize().height)
-        blockLayer.setPosition(winSize.width/2, winSize.height/2)
-        this.addChild(blockLayer,0)
-        cc.eventManager.addListener(this.listener1.clone(), blockLayer);
 
-        var item4 = ccs.load(res.popupGold, "").node
-        item4.setPosition(winSize.width/2,winSize.height*2/5)
-        this.addChild(item4,0,'scene');
 
-    },
 
 
 

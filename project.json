@@ -79,6 +79,7 @@
         "src/utils/Utils.js",
         "src/UI/MatchingUI.js",
         "src/UI/GameUI.js",
+        "src/UI/PopupGold.js",
         "src/Logic/map/MapView.js",
         "src/Logic/map/MapController.js",
         "src/Logic/map/GameStateManager.js",

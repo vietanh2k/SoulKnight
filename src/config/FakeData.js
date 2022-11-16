@@ -156,3 +156,24 @@ fake.collection = [
         fragment: 6,
     },
 ];
+fake.goldItem = [
+    {
+        id: 0,
+        avatar: 'asset/lobby/lobby_shop_item_gold_1.png',
+        numGolg:1000,
+        costG: 50,
+    },
+    {
+        id: 0,
+        avatar: 'asset/lobby/lobby_shop_item_gold_2.png',
+        numGolg:2000,
+        costG: 95,
+    },
+    {
+        id: 0,
+        avatar: 'asset/lobby/lobby_shop_item_gold_3.png',
+        numGolg:3000,
+        costG: 270,
+    },
+
+];

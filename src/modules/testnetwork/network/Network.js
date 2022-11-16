@@ -45,6 +45,9 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')
                 break;
+            case gv.CMD.OFFER_RESPONSE:
+                cc.log('offer reponse succeededddddddddddd')
+                break;
 
         }
     },
@@ -95,7 +98,13 @@ testnetwork.Connector = cc.Class.extend({
         var pk = this.gameClient.getOutPacket(CmdMatchConfirm);
         pk.pack(null);
         this.gameClient.sendPacket(pk);
-    }
+    },
+    sendRequestOffer:function(){
+        var pk = this.gameClient.getOutPacket(CmdOfferRequest);
+        cc.log(pk)
+        pk.pack(null);
+        this.gameClient.sendPacket(pk);
+    },
 });
 
 

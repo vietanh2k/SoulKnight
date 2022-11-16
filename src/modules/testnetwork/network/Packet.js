@@ -12,6 +12,8 @@ gv.CMD.OPEN_CHEST = 3001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
+gv.CMD.OFFER_REQUEST = 3009;
+gv.CMD.OFFER_RESPONSE = 3009;
 gv.CMD.MATCH_REQUEST = 4001;
 gv.CMD.MATCH_REPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
@@ -152,6 +154,21 @@ CmdMatchConfirm = fr.OutPacket.extend(
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.MATCH_CONFIRM);
+        },
+        pack:function(){
+            this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+
+CmdOfferRequest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.OFFER_REQUEST);
         },
         pack:function(){
             this.packHeader();
@@ -365,6 +382,32 @@ testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
         },
         readData:function(){
             this.x = this.getInt();
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+        },
+        readData:function(){
+            // this.status = this.getString()
+            // this.numChest = this.getInt()
+            // cc.log("OFFER_RESPONSE: "+ JSON.stringify(this))
+            // this.chestOffers = []
+            // for(var i=0; i<this.numChest; i++){
+            //     var chestType = this.getByte(),
+            //     chestCost = this.getInt()
+            //     this.chestOffers.push([chestType, chestCost])
+            //
+            // }
+            //
+            //
+            // cc.log('aaaaaaaaaaaaaaaaaaaaaaa'+this.status+' '+this.numChest+' '+' '+this.chestType)
+            // cc.log(this.chestCost)
+
         }
     }
 );
