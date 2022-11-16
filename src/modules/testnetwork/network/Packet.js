@@ -12,6 +12,7 @@ gv.CMD.OPEN_CHEST = 3001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
+gv.CMD.BUY_GEM_OR_GOLD = 3004;
 gv.CMD.OFFER_REQUEST = 3009;
 gv.CMD.OFFER_RESPONSE = 3009;
 gv.CMD.MATCH_REQUEST = 4001;
@@ -240,6 +241,24 @@ CmdOfferRequest = fr.OutPacket.extend(
         },
         pack:function(){
             this.packHeader();
+            this.updateSize();
+        }
+    }
+)
+CmdBuyGemOrGold = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.BUY_GEM_OR_GOLD);
+        },
+        pack: function(type, amout){
+            this.packHeader();
+
+            this.putByte(type)
+            this.putInt(amout)
+
             this.updateSize();
         }
     }
@@ -540,6 +559,23 @@ testnetwork.packetMap[gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N] = fr.InPacket
             cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
             this.syncN = this.getLong()
             this.frameN = this.getLong()
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.BUY_GEM_OR_GOLD] = fr.InPacket.extend({
+        ctor: function()
+        {
+            this._super();
+            this.syncN = 0
+            this.frameN = 0
+        },
+
+        readData: function(){
+            cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
+            this.typee = this.getByte()
+            this.amout = this.getInt()
+            cc.log(this.typee+' '+this.amout)
         }
     }
 );

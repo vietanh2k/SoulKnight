@@ -18,10 +18,12 @@ var PopupGold = cc.Node.extend({
         this.addChild(popup,0,100)
         this.addBlockLayer()
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
+        this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
         popup.setOpacity(20)
         popup.setScale(0.2)
+
         popup.runAction(cc.fadeIn(0.2))
-        popup.runAction(cc.scaleBy(0.2, 5))
+        popup.runAction(cc.sequence(cc.scaleBy(0.2, 5), cc.scaleBy(0.12,0.9),cc.scaleBy(0.10,1.1), cc.scaleBy(0.08,0.95),cc.scaleBy(0.05,1.05)))
         return true;
 
     },
@@ -42,6 +44,19 @@ var PopupGold = cc.Node.extend({
         // this.runAction(cc.fadeOut(2))
         // this.visible = false
     },
+
+
+
+    requestBuy:function (){
+
+        try{
+            testnetwork.connector.sendBuyGemOrGold(1,parseInt(this.getChildByTag(100).getChildByName('numGold').getString()));
+
+
+        } catch (e){
+            cc.log('errrrrrrrrrrror')
+        }
+    },
     //
     addBlockLayer:function () {
         var blockLayer = new cc.Sprite(res.house_box)
@@ -54,7 +69,7 @@ var PopupGold = cc.Node.extend({
             swallowTouches: true,
             onTouchBegan: function (touch, event){
                 cc.log("touch began2333333333: "+ touch.getLocationX());
-                // blockLayer.getParent().hide()
+                blockLayer.parent.hide()
                 // blockLayer.removeFromParent()
 
                 return true;

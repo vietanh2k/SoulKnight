@@ -1,3 +1,5 @@
+let shopUIInstant = null
+
 var LobbyScene = cc.Scene.extend({
     background: null,
     currencyPanel: null,
@@ -108,6 +110,7 @@ var LobbyScene = cc.Scene.extend({
 
     changeToTab: function (newTab) {
         if(newTab == cf.LOBBY_TAB_SHOP) {
+            // fr.view(ShopUI);
             this.requestOffer()
         }
         if (newTab === this.activeTab) {
@@ -142,6 +145,7 @@ var LobbyScene = cc.Scene.extend({
     initTabUIs: function (localZOrder) {
         this.tabUIs = [];
         this.tabUIs[cf.LOBBY_TAB_SHOP] = new ShopUI();
+        shopUIInstant = this.tabUIs[cf.LOBBY_TAB_SHOP]
         this.tabUIs[cf.LOBBY_TAB_CARDS] = new CardsUI();
         this.tabUIs[cf.LOBBY_TAB_HOME] = new HomeUI();
         for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {

@@ -62,13 +62,21 @@ var ShopUI = cc.Layer.extend({
     showPopup:function (itemNode){
         cc.log(itemNode)
         cc.log('rrrrrrrrrrrrrrrrrrrrrrr')
-        var pop = new PopupGold(itemNode)
-        pop.setPosition(320,600)
-        this.addChild(pop)
+        this.popupGold = new PopupGold(itemNode)
+        this.popupGold.setPosition(320,600)
+        this.addChild(this.popupGold,0,'popup')
         // var to = new Toast('nooooo')
         // this.addChild(new ChestInfoUI(1,0, 2), 4);
 
 
+    },
+
+    buyComplete:function (packet){
+        cc.log('ffffffffffffffffffffffff'+packet.amout)
+        cc.log(this.popupGold.getChildByTag(100).getChildByName('numGold').getString())
+        sharePlayerInfo.gold += parseInt(packet.amout)
+        sharePlayerInfo.gem -= parseInt(this.popupGold.getChildByTag(100).getChildByName('numCost').getString())
+        this.removeChild(this.popupGold)
     },
 
 
@@ -83,7 +91,7 @@ var ShopUI = cc.Layer.extend({
         this.getChildByName('scene').getChildByName('loginItem').getChildByName('time').setString(str)
     },
     updateShop:function (pkg){
-        this.getChildByName('scene').getChildByTag(1).getChildByName('numCost').setString(pkg.chestOffers[0][1])
+        this.getChildByName('scene').getChildByName('nodeItem1').getChildByTag(1).getChildByName('numCost').setString(pkg.chestOffers[0][1])
     },
 
     update:function (dt){

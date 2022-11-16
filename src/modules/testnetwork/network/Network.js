@@ -46,7 +46,7 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log('battle start succeededddddddddddd')
                 break;
             case gv.CMD.OFFER_RESPONSE:
-                fr.getCurrentScreen().updateShop(packet);
+                shopUIInstant.updateShop(packet);
                 cc.log('offer reponse succeededddddddddddd')
                 break;
             case gv.CMD.BATTLE_SYNC_START:
@@ -58,6 +58,10 @@ testnetwork.Connector = cc.Class.extend({
                 this.sendSyncUpdateToFrameNConfirm(packet.syncN, packet.frameN)
                 break
             case gv.CMD.BATTLE_ACTIONS:
+                cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
+                break
+            case gv.CMD.BUY_GEM_OR_GOLD:
+                shopUIInstant.buyComplete(packet)
                 cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
                 break
 
@@ -145,6 +149,12 @@ testnetwork.Connector = cc.Class.extend({
         var pk = this.gameClient.getOutPacket(CmdOfferRequest);
         cc.log(pk)
         pk.pack(null);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyGemOrGold:function(typee, amout){
+        var pk = this.gameClient.getOutPacket(CmdBuyGemOrGold);
+        cc.log(pk)
+        pk.pack(typee, amout);
         this.gameClient.sendPacket(pk);
     },
 });
