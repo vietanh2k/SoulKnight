@@ -1,0 +1,3 @@
+const GAME_CONFIG = {
+    DEFAULT_DELTA_TIME: 0.016
+}

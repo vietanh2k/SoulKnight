@@ -17,6 +17,13 @@ gv.CMD.MATCH_REPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
 gv.CMD.BATTLE_START = 5001;
 
+gv.CMD.BATTLE_ACTIONS                               = 5009;
+gv.CMD.BATTLE_SYNC_START                            = 5005;
+gv.CMD.BATTLE_SYNC_START_CONFIRM                    = 5006;
+
+gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N         = 5007;
+gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N_CONFIRM = 5008;
+
 testnetwork = testnetwork || {};
 testnetwork.packetMap = {};
 
@@ -160,6 +167,67 @@ CmdMatchConfirm = fr.OutPacket.extend(
     }
 )
 
+CmdBattleActions = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.BATTLE_ACTIONS);
+        },
+
+        pack:function(actions){
+            this.packHeader();
+
+            this.putInt(actions.length)
+
+            for (let i = 0; i < actions.length; i++) {
+                this.putInt(actions[i].getActionPkgSize())
+                this.putInt(actions[i].getActionCode())
+                actions[i].writeTo(this)
+            }
+
+            this.updateSize();
+        }
+    }
+)
+
+CmdBattleSyncStartConfirm = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.BATTLE_SYNC_START_CONFIRM);
+        },
+
+        pack: function(syncN, frameN){
+            this.packHeader();
+
+            this.putLong(syncN)
+            this.putLong(frameN)
+
+            this.updateSize();
+        }
+    }
+)
+
+CmdBattleSyncClientUpdateToFrameNConfirm= fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N_CONFIRM);
+        },
+
+        pack: function(syncN){
+            this.packHeader();
+            this.putLong(syncN)
+            this.updateSize();
+        }
+    }
+)
 
 /**
  * InPacket
@@ -369,6 +437,50 @@ testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
     }
 );
 
+testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
+        ctor: function()
+        {
+            this._super();
+        },
 
+        readData: function(){
+            const num = this.getInt()
+            for (let i = 0; i < num; i++) {
+                const size = this.getInt()
+                const actionCode = this.getInt()
+                ACTION_DESERIALIZER[actionCode](this).activate(GameStateManagerInstance)
+            }
+            GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NORMAL
+        }
+    }
+);
 
+testnetwork.packetMap[gv.CMD.BATTLE_SYNC_START] = fr.InPacket.extend({
+        ctor: function()
+        {
+            this._super();
+            this.syncN = 0
+        },
+
+        readData: function(){
+            this.syncN = this.getLong()
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N] = fr.InPacket.extend({
+        ctor: function()
+        {
+            this._super();
+            this.syncN = 0
+            this.frameN = 0
+        },
+
+        readData: function(){
+            cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
+            this.syncN = this.getLong()
+            this.frameN = this.getLong()
+        }
+    }
+);
 
