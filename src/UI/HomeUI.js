@@ -122,7 +122,9 @@ var HomeUI = cc.Layer.extend({
             // FIXME hiện tại đang dùng button này để debug
             Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
             cc.log("User data: " + JSON.stringify(sharePlayerInfo));
-
+            var scene = new cc.Scene();
+            scene.addChild(new MatchingUI());
+            cc.director.runScene(new cc.TransitionFade(1.2, scene));
             // đây mới là (một phần) tác dụng thật
             if (this.parent.allBtnIsActive) {
                 for (let i = 0; i < this.chestSlots.length; i++) {

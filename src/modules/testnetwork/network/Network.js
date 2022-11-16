@@ -46,6 +46,7 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log('battle start succeededddddddddddd')
                 break;
             case gv.CMD.OFFER_RESPONSE:
+                fr.getCurrentScreen().updateShop(packet);
                 cc.log('offer reponse succeededddddddddddd')
                 break;
 

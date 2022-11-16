@@ -29,12 +29,15 @@ var ShopUI = cc.Layer.extend({
     initItemUI:function()
     {
         var mainscene = ccs.load(res.shopScene, "").node;
-        var item1 = ccs.load(res.shopItem, "").node
-        mainscene.getChildByName('nodeItem1').addChild(item1)
-        var item2 = ccs.load(res.shopItem, "").node
-        mainscene.getChildByName('nodeItem2').addChild(item2)
-        var item3 = ccs.load(res.shopItem, "").node
-        mainscene.getChildByName('nodeItem3').addChild(item3)
+        var item1 = ccs.load(res.shopItem, "").node.getChildByName('itemNode')
+        item1.removeFromParent(false)
+        mainscene.getChildByName('nodeItem1').addChild(item1,0,1)
+        var item2 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
+        item2.removeFromParent(false)
+        mainscene.getChildByName('nodeItem2').addChild(item2,0,2)
+        var item3 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
+        item3.removeFromParent(false)
+        mainscene.getChildByName('nodeItem3').addChild(item3,0,3)
 
         this.addChild(mainscene,0,'scene');
         var golditem1 = mainscene.getChildByName('goldItem1')
@@ -59,13 +62,11 @@ var ShopUI = cc.Layer.extend({
     showPopup:function (itemNode){
         cc.log(itemNode)
         cc.log('rrrrrrrrrrrrrrrrrrrrrrr')
-        if(this.popupGold == null){
-            this.popupGold = new PopupGold(itemNode)
-            this.popupGold.setPosition(320,600)
-            this.addChild(this.popupGold)
-        }
-
-
+        var pop = new PopupGold(itemNode)
+        pop.setPosition(320,600)
+        this.addChild(pop)
+        // var to = new Toast('nooooo')
+        // this.addChild(new ChestInfoUI(1,0, 2), 4);
 
 
     },
@@ -81,12 +82,14 @@ var ShopUI = cc.Layer.extend({
 
         this.getChildByName('scene').getChildByName('loginItem').getChildByName('time').setString(str)
     },
+    updateShop:function (pkg){
+        this.getChildByName('scene').getChildByTag(1).getChildByName('numCost').setString(pkg.chestOffers[0][1])
+    },
+
     update:function (dt){
         this.updateRealTime(dt)
         this.updateTimeUI()
     },
-
-
 
 
 

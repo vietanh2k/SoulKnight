@@ -122,65 +122,6 @@
                 "TopMargin": -240.3456,
                 "BottomMargin": 39.3456,
                 "Tag": 125,
-                "Children": [
-                  {
-                    "FontSize": 36,
-                    "LabelText": "Bạc",
-                    "FontResource": {
-                      "Type": "Normal",
-                      "Path": "font/SVN-Supercell Magic.ttf",
-                      "Plist": ""
-                    },
-                    "OutlineColor": {
-                      "R": 26,
-                      "G": 26,
-                      "B": 26
-                    },
-                    "OutlineEnabled": true,
-                    "ShadowColor": {
-                      "R": 26,
-                      "G": 26,
-                      "B": 26
-                    },
-                    "ShadowOffsetX": 1.0,
-                    "ShadowOffsetY": -3.0,
-                    "ShadowEnabled": true,
-                    "AnchorPoint": {
-                      "ScaleX": 0.5,
-                      "ScaleY": 0.5
-                    },
-                    "Position": {
-                      "X": 115.6348,
-                      "Y": 209.1568
-                    },
-                    "Scale": {
-                      "ScaleX": 1.33,
-                      "ScaleY": 1.33
-                    },
-                    "CColor": {},
-                    "IconVisible": false,
-                    "PrePosition": {
-                      "X": 0.5256,
-                      "Y": 1.0406
-                    },
-                    "PreSize": {
-                      "X": 0.4364,
-                      "Y": 0.2537
-                    },
-                    "LeftMargin": 67.6348,
-                    "RightMargin": 56.3652,
-                    "TopMargin": -33.6568,
-                    "BottomMargin": 183.6568,
-                    "Tag": 126,
-                    "ActionTag": -437946203,
-                    "Size": {
-                      "X": 96.0,
-                      "Y": 51.0
-                    },
-                    "Name": "Text_1",
-                    "ctype": "TextObjectData"
-                  }
-                ],
                 "ActionTag": -104254598,
                 "Size": {
                   "X": 220.0,
@@ -253,63 +194,6 @@
                 "Tag": 127,
                 "Children": [
                   {
-                    "FontSize": 44,
-                    "LabelText": "600",
-                    "FontResource": {
-                      "Type": "Normal",
-                      "Path": "font/SVN-Supercell Magic.ttf",
-                      "Plist": ""
-                    },
-                    "OutlineSize": 2,
-                    "OutlineColor": {
-                      "R": 26,
-                      "G": 26,
-                      "B": 26
-                    },
-                    "OutlineEnabled": true,
-                    "ShadowColor": {
-                      "R": 0,
-                      "G": 0,
-                      "B": 0
-                    },
-                    "ShadowOffsetX": 2.0,
-                    "ShadowOffsetY": -3.0,
-                    "AnchorPoint": {
-                      "ScaleX": 0.5,
-                      "ScaleY": 0.5
-                    },
-                    "Position": {
-                      "X": 235.78,
-                      "Y": 81.0757
-                    },
-                    "Scale": {
-                      "ScaleX": 1.0,
-                      "ScaleY": 1.0
-                    },
-                    "CColor": {},
-                    "IconVisible": false,
-                    "PrePosition": {
-                      "X": 0.5793,
-                      "Y": 0.5005
-                    },
-                    "PreSize": {
-                      "X": 0.312,
-                      "Y": 0.3951
-                    },
-                    "LeftMargin": 172.28,
-                    "RightMargin": 107.72,
-                    "TopMargin": 48.9243,
-                    "BottomMargin": 49.0757,
-                    "Tag": 128,
-                    "ActionTag": -2081452393,
-                    "Size": {
-                      "X": 127.0,
-                      "Y": 64.0
-                    },
-                    "Name": "num",
-                    "ctype": "TextObjectData"
-                  },
-                  {
                     "FileData": {
                       "Type": "Normal",
                       "Path": "common/common_icon_gold_small.png",
@@ -362,6 +246,120 @@
                 },
                 "Name": "button",
                 "ctype": "ButtonObjectData"
+              },
+              {
+                "FontSize": 36,
+                "LabelText": "Bạc",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/SVN-Supercell Magic.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "ShadowOffsetX": 1.0,
+                "ShadowOffsetY": -3.0,
+                "ShadowEnabled": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 84.5234,
+                  "Y": 202.4904
+                },
+                "Scale": {
+                  "ScaleX": 0.74,
+                  "ScaleY": 0.74
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 36.5234,
+                "RightMargin": -132.5234,
+                "TopMargin": -227.9904,
+                "BottomMargin": 176.9904,
+                "Tag": 126,
+                "ActionTag": -437946203,
+                "Size": {
+                  "X": 96.0,
+                  "Y": 51.0
+                },
+                "Name": "text",
+                "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 22,
+                "LabelText": "600",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/SVN-Supercell Magic.ttf",
+                  "Plist": ""
+                },
+                "OutlineSize": 2,
+                "OutlineColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 0,
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -3.0,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 107.0533,
+                  "Y": 35.1031
+                },
+                "Scale": {
+                  "ScaleX": 1.0,
+                  "ScaleY": 1.0
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 74.0533,
+                "RightMargin": -140.0533,
+                "TopMargin": -52.1031,
+                "BottomMargin": 18.1031,
+                "Tag": 128,
+                "ActionTag": -2081452393,
+                "Size": {
+                  "X": 66.0,
+                  "Y": 34.0
+                },
+                "Name": "numCost",
+                "ctype": "TextObjectData"
               }
             ],
             "ActionTag": 896546862,

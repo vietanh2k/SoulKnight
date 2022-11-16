@@ -18,7 +18,10 @@ var PopupGold = cc.Node.extend({
         this.addChild(popup,0,100)
         this.addBlockLayer()
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
-
+        popup.setOpacity(20)
+        popup.setScale(0.2)
+        popup.runAction(cc.fadeIn(0.2))
+        popup.runAction(cc.scaleBy(0.2, 5))
         return true;
 
     },
@@ -30,9 +33,14 @@ var PopupGold = cc.Node.extend({
     },
 
     hide:function (){
-        // this.removeFromParent()
+        this.getChildByTag(100).runAction(cc.fadeOut(0.3))
+        this.getChildByTag(100).runAction(cc.scaleBy(0.3, 0.2))
+        // popup.runAction(cc.scaleBy(0.3, 5))
+        // this.getChildByTag(100).runAction(cc.scaleBy(2, 2))
+        this.getChildByTag(200).removeFromParent(false)
+
         // this.runAction(cc.fadeOut(2))
-        this.visible = false
+        // this.visible = false
     },
     //
     addBlockLayer:function () {
@@ -40,7 +48,7 @@ var PopupGold = cc.Node.extend({
         blockLayer.setScaleX(1.3*winSize.width/blockLayer.getContentSize().width)
         blockLayer.setScaleY(1.3*winSize.height/blockLayer.getContentSize().height)
         // blockLayer.setPosition(winSize.width/2, winSize.height/2)
-        this.addChild(blockLayer,-1)
+        this.addChild(blockLayer,-1,200)
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,

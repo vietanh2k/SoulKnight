@@ -393,17 +393,34 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
             this._super();
         },
         readData:function(){
-            // this.status = this.getString()
-            // this.numChest = this.getInt()
-            // cc.log("OFFER_RESPONSE: "+ JSON.stringify(this))
-            // this.chestOffers = []
-            // for(var i=0; i<this.numChest; i++){
+            this.status = this.getString()
+            this.numChest = this.getInt()
+            cc.log("OFFER_RESPONSE: "+ JSON.stringify(this))
+            this.chestOffers = []
+            for(var i=0; i<this.numChest; i++){
+                var chestType = this.getByte(),
+                chestCost = this.getInt()
+                cc.log('chest:  '+chestType+' '+chestCost)
+                this.chestOffers.push([chestType, chestCost])
+
+            }
+            this.numCard = this.getInt()
+            this.cardOffers = []
+            for(var i=0; i<this.numCard; i++){
+                var cardType = this.getByte(),
+                    cardCost = this.getInt()
+                cc.log('card:  '+cardType+' '+cardCost)
+                this.cardOffers.push([cardType, cardCost])
+            }
+
+            // this.numCard = this.getInt()
+            // this.cardOffers = []
+            // for(var i=0; i<this.numCard; i++){
             //     var chestType = this.getByte(),
-            //     chestCost = this.getInt()
-            //     this.chestOffers.push([chestType, chestCost])
-            //
+            //         chestCost = this.getInt()
+            //     this.cardOffers.push([chestType, chestCost])
             // }
-            //
+
             //
             // cc.log('aaaaaaaaaaaaaaaaaaaaaaa'+this.status+' '+this.numChest+' '+' '+this.chestType)
             // cc.log(this.chestCost)
