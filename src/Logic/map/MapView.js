@@ -154,13 +154,14 @@ var MapView = cc.Class.extend({
 
     updateTower:function (dt) {
         try {
-            var leng = this.towers.length
-            for (i in this.towers){
-                this.towers[i].logicUpdate(this._playerState, dt)
-                if(this.towers[leng-i-1].isDestroy){
-                    this.towers.splice(leng-i-1, 1)
+            var temp = []
+            this.towers.map(tower=>{
+                tower.logicUpdate(this._playerState, dt)
+                if(!tower.isDestroy){
+                    temp.push(tower)
                 }
-            }
+            })
+            this.towers = temp
         } catch (e) {
             cc.log(e)
             cc.log(e.stack)
@@ -193,12 +194,13 @@ var MapView = cc.Class.extend({
     },
     deployTower: function (card, position){
         cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
-        var cell = this.getCellAtPosition(position);
+        cc.log("TW size:" + this.towers.length)
         var tower = new Tower("1", this._playerState, position);
         this.towers.push(tower)
-        if(cell.objectOn==undefined || cell.objectOn==null ){
-            cell.objectOn = tower;
-        }
+        // if(cell.objectOn==undefined || cell.objectOn==null ){
+        //     cell.objectOn = tower;
+        // }
+        cc.log("Deploy success")
 
         return tower
     },

@@ -113,9 +113,10 @@ var GameUI = cc.Layer.extend({
                 //this._gameStateManager.playerA._map._mapController.findPathBFS()
                 this._gameStateManager.playerA._map.updatePathForCells()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath,1)
-                this._gameStateManager.playerA._map.deployTower(null, pos);
+                var position = new Vec2((loc.x+1)*MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y)*MAP_CONFIG.CELL_HEIGHT / 2.0)
+                var tower = this._gameStateManager.playerA._map.deployTower(null, position);
                 // var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
-                // this.addChild(tree,0,res.treeUI+1)
+                this.addChild(tower, 3000)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
                 }else{
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
