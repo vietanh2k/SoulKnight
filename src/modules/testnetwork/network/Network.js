@@ -140,7 +140,6 @@ testnetwork.Connector = cc.Class.extend({
         const pk = this.gameClient.getOutPacket(CmdBattleActions);
         pk.pack(actions);
         this.gameClient.sendPacket(pk);
-    }
     },
     sendRequestOffer:function(){
         var pk = this.gameClient.getOutPacket(CmdOfferRequest);
