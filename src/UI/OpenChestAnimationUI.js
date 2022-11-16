@@ -3,6 +3,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
     chestID: null,
     newCards: null,
     goldReceived: null,
+    skipBtnIsUsed: false,
 
     ctor: function (chestID, newCards, goldReceived) {
         this._super();
@@ -11,7 +12,8 @@ var OpenChestAnimationUI = cc.Layer.extend({
         this.newCards = newCards;
         this.goldReceived = goldReceived;
 
-        let background = new cc.Sprite(asset.lobbyBackground_png);
+        let background = new ccui.Button(asset.lobbyBackground_png);
+        background.setZoomScale(0);
         background.attr({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT / 2,
@@ -19,31 +21,44 @@ var OpenChestAnimationUI = cc.Layer.extend({
             scaleY: cf.HEIGHT / background.height,
         });
         this.addChild(background);
+        background.addClickEventListener(() => {
+            if (this.skipBtnIsUsed === false) {
+                this.skipBtnIsUsed = true;
+                this.stopAllActions();
+                for (let i = 0; i < this.rewardSlots.length; i++) {
+                    this.rewardSlots[i].setPosition(this.getSlotPosition(i).x, this.getSlotPosition(i).y);
+                    this.rewardSlots[i].stopAllActions();
+                    this.rewardSlots[i].visible = true;
+                }
+                this.addExitBtn();
+                this.fxChest.setAnimation(0, 'open_idle', false);
+            }
+        });
 
-        let fxChest = new sp.SkeletonAnimation(asset.fxChest_json, asset.fxChest_atlas);
-        fxChest.attr({
+        this.fxChest = new sp.SkeletonAnimation(asset.fxChest_json, asset.fxChest_atlas);
+        this.fxChest.attr({
             x: cf.WIDTH / 2,
             y: 0,
-            scale: cf.WIDTH / fxChest.getBoundingBox().width,
+            scale: cf.WIDTH / this.fxChest.getBoundingBox().width,
         });
-        this.addChild(fxChest);
+        this.addChild(this.fxChest);
 
         let newCardsSize = newCards.length;
         let index = 0;
         this.initRewards();
 
         let initSequence = cc.sequence(
-            cc.callFunc(() => fxChest.setAnimation(0, 'init', false)),
-            cc.delayTime(1.25),
+            cc.callFunc(() => this.fxChest.setAnimation(0, 'init', false)),
+            cc.delayTime(1.2),
             cc.callFunc(() => {
                 this.showReward(index);
                 index++;
             }),
-            cc.delayTime(1.75)
+            cc.delayTime(1.8)
         );
 
         let openingSequence = cc.sequence(
-            cc.callFunc(() => fxChest.setAnimation(0, 'opening', false)),
+            cc.callFunc(() => this.fxChest.setAnimation(0, 'opening', false)),
             cc.delayTime(0.25),
             cc.callFunc(() => {
                 this.showReward(index);
@@ -52,14 +67,14 @@ var OpenChestAnimationUI = cc.Layer.extend({
             cc.delayTime(1.75)
         ).repeat(newCardsSize - 1);
 
-        let addExitBtnSequence = cc.sequence(
+        let showAllRewardsSequence = cc.sequence(
             cc.callFunc(() => {
                 this.showAllRewards();
             }),
             cc.callFunc(() => this.addExitBtn())
         );
 
-        let sequence = cc.sequence(initSequence, openingSequence, addExitBtnSequence);
+        let sequence = cc.sequence(initSequence, openingSequence, showAllRewardsSequence);
         this.runAction(sequence);
     },
 

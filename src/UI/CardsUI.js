@@ -155,14 +155,17 @@ var CardsUI = cc.Layer.extend({
         this.arrows = [];
         for (let i = 0; i < 3; ++i) {
             this.arrows[i] = new cc.Sprite(asset.cardSwitchArrow_png);
-
             this.arrows[i].attr({
                 x: cf.WIDTH / 2,
                 y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * (1.05 + 0.05 * i),
                 scale: cf.HEIGHT * 0.05 / this.arrows[i].height,
-                opacity: 255 - 100 * i,
+                opacity: 0,
             });
             this.addChild(this.arrows[i]);
+            let j = i;
+            this.arrows[j].runAction(cc.sequence(cc.DelayTime(1/2 * (2 - j)), cc.callFunc(() => {
+                this.arrows[j].runAction(cc.sequence(cc.FadeIn(0.6), cc.FadeOut(0.6), cc.DelayTime(0.8)).repeatForever());
+            })));
         }
 
         this.swapInCardSlot = new CardSlot(card, false);
@@ -181,16 +184,27 @@ var CardsUI = cc.Layer.extend({
         });
         this.swapInCardSlot.addChild(this.swapInCardSlot.outline, -1);
 
-        let fadeSequence = cc.sequence(
-            cc.FadeOut(0.5),
-            cc.FadeIn(0.5)
+        this.swapInCardSlot.glossy = new cc.Sprite(asset.cardSwitchGlossy_png);
+        this.swapInCardSlot.glossy.attr({
+            x: this.swapInCardSlot.width / 2,
+            y: this.swapInCardSlot.height / 2,
+            scale: this.swapInCardSlot.width / this.swapInCardSlot.glossy.width,
+        });
+        this.swapInCardSlot.addChild(this.swapInCardSlot.glossy);
+
+        let swapInCardFadeSequence = cc.sequence(
+            cc.FadeOut(1),
+            cc.FadeIn(1)
         ).repeatForever();
-        this.swapInCardSlot.outline.runAction(fadeSequence);
+        this.swapInCardSlot.outline.runAction(swapInCardFadeSequence);
+        this.swapInCardSlot.glossy.runAction(swapInCardFadeSequence.clone());
 
         this.lbInstruction = new ccui.Text('Chọn một thẻ bài thay thế', asset.svnSupercellMagic_ttf, 20);
         this.lbInstruction.attr({
             x: cf.WIDTH / 2,
             y: this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * 1.6,
+            color: cc.color(56, 229, 255),
+
         });
         this.addChild(this.lbInstruction);
 
@@ -249,6 +263,7 @@ var CardsUI = cc.Layer.extend({
                     scale: slotWidth / this.swapInCardSlot.width,
                 });
                 this.swapInCardSlot.outline.removeFromParent(true);
+                this.swapInCardSlot.glossy.removeFromParent(true);
                 this.swapInCardSlot.removeFromParent(false);
                 this.deckPanel.addChild(this.swapInCardSlot);
                 this.deckSlots[slot] = this.swapInCardSlot;

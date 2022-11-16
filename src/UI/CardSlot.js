@@ -95,12 +95,22 @@ var CardSlot = ccui.Button.extend({
         else ratio = card.fragment / card.reqFrag;
         if (ratio > 1) ratio = 1;
         if (ratio === 1) {
-            this.progress = new sp.SkeletonAnimation(asset.cardUpgradeReady_json, asset.cardUpgradeReady_atlas);
-            this.progress.setAnimation(0, 'card_upgrade_ready', true);
-            this.progress.attr({
-                x: this.progressPanel.width / 2,
-                y: this.progressPanel.height / 2,
-            });
+            if (card.reqFrag > 0) {
+                this.progress = new sp.SkeletonAnimation(asset.cardUpgradeReady_json, asset.cardUpgradeReady_atlas);
+                this.progress.setAnimation(0, 'card_upgrade_ready', true);
+                this.progress.attr({
+                    x: this.progressPanel.width / 2,
+                    y: this.progressPanel.height / 2,
+                });
+            } else {
+                this.progress = new cc.Sprite(asset.progressMax_png);
+                this.progress.attr({
+                    x: this.progressPanel.width / 2,
+                    y: this.progressPanel.height / 2,
+                    scaleX: this.progressPanel.width * 0.95 / this.progress.width,
+                    scaleY: this.progressPanel.height * 0.8 / this.progress.height,
+                });
+            }
             this.progressPanel.addChild(this.progress);
         } else {
             this.progress = new cc.Sprite(asset.progress_png);
@@ -115,8 +125,8 @@ var CardSlot = ccui.Button.extend({
             this.progress.attr({
                 x: this.progressPanel.width / 2 * ratio,
                 y: this.progressPanel.height / 2,
-                scaleX: this.progressPanel.width * 0.95 * ratio / this.progress.getBoundingBox().width,
-                scaleY: this.progressPanel.height * 0.8 / this.progress.getBoundingBox().height,
+                scaleX: this.progressPanel.width * 0.95 * ratio / this.progress.width,
+                scaleY: this.progressPanel.height * 0.8 / this.progress.height,
             });
             this.progressPanel.addChild(this.progress);
         }

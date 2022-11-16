@@ -94,6 +94,15 @@ var HomeUI = cc.Layer.extend({
     },
 
     initLobbyArena: function () {
+        this.arenaGlow = new cc.Sprite(asset.arenaGlow_png);
+        this.arenaGlow.attr({
+            anchorY: 0,
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT * 0.4,
+            scale: cf.WIDTH * 0.9 / this.arenaGlow.width,
+        });
+        this.addChild(this.arenaGlow);
+
         this.arena = new cc.Sprite(asset.commonArenaForest_png);
         this.arena.attr({
             anchorY: 0,

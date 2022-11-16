@@ -69,6 +69,15 @@ var CardInfoUI = cc.Layer.extend({
         });
         topPanelBackground.addChild(closeBtn, 0);
 
+        this.miniatureGlow = cc.Sprite(asset.cardPanelMiniatureGlows_png[card.rarity]);
+        this.miniatureGlow.attr({
+            x: cf.WIDTH / 2,
+            y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
+            scale: cf.WIDTH * 0.5 / this.miniatureGlow.width,
+            opacity: 127,
+        });
+        this.addChild(this.miniatureGlow);
+
         if (card.isMonster()) {
             this.miniature = cc.Sprite(card.miniature);
             this.miniature.attr({
@@ -85,7 +94,6 @@ var CardInfoUI = cc.Layer.extend({
                 scale: cf.WIDTH * 0.25 / this.miniature.width,
             });
             this.addChild(this.miniature);
-            // todo button xem các miniature khác
         }
 
         // bottom panel
