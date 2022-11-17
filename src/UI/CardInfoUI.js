@@ -154,14 +154,12 @@ var CardInfoUI = cc.Layer.extend({
                 upgradeBtn = new ccui.Button(asset.btnGray_png);
                 upgradeBtn.addClickEventListener(() => {
                     Utils.addToastToRunningScene('Bạn không đủ thẻ nâng cấp');
-                    this.destroy();
                 });
             } else {
                 upgradeBtn = new ccui.Button(asset.btnGreen_png);
                 if (sharePlayerInfo.gold < card.reqGold) {
                     upgradeBtn.addClickEventListener(() => {
                         Utils.addToastToRunningScene('Bạn không đủ vàng nâng cấp');
-                        this.destroy();
                     });
                 } else {
                     upgradeBtn.addClickEventListener(() => {

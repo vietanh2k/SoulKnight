@@ -83,29 +83,35 @@ var OpenChestAnimationUI = cc.Layer.extend({
         let i = 0;
         for (i = 0; i < this.newCards.length + 1; i++) {
             let slotWidth = cf.WIDTH / (3 + 4);
-            let newElement;
+            let rewardSlot;
             if (i < this.newCards.length) {
                 let card = new Card(this.newCards[i].type, 1, 0);
-                newElement = new CardSlot(card, false);
-                newElement.setZoomScale(0);
-                newElement.levelPanel.visible = false;
-                newElement.iconEnergy.visible = false;
-                newElement.progressPanel.visible = false;
-                newElement.addClickEventListener(() => {});
-                // fixme chỉnh amount cho đúng
-                this.addAmount(newElement, this.newCards[i].fragment);
+                rewardSlot = new CardSlot(card, false);
+                rewardSlot.setZoomScale(0);
+                rewardSlot.levelPanel.visible = false;
+                rewardSlot.iconEnergy.visible = false;
+                rewardSlot.progressPanel.visible = false;
+                rewardSlot.addClickEventListener(() => {});
+
+                let newFragment = this.newCards[i].fragment;
+                let oldFragment = 0;
+                let updatedCard = sharePlayerInfo.collection.find(card => card.type === this.newCards[i].type);
+                if (updatedCard !== undefined) {
+                    oldFragment = updatedCard.fragment;
+                }
+                this.addAmount(rewardSlot, newFragment - oldFragment);
             } else {
-                newElement = new cc.Sprite(asset.iconGold_png);
-                this.addAmount(newElement, this.goldReceived);
+                rewardSlot = new cc.Sprite(asset.iconGold_png);
+                this.addAmount(rewardSlot, this.goldReceived);
             }
-            newElement.attr({
+            rewardSlot.attr({
                 x: this.getSlotPosition(i).x,
                 y: this.getSlotPosition(i).y,
-                scale: slotWidth / newElement.width,
+                scale: slotWidth / rewardSlot.width,
             });
-            this.addChild(newElement);
-            this.rewardSlots[i] = newElement;
-            newElement.visible = false;
+            this.addChild(rewardSlot);
+            this.rewardSlots[i] = rewardSlot;
+            rewardSlot.visible = false;
         }
     },
 

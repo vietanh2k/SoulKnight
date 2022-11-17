@@ -135,7 +135,7 @@ cf.COST_GEMS_PER_HOUR = 6;
 // Treasure.json
 cf.CHEST_REWARD = [
     {
-        openTimeRequired: 3 * 60 * 60 * 1000,   // fixme 3 phút
+        openTimeRequired: 3 * 60 * 60 * 1000,
         golds: [10, 20],
         fragments: [10, 20],
         cards: 2,

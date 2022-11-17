@@ -141,7 +141,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
     },
 });
 
-// OPEN_CHEST_NOW
+// OPEN_CHEST
 CmdSendOpenChest = fr.OutPacket.extend(
     {
         ctor: function () {
@@ -179,8 +179,6 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
 
                 serverNow = this.getLong();
                 Utils.updateTimeDiff(serverNow);
-
-                // fixme chỉnh amount cho đúng
 
                 cc.director.getRunningScene().runOpenChestAnimation(chestID, newCards, goldReceived);
             } else {
