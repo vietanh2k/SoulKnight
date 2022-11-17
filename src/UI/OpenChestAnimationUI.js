@@ -85,7 +85,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
             let slotWidth = cf.WIDTH / (3 + 4);
             let newElement;
             if (i < this.newCards.length) {
-                let card = new Card(this.newCards[i].id, 1, 0);
+                let card = new Card(this.newCards[i].type, 1, 0);
                 newElement = new CardSlot(card, false);
                 newElement.setZoomScale(0);
                 newElement.levelPanel.visible = false;

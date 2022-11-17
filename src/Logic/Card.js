@@ -7,7 +7,7 @@ var Card = cc.Class.extend({
 
         let cardTypeConfig = cf.CARD_TYPE[type];
         if (cardTypeConfig === undefined) {
-            cc.log('WARNING: cardTypeConfig is undefined');
+            cc.log('WARNING: cardTypeConfig is undefined. Type is ' + type + '.');
         } else {
             this.instance = cardTypeConfig.instance;
             this.concept = cardTypeConfig.concept;

@@ -147,12 +147,6 @@ CmdSendOpenChest = fr.OutPacket.extend(
             this.initData(100);
             this.setCmdId(gv.CMD.OPEN_CHEST);
         },
-        /**
-         * send open chest request
-         * sử dụng biến sharePlayerInfo.id
-         * @param {int} gemSpent gem spent
-         * @param {Chest} chest the chest to open
-         */
         putData: function (chest, gemSpent) {
             //pack
             this.packHeader();
@@ -178,9 +172,8 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
                 for (let i = 0; i < newCardsSize; i++) {
                     newCards.push(this.readCardData());
                 }
+                cc.log('New cards: ' + JSON.stringify(newCards));
                 goldReceived = this.getInt();
-
-                newCards = fake.OPEN_CHEST_NEW_CARDS; // fake data
 
                 serverNow = this.getLong();
                 Utils.updateTimeDiff(serverNow);
