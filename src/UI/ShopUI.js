@@ -115,9 +115,27 @@ var ShopUI = cc.Layer.extend({
         this.getChildByName('scene').getChildByName('nodeItem1').getChildByTag(1).getChildByName('numCost').setString(pkg.chestOffers[0][1])
     },
 
+    updateCanBuyUI:function (dt){
+        for(var i=1 ; i<=3 ; i++){
+            if(sharePlayerInfo.gold < parseInt(this.getChildByName('scene').getChildByName('nodeItem'+i).getChildByTag(i).getChildByName('numCost').getString())) {
+                this.getChildByName('scene').getChildByName('nodeItem'+i).getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(191, 26, 64, 255))
+            }else{
+                this.getChildByName('scene').getChildByName('nodeItem'+i).getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(255, 255, 255, 255))
+            }
+        }
+        for(var i=4 ; i<=6 ; i++){
+            if(sharePlayerInfo.gem < parseInt(this.getChildByName('scene').getChildByTag(i).getChildByName('numCost').getString())) {
+                this.getChildByName('scene').getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(191, 26, 64, 255))
+            }else{
+                this.getChildByName('scene').getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(255, 255, 255, 255))
+            }
+        }
+    },
+
     update:function (dt){
         this.updateRealTime(dt)
         this.updateTimeUI()
+        this.updateCanBuyUI()
     },
 
 
