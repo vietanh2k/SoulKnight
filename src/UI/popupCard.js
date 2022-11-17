@@ -1,5 +1,5 @@
 
-var PopupGold = cc.Node.extend({
+var PopupCard = cc.Node.extend({
 
     ctor:function (item) {
         this._super();
@@ -11,14 +11,15 @@ var PopupGold = cc.Node.extend({
 
         winSize = cc.director.getWinSize();
 
-        var popup = ccs.load(res.popupGold, "").node
-        popup.getChildByName('item').setTexture(item.getChildByName('item').getTexture())
-        popup.getChildByName('numGold').setString(item.getChildByName('numGold').getString())
+        var popup = ccs.load(res.popupCard, "").node
+        popup.getChildByName('cBackground').setTexture(item.getChildByName('background').getTexture())
+        popup.getChildByName('cAvatar').setTexture(item.getChildByName('item').getTexture())
+        popup.getChildByName('numCardGet').setString(item.getChildByName('numCard').getString())
         popup.getChildByName('numCost').setString(item.getChildByName('numCost').getString())
         this.addChild(popup,0,100)
         this.addBlockLayer()
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
-        this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
+        // this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
         popup.setOpacity(20)
         popup.setScale(0.2)
 
@@ -37,7 +38,6 @@ var PopupGold = cc.Node.extend({
     hide:function (){
         this.getChildByTag(100).runAction(cc.fadeOut(0.3))
         this.getChildByTag(100).runAction(cc.scaleBy(0.2, 0.2))
-        this.getChildByTag(100).getChildByName('Particle_1').removeFromParent(false)
         // popup.runAction(cc.scaleBy(0.3, 5))
         // this.getChildByTag(100).runAction(cc.scaleBy(2, 2))
         this.getChildByTag(200).removeFromParent(false)

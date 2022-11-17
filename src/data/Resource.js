@@ -25,7 +25,10 @@ var res = {
     shopScene : "shopScene.json",
     shopItem : "shopItem.json",
     popupGold : "popupGold.json",
+    popupCard : "popupCard.json",
+    popupChest : "popupChest.json",
     cardItemShop : "cardItemShop.json",
+
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',
     font_normal : 'asset/font/SVN-Avo bold.ttf',
