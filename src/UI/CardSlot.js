@@ -153,12 +153,16 @@ var CardSlot = ccui.Button.extend({
         this.addChild(this.rarityParticle);
     },
 
+    updateUI: function () {
+
+    },
+
     updateClickEventListener: function () {
         if (this.inDeck) {
             this.addClickEventListener(() => {
                 if (!this.parent.parent.isScrolling) {
                     if (this.parent.parent.parent.allBtnIsActive) {
-                        this.parent.parent.parent.addChild(new CardInfoUI(this.card), 4);
+                        this.parent.parent.parent.addChild(new CardInfoUI(this.card), 4, cf.TAG_CARDINFOUI);
                         this.parent.parent.parent.allBtnIsActive = false;
                     } else if (this.parent.parent.isShowingAddCardToDeck) {
                         let i;
@@ -178,7 +182,7 @@ var CardSlot = ccui.Button.extend({
             this.addClickEventListener(() => {
                 if (!this.parent.isScrolling) {
                     if (this.parent.parent.allBtnIsActive) {
-                        this.parent.parent.addChild(new CardInfoUI(this.card), 4);
+                        this.parent.parent.addChild(new CardInfoUI(this.card), 4, cf.TAG_CARDINFOUI);
                         this.parent.parent.allBtnIsActive = false;
                     } else {
                         cc.log('allBtnIsActive is false');

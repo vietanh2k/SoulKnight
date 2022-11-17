@@ -128,6 +128,8 @@ cf.LOBBY_TAB_HOME = 2;
 cf.LOBBY_TAB_SOCIAL = 3;
 cf.LOBBY_TAB_CLAN = 4;
 
+cf.TAG_CARDINFOUI = 100;
+
 cf.TIME_DIFF = 0; // thời gian trên server trừ thời gian trên client
 cf.UNOPEN_CHEST_TIMESTAMP = -1;
 cf.COST_GEMS_PER_HOUR = 6;

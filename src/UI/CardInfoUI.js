@@ -7,9 +7,6 @@ var CardInfoUI = cc.Layer.extend({
 
         this.card = card;
 
-        let inDeck = sharePlayerInfo.deck.find(element => element.id === card.id);
-        inDeck = inDeck !== undefined;
-
         let layerColor = new cc.LayerColor(cc.color(0, 0, 0), cf.WIDTH, cf.HEIGHT);
         layerColor.setOpacity(150);
         this.addChild(layerColor);
@@ -106,7 +103,7 @@ var CardInfoUI = cc.Layer.extend({
         this.addChild(botPanelBackground);
 
         let botBtnX = [undefined, undefined, undefined], counter = 0;
-        if (!inDeck) {
+        if (!card.isInDeck()) {
             botBtnX[0] = 1;
             counter++;
         }
@@ -125,7 +122,7 @@ var CardInfoUI = cc.Layer.extend({
             j++;
         }
 
-        if (!inDeck) {
+        if (!card.isInDeck()) {
             let chooseBtn = new ccui.Button(asset.btnBlue_png);
             chooseBtn.setZoomScale(0);
             chooseBtn.addClickEventListener(() => {

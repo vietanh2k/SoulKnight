@@ -354,10 +354,22 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
         Utils.updateTimeDiff(serverNow);
 
         if (status === "Success") {
-            // todo upgrade card
+            for (let i = 0; i < sharePlayerInfo.collection.length; i++) {
+                if (sharePlayerInfo.collection[i].type === type) {
+                    sharePlayerInfo.collection[i] = card;
+                    break;
+                }
+            }
+            for (let i = 0; i < sharePlayerInfo.deck.length; i++) {
+                if (sharePlayerInfo.deck[i].type === type) {
+                    sharePlayerInfo.deck[i] = card;
+                    break;
+                }
+            }
+            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
+            cc.director.getRunningScene().getChildByTag(cf.TAG_CARDINFOUI).destroy();
         } else {
             Utils.addToastToRunningScene(status);
-            // todo dọn UI
         }
     },
 

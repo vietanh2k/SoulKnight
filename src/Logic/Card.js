@@ -92,4 +92,9 @@ var Card = cc.Class.extend({
     isSpell: function () {
         return ('' + this.id)[0] === '3';
     },
+
+    isInDeck: function () {
+        let inDeck = sharePlayerInfo.deck.find(element => element.type === this.type);
+        return inDeck !== undefined;
+    },
 });

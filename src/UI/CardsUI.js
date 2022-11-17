@@ -243,7 +243,7 @@ var CardsUI = cc.Layer.extend({
         this.setUpperboundBasedOnTheLowestItem(lastCardSlot.y);
     },
 
-    updateDeckSlot: function () {
+    updateSwapCardIntoDeck: function () {
         let slot = this.pendingDeckSlot;
         let destination = {};
         destination.x = this.deckPanel.x - (this.deckPanel.width / 2 - this.deckSlots[slot].x) * this.deckPanel.scale;
@@ -284,6 +284,28 @@ var CardsUI = cc.Layer.extend({
         for (let i = 0; i < sharePlayerInfo.deck.length; i++) {
             let card = sharePlayerInfo.deck[i];
             this.addCardSlotToDeckPanel(card, i);
+        }
+    },
+
+    updateCardSlotWithType: function (type) {
+        let card = sharePlayerInfo.collection.find(card => card.type === type);
+        if (card === undefined) {
+            cc.log('Cannot find type ' + type + ' in collection.');
+            return;
+        }
+        for (let i = 0; i < this.deckSlots.length; i++) {
+            if (this.deckSlots[i].card.type === type) {
+                this.deckSlots[i].removeFromParent(true);
+                this.addCardSlotToDeckPanel(card, i);
+                break;
+            }
+        }
+        for (let i = 0; i < this.collectionSlots.length; i++) {
+            if (this.collectionSlots[i].card.type === type) {
+                this.collectionSlots[i].removeFromParent(true);
+                this.addCardSlotToCollection(card, i);
+                break;
+            }
         }
     },
 
