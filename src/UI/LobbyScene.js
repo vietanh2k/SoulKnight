@@ -36,7 +36,6 @@ var LobbyScene = cc.Scene.extend({
 
     initCurrencyPanel: function (localZOrder) {
         this.currencyPanel = new CurrencyPanel();
-        cc.log("initCurrencyPanel")
         this.addChild(this.currencyPanel, localZOrder);
     },
 
