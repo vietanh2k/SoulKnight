@@ -215,12 +215,34 @@ var CardInfoUI = cc.Layer.extend({
             });
             showSkillBtn.addChild(lb);
         }
+
+        this.addTouchListener(topPanelBackground, botPanelBackground);
     },
 
     destroy: function () {
         this.visible = false;
-        this.parent.allBtnIsActive = true;
-        this.removeFromParent();
+        this.parent.removeCardInfoUI(this);
     },
 
+    addTouchListener: function (top, bot) {
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: (event) => {
+                let locationY = event.getLocation().y;
+                if (locationY > top.y + top.height / 2 * top.scale ||
+                    locationY < bot.y - bot.height / 2 * bot.scale) {
+                    this.readyToDestroy = true;
+                    return true;
+                }
+                return false;
+            },
+            onTouchEnded: () => {
+                if (this.readyToDestroy) {
+                    this.destroy();
+                    return true;
+                }
+                return false;
+            },
+        }, this);
+    },
 });

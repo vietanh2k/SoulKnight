@@ -161,4 +161,9 @@ var LobbyScene = cc.Scene.extend({
         this.addChild(new OpenChestAnimationUI(chestID, newCards, goldReceived), 3);
         this.allBtnIsActive = false;
     },
+
+    removeCardInfoUI: function (child) {
+        child.removeFromParent(true);
+        setTimeout(() => this.allBtnIsActive = true, 0.1);
+    },
 });
