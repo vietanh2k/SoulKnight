@@ -153,10 +153,6 @@ var CardSlot = ccui.Button.extend({
         this.addChild(this.rarityParticle);
     },
 
-    updateUI: function () {
-
-    },
-
     updateClickEventListener: function () {
         if (this.inDeck) {
             this.addClickEventListener(() => {

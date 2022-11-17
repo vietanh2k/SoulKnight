@@ -146,7 +146,6 @@ var LobbyScene = cc.Scene.extend({
             }
         }
         this.updateTabUIsVisibility();
-        // TODO quẹt ngang để chuyển giữa các tab
     },
 
     updateTabUIsVisibility: function () {
@@ -162,8 +161,10 @@ var LobbyScene = cc.Scene.extend({
         this.allBtnIsActive = false;
     },
 
-    removeCardInfoUI: function (child) {
+    removeCardInfoUI: function (child, resetAllBtnIsActive) {
         child.removeFromParent(true);
-        setTimeout(() => this.allBtnIsActive = true, 0.1);
+        if (resetAllBtnIsActive) {
+            setTimeout(() => this.allBtnIsActive = true, 0.01);
+        }
     },
 });

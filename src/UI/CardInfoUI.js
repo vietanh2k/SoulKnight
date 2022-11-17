@@ -62,7 +62,7 @@ var CardInfoUI = cc.Layer.extend({
             scale: topPanelBackground.width * 0.07 / closeBtn.width,
         });
         closeBtn.addClickEventListener(() => {
-            this.destroy();
+            this.destroy(false);
         });
         topPanelBackground.addChild(closeBtn, 0);
 
@@ -127,7 +127,7 @@ var CardInfoUI = cc.Layer.extend({
             chooseBtn.setZoomScale(0);
             chooseBtn.addClickEventListener(() => {
                 let cardsUI = this.parent.tabUIs[cf.LOBBY_TAB_CARDS];
-                this.destroy();
+                this.destroy(true);
                 cardsUI.showAddCardToDeck(card);
             });
             chooseBtn.attr({
@@ -216,12 +216,13 @@ var CardInfoUI = cc.Layer.extend({
             showSkillBtn.addChild(lb);
         }
 
+        // fixme sửa lại hàm dưới khi có item mới ở trên topPanelBackground
         this.addTouchListener(topPanelBackground, botPanelBackground);
     },
 
-    destroy: function () {
+    destroy: function (isShowingAddCardToDeck) {
         this.visible = false;
-        this.parent.removeCardInfoUI(this);
+        this.parent.removeCardInfoUI(this, !isShowingAddCardToDeck);
     },
 
     addTouchListener: function (top, bot) {
@@ -238,7 +239,7 @@ var CardInfoUI = cc.Layer.extend({
             },
             onTouchEnded: () => {
                 if (this.readyToDestroy) {
-                    this.destroy();
+                    this.destroy(false);
                     return true;
                 }
                 return false;

@@ -131,7 +131,9 @@ var CardsUI = cc.Layer.extend({
         });
         this.addChild(newCardSlot);
         this.collectionSlots[index] = newCardSlot;
-        this.setUpperboundBasedOnTheLowestItem(cardSlotY);
+        if (index === sharePlayerInfo.collection.length - 1) {
+            this.setUpperboundBasedOnTheLowestItem(cardSlotY);
+        }
     },
 
     sortCollectionSlotsByEnergy: function () {
@@ -302,6 +304,10 @@ var CardsUI = cc.Layer.extend({
         }
         for (let i = 0; i < this.collectionSlots.length; i++) {
             if (this.collectionSlots[i].card.type === type) {
+                // update gold
+                sharePlayerInfo.gold -= this.collectionSlots[i].card.reqGold;
+                this.parent.currencyPanel.updateLabels();
+
                 this.collectionSlots[i].removeFromParent(true);
                 this.addCardSlotToCollection(card, i);
                 break;
@@ -314,6 +320,7 @@ var CardsUI = cc.Layer.extend({
         if (this.upperbound < 0) {
             this.upperbound = 0;
         }
+        cc.log('Upperbound updated: ' + this.upperbound);
     },
 
     scrollToTop: function () {
