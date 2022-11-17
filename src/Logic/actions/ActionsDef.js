@@ -1,7 +1,9 @@
 const ACTION_CODE = {
-    NEXT_WAVE_ACTION: 0
+    NEXT_WAVE_ACTION: 0,
+    ACTIVATE_CARD_ACTION: 1
 }
 
-const ACTION_DESERIALIZER = {
-    0: NextWaveAction.deserializer
-}
+const ACTION_DESERIALIZER = {}
+
+ACTION_DESERIALIZER[ACTION_CODE.NEXT_WAVE_ACTION] = NextWaveAction.deserializer
+ACTION_DESERIALIZER[ACTION_CODE.ACTIVATE_CARD_ACTION] = ActivateCardAction.deserializer

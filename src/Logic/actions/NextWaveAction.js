@@ -12,7 +12,7 @@ const NextWaveAction = cc.Class.extend({
         return ACTION_CODE.NEXT_WAVE_ACTION
     },
 
-    getActionPkgSize: function () {
+    getActionDataSize: function () {
         return 4;
     },
 

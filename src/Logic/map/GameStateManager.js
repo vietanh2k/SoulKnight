@@ -77,16 +77,21 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false
     },
     checkWinner:function (){
-        if(this.playerA.health == 0){
-            if(this.playerB == 0){
-                this.winner = 0
-            }
-            else{
-                this.winner = 2
-            }
+        if (!(this.playerA.health <= 0 || this.playerB.health <= 0)) {
             return
         }
-        if(this.playerB.health == 0){
+
+        if ((this.playerA.health <= 0 && this.playerB.health <= 0) || this.playerA.health === this.playerB.health) {
+            this.winner = 0
+            return
+        }
+
+        if(this.playerA.health <= 0){
+            this.winner = 2
+            return
+        }
+
+        if(this.playerB.health <= 0){
             this.winner = 1
         }
     },

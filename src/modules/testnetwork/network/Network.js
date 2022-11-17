@@ -46,15 +46,15 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log('battle start succeededddddddddddd')
                 break;
             case gv.CMD.BATTLE_SYNC_START:
-                cc.log("=========================gv.CMD.BATTLE_SYNC_START================================")
+                //cc.log("=========================gv.CMD.BATTLE_SYNC_START================================")
                 this.sendSyncStartConfirm(packet.syncN)
                 break
             case gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N:
-                cc.log("=========================gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N================================")
+                //cc.log("=========================gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N================================")
                 this.sendSyncUpdateToFrameNConfirm(packet.syncN, packet.frameN)
                 break
             case gv.CMD.BATTLE_ACTIONS:
-                cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
+                //cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
                 break
 
         }
@@ -117,7 +117,7 @@ testnetwork.Connector = cc.Class.extend({
     },
 
     sendSyncUpdateToFrameNConfirm: function(syncN, maxFrame){
-        cc.log("sendSyncUpdateToFrameNConfirm");
+        //cc.log("sendSyncUpdateToFrameNConfirm");
 
         const remain = maxFrame - GameStateManagerInstance.frameCount
         for (let i = 0; i < remain; i++) {
@@ -131,7 +131,7 @@ testnetwork.Connector = cc.Class.extend({
     },
 
     sendActions: function (actions) {
-        cc.log("sendActions");
+        //cc.log("sendActions");
         GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
         const pk = this.gameClient.getOutPacket(CmdBattleActions);
         pk.pack(actions);

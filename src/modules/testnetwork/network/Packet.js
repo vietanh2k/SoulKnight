@@ -182,7 +182,7 @@ CmdBattleActions = fr.OutPacket.extend(
             this.putInt(actions.length)
 
             for (let i = 0; i < actions.length; i++) {
-                this.putInt(actions[i].getActionPkgSize())
+                this.putInt(actions[i].getActionDataSize())
                 this.putInt(actions[i].getActionCode())
                 actions[i].writeTo(this)
             }
@@ -444,6 +444,8 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
         },
 
         readData: function(){
+            cc.log("Activate actions at frame " + GameStateManagerInstance.frameCount)
+
             const num = this.getInt()
             for (let i = 0; i < num; i++) {
                 const size = this.getInt()
@@ -477,7 +479,7 @@ testnetwork.packetMap[gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N] = fr.InPacket
         },
 
         readData: function(){
-            cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
+            //cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
             this.syncN = this.getLong()
             this.frameN = this.getLong()
         }
