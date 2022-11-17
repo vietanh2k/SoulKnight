@@ -136,6 +136,38 @@ CmdSendMove = fr.OutPacket.extend(
     }
 )
 
+CmdSwitchIntoDeck = fr.OutPacket.extend(
+    {
+        ctor: function () {
+            this._super();
+            this.initData(100);
+            this.setCmdId(3008);
+        },
+        pack: function (in_type, out_type) {
+            this.packHeader();
+            this.putByte(in_type);
+            this.putByte(out_type);
+            this.updateSize();
+        }
+    }
+)
+
+CmdSendBuy = fr.OutPacket.extend(
+    {
+        ctor: function () {
+            this._super();
+            this.initData(100);
+            this.setCmdId(3004);
+        },
+        pack: function (type, amount) {
+            this.packHeader();
+            this.putByte(type);
+            this.putInt(amount);
+            this.updateSize();
+        }
+    }
+)
+
 
 CmdMatchRequest = fr.OutPacket.extend(
     {
@@ -270,7 +302,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         let trophy = this.getInt();
         let collectionSize = this.getInt();
         let collection = [];
-        for (let i = 0; i < 18; i++) { // fake data
+        for (let i = 0; i < collectionSize; i++) { // fake data
             collection.push(this.readCardData(i)); // fake data
         }
         let chestListSize = this.getInt();
@@ -280,7 +312,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         }
         let deckSize = this.getInt();
         let deck = [];
-        for (let i = 0; i < 8; i++) { // fake data
+        for (let i = 0; i < deckSize; i++) { // fake data
             deck.push(this.readCardTypeData(collection, i)); // fake data
         }
 
@@ -293,17 +325,21 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
     },
 
     readCardData: function (i) { // fake data
+        let type = this.getByte();
+        let level = this.getInt();
+        let fragment = this.getInt();
         if (i < 10) { // fake data
             // let id = this.getInt();
             // let name = this.getString();
-            let type = this.getByte();
-            let level = this.getInt();
-            let fragment = this.getInt();
+            // let type = this.getByte();
+            // let level = this.getInt();
+            // let fragment = this.getInt();
             // let attackSpeed = this.getDouble();
             // let attackRange = this.getDouble();
         }
         // return new MCard(id, name, type, level, quantity, attackSpeed, attackRange);
-        return new Card(fake.collection[i].id, fake.collection[i].level, fake.collection[i].fragment); // fake data
+        i = type % fake.collection.length
+        return new Card(fake.collection[i].id, fragment); // fake data
     },
 
     readChestData: function () {

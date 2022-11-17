@@ -25,6 +25,7 @@ var SignInScreen = cc.Layer.extend({
     onSelectLogin: function (sender) {
         cc.log("current test is :" + this.textField.getString())
         cc.log("sendLoginRequest");
+
         try {
             gv.gameClient._userId = parseInt(this.textField.getString());
             if (!isNaN(gv.gameClient._userId)) {
@@ -68,6 +69,7 @@ var SignInScreen = cc.Layer.extend({
      *
      */
     onUserInfo: function () {
+        // gv.gameClient.sendBuyRequest()
         let lobbyScene = new LobbyScene();
         cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
         cc.log('Current time on client: ' + Date.now());
