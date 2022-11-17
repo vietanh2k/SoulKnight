@@ -89,6 +89,13 @@ testnetwork.Connector = cc.Class.extend({
         this.gameClient.sendPacket(pk);
     },
 
+    sendSwapCardIntoDeckRequest: function (typeIn, typeOut) {
+        cc.log('Send swap card into deck request: typeIn = ' + typeIn + ', typeOut = ' + typeOut + '.');
+        let pk = this.gameClient.getOutPacket(CmdSendAddSwapCardIntoDeck);
+        pk.putData(typeIn, typeOut);
+        this.gameClient.sendPacket(pk);
+    },
+
     sendMatchRequest:function(){
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);

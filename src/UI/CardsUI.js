@@ -150,7 +150,7 @@ var CardsUI = cc.Layer.extend({
         this.collectionSlots.forEach(collectionSlot => collectionSlot.visible = false);
         this.collectionPanel.visible = false;
         this.scrollToTop();
-        this.pendingCardId = card.id;
+        this.pendingCardType = card.type;
 
         this.arrows = [];
         for (let i = 0; i < 3; ++i) {
@@ -230,7 +230,8 @@ var CardsUI = cc.Layer.extend({
     },
 
     quitAddCardToDeck: function () {
-        this.pendingCardId = undefined;
+        this.pendingCardType = undefined;
+        this.pendingDeckSlot = undefined;
         this.arrows.forEach(arrow => this.removeChild(arrow));
         this.removeChild(this.lbInstruction);
         this.removeChild(this.exitBtn);
@@ -242,7 +243,8 @@ var CardsUI = cc.Layer.extend({
         this.setUpperboundBasedOnTheLowestItem(lastCardSlot.y);
     },
 
-    updateDeckSlot: function (slot) {
+    updateDeckSlot: function () {
+        let slot = this.pendingDeckSlot;
         let destination = {};
         destination.x = this.deckPanel.x - (this.deckPanel.width / 2 - this.deckSlots[slot].x) * this.deckPanel.scale;
         destination.y = this.deckPanel.y - (this.deckPanel.height - this.deckSlots[slot].y) * this.deckPanel.scale;

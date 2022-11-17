@@ -137,17 +137,21 @@ var HomeUI = cc.Layer.extend({
         });
         this.btnBattle.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                // FIXME hiện tại đang dùng nút này để debug
+                // hiện tại đang dùng nút này để debug
                 Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
                 cc.log("User data: " + JSON.stringify(sharePlayerInfo));
 
                 // đây mới là (một phần) tác dụng thật
+                let fullChestSlots = true;
                 for (let i = 0; i < this.chestSlots.length; i++) {
                     if (this.chestSlots[i].constructor.name === 'Sprite') {
-                        return;
+                        fullChestSlots = false;
                     }
                 }
-                Utils.addToastToRunningScene('Số lượng rương đã đạt tối đa!');
+                if (fullChestSlots) {
+                    Utils.addToastToRunningScene('Số lượng rương đã đạt tối đa!');
+                }
+                // todo vào matching UI
             }
         });
         this.arena.addChild(this.btnBattle);

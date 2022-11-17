@@ -92,7 +92,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
                 newElement.iconEnergy.visible = false;
                 newElement.progressPanel.visible = false;
                 newElement.addClickEventListener(() => {});
-                // amount
+                // fixme chỉnh amount cho đúng
                 this.addAmount(newElement, this.newCards[i].fragment);
             } else {
                 newElement = new cc.Sprite(asset.iconGold_png);

@@ -163,12 +163,12 @@ var CardSlot = ccui.Button.extend({
                     } else if (this.parent.parent.isShowingAddCardToDeck) {
                         let i;
                         for (i = 0; i < sharePlayerInfo.deck.length; i++) {
-                            if (sharePlayerInfo.deck[i].id === this.card.id) {
-                                sharePlayerInfo.deck[i] = sharePlayerInfo.collection.find(element => element.id === this.parent.parent.pendingCardId);
+                            if (sharePlayerInfo.deck[i].type === this.card.type) {
+                                this.parent.parent.pendingDeckSlot = i;
+                                testnetwork.connector.sendSwapCardIntoDeckRequest(this.parent.parent.pendingCardType, sharePlayerInfo.deck[i].type);
                                 break;
                             }
                         }
-                        this.parent.parent.updateDeckSlot(i);
                     } else {
                         cc.log('allBtnIsActive is false and CardsUI is not showing add card to deck');
                     }

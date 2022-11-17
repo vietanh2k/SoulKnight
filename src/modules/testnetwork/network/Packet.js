@@ -12,6 +12,7 @@ gv.CMD.OPEN_CHEST = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
 gv.CMD.ADD_CURRENCY = 3004;
+gv.CMD.SWAP_CARD_INTO_DECK = 3008;
 gv.CMD.MATCH_REQUEST = 4001;
 gv.CMD.MATCH_REPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
@@ -178,6 +179,8 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
                 serverNow = this.getLong();
                 Utils.updateTimeDiff(serverNow);
 
+                // fixme chỉnh amount cho đúng
+
                 cc.director.getRunningScene().runOpenChestAnimation(chestID, newCards, goldReceived);
             } else {
                 Utils.addToastToRunningScene(status);
@@ -279,6 +282,45 @@ testnetwork.packetMap[gv.CMD.ADD_CURRENCY] = fr.InPacket.extend({
     updatePlayerResource: function (type, amount) {
         if (type === 0) sharePlayerInfo.gem += amount;
         else sharePlayerInfo.gold += amount;
+    },
+});
+
+// SWAP_CARD_INTO_DECK
+CmdSendAddSwapCardIntoDeck = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.SWAP_CARD_INTO_DECK);
+    },
+
+    putData: function (typeIn, typeOut) {
+        this.packHeader();
+        this.putByte(typeIn);
+        this.putByte(typeOut);
+        this.updateSize();
+    },
+});
+testnetwork.packetMap[gv.CMD.SWAP_CARD_INTO_DECK] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+
+    readData: function () {
+        let status = this.getString();
+        let typeIn = this.getByte();
+        let typeOut = this.getByte();
+        cc.log('Get swap card into deck response from server. Status: ' + status + ', typeIn: ' + typeIn + ', typeOut: ' + typeOut + '.');
+
+        let serverNow = this.getLong();
+        Utils.updateTimeDiff(serverNow);
+
+        if (status === "Success") {
+            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateDeckSlot();
+        } else {
+            Utils.addToastToRunningScene(status);
+            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].swapInCardSlot.removeFromParent(true);
+            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].quitAddCardToDeck();
+        }
     },
 });
 
