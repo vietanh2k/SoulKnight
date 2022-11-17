@@ -96,6 +96,13 @@ testnetwork.Connector = cc.Class.extend({
         this.gameClient.sendPacket(pk);
     },
 
+    sendUpgradeCardRequest: function (type, goldSpent) {
+        cc.log('Send upgrade card request: type = ' + type + ', gold spent = ' + goldSpent + '.');
+        let pk = this.gameClient.getOutPacket(CmdSendUpgradeCard);
+        pk.putData(type, goldSpent);
+        this.gameClient.sendPacket(pk);
+    },
+
     sendMatchRequest:function(){
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);

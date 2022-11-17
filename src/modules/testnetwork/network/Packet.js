@@ -12,6 +12,7 @@ gv.CMD.OPEN_CHEST = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
 gv.CMD.ADD_CURRENCY = 3004;
+gv.CMD.UPGRADE_CARD = 3005;
 gv.CMD.SWAP_CARD_INTO_DECK = 3008;
 gv.CMD.MATCH_REQUEST = 4001;
 gv.CMD.MATCH_REPONSE = 4002;
@@ -321,6 +322,52 @@ testnetwork.packetMap[gv.CMD.SWAP_CARD_INTO_DECK] = fr.InPacket.extend({
             cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].swapInCardSlot.removeFromParent(true);
             cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].quitAddCardToDeck();
         }
+    },
+});
+
+// UPGRADE_CARD
+CmdSendUpgradeCard = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.UPGRADE_CARD);
+    },
+
+    putData: function (type, goldSpent) {
+        this.packHeader();
+        this.putByte(type);
+        this.putInt(goldSpent);
+        this.updateSize();
+    },
+});
+testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+
+    readData: function () {
+        let type = this.getByte();
+        let status = this.getString();
+        let card = this.readCardData();
+
+        cc.log('Get upgrade card response from server. Status: ' + status + ', type: ' + type + ', card: ' + JSON.stringify(card) + '.');
+
+        let serverNow = this.getLong();
+        Utils.updateTimeDiff(serverNow);
+
+        if (status === "Success") {
+            // todo upgrade card
+        } else {
+            Utils.addToastToRunningScene(status);
+            // todo dọn UI
+        }
+    },
+
+    readCardData: function () {
+        let type = this.getByte();
+        let level = this.getInt();
+        let fragment = this.getInt();
+        return new Card(type, level, fragment);
     },
 });
 

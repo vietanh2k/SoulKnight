@@ -164,7 +164,9 @@ var CardInfoUI = cc.Layer.extend({
                         this.destroy();
                     });
                 } else {
-                    // TODO gửi request nâng cấp thẻ
+                    upgradeBtn.addClickEventListener(() => {
+                        testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                    });
                 }
             }
             upgradeBtn.setZoomScale(0);
