@@ -91,8 +91,8 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         let trophy = this.getInt();
         let collectionSize = this.getInt();
         let collection = [];
-        for (let i = 0; i < 18; i++) { // fake data
-            collection.push(this.readCardData(i)); // fake data
+        for (let i = 0; i < collectionSize; i++) {
+            collection.push(this.readCardData());
         }
         let chestListSize = this.getInt();
         let chestList = [];
@@ -101,8 +101,8 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         }
         let deckSize = this.getInt();
         let deck = [];
-        for (let i = 0; i < 8; i++) { // fake data
-            deck.push(this.readCardTypeData(collection, i)); // fake data
+        for (let i = 0; i < deckSize; i++) {
+            deck.push(this.readCardTypeData(collection));
         }
 
         let serverNow = this.getLong();
@@ -113,13 +113,11 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo));
     },
 
-    readCardData: function (i) { // fake data
-        if (i < 10) { // fake data
-            let type = this.getByte();
-            let level = this.getInt();
-            let fragment = this.getInt();
-        }
-        return new Card(fake.collection[i].id, fake.collection[i].level, fake.collection[i].fragment); // fake data
+    readCardData: function () {
+        let type = this.getByte();
+        let level = this.getInt();
+        let fragment = this.getInt();
+        return new Card(type, level, fragment);
     },
 
     readChestData: function () {
@@ -129,17 +127,15 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         return new Chest(id, type, openOnServerTimestamp);
     },
 
-    readCardTypeData: function (collection, i) {
+    readCardTypeData: function (collection) {
         let type = this.getByte();
-        // for (let i = 0; i < collection.length; i++) {
-        //     if (collection[i].type === type) {
-        //         return collection[i];
-        //     }
-        // }
-        // return null;
-        return collection.find(card => {
-            return card.id === fake.deck[i].id;
-        }); // fake data
+        for (let i = 0; i < collection.length; i++) {
+            if (collection[i].type === type) {
+                return collection[i];
+            }
+        }
+        cc.log('Không tìm thấy card type ' + type + ' trong collection.');
+        return null;
     },
 });
 
@@ -213,11 +209,8 @@ CmdSendStartCooldownChest = fr.OutPacket.extend({
     },
 
     putData: function (chest) {
-        //pack
         this.packHeader();
         this.putInt(chest.id);
-        this.putInt(sharePlayerInfo.id);
-        //update
         this.updateSize();
     }
 });

@@ -271,21 +271,21 @@ cf.CARD = [
     {
         id: 105,
         energy: 12,
-        texture: asset.cardTowerAttackSpeed_png,
-        miniature: asset.miniaturesTowerAttackSpeed_png,
-        name: 'Rắn Tóc Đỏ',
-        description:
-            'Tăng Tốc bắn cho các Tháp\n' +
-            'nằm trong vùng Tháp',
-    },
-    {
-        id: 106,
-        energy: 12,
         texture: asset.cardTowerDamage_png,
         miniature: asset.miniaturesTowerDamage_png,
         name: 'Dê Phát Động',
         description:
             'Tăng Sát thương cho các Tháp\n' +
+            'nằm trong vùng Tháp',
+    },
+    {
+        id: 106,
+        energy: 12,
+        texture: asset.cardTowerAttackSpeed_png,
+        miniature: asset.miniaturesTowerAttackSpeed_png,
+        name: 'Rắn Tóc Đỏ',
+        description:
+            'Tăng Tốc bắn cho các Tháp\n' +
             'nằm trong vùng Tháp',
     },
 

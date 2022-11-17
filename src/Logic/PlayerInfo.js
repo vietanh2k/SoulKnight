@@ -9,15 +9,6 @@ var PlayerInfo = cc.Class.extend({
         this.collection = collection;
         this.chestList = chestList;
         this.deck = deck;
-
-        // fake data
-        // this.name = FAKE.name;
-        // this.gold = FAKE.gold;
-        // this.gem = FAKE.gem;
-        // this.trophy = FAKE.trophy;
-        // this.collection = fake.collection;
-        // this.chestList = FAKE.chests;
-        // this.deck = fake.deck;
     },
 
     getChestById: function (chestId) {
