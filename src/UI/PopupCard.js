@@ -16,10 +16,15 @@ var PopupCard = cc.Node.extend({
         popup.getChildByName('cAvatar').setTexture(item.getChildByName('item').getTexture())
         popup.getChildByName('numCardGet').setString(item.getChildByName('numCard').getString())
         popup.getChildByName('numCost').setString(item.getChildByName('numCost').getString())
+        popup.getChildByName('numCost').setTextColor(item.getChildByName('numCost').getTextColor())
         this.addChild(popup,0,100)
         this.addBlockLayer()
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
-        // this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
+        this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
+        if(sharePlayerInfo.gold < parseInt(popup.getChildByName('numCost').getString())){
+            popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
+            popup.getChildByName('button').setTouchEnabled(false)
+        }
         popup.setOpacity(20)
         popup.setScale(0.2)
 
@@ -40,8 +45,8 @@ var PopupCard = cc.Node.extend({
         this.getChildByTag(100).runAction(cc.scaleBy(0.2, 0.2))
         // popup.runAction(cc.scaleBy(0.3, 5))
         // this.getChildByTag(100).runAction(cc.scaleBy(2, 2))
-        this.getChildByTag(200).removeFromParent(false)
-
+        this.getChildByTag(200).removeFromParent(true)
+        this.removeFromParent(true)
         // this.runAction(cc.fadeOut(2))
         // this.visible = false
     },
@@ -50,8 +55,12 @@ var PopupCard = cc.Node.extend({
 
     requestBuy:function (){
 
+        var leng = 1
+        var buyList = []
+        buyList.push([100, 0])
+        var cost = parseInt(this.getChildByTag(100).getChildByName('numCost').getString())
         try{
-            testnetwork.connector.sendBuyGemOrGold(1,parseInt(this.getChildByTag(100).getChildByName('numGold').getString()));
+            testnetwork.connector.sendBuyCard(leng, buyList,cost);
 
 
         } catch (e){
@@ -79,6 +88,10 @@ var PopupCard = cc.Node.extend({
         } , blockLayer);
 
     },
+
+    destroy:function (){
+        this.removeFromParent(true)
+    }
 
 
 

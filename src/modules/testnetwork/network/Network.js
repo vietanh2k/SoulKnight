@@ -46,7 +46,7 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log('battle start succeededddddddddddd')
                 break;
             case gv.CMD.OFFER_RESPONSE:
-                shopUIInstant.updateShop(packet);
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateShop(packet);
                 cc.log('offer reponse succeededddddddddddd')
                 break;
             case gv.CMD.BATTLE_SYNC_START:
@@ -61,8 +61,16 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
                 break
             case gv.CMD.BUY_GEM_OR_GOLD:
-                shopUIInstant.buyComplete(packet)
-                cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                cc.log("=========================BUY GOLD SUCCEEDED================================")
+                break
+            case gv.CMD.BUY_CARD:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyCard(packet)
+                cc.log("=========================BUY CARD SUCCEEDED================================")
+                break
+            case gv.CMD.BUY_CHEST:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
+                cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
 
         }
@@ -155,6 +163,18 @@ testnetwork.Connector = cc.Class.extend({
         var pk = this.gameClient.getOutPacket(CmdBuyGemOrGold);
         cc.log(pk)
         pk.pack(typee, amout);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyCard:function(leng,buyList, cost){
+        var pk = this.gameClient.getOutPacket(CmdBuyCard);
+        cc.log(pk)
+        pk.pack(leng,buyList, cost);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyChest:function(leng,buyList, cost){
+        var pk = this.gameClient.getOutPacket(CmdBuyChest);
+        cc.log(pk)
+        pk.pack(leng,buyList, cost);
         this.gameClient.sendPacket(pk);
     },
 });

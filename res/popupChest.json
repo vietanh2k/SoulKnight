@@ -438,7 +438,6 @@
             "RightMargin": -14.8979,
             "TopMargin": 0.2965,
             "BottomMargin": -106.2965,
-            "Tag": 138,
             "ActionTag": 309668887,
             "Size": {
               "X": 108.0,
@@ -483,7 +482,7 @@
             "RightMargin": -158.472,
             "TopMargin": -0.3351,
             "BottomMargin": -105.6649,
-            "Tag": 139,
+            "Tag": 2,
             "ActionTag": 601656215,
             "Size": {
               "X": 108.0,
@@ -528,7 +527,7 @@
             "RightMargin": -88.2674,
             "TopMargin": 0.49,
             "BottomMargin": -106.49,
-            "Tag": 140,
+            "Tag": 1,
             "ActionTag": -170628319,
             "Size": {
               "X": 108.0,

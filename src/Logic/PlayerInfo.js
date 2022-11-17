@@ -34,6 +34,19 @@ var PlayerInfo = cc.Class.extend({
 
     addNewCards: function (newCards) {
         // TODO add new cards after open a chest
+        for (let i = 0; i < newCards.length; i++) {
+            let j = 0;
+            for (j = 0; j < sharePlayerInfo.collection.length; j++) {
+                if (newCards[i].type === sharePlayerInfo.collection[j].type) {
+                    sharePlayerInfo.collection[j] = newCards[i];
+                    break;
+                }
+            }
+            if (j === sharePlayerInfo.collection.length) {
+                sharePlayerInfo.collection.push(newCards[i]);
+            }
+        }
+        LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateAllCardSlots();
     },
 
     /**

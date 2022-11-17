@@ -15,10 +15,17 @@ var PopupGold = cc.Node.extend({
         popup.getChildByName('item').setTexture(item.getChildByName('item').getTexture())
         popup.getChildByName('numGold').setString(item.getChildByName('numGold').getString())
         popup.getChildByName('numCost').setString(item.getChildByName('numCost').getString())
+        popup.getChildByName('numCost').setTextColor(item.getChildByName('numCost').getTextColor())
         this.addChild(popup,0,100)
         this.addBlockLayer()
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
         this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
+        if(sharePlayerInfo.gem < parseInt(popup.getChildByName('numCost').getString())){
+            popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
+            popup.getChildByName('button').setTouchEnabled(false)
+        }
+
+
         popup.setOpacity(20)
         popup.setScale(0.2)
 
@@ -37,10 +44,11 @@ var PopupGold = cc.Node.extend({
     hide:function (){
         this.getChildByTag(100).runAction(cc.fadeOut(0.3))
         this.getChildByTag(100).runAction(cc.scaleBy(0.2, 0.2))
-        this.getChildByTag(100).getChildByName('Particle_1').removeFromParent(false)
+        this.getChildByTag(100).getChildByName('Particle_1').removeFromParent(true)
         // popup.runAction(cc.scaleBy(0.3, 5))
         // this.getChildByTag(100).runAction(cc.scaleBy(2, 2))
-        this.getChildByTag(200).removeFromParent(false)
+        this.getChildByTag(200).removeFromParent(true)
+        this.removeFromParent(true)
 
         // this.runAction(cc.fadeOut(2))
         // this.visible = false

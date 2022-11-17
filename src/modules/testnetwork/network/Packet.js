@@ -13,6 +13,8 @@ gv.CMD.OPEN_CHEST_NOW = 3001;
 gv.CMD.START_COOLDOWN = 3002;
 gv.CMD.UPDATE_PLAYER_INFO = 3003;
 gv.CMD.BUY_GEM_OR_GOLD = 3004;
+gv.CMD.BUY_CARD = 3006;
+gv.CMD.BUY_CHEST = 3007;
 gv.CMD.OFFER_REQUEST = 3009;
 gv.CMD.OFFER_RESPONSE = 3009;
 gv.CMD.MATCH_REQUEST = 4001;
@@ -258,6 +260,52 @@ CmdBuyGemOrGold = fr.OutPacket.extend(
 
             this.putByte(type)
             this.putInt(amout)
+
+            this.updateSize();
+        }
+    }
+)
+
+CmdBuyCard = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.BUY_CARD);
+        },
+        pack: function(leng, buyList, cost){
+            this.packHeader();
+
+            this.putInt(leng)
+            for(var i=0; i<leng; i++){
+                this.putByte(buyList[i][0])
+                this.putInt(buyList[i][1])
+            }
+            this.putInt(cost)
+
+            this.updateSize();
+        }
+    }
+)
+
+CmdBuyChest = fr.OutPacket.extend(
+    {
+        ctor:function()
+        {
+            this._super();
+            this.initData(100);
+            this.setCmdId(gv.CMD.BUY_CHEST);
+        },
+        pack: function(leng, buyList, cost){
+            this.packHeader();
+
+            this.putInt(leng)
+            for(var i=0; i<leng; i++){
+                this.putByte(buyList[i][0])
+                this.putInt(buyList[i][1])
+            }
+            this.putInt(cost)
 
             this.updateSize();
         }
@@ -567,8 +615,6 @@ testnetwork.packetMap[gv.CMD.BUY_GEM_OR_GOLD] = fr.InPacket.extend({
         ctor: function()
         {
             this._super();
-            this.syncN = 0
-            this.frameN = 0
         },
 
         readData: function(){
@@ -576,6 +622,48 @@ testnetwork.packetMap[gv.CMD.BUY_GEM_OR_GOLD] = fr.InPacket.extend({
             this.typee = this.getByte()
             this.amout = this.getInt()
             cc.log(this.typee+' '+this.amout)
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.BUY_CARD] = fr.InPacket.extend({
+        ctor: function()
+        {
+            this._super();
+        },
+
+        readData: function(){
+            cc.log("============================BUY CARD============================================")
+            this.status = this.getString()
+            this.leng = this.getInt(),
+                this.buyList = []
+            for(var i=0; i<this.leng; i++){
+                var typeCard = this.getByte()
+                var numCard = this.getInt()
+                this.buyList.push([typeCard, numCard])
+            }
+            this.cost = this.getInt()
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.BUY_CHEST] = fr.InPacket.extend({
+        ctor: function()
+        {
+            this._super();
+        },
+
+        readData: function(){
+            cc.log("============================BUY CHEST============================================")
+            this.status = this.getString()
+            this.leng = this.getInt(),
+                this.buyList = []
+            for(var i=0; i<this.leng; i++){
+                var typeCard = this.getByte()
+                var numCard = this.getInt()
+                this.buyList.push([typeCard, numCard])
+            }
+            this.cost = this.getInt()
         }
     }
 );
