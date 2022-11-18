@@ -22,7 +22,6 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.USER_LOGIN:
                 cc.log("send buy request")
-                this.sendBuyRequest();
                 this.sendGetUserInfo();
 
                 fr.getCurrentScreen().onFinishLogin();
@@ -71,12 +70,6 @@ testnetwork.Connector = cc.Class.extend({
         var pk = this.gameClient.getOutPacket(CmdSendMove);
         pk.pack(direction);
         this.gameClient.sendPacket(pk);
-    },
-    sendBuyRequest: function () {
-        var pk = this.gameClient.getOutPacket(CmdSendBuy);
-        pk.pack(1, 1000);
-        this.gameClient.sendPacket(pk);
-
     },
 
     sendStartCooldownRequest: function (chest) {
