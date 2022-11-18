@@ -7,6 +7,7 @@ var SignInScreen = cc.Layer.extend({
         var mainscene = ccs.load(res.LoginScene_json, "").node;
         this.addChild(mainscene);
         this.login_button = mainscene.getChildByName("LogIn");
+
         this.findmatch_button = mainscene.getChildByName('StartMatch');
         this.textField  = mainscene.getChildByName("IdField");
         this.notification = mainscene.getChildByName("Notification");
@@ -25,6 +26,7 @@ var SignInScreen = cc.Layer.extend({
     onSelectLogin: function (sender) {
         cc.log("current test is :" + this.textField.getString())
         cc.log("sendLoginRequest");
+
         try {
             gv.gameClient._userId = parseInt(this.textField.getString());
             if (!isNaN(gv.gameClient._userId)) {
@@ -47,9 +49,10 @@ var SignInScreen = cc.Layer.extend({
             if(!isNaN(gv.gameClient._userId)){
 
                 gv.gameClient.connect();
-                var scene = new cc.Scene();
-                scene.addChild(new MatchingUI());
-                cc.director.runScene(new cc.TransitionFade(1.2, scene));
+                fr.view(MatchingUI)
+                // var scene = new cc.Scene();
+                // scene.addChild(new MatchingUI());
+                // cc.director.runScene(new cc.TransitionFade(1.2, scene));
             } else {
                 this.OnError("User_ID_must_be_number!");
             }
@@ -68,6 +71,7 @@ var SignInScreen = cc.Layer.extend({
      *
      */
     onUserInfo: function () {
+        // gv.gameClient.sendBuyRequest()
         let lobbyScene = new LobbyScene();
         cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
         cc.log('Current time on client: ' + Date.now());

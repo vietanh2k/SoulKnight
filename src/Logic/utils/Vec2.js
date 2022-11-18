@@ -75,6 +75,10 @@ const Vec2 = function (x, y) {
     this.toString = function() {
         return 'Vec2(' + this.x + ', ' + this.y + ')'
     }
+
+    this.l2norm = function (){
+        return this.div(this.length());
+    }
 }
 
 // axis-aligned rect

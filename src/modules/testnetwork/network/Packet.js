@@ -160,40 +160,40 @@ CmdSendOpenChest = fr.OutPacket.extend(
     }
 );
 testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
-        ctor: function () {
-            this._super();
-        },
+    ctor: function () {
+        this._super();
+    },
 
-        readData: function () {
-            let status = this.getString();
-            let chestID = this.getInt();
-            let newCardsSize = this.getInt();
-            cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and the amount of new cards is ' + newCardsSize + '.');
-            let newCards = [], goldReceived, serverNow;
-            if (status === "Success") {
-                for (let i = 0; i < newCardsSize; i++) {
-                    newCards.push(this.readCardData());
-                }
-                cc.log('New cards: ' + JSON.stringify(newCards));
-                goldReceived = this.getInt();
-
-                serverNow = this.getLong();
-                Utils.updateTimeDiff(serverNow);
-
-                cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
-                cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
-            } else {
-                Utils.addToastToRunningScene(status);
+    readData: function () {
+        let status = this.getString();
+        let chestID = this.getInt();
+        let newCardsSize = this.getInt();
+        cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and the amount of new cards is ' + newCardsSize + '.');
+        let newCards = [], goldReceived, serverNow;
+        if (status === "Success") {
+            for (let i = 0; i < newCardsSize; i++) {
+                newCards.push(this.readCardData());
             }
-        },
+            cc.log('New cards: ' + JSON.stringify(newCards));
+            goldReceived = this.getInt();
 
-        readCardData: function () {
-            let type = this.getByte();
-            let level = this.getInt();
-            let fragment = this.getInt();
-            return new Card(type, level, fragment);
-        },
-    }
+            serverNow = this.getLong();
+            Utils.updateTimeDiff(serverNow);
+
+            cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
+            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+        } else {
+            Utils.addToastToRunningScene(status);
+        }
+    },
+
+    readCardData: function () {
+        let type = this.getByte();
+        let level = this.getInt();
+        let fragment = this.getInt();
+        return new Card(type, level, fragment);
+    },
+}
 );
 
 // START_COOLDOWN
@@ -455,8 +455,3 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend({
         cc.log('=================')
     }
 });
-
-
-
-
-
