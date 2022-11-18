@@ -29,7 +29,7 @@ const AnimatedSprite = cc.Sprite.extend({
         }
     },
 
-    clone: function () {
+    clone: function() {
         const ret = new AnimatedSprite()
         const pos = this.getPosition()
         ret.setPosition(pos.x, pos.y)
@@ -51,7 +51,7 @@ const AnimatedSprite = cc.Sprite.extend({
     },
 
     // return loaded animation id
-    load: function (srcPList, fmt, from, to, animationDuration = 1) {
+    load: function(srcPList, fmt, from, to, animationDuration = 1) {
         if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(srcPList)) {
             cc.spriteFrameCache.addSpriteFrames(srcPList)
         }
@@ -85,9 +85,9 @@ const AnimatedSprite = cc.Sprite.extend({
      * @param {String} name: tên animation
      * @param {Number} delay: thời gian giữa 2 frame tinhs bằng milisecond
      * */
-    loadFromMultiFile: function (filenames, name, delay = 1) {
-        filenames.map(filename => {
-            if (cc.spriteFrameCache.getSpriteFrame(filename) == null) {
+    loadFromMultiFile: function(filenames, name,delay = 1) {
+        filenames.map(filename=>{
+            if(cc.spriteFrameCache.getSpriteFrame(filename)==null){
                 var frame = new cc.SpriteFrame(filename);
                 cc.spriteFrameCache.addSpriteFrame(frame, filename);
             }
@@ -98,7 +98,7 @@ const AnimatedSprite = cc.Sprite.extend({
 
         if (animation == null) {
             const animationFrames = [];
-            filenames.map(filename => {
+            filenames.map(filename=>{
                 cc.log('cc.spriteFrameCache.getSpriteFrame(filename)')
                 cc.log(cc.spriteFrameCache.getSpriteFrame(filename))
                 animationFrames.push(cc.spriteFrameCache.getSpriteFrame(filename))
