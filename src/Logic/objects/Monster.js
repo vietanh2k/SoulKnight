@@ -12,6 +12,7 @@ const Monster = AnimatedSprite.extend({
         this.position = new Vec2(MAP_CONFIG.CELL_WIDTH / 2.0, MAP_CONFIG.CELL_HEIGHT / 2.0)
         this.prevPosition = new Vec2(0,0)
         this.speed = 30.0
+        this.concept="monster"
 
         return true;
     },

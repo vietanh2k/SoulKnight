@@ -103,6 +103,7 @@ var GameUI = cc.Layer.extend({
 
     },
 
+
     createObjectByTouch2: function (){
         if(this.createObjectByTouch ){
             this.createObjectByTouch = false
@@ -116,10 +117,13 @@ var GameUI = cc.Layer.extend({
                 //this._gameStateManager.playerA._map._mapController.findPathBFS()
                 this._gameStateManager.playerA._map.updatePathForCells()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath,1)
-                var position = new Vec2((loc.x+1)*MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y)*MAP_CONFIG.CELL_HEIGHT / 2.0)
+                var position = this.screenLoc2Position(loc)
+                cc.log('loc' + JSON.stringify(loc) + 'position' + position)
                 var tower = this._gameStateManager.playerA._map.deployTower(null, position);
-                // var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
-                this.addChild(tower, 3000)
+                var pos = convertIndexToPos(loc.x, loc.y, 1)
+                // tower.setPosition(pos)
+                // this.addChild(tower, 3000)
+
                 this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
                 }else{
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
@@ -129,6 +133,12 @@ var GameUI = cc.Layer.extend({
 
         }
 
+    },
+    /**Convert Screen location in gridXY into logical position (game object position)
+     * @param {cc.p} loc
+     * @return {Vec2} in-game position*/
+    screenLoc2Position:function (loc){
+        return new Vec2((loc.x)*MAP_CONFIG.CELL_WIDTH +MAP_CONFIG.CELL_WIDTH/ 2.0, (loc.y-1)*MAP_CONFIG.CELL_HEIGHT +MAP_CONFIG.CELL_HEIGHT/ 2.0)
     },
     isNodehasMonsterAbove:function (loc){
 
@@ -180,6 +190,7 @@ var GameUI = cc.Layer.extend({
             if(count>100) break
         }
     },
+
 
 
     initBackGround:function()

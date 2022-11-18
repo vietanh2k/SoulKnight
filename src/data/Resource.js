@@ -84,7 +84,9 @@ var res = {
     health_box:'asset/battle_result/battle_result_health_box.png',
     house_icon: 'asset/common/common_icon_house.png',
     house_box: 'asset/battle/battle_info_box.png',
-    energyIcon: 'asset/common/common_icon_energy.png'
+    energyIcon: 'asset/common/common_icon_energy.png',
+    TWizard_plit: 'asset/tower/frame/wizard/TWz.plist',
+    Wizard_Bullet:'asset/tower/frame/wizard/tower_wizard_bullet_0000.png'
 
 };
 

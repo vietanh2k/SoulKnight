@@ -32,6 +32,8 @@ var MapView = cc.Class.extend({
             this.cells.push(column)
         }
 
+        this.preloadConfig()
+
         this.gateCell = new Cell();
         this.gateCell.setLocation(1, -1)
 
@@ -49,6 +51,11 @@ var MapView = cc.Class.extend({
 
         this.updatePathForCells()
 
+    },
+    preloadConfig: function (){
+        if (_TOWER_CONFIG == undefined || _TOWER_CONFIG == null) {
+            _TOWER_CONFIG = cc.loader.getRes("config/Tower.json");
+        }
     },
     init:function () {
 
@@ -167,6 +174,21 @@ var MapView = cc.Class.extend({
             cc.log(e.stack)
         }
     },
+    updateBullet:function (dt) {
+        try {
+            var temp = []
+            this.bullets.map(bullet=>{
+                bullet.logicUpdate(this._playerState, dt)
+                if(!bullet.isDestroy){
+                    temp.push(bullet)
+                }
+            })
+            this.bullets = temp
+        } catch (e) {
+            cc.log(e)
+            cc.log(e.stack)
+        }
+    },
 
     renderMonster: function () {
         for (i in this.monsters){
@@ -178,13 +200,31 @@ var MapView = cc.Class.extend({
             this.towers[i].render(this._playerState)
         }
     },
+    renderBullet: function () {
+        for (i in this.bullets){
+            this.bullets[i].render(this._playerState)
+        }
+    },
 
     update:function (dt){
+        this.updateBullet(dt)
         this.updateTower(dt)
         this.updateMonster(dt)
 
+        // cc.log('____________update___________________')
+        // this.towers.forEach(tw=>{
+        //     cc.log(tw.position)
+        // })
+        // this.monsters.forEach(tw=>{
+        //     cc.log(tw.position)
+        // })
+        // this.bullets.forEach(tw=>{
+        //     cc.log(tw.position)
+        // })
+
         this.renderTower()
         this.renderMonster()
+        this.renderBullet(0)
     },
 
     addMonster:function (){
@@ -195,8 +235,9 @@ var MapView = cc.Class.extend({
     deployTower: function (card, position){
         cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
         cc.log("TW size:" + this.towers.length)
-        var tower = new Tower("1", this._playerState, position);
+        var tower = new Tower("1", this._playerState, position, this);
         this.towers.push(tower)
+        GameUI.instance.addChild(tower);
         // if(cell.objectOn==undefined || cell.objectOn==null ){
         //     cell.objectOn = tower;
         // }
@@ -220,7 +261,28 @@ var MapView = cc.Class.extend({
      * @param {Vec2} objectA: vị trí trên map
      * @param {Number} range: độ dài tính theo ô*/
     getObjectInRange: function (objectA, range){
-        return []
+        var objInRange = []
+        var EuclidLength = function (vec) {
+            return Math.sqrt(vec.x * vec.x + vec.y * vec.y)
+        }
+        // cc.log('vec: '+ objectA+ ' range actual'+ range*(CELLWIDTH+CELLWIDTH)/2.0)
+        this.bullets.forEach(obj=>{
+            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+                objInRange.push(obj)
+            }
+        })
+        this.towers.forEach(obj=>{
+            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+                objInRange.push(obj)
+            }
+        })
+        this.monsters.forEach(obj=>{
+            // cc.log('Bvec: '+ obj.position+ ' dis = '+ EuclidLength(objectA.sub(obj.position)))
+            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+                objInRange.push(obj)
+            }
+        })
+        return objInRange
 
     },
     /**
@@ -232,6 +294,7 @@ var MapView = cc.Class.extend({
         } else {
             this.bullets.push(bullet)
         }
+        GameUI.instance.addChild(bullet);
     }
 
 
