@@ -21,9 +21,7 @@ testnetwork.Connector = cc.Class.extend({
                 this.sendLoginRequest();
                 break;
             case gv.CMD.USER_LOGIN:
-                cc.log("send buy request")
                 this.sendGetUserInfo();
-
                 fr.getCurrentScreen().onFinishLogin();
                 break;
             case gv.CMD.USER_INFO:
@@ -34,7 +32,7 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.MOVE:
                 cc.log("MOVE:", packet.x, packet.y);
-                fr.getCurrentScreen().updateMove(packet.x, packet.y);
+                // fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
             case gv.CMD.OPEN_CHEST:
                     cc.log('receive open chest now response')

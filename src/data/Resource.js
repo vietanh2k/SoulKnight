@@ -20,7 +20,7 @@ var res = {
 
     //images
     Slot1_png : "zcsd/slot1.png",
-    LoginScene_json : "ui/LogInScene.json",
+    LoginScene_json : "UI/LogInScene.json",
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',
     font_normal : 'asset/font/SVN-Avo bold.ttf',
@@ -35,7 +35,7 @@ var res = {
     buffD : 'asset/battle/battle_item_damage.png',
     buffS : 'asset/battle/battle_item_attack_speed.png',
     buffR : 'asset/battle/battle_item_range.png',
-    hole : 'asset/battle/ui/ui_hole.png',
+    hole : 'asset/battle/UI/ui_hole.png',
     treeUI: 'asset/map/map_forest_obstacle_1.png',
     logo_png : 'asset/map/b.png',
     logoBack_png : 'asset/map/lobby_background.png',
