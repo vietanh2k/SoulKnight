@@ -15,9 +15,14 @@ gv.CMD.ADD_CURRENCY = 3004;
 gv.CMD.UPGRADE_CARD = 3005;
 gv.CMD.SWAP_CARD_INTO_DECK = 3008;
 gv.CMD.MATCH_REQUEST = 4001;
-gv.CMD.MATCH_REPONSE = 4002;
+gv.CMD.MATCH_RESPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
 gv.CMD.BATTLE_START = 5001;
+gv.CMD.BATTLE_SYNC_START = 5005;
+gv.CMD.BATTLE_SYNC_START_CONFIRM = 5006;
+gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N = 5007;
+gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N_CONFIRM = 5008;
+gv.CMD.BATTLE_ACTIONS = 5009;
 
 testnetwork = testnetwork || {};
 testnetwork.packetMap = {};
@@ -160,40 +165,40 @@ CmdSendOpenChest = fr.OutPacket.extend(
     }
 );
 testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
-    ctor: function () {
-        this._super();
-    },
+        ctor: function () {
+            this._super();
+        },
 
-    readData: function () {
-        let status = this.getString();
-        let chestID = this.getInt();
-        let newCardsSize = this.getInt();
-        cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and the amount of new cards is ' + newCardsSize + '.');
-        let newCards = [], goldReceived, serverNow;
-        if (status === "Success") {
-            for (let i = 0; i < newCardsSize; i++) {
-                newCards.push(this.readCardData());
+        readData: function () {
+            let status = this.getString();
+            let chestID = this.getInt();
+            let newCardsSize = this.getInt();
+            cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and the amount of new cards is ' + newCardsSize + '.');
+            let newCards = [], goldReceived, serverNow;
+            if (status === "Success") {
+                for (let i = 0; i < newCardsSize; i++) {
+                    newCards.push(this.readCardData());
+                }
+                cc.log('New cards: ' + JSON.stringify(newCards));
+                goldReceived = this.getInt();
+
+                serverNow = this.getLong();
+                Utils.updateTimeDiff(serverNow);
+
+                cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
+                cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+            } else {
+                Utils.addToastToRunningScene(status);
             }
-            cc.log('New cards: ' + JSON.stringify(newCards));
-            goldReceived = this.getInt();
+        },
 
-            serverNow = this.getLong();
-            Utils.updateTimeDiff(serverNow);
-
-            cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
-        } else {
-            Utils.addToastToRunningScene(status);
-        }
-    },
-
-    readCardData: function () {
-        let type = this.getByte();
-        let level = this.getInt();
-        let fragment = this.getInt();
-        return new Card(type, level, fragment);
-    },
-}
+        readCardData: function () {
+            let type = this.getByte();
+            let level = this.getInt();
+            let fragment = this.getInt();
+            return new Card(type, level, fragment);
+        },
+    }
 );
 
 // START_COOLDOWN
@@ -286,7 +291,7 @@ testnetwork.packetMap[gv.CMD.ADD_CURRENCY] = fr.InPacket.extend({
 });
 
 // SWAP_CARD_INTO_DECK
-CmdSendAddSwapCardIntoDeck = fr.OutPacket.extend({
+CmdSendSwapCardIntoDeck = fr.OutPacket.extend({
     ctor: function () {
         this._super();
         this.initData(100);
@@ -420,21 +425,20 @@ CmdMatchRequest = fr.OutPacket.extend({
 });
 
 // MATCH_CONFIRM
-CmdMatchConfirm = fr.OutPacket.extend(
-    {
-        ctor: function () {
-            this._super();
-            this.initData(100);
-            this.setCmdId(gv.CMD.MATCH_CONFIRM);
-        },
-        pack: function () {
-            this.packHeader();
-            this.updateSize();
-        }
-    });
+CmdMatchConfirm = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.MATCH_CONFIRM);
+    },
+    pack: function () {
+        this.packHeader();
+        this.updateSize();
+    }
+});
 
 
-testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend({
+testnetwork.packetMap[gv.CMD.MATCH_RESPONSE] = fr.InPacket.extend({
     ctor: function () {
         this._super();
     },
@@ -453,5 +457,99 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend({
         scene.addChild(new GameUI(this));
         cc.director.runScene(new cc.TransitionFade(1.2, scene));
         cc.log('=================')
+    }
+});
+
+// BATTLE_ACTIONS
+CmdBattleActions = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.BATTLE_ACTIONS);
+    },
+
+    pack: function (actions) {
+        this.packHeader();
+
+        this.putInt(actions.length)
+
+        for (let i = 0; i < actions.length; i++) {
+            this.putInt(actions[i].getActionPkgSize())
+            this.putInt(actions[i].getActionCode())
+            actions[i].writeTo(this)
+        }
+
+        this.updateSize();
+    }
+});
+testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+
+    readData: function () {
+        const num = this.getInt()
+        for (let i = 0; i < num; i++) {
+            const size = this.getInt()
+            const actionCode = this.getInt()
+            ACTION_DESERIALIZER[actionCode](this).activate(GameStateManagerInstance)
+        }
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NORMAL
+    }
+});
+
+CmdBattleSyncStartConfirm = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.BATTLE_SYNC_START_CONFIRM);
+    },
+
+    pack: function (syncN, frameN) {
+        this.packHeader();
+
+        this.putLong(syncN)
+        this.putLong(frameN)
+
+        this.updateSize();
+    }
+});
+
+CmdBattleSyncClientUpdateToFrameNConfirm = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N_CONFIRM);
+    },
+
+    pack: function (syncN) {
+        this.packHeader();
+        this.putLong(syncN)
+        this.updateSize();
+    }
+});
+
+testnetwork.packetMap[gv.CMD.BATTLE_SYNC_START] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+        this.syncN = 0
+    },
+
+    readData: function () {
+        this.syncN = this.getLong()
+    }
+});
+
+testnetwork.packetMap[gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+        this.syncN = 0
+        this.frameN = 0
+    },
+
+    readData: function () {
+        cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
+        this.syncN = this.getLong()
+        this.frameN = this.getLong()
     }
 });

@@ -42,7 +42,7 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.START_COOLDOWN:
                 // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
-            case gv.CMD.MATCH_REPONSE:
+            case gv.CMD.MATCH_RESPONSE:
                 cc.log('matching succeededddddddddddd')
                 cc.log(packet.x)
                 this.sendConfirmMatch()
@@ -95,7 +95,7 @@ testnetwork.Connector = cc.Class.extend({
 
     sendSwapCardIntoDeckRequest: function (typeIn, typeOut) {
         cc.log('Send swap card into deck request: typeIn = ' + typeIn + ', typeOut = ' + typeOut + '.');
-        let pk = this.gameClient.getOutPacket(CmdSendAddSwapCardIntoDeck);
+        let pk = this.gameClient.getOutPacket(CmdSendSwapCardIntoDeck);
         pk.putData(typeIn, typeOut);
         this.gameClient.sendPacket(pk);
     },
@@ -114,14 +114,40 @@ testnetwork.Connector = cc.Class.extend({
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
-
     sendConfirmMatch:function(){
         cc.log("Match Confirm:");
         var pk = this.gameClient.getOutPacket(CmdMatchConfirm);
         pk.pack(null);
         this.gameClient.sendPacket(pk);
+    },
+
+    sendSyncStartConfirm: function(syncN){
+        cc.log("sendSyncStartConfirm");
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleSyncStartConfirm);
+        pk.pack(syncN, GameStateManagerInstance.frameCount);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendSyncUpdateToFrameNConfirm: function(syncN, maxFrame){
+        cc.log("sendSyncUpdateToFrameNConfirm");
+
+        const remain = maxFrame - GameStateManagerInstance.frameCount
+        for (let i = 0; i < remain; i++) {
+            GameStateManagerInstance.frameUpdate()
+        }
+
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleSyncClientUpdateToFrameNConfirm);
+        pk.pack(syncN);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendActions: function (actions) {
+        cc.log("sendActions");
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleActions);
+        pk.pack(actions);
+        this.gameClient.sendPacket(pk);
     }
 });
-
-
-
