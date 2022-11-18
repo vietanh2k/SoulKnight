@@ -49,9 +49,10 @@ var SignInScreen = cc.Layer.extend({
             if(!isNaN(gv.gameClient._userId)){
 
                 gv.gameClient.connect();
-                var scene = new cc.Scene();
-                scene.addChild(new MatchingUI());
-                cc.director.runScene(new cc.TransitionFade(1.2, scene));
+                fr.view(MatchingUI)
+                // var scene = new cc.Scene();
+                // scene.addChild(new MatchingUI());
+                // cc.director.runScene(new cc.TransitionFade(1.2, scene));
             } else {
                 this.OnError("User_ID_must_be_number!");
             }

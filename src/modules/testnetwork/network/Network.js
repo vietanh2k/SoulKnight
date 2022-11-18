@@ -29,6 +29,9 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.USER_INFO:
                 fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
+                // if(fr.getCurrentScreen()!=null){
+                //     fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
+                // }
                 break;
             case gv.CMD.MOVE:
                 cc.log("MOVE:", packet.x, packet.y);

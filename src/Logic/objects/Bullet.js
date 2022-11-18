@@ -36,6 +36,9 @@ var Bullet = cc.Sprite.extend({
         }
     },
     canAttack: function (object) {
+        if(object.concept=='monster'){
+            return true;
+        }
         return false;
 
     },
