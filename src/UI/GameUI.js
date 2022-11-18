@@ -104,26 +104,36 @@ var GameUI = cc.Layer.extend({
     },
     activateCard: function (card_type, position, uid){
         cc.log("UID: " + uid)
-        if(uid!=gv.gameClient._userId) return;
-        this.createObjectByTouch = false
-        cc.log('creat right')
-        var loc = convertLogicalPosToIndex(position,1)
-        var rand = Math.floor(Math.random() * 2)+1;
-        var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
-        this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
-        if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
-            //this._gameStateManager.playerA._map._mapController.findPathBFS()
-            this._gameStateManager.playerA._map.updatePathForCells()
-            this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath,1)
+        if(uid==gv.gameClient._userId){
+            this.createObjectByTouch = false
+            cc.log('creat right')
+            var loc = convertLogicalPosToIndex(position,1)
+            var rand = Math.floor(Math.random() * 2)+1;
+            var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
+            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
+            if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
+                //this._gameStateManager.playerA._map._mapController.findPathBFS()
+                this._gameStateManager.playerA._map.updatePathForCells()
+                this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath,1)
+                // var position = this.screenLoc2Position(loc)
+                cc.log('loc' + JSON.stringify(loc) + 'position' + position)
+                var tower = this._gameStateManager.playerA._map.deployTower(null, position);
+                var pos = convertIndexToPos(loc.x, loc.y, 1)
+                this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
+            }else{
+                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
+                this.resetCardTouchState()
+            }
+        } else {
+            this._gameStateManager.playerB._map.updatePathForCells()
+            this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath,1)
             // var position = this.screenLoc2Position(loc)
             cc.log('loc' + JSON.stringify(loc) + 'position' + position)
-            var tower = this._gameStateManager.playerA._map.deployTower(null, position);
-            var pos = convertIndexToPos(loc.x, loc.y, 1)
-            this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
-        }else{
-            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
-            this.resetCardTouchState()
+            var tower = this._gameStateManager.playerB._map.deployTower(null, position);
+            // var pos = convertIndexToPos(loc.x, loc.y, 1)
+            // this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
         }
+
     },
 
 
