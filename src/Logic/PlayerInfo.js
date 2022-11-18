@@ -60,6 +60,21 @@ var PlayerInfo = cc.Class.extend({
     sortCollectionByEnergy: function (isAscOrder) {
         this.collection.sort((a, b) => (a.energy - b.energy) * (2 * isAscOrder - 1));
     },
+
+    updateDeckAfterSwapCard: function (typeIn, typeOut) {
+        let cardIn = this.collection.find(card => card.type === typeIn);
+        if (cardIn === undefined) {
+            cc.log('Cannot find typeIn ' + typeIn + ' in collection');
+            return;
+        }
+        for (let i = 0; i < this.deck.length; i++) {
+            if (this.deck[i].type === typeOut) {
+                this.deck[i] = cardIn;
+                return;
+            }
+        }
+        cc.log('Cannot find typeOut ' + typeOut + ' in collection');
+    },
 })
 
 var sharePlayerInfo;
