@@ -82,6 +82,7 @@
         "src/UI/PopupGold.js",
         "src/UI/PopupCard.js",
         "src/UI/PopupChest.js",
+        "src/UI/GoldFly.js",
         "src/Logic/map/MapView.js",
         "src/Logic/map/MapController.js",
         "src/Logic/map/GameStateManager.js",

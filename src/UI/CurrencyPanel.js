@@ -158,7 +158,31 @@ var CurrencyPanel = cc.Layer.extend({
             // this.lbGem.scale = this.lbScale;
         },16)
 
+
+
     },
+
+    updateLabelsGoldFly: function (numGold) {
+            // if (this.tmpGold < sharePlayerInfo.gold) {
+            //     this.tmpGold += numGold;
+            //     if(this.tmpGold > sharePlayerInfo.gold){
+            //         this.tmpGold = sharePlayerInfo.gold
+            //     }
+            // }
+        this.tmpGold += numGold;
+        // if(this.tmpGold > sharePlayerInfo.gold){
+        //     this.tmpGold = sharePlayerInfo.gold
+        // }
+        this.lbGold.setString(Utils.toStringWithDots(this.tmpGold));
+        this.lbGem.setString(Utils.toStringWithDots(this.tmpGem));
+        LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateCanBuyUI()
+
+
+
+
+    },
+
+
 
     updateLbScale: function () {
         this.lbScale = Math.min(

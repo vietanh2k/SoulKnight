@@ -56,12 +56,16 @@ var ShopUI = cc.Layer.extend({
         this.updateTimeUI()
         this.updateCanBuyUI()
 
+
+
     },
 
     showPopupGold:function (itemNode){
         this.popup = new PopupGold(itemNode)
         this.popup.setPosition(winSize.width/2,winSize.height*5/9)
         this.addChild(this.popup,0,'popup')
+        var g = new GoldFly(new cc.p(150,200), new cc.p(320,900), 5, 1000)
+        this.addChild(g)
 
     },
 
