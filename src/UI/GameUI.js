@@ -102,7 +102,9 @@ var GameUI = cc.Layer.extend({
         }
 
     },
-    activateCard: function (card_type, position){
+    activateCard: function (card_type, position, uid){
+        cc.log("UID: " + uid)
+        if(uid!=gv.gameClient._userId) return;
         this.createObjectByTouch = false
         cc.log('creat right')
         var loc = convertLogicalPosToIndex(position,1)
@@ -137,7 +139,8 @@ var GameUI = cc.Layer.extend({
             // this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
             if(true){
                 //this.getNewWave()
-                testnetwork.connector.sendActions([new ActivateCardAction(1, position.x, position.y)]);
+                testnetwork.connector.sendActions([new ActivateCardAction(1, position.x, position.y,
+                    gv.gameClient._userId)]);
             }
             // if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
             //     //this._gameStateManager.playerA._map._mapController.findPathBFS()
