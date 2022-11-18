@@ -2,13 +2,14 @@ var Bullet = cc.Sprite.extend({
     ctor: function (target, speed, damage, radius, position) {
         this._super(res.Wizard_Bullet);
         this.target = target
-        this.speed = speed
+        this.speed = 60
         this.damage = damage
         this.radius = radius
         this.isDestroy = false;
         this.concept="bullet"
         this.position = position
         this.active = true
+        this._lastLoc = null
 
     },
 
@@ -23,11 +24,14 @@ var Bullet = cc.Sprite.extend({
     },
     getTargetPosition: function () {
         if(this.target==undefined || this.target.isDestroy){
-            return null;
+            return this._lastLoc;
         }
         if (this.target.hasOwnProperty("position")) {
+            this._lastLoc = new Vec2(this.target.position.x, this.target.position.y)
             return this.target.position
+
         } else {
+            this._lastLoc = new Vec2(this.target.x, this.target.y)
             return this.target
         }
     },
@@ -63,23 +67,23 @@ var Bullet = cc.Sprite.extend({
     },
     logicUpdate: function (playerState, dt) {
         if (this.active) {
-
-            if (this.getTargetPosition()!=null && euclid_distance(this.position, this.getTargetPosition()) > this.getSpeed()* dt*3) {
+            var pos = this.getTargetPosition()
+            if (euclid_distance(this.position, pos) > this.getSpeed() * dt) {
                 // cc.log('bullet í moving')
-                let direction = this.getTargetPosition().sub(this.position).l2norm();
+                let direction = pos.sub(this.position).l2norm();
                 this.position.x += direction.x * this.getSpeed() * dt;
                 this.position.y += direction.y * this.getSpeed() * dt;
             } else {
                 cc.log('bullet explose')
-                this.explose(playerState);
+                this.explose(playerState, pos);
             }
         }
 
     },
 
-    explose: function (playerState) {
+    explose: function (playerState, pos) {
         const map = playerState.getMap();
-        let objectList = map.getObjectInRange(this.getTargetPosition(), this.getRadius());
+        let objectList = map.getObjectInRange(pos, this.getRadius());
         for (let object of objectList) {
             if (this.canAttack(object)) {
                 object.health -= this.getDamage();
