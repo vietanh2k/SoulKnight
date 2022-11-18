@@ -314,7 +314,7 @@ testnetwork.packetMap[gv.CMD.SWAP_CARD_INTO_DECK] = fr.InPacket.extend({
         Utils.updateTimeDiff(serverNow);
 
         if (status === "Success") {
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateDeckSlot();
+            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateSwapCardIntoDeck();
         } else {
             Utils.addToastToRunningScene(status);
             cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].swapInCardSlot.removeFromParent(true);

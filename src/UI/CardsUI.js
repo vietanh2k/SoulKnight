@@ -75,39 +75,41 @@ var CardsUI = cc.Layer.extend({
     },
 
     initCollection: function () {
-        this.collectionPanel = new cc.Sprite(asset.cardBanner_png);
-        this.collectionPanel.attr({
-            anchorY: 1,
-            x: cf.WIDTH / 2,
-            y: cf.HEIGHT - cf.WIDTH / 854 * 85 - cf.WIDTH / 682 * 604,
-            scale: cf.WIDTH / this.collectionPanel.width * (4 + 3 * 0.3) / (4 + 5 * 0.3),
-        })
-        this.addChild(this.collectionPanel);
+        if (this.collectionPanel == null) {
+            this.collectionPanel = new cc.Sprite(asset.cardBanner_png);
+            this.collectionPanel.attr({
+                anchorY: 1,
+                x: cf.WIDTH / 2,
+                y: cf.HEIGHT - cf.WIDTH / 854 * 85 - cf.WIDTH / 682 * 604,
+                scale: cf.WIDTH / this.collectionPanel.width * (4 + 3 * 0.3) / (4 + 5 * 0.3),
+            })
+            this.addChild(this.collectionPanel);
 
-        this.lbCollection = new ccui.Text('BỘ SƯU TẬP THẺ BÀI', asset.svnSupercellMagic_ttf, 20);
-        this.lbCollection.attr({
-            x: this.collectionPanel.width * 0.3,
-            y: this.collectionPanel.height * 0.65,
-            color: cc.color(172, 206, 235),
-        });
-        this.lbCollection.enableShadow();
-        this.collectionPanel.addChild(this.lbCollection);
+            this.lbCollection = new ccui.Text('BỘ SƯU TẬP THẺ BÀI', asset.svnSupercellMagic_ttf, 20);
+            this.lbCollection.attr({
+                x: this.collectionPanel.width * 0.3,
+                y: this.collectionPanel.height * 0.65,
+                color: cc.color(172, 206, 235),
+            });
+            this.lbCollection.enableShadow();
+            this.collectionPanel.addChild(this.lbCollection);
 
-        this.sortByEnergyBtn = new ccui.Button(asset.iconEnergy_png);
-        this.sortByEnergyBtn.attr({
-            x: this.collectionPanel.width * 0.92,
-            y: this.collectionPanel.height / 2,
-            scale: this.collectionPanel.height * 0.6 / this.sortByEnergyBtn.height,
-        });
-        this.sortByEnergyBtn.addClickEventListener(() => {
-            if (this.sortByEnergyAsc == null) {
-                this.sortByEnergyAsc = true;
-            } else {
-                this.sortByEnergyAsc = !this.sortByEnergyAsc;
-            }
-            this.sortCollectionSlotsByEnergy();
-        });
-        this.collectionPanel.addChild(this.sortByEnergyBtn);
+            this.sortByEnergyBtn = new ccui.Button(asset.iconEnergy_png);
+            this.sortByEnergyBtn.attr({
+                x: this.collectionPanel.width * 0.92,
+                y: this.collectionPanel.height / 2,
+                scale: this.collectionPanel.height * 0.6 / this.sortByEnergyBtn.height,
+            });
+            this.sortByEnergyBtn.addClickEventListener(() => {
+                if (this.sortByEnergyAsc == null) {
+                    this.sortByEnergyAsc = true;
+                } else {
+                    this.sortByEnergyAsc = !this.sortByEnergyAsc;
+                }
+                this.sortCollectionSlotsByEnergy();
+            });
+            this.collectionPanel.addChild(this.sortByEnergyBtn);
+        }
 
         this.collectionSlots = [];
         for (let i = 0; i < sharePlayerInfo.collection.length; i++) {

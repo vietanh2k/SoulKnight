@@ -35,6 +35,12 @@ var PlayerInfo = cc.Class.extend({
             for (j = 0; j < sharePlayerInfo.collection.length; j++) {
                 if (newCards[i].type === sharePlayerInfo.collection[j].type) {
                     sharePlayerInfo.collection[j] = newCards[i];
+                    for (let k = 0; k < sharePlayerInfo.deck.length; k++) {
+                        if (newCards[i].type === sharePlayerInfo.deck[k].type) {
+                            sharePlayerInfo.deck[k] = newCards[i];
+                            break;
+                        }
+                    }
                     break;
                 }
             }
