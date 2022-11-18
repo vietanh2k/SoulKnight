@@ -1,14 +1,11 @@
 // this.parent: LobbyScene
 var OpenChestAnimationUI = cc.Layer.extend({
-    chestID: null,
     newCards: null,
     goldReceived: null,
     skipBtnIsUsed: false,
 
-    ctor: function (chestID, newCards, goldReceived) {
+    ctor: function (newCards, goldReceived) {
         this._super();
-
-        this.chestID = chestID;
         this.newCards = newCards;
         this.goldReceived = goldReceived;
 
@@ -183,7 +180,6 @@ var OpenChestAnimationUI = cc.Layer.extend({
     destroy: function () {
         this.visible = false;
         this.parent.allBtnIsActive = true;
-        this.parent.tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(this.chestID, this.newCards, this.goldReceived);
         this.removeFromParent();
     },
 });
