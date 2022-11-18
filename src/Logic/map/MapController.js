@@ -8,18 +8,11 @@ var MapController = cc.Class.extend({
     mapChange:null,
 
 
-    ctor:function (arr, rule) {
+    ctor:function (arr) {
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this.mapChange = false
-        this.rule = rule
         this.mapArray =  Array.from(
-            {length:MAP_WIDTH+1},
-            ()=>Array.from(
-                {length:MAP_HEIGHT+1}
-            )
-        );
-        this.listPath =  Array.from(
             {length:MAP_WIDTH+1},
             ()=>Array.from(
                 {length:MAP_HEIGHT+1}
@@ -45,9 +38,8 @@ var MapController = cc.Class.extend({
             }
         }
 
-        // this.findPath()
-        //this.findPathBFS()
-        //this.initCell();
+        this.findPath()
+        this.initCell();
 
 
 
@@ -62,7 +54,7 @@ var MapController = cc.Class.extend({
     initCell:function () {
         for(var i=0; i<MAP_WIDTH; i ++){
             for(var j=0; j<MAP_HEIGHT+1; j++){
-                var pos = convertIndexToPos(i,j,this.rule)
+                var pos = this.convertCordinateToPos(i,j)
                 var cell = new Cell(this.intArray[i][j],pos)
                 this.mapArray[i][j] = cell
             }
@@ -138,56 +130,52 @@ var MapController = cc.Class.extend({
 
     },
 
-    findPathBFS: function (){
-        var listPath = Array.from(
-            {length:MAP_WIDTH+1},
-            ()=>Array.from(
-                {length:MAP_HEIGHT+1}
-            )
-        );
-        var arr =Array.from(
-            {length:MAP_WIDTH+1},
-            ()=>Array.from(
-                {length:MAP_HEIGHT+1},
-                ()=>0
-            )
-        );
-        for(var i=0; i<=MAP_WIDTH;i++){
-            for(var j=0; j<=MAP_HEIGHT; j++){
-                if(this.intArray[i][j] <= 0) arr[i][j] = 0
-                else arr[i][j] = 1
-            }
-        }
-        var offsetX = [1, 0,-1, 0]
-        var offsetY = [0, 1, 0,-1]
-        var queue = []
-        var des = new Vec2(MAP_WIDTH,MAP_HEIGHT)
-        listPath[des.x][des.y] = des
-        queue.push(des)
+    getWay:function (finalList, weight){
+        var corX = 0
+        var corY = 0
+        var parentX = 0
+        var parentY = 1
+        var cou = 0
+        while(corX != MAP_WIDTH-1 || corY != MAP_HEIGHT){
 
-        while (queue.length >0){
-            var node = queue.shift()
-            for(var i=0; i<4;i++){
-                var direc= new Vec2(offsetX[i], offsetY[i])
-                var adj = node.add(direc)
-                if (adj.x >= 0 && adj.y >= 0 && adj.x <= MAP_WIDTH && adj.y <= MAP_HEIGHT && arr[adj.x][adj.y] == 0 && listPath[adj.x][adj.y] == undefined) {
-                    listPath[adj.x][adj.y] = node
-                    queue.push(adj)
+            if(weight[corX][corY] - weight[parentX][parentY] == 50){
+                var tmpX = (parentX*2-corX)
+                var tmpY = (parentY*2-corY)
+                finalList[parentX+'-'+parentY].parent = tmpX+'-'+tmpY
+                corX = parentX
+                corY = parentY
+                parentX = tmpX
+                parentY = tmpY
+            }else if(weight[corX][corY] - weight[parentX][parentY] > 50){
+                var tmpX = 0
+                var tmpY = 0
+                if(parentX + parentY- corY <0 || parentX + parentY- corY>=MAP_WIDTH || parentY+parentX-corX<0 || parentY+parentX-corX >MAP_HEIGHT){
+                    tmpX = parentX - parentY+corY
+                    tmpY = parentY - parentX + corX
+                }else if(parentX - parentY+corY <0 || parentX - parentY+corY>=MAP_WIDTH || parentY-parentX+corX<0 || parentY-parentX+corX >MAP_HEIGHT){
+                    tmpX = parentX + parentY- corY
+                    tmpY = parentY + parentX - corX
                 }
-            }
-        }
+                else if(weight[parentX + parentY- corY][parentY+parentX-corX] < weight[parentX - parentY+ corY][parentY-parentX+corX] ){
+                    tmpX = parentX + parentY- corY
+                    tmpY = parentY + parentX - corX
+                }else {
+                    tmpX = parentX - parentY+corY
+                    tmpY = parentY - parentX + corX
+                }
+                finalList[parentX+'-'+parentY].parent = tmpX+'-'+tmpY
+                corX = parentX
+                corY = parentY
+                parentX = tmpX
+                parentY = tmpY
 
-        this.listPath = listPath
-        for(var i=0;i<=MAP_WIDTH;i++){
-            for(j=0; j<= MAP_HEIGHT; j++){
-                if(listPath[i][j] != undefined)
-                cc.log(i+'_'+j+'=='+listPath[i][j].x+'_'+listPath[i][j].y)
             }
-        }
-    },
 
-    getParents: function () {
-        return this.listPath
+            cou++
+            if(cou>100) break
+        }
+        return finalList
+
     },
 
     addNearby: function (node, startList, finalList, weight){
@@ -290,53 +278,72 @@ var MapController = cc.Class.extend({
     },
 
     isExistPath:function (){
-        var listPath = Array.from(
-            {length:MAP_WIDTH+1},
-            ()=>Array.from(
-                {length:MAP_HEIGHT+1}
-            )
-        );
-        var arr =Array.from(
+        var weight =  Array.from(
             {length:MAP_WIDTH+1},
             ()=>Array.from(
                 {length:MAP_HEIGHT+1},
-                ()=>0
+                ()=> 999999
             )
         );
-        for(var i=0; i<=MAP_WIDTH;i++){
-            for(var j=0; j<=MAP_HEIGHT; j++){
-                if(this.intArray[i][j] <= 0) arr[i][j] = 0
-                else arr[i][j] = 1
-            }
+
+        weight[MAP_WIDTH][MAP_HEIGHT] = 0
+        weight[MAP_WIDTH-1][MAP_HEIGHT] = 50
+        // weight[MAP_WIDTH-2][MAP_HEIGHT] = 50
+        var startList = {};
+        let finalList = {};
+        var start = {
+            locX: MAP_WIDTH,
+            locY: MAP_HEIGHT,
+            parent: MAP_WIDTH+'-'+MAP_HEIGHT,
+            direc: 6
         }
-        var offsetX = [1, 0,-1, 0]
-        var offsetY = [0, 1, 0,-1]
-        var queue = []
-        var des = new Vec2(MAP_WIDTH,MAP_HEIGHT)
-        listPath[des.x][des.y] = des
-        queue.push(des)
-        var cou =0
-        while (queue.length >0){
-            var node = queue[0]
-            for(var i=0; i<4;i++){
-                var direc= new Vec2(offsetX[i], offsetY[i])
-                var adj = node.add(direc)
-                if (adj.x >= 0 && adj.y >= 0 && adj.x <= MAP_WIDTH && adj.y <= MAP_HEIGHT && arr[adj.x][adj.y] == 0 && listPath[adj.x][adj.y] == undefined) {
-                    listPath[adj.x][adj.y] = node
-                    queue.push(adj)
-                }
-            }
-            queue.shift()
+        var start2 = {
+            locX: MAP_WIDTH-1,
+            locY: MAP_HEIGHT-1,
+            parent: (MAP_WIDTH-1)+'-'+MAP_HEIGHT,
+            direc: 8
+        }
+        var start3 = {
+            locX: MAP_WIDTH-1,
+            locY: MAP_HEIGHT,
+            parent: MAP_WIDTH+'-'+MAP_HEIGHT,
+            direc: 6
+        }
+        // if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT-1] <= 0) {
+        //     startList[start2.locX + '-' + start2.locY] = start2
+        // }
+        if(this.intArray[MAP_WIDTH-1][MAP_HEIGHT] <= 0)
+        {
+            startList[start3.locX + '-' + start3.locY] = start3
+        }
+        finalList[start.locX+'-'+start.locY] = start
+        var cou = 0
+        while(Object.keys(startList).length >0){
+            var nodeClosest = this.getClosestToFinal(startList, weight, finalList)
+            this.addNearby(nodeClosest, startList, finalList, weight);
             cou++
             if(cou>100) break
         }
-        if(listPath[0][0] == undefined){
-            return false
+        if(weight[0][0] < 9999){
+            return true
         }
-        return true
-
+        return false
 
     },
 
+    convertCordinateToPos:function (corX, corY) {
+        var x = winSize.width/2 - WIDTHSIZE/2 + (corX+1)*CELLWIDTH
+        var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT- corY+3.5)*CELLWIDTH
+        var p = new cc.p(x,y)
+        return p
+
+    },
+    convertPosToCor:function (pos) {
+        var x = Math.floor((pos.x-winSize.width/2+WIDTHSIZE/2)/CELLWIDTH-0.5)
+        var y = Math.floor(MAP_HEIGHT+3.5 - (pos.y - winSize.height/2 + HEIGHTSIZE/2 )/CELLWIDTH+0.5)
+        var p = new cc.p(x,y)
+        return p
+
+    },
 
 });

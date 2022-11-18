@@ -58,9 +58,6 @@ const Vec2 = function (x, y) {
 
     this.normalize = function () {
         const r = this.length()
-        //if (r === 0) {
-        //    cc.log("Vec2 normalize error")
-        //}
         this.x = this.x / r
         this.y = this.y / r
         return this
@@ -68,10 +65,6 @@ const Vec2 = function (x, y) {
 
     this.equals = function (v) {
         return this.x === v.x && this.y === v.y
-    }
-
-    this.isApprox = function (v) {
-        return Math.abs(this.x - v.x) < 0.00001 && Math.abs(this.y - v.y) < 0.00001
     }
 
     this.set = function (_x, _y) {
@@ -153,9 +146,4 @@ const AARect = function (x, y, w, h) {
             + this.w + ', '
             + this.h + ')'
     }
-}
-
-let euclid_distance = function (self, another){
-    var euclid_distance = Math.sqrt(Math.pow(self.x-another.x, 2) + Math.pow(self.y-another.y, 2));
-    return euclid_distance;
 }

@@ -24,8 +24,6 @@ var GameUI = cc.Layer.extend({
         this.init();
         this.scheduleUpdate();
 
-        GameUI.instance = this
-
     },
     init:function () {
 
@@ -34,12 +32,12 @@ var GameUI = cc.Layer.extend({
         this.initBackGround();
         this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, this._gameStateManager.playerA.rule)
         this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
-        this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-        this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+        this.showPathUI(this._gameStateManager.playerA._map._mapController.path, 1)
+        this.showPathUI(this._gameStateManager.playerB._map._mapController.path, 2)
         // cc.log(this._gameStateManager.playerA._map.monsters[0])
         // this.addChild(this._gameStateManager.playerA._map.monsters[0],2000)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
-        //this.callMonster()
+        this.callMonster()
         // this._gameStateManager.playerA._map.monsters[0].updateDes()
 
         // this.schedule(this.update, 0.1);
@@ -69,7 +67,7 @@ var GameUI = cc.Layer.extend({
         if(MW.TOUCH){
             MW.TOUCH = false
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-            var loc = convertPosToIndex(pos, 1)
+            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
             cc.log(loc.x+'---'+loc.y)
             if(loc.x >=0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
                 loc.y >=0 && loc.y < this._gameStateManager.playerA._map._mapController.intArray[0].length) {
@@ -95,8 +93,7 @@ var GameUI = cc.Layer.extend({
             if (dist< 0.9*timer.getContentSize().width/2 ){
                 cc.log('timeeeeeeeeeeeeeeeeeeeeeee')
                 if(this._gameStateManager.canTouchNewWave){
-                    //this.getNewWave()
-                    testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);
+                    this.getNewWave()
                 }
             }
         }
@@ -108,18 +105,15 @@ var GameUI = cc.Layer.extend({
             this.createObjectByTouch = false
             cc.log('creat right')
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
-            var loc = convertPosToIndex(pos,1)
+            var loc = this._gameStateManager.playerA.convertPosToCor(pos)
             var rand = Math.floor(Math.random() * 2)+1;
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
             if(!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()){
-                //this._gameStateManager.playerA._map._mapController.findPathBFS()
-                this._gameStateManager.playerA._map.updatePathForCells()
-                this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath,1)
-                var position = new Vec2((loc.x+1)*MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y)*MAP_CONFIG.CELL_HEIGHT / 2.0)
-                var tower = this._gameStateManager.playerA._map.deployTower(null, position);
-                // var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
-                this.addChild(tower, 3000)
+                this._gameStateManager.playerA._map._mapController.findPath()
+                this.showPathUI(this._gameStateManager.playerA._map._mapController.path,1)
+                var tree = this.addObjectUI(res.treeUI, loc.x, loc.y, 0.85,0, 1)
+                this.addChild(tree,0,res.treeUI+1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot-1].energy)
                 }else{
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
@@ -134,8 +128,9 @@ var GameUI = cc.Layer.extend({
 
         var children = this.children
         for (i in children) {
-            if(children[i]._curNode2 != undefined ){
-                var monsterLoc = children[i]._curNode2;
+            if(children[i]._curNode != undefined ){
+                var monsterLocArr = children[i]._curNode.split('-');
+                var monsterLoc = new cc.p(parseInt(monsterLocArr[0]), parseInt(monsterLocArr[1]));
                 if(monsterLoc.x == loc.x && monsterLoc.y == loc.y){
                     return true
                 }
@@ -144,6 +139,7 @@ var GameUI = cc.Layer.extend({
 
         return false
     },
+
 
     showPathUI:function (path, rule){
         while(this.getChildByName(res.highlightPath+rule) != null){
@@ -154,33 +150,28 @@ var GameUI = cc.Layer.extend({
         while(this.getChildByName(res.iconArrow+rule) != null){
             this.removeChild(this.getChildByName(res.iconArrow+rule))
         }
-        var node = new Vec2(0,0)
+        var nodeX = 0
+        var nodeY = 0
         var count = 0
         var delay = 1
-        while(node.x != MAP_WIDTH || node.y != MAP_HEIGHT){
-            var dir = path[node.x][node.y].sub(node)
-            var numDir
-            if(dir.x == 1 && dir.y == 0) numDir = 6
-            if(dir.x == -1 && dir.y == 0) numDir = 4
-            if(dir.x == 0 && dir.y == -1) numDir = 2
-            if(dir.x == 0 && dir.y == 1) numDir = 8
-
-            var obj = this.addObjectUI(res.highlightPath,node.x,node.y,1,0,rule)
+        while(nodeX != MAP_WIDTH || nodeY != MAP_HEIGHT){
+            var dir = path[nodeX+'-'+nodeY].direc
+            var obj = this.addObjectUI(res.highlightPath,nodeX,nodeY,1,0,rule)
             this.addChild(obj,0,res.highlightPath+rule)
 
-            var arrow = this.addObjectUI(res.iconArrow,node.x,node.y,0.5,numDir,rule)
+            var arrow = this.addObjectUI(res.iconArrow,nodeX,nodeY,0.5,dir,rule)
             this.addChild(arrow,0,res.iconArrow+rule)
             var seq = cc.sequence(cc.DelayTime(0.5),cc.fadeOut(0),cc.DelayTime(delay),cc.fadeIn(0), cc.DelayTime(0.5), cc.fadeOut(0.5));
             arrow.runAction(seq)
             delay += 0.1
-            var nodeNext = path[node.x][node.y]
-            node.x = nodeNext.x
-            node.y = nodeNext.y
+            var parent = path[nodeX+'-'+nodeY].parent
+            var parentList = parent.split('-');
+            nodeX = parseInt(parentList[0])
+            nodeY = parseInt(parentList[1])
             count++
             if(count>100) break
         }
     },
-
 
     initBackGround:function()
     {
@@ -250,7 +241,7 @@ var GameUI = cc.Layer.extend({
 
         this.addObjectBackground(res.house,1/6.5,0,-3.9/8,6.2/15)
         this.addObjectBackground(res.house,1/6.5,0,3.9/8,-3.8/15)
-
+        this.addObjectBackground(res.deck,0,2.9/15,0,-6.05/15)
         // this.healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
         this.addHealthUI()
         this.addTimerUI()
@@ -391,8 +382,8 @@ var GameUI = cc.Layer.extend({
         lbNumEnergy.setTextColor(whiteColor)
         lbNumEnergy.enableOutline(blackColor,1)
         energy.addChild(lbNumEnergy,0,'numEnergyBar')
-        energy.setScale(CELLWIDTH/energy.getContentSize().height*0.58)
-        energy.setPosition(winSize.width/2- WIDTHSIZE/2+CELLWIDTH*1.32, winSize.height/2- HEIGHTSIZE/2+CELLWIDTH*0.35)
+        energy.setScale(CELLWIDTH/energy.getContentSize().height*0.65)
+        energy.setPosition(winSize.width/2- WIDTHSIZE/2+CELLWIDTH*1.3, winSize.height/2- HEIGHTSIZE/2+CELLWIDTH*0.4)
         this.addChild(energy,0,'iconEnergyBar')
 
         // var energyBarBackground = new cc.Sprite('asset/lobby/lobby_card_progress_background_deck.png')
@@ -404,27 +395,20 @@ var GameUI = cc.Layer.extend({
     },
 
     addInforBoxUI:function (){
-        var mainscene = ccs.load(res.scene, "").node;
-        // mainscene.setPosition(200,300)
-        mainscene.setScale(0.89)
-        // mainscene.setPosition()
-        this.addChild(mainscene);
-        cc.log(mainscene.getChildByName('avatarNode').getChildByName('name').getString())
+
 
     },
 
     addDeckUI:function (){
-        this.addObjectBackground(res.deck,0,2.65/15,0,-6.15/15)
-        this.addListCardUI()
-        this.addEnergyBarUI()
+       this.addListCardUI()
         var btnChat = ccui.Button('asset/battle/battle_btn_chat.png');
-        btnChat.setScale(CELLWIDTH/btnChat.getNormalTextureSize().width*0.85)
-        btnChat.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.53, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*2.5)
+        btnChat.setScale(CELLWIDTH/btnChat.getNormalTextureSize().width*0.9)
+        btnChat.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*2.6)
         this.addChild(btnChat,0);
 
         var lbWave = new ccui.Text('Tiếp theo:', res.font_magic, 30)
-        lbWave.setScale(CELLWIDTH/lbWave.getContentSize().height*0.21)
-        lbWave.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.53, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.8)
+        lbWave.setScale(CELLWIDTH/lbWave.getContentSize().height*0.24)
+        lbWave.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.85)
         var whiteColor = new cc.Color(245,241,220,255);
         var blackColor = new cc.Color(0,0,0,255);
         lbWave.setTextColor(whiteColor)
@@ -479,13 +463,13 @@ var GameUI = cc.Layer.extend({
         });
         for(var i=1;i<=NUM_CARD_PLAYABLE;i++) {
             var cardBox = new cc.Sprite('asset/battle/battle_card_box.png')
-            cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.43)
-            cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
+            cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.5)
+            cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
             this.addChild(cardBox)
             var arr = this.cardPlayable
             var card = new MCard(arr[i-1])
-            card.setScale(CELLWIDTH / card.getContentSize().width * 1.15)
-            card.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
+            card.setScale(CELLWIDTH / card.getContentSize().width * 1.25)
+            card.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.7)
             this.addChild(card,0,'cardBackGround'+i)
             card.numSlot = i
             this.listCard.push(card)
@@ -494,8 +478,8 @@ var GameUI = cc.Layer.extend({
         for(var i=1;i<=NUM_CARD_PLAYABLE;i++) {
 
             var btnRemoveCard =new ccui.Button('asset/battle/battle_btn_destroy.png');
-            btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.4)
-            btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.8)
+            btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.55)
+            btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.8, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
             btnRemoveCard.visible = false
             btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(3));
             this.addChild(btnRemoveCard, 0 , 'btnRemoveCard'+i);
@@ -503,8 +487,8 @@ var GameUI = cc.Layer.extend({
 
         }
         var card5 = new MCard(this.cardInQueue[0])
-        card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.8)
-        card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.55, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+        card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.9)
+        card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.3, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
         this.addChild(card5,0,'cardBackGroundd')
 
 
@@ -515,6 +499,7 @@ var GameUI = cc.Layer.extend({
     },
 
     updateCardSlot:function (numEnergy) {
+        cc.log('aaaaaaaaaaaaaaaaaaaa')
         if(this.cardTouchSlot>=0 && this._gameStateManager.playerA.energy >= numEnergy) {
             this._gameStateManager.playerA.energy -= numEnergy
             this.cardInQueue.push(this.listCard[this.cardTouchSlot - 1].cardID)
@@ -571,7 +556,7 @@ var GameUI = cc.Layer.extend({
         var strNumWave = this._gameStateManager.curWave +'/'+MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)
         this._gameStateManager._timer.resetTime(TIME_WAVE)
-        //this.callMonster()
+        this.callMonster()
     },
 
     callMonster:function () {
@@ -581,11 +566,20 @@ var GameUI = cc.Layer.extend({
         this.addChild(monster2,2000)
     },
 
-    addMonsterToBoth: function () {
-        const monster = this._gameStateManager.playerA._map.addMonster()
-        this.addChild(monster,2000)
-        const monster2 = this._gameStateManager.playerB._map.addMonster()
-        this.addChild(monster2,2000)
+    convertCordinateToPos:function (corX, corY) {
+        var x = winSize.width/2 - WIDTHSIZE/2 + (corX+1)*this.cellWidth
+        var y = winSize.height/2 - HEIGHTSIZE/2 + (MAP_HEIGHT- corY+3.5)*this.cellWidth
+        var p = new cc.p(x,y)
+        return p
+
+    },
+
+    convertPosToCor:function (pos) {
+        var x = Math.floor((pos.x - winSize.width/2 + WIDTHSIZE/2 )/this.cellWidth - 0.5)
+        var y = Math.floor((pos.y - winSize.height/2+HEIGHTSIZE/2)/this.cellWidth)
+        var p = new cc.p(x,y)
+        return p
+
     },
 
     initCellSlot:function ( mapArray, rule) {
@@ -618,10 +612,15 @@ var GameUI = cc.Layer.extend({
     
     //scale * cellwidth
     addObjectUI:function (_res, corX ,corY,_scale,direc, rule ) {
-        var convert
         var object = new cc.Sprite(_res)
         object.setScale(_scale*CELLWIDTH/object.getContentSize().height)
-        var pos = convertIndexToPos(corX, corY, rule)
+        var pos
+        if(rule == 1) {
+            pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY)
+        }
+        else{
+            pos = this._gameStateManager.playerA.convertCordinateToPos2(corX, corY,2)
+        }
         object.setPosition(pos)
         if(direc == 8){
             object.setRotation(90)
@@ -724,9 +723,9 @@ var GameUI = cc.Layer.extend({
         this.createObjectByTouch2();
         this.updateTimer(dt)
         var children = this.children;
-        // for (i in children) {
-        //     children[i].update(dt);
-        // }
+        for (i in children) {
+            children[i].update(dt);
+        }
         this._gameStateManager.update(dt)
 
         this.updateHealthUI(dt)
@@ -744,5 +743,3 @@ GameUI.scene = function () {
     scene.addChild(layer);
     return scene;
 };
-
-GameUI.instance = null

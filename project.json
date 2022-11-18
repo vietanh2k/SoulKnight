@@ -76,20 +76,16 @@
         "src/UI/LoginScreen.js",
         "src/UI/OpenChestAnimationUI.js",
         "src/UI/Toast.js",
-        "src/UI/ShopUI.js",
 
         "src/utils/Utils.js",
         "src/UI/MatchingUI.js",
         "src/UI/GameUI.js",
-        "src/UI/PopupGold.js",
-        "src/UI/PopupCard.js",
-        "src/UI/PopupChest.js",
         "src/Logic/map/MapView.js",
         "src/Logic/map/MapController.js",
         "src/Logic/map/GameStateManager.js",
         "src/Logic/map/PlayerState.js",
         "src/Logic/map/Timer.js",
-
+        "src/Logic/objects/Cell.js",
         "src/Logic/objects/MCard.js",
         "src/Logic/utils/AnimatedSprite.js",
         "src/Logic/objects/Monster.js",
@@ -97,19 +93,7 @@
 
         "src/Logic/utils/String.js",
         "src/Logic/utils/Number.js",
-        "src/Logic/utils/Convert.js",
         "src/config/GameConfig.js",
-
-        "src/config/CardConfig.js",
-
-
-        "src/Logic/GAME_CONFIG.js",
-        "src/Logic/actions/NextWaveAction.js",
-        "src/Logic/actions/ActionsDef.js",
-        "src/Logic/map/MAP_CONFIG.js",
-        "src/Logic/map/Cell.js",
-        "src/Logic/objects/Bullet.js",
-        "src/Logic/objects/Tower.js"
-
+        "src/config/CardConfig.js"
     ]
 }

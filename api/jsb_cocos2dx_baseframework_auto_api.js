@@ -162,7 +162,7 @@ getError : function (
 getLong : function (
 )
 {
-    return long;
+    return long long;
 },
 
 /**
@@ -388,7 +388,7 @@ int
  * @param {long long} arg0
  * @return {fr.OutPacket}
  */
-putLong : function (long
+putLong : function (
 )
 {
     return fr.OutPacket;
