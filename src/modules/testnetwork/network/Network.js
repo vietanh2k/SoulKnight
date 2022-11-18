@@ -45,6 +45,33 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')
                 break;
+            case gv.CMD.OFFER_RESPONSE:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateShop(packet);
+                cc.log('offer reponse succeededddddddddddd')
+                break;
+            case gv.CMD.BATTLE_SYNC_START:
+                cc.log("=========================gv.CMD.BATTLE_SYNC_START================================")
+                this.sendSyncStartConfirm(packet.syncN)
+                break
+            case gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N:
+                cc.log("=========================gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N================================")
+                this.sendSyncUpdateToFrameNConfirm(packet.syncN, packet.frameN)
+                break
+            case gv.CMD.BATTLE_ACTIONS:
+                cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
+                break
+            case gv.CMD.BUY_GEM_OR_GOLD:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                cc.log("=========================BUY GOLD SUCCEEDED================================")
+                break
+            case gv.CMD.BUY_CARD:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyCard(packet)
+                cc.log("=========================BUY CARD SUCCEEDED================================")
+                break
+            case gv.CMD.BUY_CHEST:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
+                cc.log("=========================BUY CARD SUCCEEDED================================")
+                break
 
         }
     },
@@ -116,7 +143,61 @@ testnetwork.Connector = cc.Class.extend({
         var pk = this.gameClient.getOutPacket(CmdMatchConfirm);
         pk.pack(null);
         this.gameClient.sendPacket(pk);
-    }
+    },
+
+    sendSyncStartConfirm: function(syncN){
+        cc.log("sendSyncStartConfirm");
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleSyncStartConfirm);
+        pk.pack(syncN, GameStateManagerInstance.frameCount);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendSyncUpdateToFrameNConfirm: function(syncN, maxFrame){
+        cc.log("sendSyncUpdateToFrameNConfirm");
+
+        const remain = maxFrame - GameStateManagerInstance.frameCount
+        for (let i = 0; i < remain; i++) {
+            GameStateManagerInstance.frameUpdate()
+        }
+
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleSyncClientUpdateToFrameNConfirm);
+        pk.pack(syncN);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendActions: function (actions) {
+        cc.log("sendActions");
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        const pk = this.gameClient.getOutPacket(CmdBattleActions);
+        pk.pack(actions);
+        this.gameClient.sendPacket(pk);
+    },
+    sendRequestOffer:function(){
+        var pk = this.gameClient.getOutPacket(CmdOfferRequest);
+        cc.log(pk)
+        pk.pack(null);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyGemOrGold:function(typee, amout){
+        var pk = this.gameClient.getOutPacket(CmdBuyGemOrGold);
+        cc.log(pk)
+        pk.pack(typee, amout);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyCard:function(leng,buyList, cost){
+        var pk = this.gameClient.getOutPacket(CmdBuyCard);
+        cc.log(pk)
+        pk.pack(leng,buyList, cost);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyChest:function(leng,buyList, cost){
+        var pk = this.gameClient.getOutPacket(CmdBuyChest);
+        cc.log(pk)
+        pk.pack(leng,buyList, cost);
+        this.gameClient.sendPacket(pk);
+    },
 });
 
 

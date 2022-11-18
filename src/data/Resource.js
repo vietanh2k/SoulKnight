@@ -21,6 +21,15 @@ var res = {
     //images
     Slot1_png : "zcsd/slot1.png",
     LoginScene_json : "ui/LogInScene.json",
+    scene : "Scene.json",
+    shopScene : "shopScene.json",
+    shopItem : "shopItem.json",
+    popupGold : "popupGold.json",
+    popupCard : "popupCard.json",
+    popupChest : "popupChest.json",
+    cardItemShop : "cardItemShop.json",
+    updateBuy : "updateBuy.json",
+
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',
     font_normal : 'asset/font/SVN-Avo bold.ttf',
