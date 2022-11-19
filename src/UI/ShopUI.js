@@ -36,6 +36,7 @@ var ShopUI = cc.Layer.extend({
         var mainscene = ccs.load(res.shopScene, "").node;
         var item1 = ccs.load(res.shopItem, "").node.getChildByName('itemNode')
         item1.removeFromParent(true)
+        item1.getChildByName('button').addClickEventListener(()=>this.showPopupChest(item1, 0, 1))
         mainscene.getChildByName('nodeItem1').addChild(item1,0,1)
         var item2 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
         item2.removeFromParent(true)
@@ -64,8 +65,8 @@ var ShopUI = cc.Layer.extend({
         this.popup = new PopupGold(itemNode)
         this.popup.setPosition(winSize.width/2,winSize.height*5/9)
         this.addChild(this.popup,0,'popup')
-        var g = new GoldFly(new cc.p(150,200), new cc.p(320,900), 5, 1000)
-        this.addChild(g)
+        var g = new GoldFly(new cc.p(winSize.width/2,winSize.height*0.425), new cc.p(winSize.width*0.242,winSize.height*0.968), 6)
+        LobbyInstant.addChild(g,5000)
 
     },
 
@@ -74,6 +75,8 @@ var ShopUI = cc.Layer.extend({
         this.popup = new PopupCard(itemNode)
         this.popup.setPosition(winSize.width/2,winSize.height*5/9)
         this.addChild(this.popup,0,'popup')
+        // var g = new GoldFly(new cc.p(winSize.width/2,winSize.height*0.425), new cc.p(winSize.width*0.242,winSize.height*0.968), 3001)
+        // LobbyInstant.addChild(g,5000)
     },
 
     showPopupChest:function (itemNode, chestID, numSlot){
@@ -81,6 +84,8 @@ var ShopUI = cc.Layer.extend({
         this.popup = new PopupChest(itemNode, chestID)
         this.popup.setPosition(winSize.width/2,winSize.height*0.425)
         this.addChild(this.popup,0,'popup')
+        var g = new GoldFly(new cc.p(winSize.width/2,winSize.height*0.425), new cc.p(winSize.width*0.242,winSize.height*0.968), 230)
+        LobbyInstant.addChild(g,5000)
 
     },
 
@@ -90,7 +95,7 @@ var ShopUI = cc.Layer.extend({
         sharePlayerInfo.gem -= parseInt(this.popup.getChildByTag(100).getChildByName('numCost').getString())
         LobbyInstant.currencyPanel.updateLabels()
         this.removeChild(this.popup)
-        this.updateCanBuyUI()
+        LobbyInstant.updateCanBuyUI()
     },
 
     updateBuyCard:function (packet){

@@ -449,51 +449,6 @@
           {
             "FileData": {
               "Type": "Normal",
-              "Path": "lobby/treasure/common_icon_card_multiple_4.png",
-              "Plist": ""
-            },
-            "Scale9OriginX": 35,
-            "Scale9OriginY": 34,
-            "Scale9Width": 38,
-            "Scale9Height": 38,
-            "AnchorPoint": {
-              "ScaleX": 0.5,
-              "ScaleY": 0.5
-            },
-            "Position": {
-              "X": 104.472,
-              "Y": -52.6649
-            },
-            "Scale": {
-              "ScaleX": 0.5,
-              "ScaleY": 0.5
-            },
-            "CColor": {},
-            "IconVisible": false,
-            "PrePosition": {
-              "X": 0.0,
-              "Y": 0.0
-            },
-            "PreSize": {
-              "X": 0.0,
-              "Y": 0.0
-            },
-            "LeftMargin": 50.472,
-            "RightMargin": -158.472,
-            "TopMargin": -0.3351,
-            "BottomMargin": -105.6649,
-            "Tag": 2,
-            "ActionTag": 601656215,
-            "Size": {
-              "X": 108.0,
-              "Y": 106.0
-            },
-            "Name": "cType2",
-            "ctype": "ImageViewObjectData"
-          },
-          {
-            "FileData": {
-              "Type": "Normal",
               "Path": "lobby/treasure/common_icon_card_multiple_1.png",
               "Plist": ""
             },
@@ -533,7 +488,97 @@
               "X": 108.0,
               "Y": 106.0
             },
+            "Name": "cType2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/treasure/common_icon_card_multiple_4.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 35,
+            "Scale9OriginY": 34,
+            "Scale9Width": 38,
+            "Scale9Height": 38,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 104.472,
+              "Y": -53.5
+            },
+            "Scale": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 50.472,
+            "RightMargin": -158.472,
+            "TopMargin": 0.5,
+            "BottomMargin": -106.5,
+            "Tag": 2,
+            "ActionTag": 601656215,
+            "Size": {
+              "X": 108.0,
+              "Y": 106.0
+            },
             "Name": "cType3",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/treasure/common_icon_card_multiple_1.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 35,
+            "Scale9OriginY": 34,
+            "Scale9Width": 38,
+            "Scale9Height": 38,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 174.36,
+              "Y": -53.5
+            },
+            "Scale": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 120.36,
+            "RightMargin": -228.36,
+            "TopMargin": 0.5,
+            "BottomMargin": -106.5,
+            "Tag": 88,
+            "ActionTag": 1466649513,
+            "Size": {
+              "X": 108.0,
+              "Y": 106.0
+            },
+            "Name": "cType4",
             "ctype": "ImageViewObjectData"
           },
           {
@@ -1237,12 +1282,12 @@
             },
             "AnchorPoint": {},
             "Position": {
-              "X": -7.4984,
-              "Y": 360.0193
+              "X": -12.9594,
+              "Y": 368.172
             },
             "Scale": {
-              "ScaleX": 1.25,
-              "ScaleY": 1.25
+              "ScaleX": 1.2,
+              "ScaleY": 1.2
             },
             "CColor": {},
             "IconVisible": true,
@@ -1254,17 +1299,17 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -7.4984,
-            "RightMargin": 7.4984,
-            "TopMargin": -360.0193,
-            "BottomMargin": 360.0193,
-            "Tag": 159,
-            "ActionTag": 453588166,
+            "LeftMargin": -12.9594,
+            "RightMargin": 12.9594,
+            "TopMargin": -368.172,
+            "BottomMargin": 368.172,
+            "Tag": 69,
+            "ActionTag": 1526378157,
             "Size": {
               "X": 0.0,
               "Y": 0.0
             },
-            "Name": "particle",
+            "Name": "Particle_1",
             "ctype": "ParticleObjectData"
           }
         ],

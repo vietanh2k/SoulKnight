@@ -29,6 +29,7 @@ var res = {
     popupChest : "popupChest.json",
     cardItemShop : "cardItemShop.json",
     updateBuy : "updateBuy.json",
+    cardUI : "card.json",
 
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',

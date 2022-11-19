@@ -22,11 +22,15 @@ var PopupChest= cc.Node.extend({
         popup.getChildByName('numGoldGet').setString(strGold)
         var strCard ='x'+ chest.cards[0]+ ' - ' +chest.cards[1]
         popup.getChildByName('numCardGet').setString(strCard)
-        // for(var i=0;i<chest.rarities.length; i++){
-        //     cc.log(i)
-        //     // popup.getChildByName('cType'+(i+1)).setTexture( 'asset/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
-        //     popup.getChildByName('cType'+(i+1)).set
-        // }
+        for(var i=0;i<4; i++){
+            if(i < chest.rarities.length){
+                popup.getChildByName('cType'+(i+1)).loadTexture( 'asset/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
+            }else{
+                popup.getChildByName('cType'+(i+1)).removeFromParent(true)
+            }
+            cc.log(i)
+            // popup.getChildByName('cType'+(i+1)).setTexture( 'asset/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
+        }
         popup.getChildByName('btnBack').addClickEventListener(()=>this.hide())
         popup.getChildByName('button').addClickEventListener(()=>this.requestBuy())
         if(sharePlayerInfo.gold < parseInt(item.getChildByName('numCost').getString())){
@@ -61,7 +65,6 @@ var PopupChest= cc.Node.extend({
         this.getChildByTag(100).runAction(cc.scaleBy(0.2, 0.2))
         this.getChildByTag(200).removeFromParent(true)
         this.getChildByTag(300).removeFromParent(true)
-        this.getChildByTag(100).getChildByName('particle').removeFromParent(true)
         this.removeFromParent(true)
         // this.runAction(cc.fadeOut(2))
         // this.visible = false

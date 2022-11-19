@@ -4,7 +4,7 @@ var PopupCard = cc.Node.extend({
     ctor:function (item) {
         this._super();
         this.init(item)
-        this.da= 312
+        this.interval = null
 
     },
     init:function (item) {
@@ -17,6 +17,10 @@ var PopupCard = cc.Node.extend({
         popup.getChildByName('numCardGet').setString(item.getChildByName('numCard').getString())
         popup.getChildByName('numCost').setString(item.getChildByName('numCost').getString())
         popup.getChildByName('numCost').setTextColor(item.getChildByName('numCost').getTextColor())
+        popup.getChildByName('numCard').setString('2/100')
+        popup.getChildByName('loading1').setPercent(2)
+
+        popup.getChildByName('loadingMax').visible = false
         this.addChild(popup,0,100)
         this.addBlockLayer()
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
@@ -40,32 +44,76 @@ var PopupCard = cc.Node.extend({
         this.getChildByTag(100).getChildByName('numCost').setString(item.getChildByName('numCost').getString())
     },
 
+    buyUI:function (){
+        var numCardGet = this.getChildByTag(100).getChildByName('numCardGet').getString()
+        var tmp = numCardGet.split('x')
+        var num = parseInt(tmp[1])
+        var delay = 0.65
+        for(var i=0 ; i<num ; i++){
+            var card = ccs.load(res.cardUI, "").node
+            card.setPosition(0, -61.75)
+            card.getChildByName('background').setTexture(this.getChildByTag(100).getChildByName('cBackground').getTexture())
+            card.getChildByName('border').setTexture(this.getChildByTag(100).getChildByName('cBorder').getTexture())
+            card.getChildByName('item').setTexture(this.getChildByTag(100).getChildByName('cAvatar').getTexture())
+            var seq = cc.sequence(cc.ScaleBy(0.4, 0.2), cc.delayTime(delay), cc.RotateBy(0.4,-10))
+            var seq2 = cc.sequence( cc.MoveTo(0.4,new cc.p(100,-110)), cc.delayTime(delay),cc.MoveTo(0.5, new cc.p(-80,44)),cc.fadeOut(0))
+
+            //,cc.callFunc(()=> this.updateLabelCard())
+            card.runAction(seq)
+            card.runAction(seq2)
+            this.addChild(card)
+            delay+= 0.05
+        }
+        var seq3 = cc.sequence( cc.delayTime(1.45), cc.callFunc(()=> this.updateLabelCard(num)))
+        this.runAction(seq3)
+    },
+
+    updateLabelCard:function (num){
+        var label = this.getChildByTag(100).getChildByName('numCard')
+        var loading1 = this.getChildByTag(100).getChildByName('loading1')
+
+        var tmp = label.getString().split('/')
+        var lb1 = parseInt(tmp[0])
+        var lb2 = parseInt(tmp[1])
+        var count = 1
+        this.interval = setInterval(()=>{
+            lb1 += 1
+            var percen = lb1/lb2*100
+            if(percen >=100) {
+                percen = 100
+                this.getChildByTag(100).getChildByName('loadingMax').visible = true
+            }
+            label.setString(lb1 + '/' + lb2)
+            loading1.setPercent(percen)
+            if(count >=num){
+                clearInterval(this.interval);
+            }
+            count += 1
+        },50)
+    },
+
     hide:function (){
-        this.getChildByTag(100).runAction(cc.fadeOut(0.3))
-        this.getChildByTag(100).runAction(cc.scaleBy(0.2, 0.2))
-        // popup.runAction(cc.scaleBy(0.3, 5))
-        // this.getChildByTag(100).runAction(cc.scaleBy(2, 2))
-        this.getChildByTag(200).removeFromParent(true)
+        clearInterval(this.interval);
         this.removeFromParent(true)
-        // this.runAction(cc.fadeOut(2))
-        // this.visible = false
     },
 
 
 
     requestBuy:function (){
-
-        var leng = 1
-        var buyList = []
-        buyList.push([100, 0])
-        var cost = parseInt(this.getChildByTag(100).getChildByName('numCost').getString())
-        try{
-            testnetwork.connector.sendBuyCard(leng, buyList,cost);
-
-
-        } catch (e){
-            cc.log('errrrrrrrrrrror')
-        }
+        this.getChildByTag(100).getChildByName('button').setColor(new cc.Color(132,117,84,255))
+        this.getChildByTag(100).getChildByName('button').setTouchEnabled(false)
+        this.buyUI()
+        // var leng = 1
+        // var buyList = []
+        // buyList.push([100, 0])
+        // var cost = parseInt(this.getChildByTag(100).getChildByName('numCost').getString())
+        // try{
+        //     testnetwork.connector.sendBuyCard(leng, buyList,cost);
+        //
+        //
+        // } catch (e){
+        //     cc.log('errrrrrrrrrrror')
+        // }
     },
     //
     addBlockLayer:function () {
@@ -90,6 +138,7 @@ var PopupCard = cc.Node.extend({
     },
 
     destroy:function (){
+        clearInterval(this.interval);
         this.removeFromParent(true)
     }
 
