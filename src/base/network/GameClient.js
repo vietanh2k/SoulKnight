@@ -72,7 +72,10 @@ var GameClient = cc.Class.extend({
         },
 
         onDisconnected: function () {
-            cc.log("onDisconnected");
+            cc.log("onDisconnected!!!");
+            fr.view(SignInScreen);
+            fr.getCurrentScreen().OnError("disconnected!")
+            // cc.log("onDisconnected");
         },
 
         _onReceived: function (cmd, pkg) {

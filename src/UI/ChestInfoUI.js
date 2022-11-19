@@ -35,13 +35,24 @@ var ChestInfoUI = cc.Layer.extend({
         });
         panelBackground.addChild(pedestal, 0);
 
-        let iconChest = new cc.Sprite(asset.commonTreasure_png);
-        iconChest.attr({
+        let fxVip = new sp.SkeletonAnimation(asset.fxVip_json, asset.fxVip_atlas);
+        fxVip.attr({
             x: pedestal.width / 2,
-            y: pedestal.height,
-            scale: pedestal.width * 0.7 / iconChest.width,
+            y: pedestal.height * 0.6,
+            scale: cf.WIDTH / fxVip.getBoundingBox().width / pedestal.scale,
+            opacity: 127,
         });
-        pedestal.addChild(iconChest, 0);
+        pedestal.addChild(fxVip);
+        fxVip.setAnimation(0, 'animation', true);
+
+        let fxChest = new sp.SkeletonAnimation(asset.fxChest_json, asset.fxChest_atlas);
+        fxChest.attr({
+            x: pedestal.width / 2,
+            y: 0,
+            scale: pedestal.width * 1.6 / fxChest.getBoundingBox().width,
+        });
+        pedestal.addChild(fxChest, 0);
+        fxChest.setAnimation(0, 'chest_idle_infor', true);
 
         let panelFrontTop = new cc.Sprite(asset.panelFront_png, cc.rect(0, 0, 424, 100));
         panelFrontTop.attr({

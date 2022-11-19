@@ -1,0 +1,122 @@
+{
+  "0": {
+    "concept": "potion",
+    "instance": "0"
+  },
+  "1": {
+    "concept": "potion",
+    "instance": "1"
+  },
+  "2": {
+    "concept": "potion",
+    "instance": "2"
+  },
+  "3": {
+    "concept": "potion",
+    "instance": "3"
+  },
+  "4": {
+    "concept": "monster",
+    "instance": "0"
+  },
+  "5": {
+    "concept": "monster",
+    "instance": "1"
+  },
+  "6": {
+    "concept": "monster",
+    "instance": "2"
+  },
+  "7": {
+    "concept": "monster",
+    "instance": "3"
+  },
+  "8": {
+    "concept": "monster",
+    "instance": "4"
+  },
+  "9": {
+    "concept": "targetBuff",
+    "instance": "0"
+  },
+  "10": {
+    "concept": "targetBuff",
+    "instance": "1"
+  },
+  "11": {
+    "concept": "targetBuff",
+    "instance": "2"
+  },
+  "12": {
+    "concept": "targetBuff",
+    "instance": "3"
+  },
+  "13": {
+    "concept": "targetBuff",
+    "instance": "4"
+  },
+  "14": {
+    "concept": "targetBuff",
+    "instance": "5"
+  },
+  "15": {
+    "concept": "targetBuff",
+    "instance": "6"
+  },
+  "16": {
+    "concept": "tower",
+    "instance": "0"
+  },
+  "17": {
+    "concept": "tower",
+    "instance": "1"
+  },
+  "18": {
+    "concept": "tower",
+    "instance": "2"
+  },
+  "19": {
+    "concept": "tower",
+    "instance": "3"
+  },
+  "20": {
+    "concept": "tower",
+    "instance": "4"
+  },
+  "21": {
+    "concept": "tower",
+    "instance": "5"
+  },
+  "22": {
+    "concept": "tower",
+    "instance": "6"
+  },
+  "23": {
+    "concept": "towerBuff",
+    "instance": "0"
+  },
+  "24": {
+    "concept": "towerBuff",
+    "instance": "1"
+  },
+  "25": {
+    "concept": "towerBuff",
+    "instance": "2"
+  },
+  "26": {
+    "concept": "towerBuff",
+    "instance": "3"
+  },
+  "27": {
+    "concept": "towerBuff",
+    "instance": "4"
+  },
+  "28": {
+    "concept": "towerBuff",
+    "instance": "5"
+  },
+  "29": {
+    "concept": "towerBuff",
+    "instance": "6"
+  }
+}

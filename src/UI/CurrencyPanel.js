@@ -82,8 +82,7 @@ var CurrencyPanel = cc.Layer.extend({
         });
         this.rightCurrencyBtn.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                sharePlayerInfo.gem += cf.AMOUNT_BTN_GEM;
-                this.updateLabels();
+                testnetwork.connector.sendAddCurrencyRequest(true, cf.AMOUNT_BTN_GEM);
             } else {
                 cc.log('allBtnIsActive is false');
             }

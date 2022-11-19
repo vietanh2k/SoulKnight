@@ -16,7 +16,7 @@ var Chest = cc.Class.extend({
         }
         this.id = id;
         this.type = type;
-        this.type = 0; // FIXME (bỏ qua server) hiện tại mới chỉ có 1 loại rương
+        this.type = 0; // theo config, hiện tại mới chỉ có 1 loại rương
         this.openOnServerTimestamp = openOnServerTimestamp;
 
         this.golds = cf.CHEST_REWARD[this.type].golds;

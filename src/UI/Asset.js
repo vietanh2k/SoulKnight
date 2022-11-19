@@ -41,10 +41,12 @@ var asset = {
     commonArenaForest_png: 'asset/common/common_arena_forest.png', // 605*632
     arenaParticle_plist: 'asset/common/fx/arena_particle.plist',
     arenaParticle_png: 'asset/common/fx/arena_particle.png',
+    arenaGlow_png: 'asset/lobby/lobby_home_arena_glow.png',
     btnBattle_png: 'asset/lobby/lobby_home_btn_battle.png',
     btnBattlePressing_png: 'asset/lobby/lobby_home_btn_battle_pressing.png',
     btnBattleTxt_png: 'asset/lobby/lobby_home_btn_battle_txt.png',
-    commonTreasure_png: 'asset/common/common_treasure.png',
+    commonTreasure_png: 'asset/lobby/treasure/common_treasure_tutorial.png',
+    commonTreasureTrue_png: 'asset/common/common_treasure.png',
     treasureEmpty_png: 'asset/lobby/lobby_home_treasure_empty.png',
     treasureFinished_png: 'asset/lobby/lobby_home_treasure_finished.png',
     treasureOpening_png: 'asset/lobby/lobby_home_treasure_opening.png',
@@ -58,8 +60,14 @@ var asset = {
         'asset/lobby/treasure/common_icon_card_multiple.png',
         'asset/lobby/treasure/common_icon_card_multiple_1.png',
         'asset/lobby/treasure/common_icon_card_multiple_2.png',
-        'asset/lobby/treasure/common_icon_card_multiple_4.png',
         'asset/lobby/treasure/common_icon_card_multiple_3.png',
+        'asset/lobby/treasure/common_icon_card_multiple_4.png',
+    ],
+    miniatureRaritiesParticle_plist: [
+        'asset/lobby/fx/miniature_rarity_particle_1.plist',
+        'asset/lobby/fx/miniature_rarity_particle_2.plist',
+        'asset/lobby/fx/miniature_rarity_particle_3.plist',
+        'asset/lobby/fx/miniature_rarity_particle_4.plist',
     ],
     btnBlue_png: 'asset/common/common_btn_blue.png',
     btnGray_png: 'asset/common/common_btn_gray.png',
@@ -67,7 +75,10 @@ var asset = {
     btnOrange_png: 'asset/common/common_btn_orange.png',
     btnRed_png: 'asset/common/common_btn_red.png',
     notificationDot_png: 'asset/common/common_notification_dot.png',
-
+    fxVip_json: 'asset/lobby/treasure/fx/fx_vip.json',
+    fxVip_atlas: 'asset/lobby/treasure/fx/fx_vip.atlas',
+    fxChest_json: 'asset/lobby/treasure/fx/fx_chest_lv1.json',
+    fxChest_atlas: 'asset/lobby/treasure/fx/fx_chest_lv1.atlas',
 
     deckPanel_png: 'asset/lobby/lobby_card_deck.png',
     cardBorders_png: [
@@ -79,8 +90,14 @@ var asset = {
     cardBackgrounds_png: [
         'asset/card/card_background_1.png',
         'asset/card/card_background_2.png',
-        'asset/card/card_background_4.png',
         'asset/card/card_background_3.png',
+        'asset/card/card_background_4.png',
+    ],
+    cardPanelMiniatureGlows_png: [
+        'asset/lobby/lobby_card_panel_miniature_glow_common.png',
+        'asset/lobby/lobby_card_panel_miniature_glow_rare.png',
+        'asset/lobby/lobby_card_panel_miniature_glow_epic.png',
+        'asset/lobby/lobby_card_panel_miniature_glow_legend.png',
     ],
     iconEnergy_png: 'asset/card/stat_icon/stat_icon_energy_gain.png',
     cardLevel_png: 'asset/card/card_level.png',
@@ -91,6 +108,10 @@ var asset = {
     progressMax_png: 'asset/lobby/lobby_card_progress_max.png',
     cardBanner_png: 'asset/lobby/lobby_card_banner.png',
     cardSwitchArrow_png: 'asset/lobby/lobby_card_switch_arrow.png',
+    cardSwitchOutline_png: 'asset/lobby/lobby_card_switch_outline.png',
+    cardSwitchGlossy_png: 'asset/lobby/lobby_card_switch_glossy.png',
+    cardUpgradeReady_atlas: 'asset/lobby/fx/card_upgrade_ready.atlas',
+    cardUpgradeReady_json: 'asset/lobby/fx/card_upgrade_ready.json',
 
     cardTowerAttackSpeed_png: 'asset/card/card_tower_attack_speed.png',
     cardTowerBoomerang_png: 'asset/card/card_tower_boomerang.png',

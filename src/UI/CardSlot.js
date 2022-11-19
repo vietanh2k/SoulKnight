@@ -22,38 +22,10 @@ var CardSlot = ccui.Button.extend({
         this.card = card;
         this._super(asset.cardBackgrounds_png[card.rarity]);
         this.setZoomScale(0);
+        this.setSwallowTouches(false);
 
         this.inDeck = inDeck;
-
-        if (this.inDeck) {
-            this.addClickEventListener(() => {
-                if (this.parent.parent.parent.allBtnIsActive) {
-                    this.parent.parent.parent.addChild(new CardInfoUI(card), 4);
-                    this.parent.parent.parent.allBtnIsActive = false;
-                } else if (this.parent.parent.isShowingAddCardToDeck) {
-                    let i;
-                    for (i = 0; i < sharePlayerInfo.deck.length; i++) {
-                        if (sharePlayerInfo.deck[i].id === this.card.id) {
-                            sharePlayerInfo.deck[i] = sharePlayerInfo.collection.find(element => element.id === this.parent.parent.pendingCardId);
-                            break;
-                        }
-                    }
-                    this.parent.parent.updateDeckSlot(i);
-                }
-                else {
-                    cc.log('allBtnIsActive is false and CardsUI is not showing add card to deck');
-                }
-            });
-        } else {
-            this.addClickEventListener(() => {
-                if (this.parent.parent.allBtnIsActive) {
-                    this.parent.parent.addChild(new CardInfoUI(card), 4);
-                    this.parent.parent.allBtnIsActive = false;
-                } else {
-                    cc.log('allBtnIsActive is false');
-                }
-            });
-        }
+        this.updateClickEventListener();
 
         this.texture = new cc.Sprite(card.texture);
         this.texture.attr({
@@ -123,7 +95,23 @@ var CardSlot = ccui.Button.extend({
         else ratio = card.fragment / card.reqFrag;
         if (ratio > 1) ratio = 1;
         if (ratio === 1) {
-            this.progress = new cc.Sprite(asset.progressMax_png);
+            if (card.reqFrag > 0) {
+                this.progress = new sp.SkeletonAnimation(asset.cardUpgradeReady_json, asset.cardUpgradeReady_atlas);
+                this.progress.setAnimation(0, 'card_upgrade_ready', true);
+                this.progress.attr({
+                    x: this.progressPanel.width / 2,
+                    y: this.progressPanel.height / 2,
+                });
+            } else {
+                this.progress = new cc.Sprite(asset.progressMax_png);
+                this.progress.attr({
+                    x: this.progressPanel.width / 2,
+                    y: this.progressPanel.height / 2,
+                    scaleX: this.progressPanel.width * 0.95 / this.progress.width,
+                    scaleY: this.progressPanel.height * 0.8 / this.progress.height,
+                });
+            }
+            this.progressPanel.addChild(this.progress);
         } else {
             this.progress = new cc.Sprite(asset.progress_png);
             this.progressGlow = new cc.Sprite(asset.progressGlow_png);
@@ -134,14 +122,15 @@ var CardSlot = ccui.Button.extend({
                 scaleY: this.progress.height / this.progressGlow.height,
             });
             this.progress.addChild(this.progressGlow);
+            this.progress.attr({
+                anchorX: 0,
+                x: this.progressPanel.width * 0.025,
+                y: this.progressPanel.height / 2,
+                scaleX: this.progressPanel.width * 0.95 * ratio / this.progress.width,
+                scaleY: this.progressPanel.height * 0.8 / this.progress.height,
+            });
+            this.progressPanel.addChild(this.progress);
         }
-        this.progress.attr({
-            x: this.progressPanel.width / 2 * ratio,
-            y: this.progressPanel.height / 2,
-            scaleX: this.progressPanel.width * 0.95 * ratio / this.progress.width,
-            scaleY: this.progressPanel.height * 0.8 / this.progress.height,
-        });
-        this.progressPanel.addChild(this.progress);
 
         if (card.reqFrag === 0) {
             this.lbFragment = new ccui.Text('MAX', asset.svnSupercellMagic_ttf, 16);
@@ -154,5 +143,48 @@ var CardSlot = ccui.Button.extend({
         })
         this.lbFragment.enableShadow();
         this.progressPanel.addChild(this.lbFragment);
+
+        // this.rarityParticle = new cc.ParticleSystem(asset.miniatureRaritiesParticle_plist[card.rarity]);
+        // this.rarityParticle.attr({
+        //     x: this.width / 2,
+        //     y: this.height / 2,
+        //     scale: 1,
+        // });
+        // this.addChild(this.rarityParticle);
+    },
+
+    updateClickEventListener: function () {
+        if (this.inDeck) {
+            this.addClickEventListener(() => {
+                if (!this.parent.parent.isScrolling) {
+                    if (this.parent.parent.parent.allBtnIsActive) {
+                        this.parent.parent.parent.addChild(new CardInfoUI(this.card), 4, cf.TAG_CARDINFOUI);
+                        this.parent.parent.parent.allBtnIsActive = false;
+                    } else if (this.parent.parent.isShowingAddCardToDeck) {
+                        let i;
+                        for (i = 0; i < sharePlayerInfo.deck.length; i++) {
+                            if (sharePlayerInfo.deck[i].type === this.card.type) {
+                                this.parent.parent.pendingDeckSlot = i;
+                                testnetwork.connector.sendSwapCardIntoDeckRequest(this.parent.parent.pendingCardType, sharePlayerInfo.deck[i].type);
+                                break;
+                            }
+                        }
+                    } else {
+                        cc.log('allBtnIsActive is false and CardsUI is not showing add card to deck');
+                    }
+                }
+            });
+        } else {
+            this.addClickEventListener(() => {
+                if (!this.parent.isScrolling) {
+                    if (this.parent.parent.allBtnIsActive) {
+                        this.parent.parent.addChild(new CardInfoUI(this.card), 4, cf.TAG_CARDINFOUI);
+                        this.parent.parent.allBtnIsActive = false;
+                    } else {
+                        cc.log('allBtnIsActive is false');
+                    }
+                }
+            });
+        }
     },
 });

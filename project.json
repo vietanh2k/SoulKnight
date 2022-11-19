@@ -65,14 +65,18 @@
         "src/modules/testnetwork/network/Packet.js",
         "src/modules/testnetwork/ScreenNetwork.js",
 
+        "src/UI/CardInfoUI.js",
         "src/UI/CardSlot.js",
         "src/UI/CardsUI.js",
         "src/UI/ChestInfoUI.js",
         "src/UI/ChestSlot.js",
         "src/UI/CurrencyPanel.js",
+        "src/UI/GameUI.js",
         "src/UI/HomeUI.js",
         "src/UI/LobbyScene.js",
         "src/UI/LoginScreen.js",
+        "src/UI/MatchingUI.js",
+        "src/UI/OpenChestAnimationUI.js",
         "src/UI/Toast.js",
         "src/UI/ShopUI.js",
 
@@ -104,6 +108,7 @@
 
         "src/Logic/GAME_CONFIG.js",
         "src/Logic/actions/NextWaveAction.js",
+        "src/Logic/actions/ActivateCardAction.js",
         "src/Logic/actions/ActionsDef.js",
         "src/Logic/map/MAP_CONFIG.js",
         "src/Logic/map/Cell.js",

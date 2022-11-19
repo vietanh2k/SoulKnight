@@ -45,7 +45,7 @@ var res = {
     buffD : 'asset/battle/battle_item_damage.png',
     buffS : 'asset/battle/battle_item_attack_speed.png',
     buffR : 'asset/battle/battle_item_range.png',
-    hole : 'asset/battle/ui/ui_hole.png',
+    hole : 'asset/battle/UI/ui_hole.png',
     treeUI: 'asset/map/map_forest_obstacle_1.png',
     logo_png : 'asset/map/b.png',
     logoBack_png : 'asset/map/lobby_background.png',
@@ -94,7 +94,9 @@ var res = {
     health_box:'asset/battle_result/battle_result_health_box.png',
     house_icon: 'asset/common/common_icon_house.png',
     house_box: 'asset/battle/battle_info_box.png',
-    energyIcon: 'asset/common/common_icon_energy.png'
+    energyIcon: 'asset/common/common_icon_energy.png',
+    TWizard_plit: 'asset/tower/frame/wizard/TWz.plist',
+    Wizard_Bullet:'asset/tower/frame/wizard/tower_wizard_bullet_0000.png'
 
 };
 

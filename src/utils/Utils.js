@@ -60,3 +60,18 @@ Utils.updateTimeDiff = function (serverNow) {
 Utils.addToastToRunningScene = function (message) {
     cc.director.getRunningScene().addChild(new Toast(message), cf.TOAST_Z_ORDER);
 }
+
+Utils.loadCardConfig = function () {
+    cc.loader.load('json/CardTypeMap.json', (err, res) => {
+        cf.CARD_TYPE = res[0];
+    });
+    cc.loader.load('json/Monster.json', (err, res) => {
+        cf.MONSTER = res[0];
+    });
+    cc.loader.load('json/Tower.json', (err, res) => {
+        cf.TOWER = res[0];
+    });
+    cc.loader.load('json/Potion.json', (err, res) => {
+        cf.POTION = res[0];
+    });
+}

@@ -62,6 +62,7 @@ const AnimatedSprite = cc.Sprite.extend({
         if (animation == null) {
             const animationFrames = []
             for (let i = from; i <= to; i++) {
+                // cc.log('file name' + utils.String.format(fmt, i));
                 animationFrames.push(cc.spriteFrameCache.getSpriteFrame(utils.String.format(fmt, i)))
             }
 
@@ -86,8 +87,9 @@ const AnimatedSprite = cc.Sprite.extend({
      * */
     loadFromMultiFile: function(filenames, name,delay = 1) {
         filenames.map(filename=>{
-            if(cc.SpriteFrameCache.getInstance().getSpriteFrame(filename)==null){
-                cc.SpriteFrameCache.getInstance().addSpriteFrame(new cc.SpriteFrame(filename), filename);
+            if(cc.spriteFrameCache.getSpriteFrame(filename)==null){
+                var frame = new cc.SpriteFrame(filename);
+                cc.spriteFrameCache.addSpriteFrame(frame, filename);
             }
         })
 
@@ -97,20 +99,26 @@ const AnimatedSprite = cc.Sprite.extend({
         if (animation == null) {
             const animationFrames = [];
             filenames.map(filename=>{
-                animationFrames.push(cc.SpriteFrameCache.getInstance().getSpriteFrame(filename))
+                cc.log('cc.spriteFrameCache.getSpriteFrame(filename)')
+                cc.log(cc.spriteFrameCache.getSpriteFrame(filename))
+                animationFrames.push(cc.spriteFrameCache.getSpriteFrame(filename))
             })
 
-            animation = new cc.Animation(animationFrames, delay/1000)
+            animation = new cc.Animation(animationFrames, 0.1)
             cc.animationCache.addAnimation(animation, animationName)
         }
 
-        const ret = this.animations.length
-        this.animations.push(animation)
-        this.animates.push(new cc.Animate(this.animations[ret]))
-        this.animateActions.push(new cc.RepeatForever(this.animates[ret]))
-        this.animateActions[ret].retain()
 
-        return ret
+        const ret = this.animations.length
+        // this.animations.push(animation)
+        let animated = new cc.Animate(animation),
+            animateAction = new cc.RepeatForever(animated);
+        animateAction.retain();
+        // this.animates.push(new cc.Animate(this.animations[ret]))
+        // this.animateActions.push(new cc.RepeatForever(this.animates[ret]))
+        // this.animateActions[ret].retain()
+
+        return animateAction
     },
 
     // play animation id

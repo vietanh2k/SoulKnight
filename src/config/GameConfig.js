@@ -107,10 +107,12 @@ MW.HEIGHT = 720;
 MW.FONTCOLOR = "#1f2d96";
 MW.menuHeight = 36;
 MW.menuWidth = 123;
+
+
 var cf = cf || {};
 
-cf.WIDTH = WIDTHSIZE;
-cf.HEIGHT = HEIGHTSIZE;
+// cf.WIDTH = WIDTHSIZE;
+// cf.HEIGHT = HEIGHTSIZE;
 
 cf.TOAST_Z_ORDER = 1000;
 
@@ -126,6 +128,8 @@ cf.LOBBY_TAB_HOME = 2;
 cf.LOBBY_TAB_SOCIAL = 3;
 cf.LOBBY_TAB_CLAN = 4;
 
+cf.TAG_CARDINFOUI = 100;
+
 cf.TIME_DIFF = 0; // thời gian trên server trừ thời gian trên client
 cf.UNOPEN_CHEST_TIMESTAMP = -1;
 cf.COST_GEMS_PER_HOUR = 6;
@@ -133,7 +137,7 @@ cf.COST_GEMS_PER_HOUR = 6;
 // Treasure.json
 cf.CHEST_REWARD = [
     {
-        openTimeRequired: 3 * 60 * 60 * 1000,   // fixme 3 phút
+        openTimeRequired: 3 * 60 * 60 * 1000,
         golds: [10, 20],
         fragments: [10, 20],
         cards: 2,
@@ -269,21 +273,21 @@ cf.CARD = [
     {
         id: 105,
         energy: 12,
-        texture: asset.cardTowerAttackSpeed_png,
-        miniature: asset.miniaturesTowerAttackSpeed_png,
-        name: 'Rắn Tóc Đỏ',
-        description:
-            'Tăng Tốc bắn cho các Tháp\n' +
-            'nằm trong vùng Tháp',
-    },
-    {
-        id: 106,
-        energy: 12,
         texture: asset.cardTowerDamage_png,
         miniature: asset.miniaturesTowerDamage_png,
         name: 'Dê Phát Động',
         description:
             'Tăng Sát thương cho các Tháp\n' +
+            'nằm trong vùng Tháp',
+    },
+    {
+        id: 106,
+        energy: 12,
+        texture: asset.cardTowerAttackSpeed_png,
+        miniature: asset.miniaturesTowerAttackSpeed_png,
+        name: 'Rắn Tóc Đỏ',
+        description:
+            'Tăng Tốc bắn cho các Tháp\n' +
             'nằm trong vùng Tháp',
     },
 

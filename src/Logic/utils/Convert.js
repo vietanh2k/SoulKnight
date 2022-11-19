@@ -26,4 +26,10 @@
         return p
 
     };
+    const convertLogicalPosToIndex = function(pos, rule) {
+        let x = Math.floor((pos.x-MAP_CONFIG.CELL_WIDTH/ 2.0)/MAP_CONFIG.CELL_WIDTH),
+            y = 1 + Math.floor((pos.y-MAP_CONFIG.CELL_HEIGHT/ 2.0)/MAP_CONFIG.CELL_HEIGHT);
+        return cc.p(x,y)
+
+    };
 

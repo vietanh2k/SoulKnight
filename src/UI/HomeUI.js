@@ -94,6 +94,15 @@ var HomeUI = cc.Layer.extend({
     },
 
     initLobbyArena: function () {
+        this.arenaGlow = new cc.Sprite(asset.arenaGlow_png);
+        this.arenaGlow.attr({
+            anchorY: 0,
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT * 0.4,
+            scale: cf.WIDTH * 0.9 / this.arenaGlow.width,
+        });
+        this.addChild(this.arenaGlow);
+
         this.arena = new cc.Sprite(asset.commonArenaForest_png);
         this.arena.attr({
             anchorY: 0,
@@ -111,6 +120,14 @@ var HomeUI = cc.Layer.extend({
         this.lbPlayerTrophy.enableShadow();
         this.arena.addChild(this.lbArena);
 
+        this.arenaParticle = new cc.ParticleSystem(asset.arenaParticle_plist);
+        this.arenaParticle.attr({
+            x: cf.WIDTH / 2,
+            y: this.arena.y + this.arena.height * this.arena.scale / 2,
+            scale: 2,
+        });
+        this.addChild(this.arenaParticle);
+
         this.btnBattle = new ccui.Button(asset.btnBattle_png, asset.btnBattlePressing_png, asset.btnBattle_png);
         this.btnBattle.attr({
             anchorY: 1,
@@ -119,20 +136,21 @@ var HomeUI = cc.Layer.extend({
             scale: this.arena.width * 0.9 / this.btnBattle.width,
         });
         this.btnBattle.addClickEventListener(() => {
-            // FIXME hiện tại đang dùng button này để debug
-            Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
-            cc.log("User data: " + JSON.stringify(sharePlayerInfo));
-            var scene = new cc.Scene();
-            scene.addChild(new MatchingUI());
-            cc.director.runScene(new cc.TransitionFade(1.2, scene));
-            // đây mới là (một phần) tác dụng thật
             if (this.parent.allBtnIsActive) {
+                // hiện tại đang dùng nút này để debug
+                Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
+                cc.log("User data: " + JSON.stringify(sharePlayerInfo));
+
+                // đây mới là (một phần) tác dụng thật
+                let fullChestSlots = true;
                 for (let i = 0; i < this.chestSlots.length; i++) {
                     if (this.chestSlots[i].constructor.name === 'Sprite') {
-                        return;
+                        fullChestSlots = false;
                     }
                 }
-                Utils.addToastToRunningScene('Số lượng rương đã đạt tối đa!');
+                if (fullChestSlots) {
+                    Utils.addToastToRunningScene('Số lượng rương đã đạt tối đa!');
+                }
             }
         });
         this.arena.addChild(this.btnBattle);
