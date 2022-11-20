@@ -54,15 +54,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
             cc.delayTime(1.8)
         );
 
-        let openingSequence = cc.sequence(
-            cc.callFunc(() => this.fxChest.setAnimation(0, 'opening', false)),
-            cc.delayTime(0.25),
-            cc.callFunc(() => {
-                this.showReward(index);
-                index++;
-            }),
-            cc.delayTime(1.75)
-        ).repeat(newCardsSize - 1);
+
 
         let showAllRewardsSequence = cc.sequence(
             cc.callFunc(() => {
@@ -71,7 +63,22 @@ var OpenChestAnimationUI = cc.Layer.extend({
             cc.callFunc(() => this.addExitBtn())
         );
 
-        let sequence = cc.sequence(initSequence, openingSequence, showAllRewardsSequence);
+        let sequence = cc.sequence(initSequence, showAllRewardsSequence);
+
+        if(newCardsSize > 1){
+            let openingSequence = cc.sequence(
+                cc.callFunc(() => this.fxChest.setAnimation(0, 'opening', false)),
+                cc.delayTime(0.25),
+                cc.callFunc(() => {
+                    this.showReward(index);
+                    index++;
+                }),
+                cc.delayTime(1.75)
+            ).repeat(newCardsSize - 1);
+
+            sequence = cc.sequence(initSequence,openingSequence, showAllRewardsSequence);
+        }
+
         this.runAction(sequence);
     },
 

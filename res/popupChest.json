@@ -461,7 +461,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 34.2674,
+              "X": 32.27,
               "Y": -53.49
             },
             "Scale": {
@@ -478,8 +478,8 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -19.7326,
-            "RightMargin": -88.2674,
+            "LeftMargin": -21.73,
+            "RightMargin": -86.27,
             "TopMargin": 0.49,
             "BottomMargin": -106.49,
             "Tag": 1,
@@ -506,7 +506,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 104.472,
+              "X": 103.47,
               "Y": -53.5
             },
             "Scale": {
@@ -523,8 +523,8 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": 50.472,
-            "RightMargin": -158.472,
+            "LeftMargin": 49.47,
+            "RightMargin": -157.47,
             "TopMargin": 0.5,
             "BottomMargin": -106.5,
             "Tag": 2,
@@ -539,7 +539,7 @@
           {
             "FileData": {
               "Type": "Normal",
-              "Path": "lobby/treasure/common_icon_card_multiple_1.png",
+              "Path": "lobby/treasure/common_icon_card_multiple_4.png",
               "Plist": ""
             },
             "Scale9OriginX": 35,
@@ -551,7 +551,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 174.36,
+              "X": 174.39,
               "Y": -53.5
             },
             "Scale": {
@@ -568,12 +568,12 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": 120.36,
-            "RightMargin": -228.36,
+            "LeftMargin": 120.39,
+            "RightMargin": -228.39,
             "TopMargin": 0.5,
             "BottomMargin": -106.5,
-            "Tag": 88,
-            "ActionTag": 1466649513,
+            "Tag": 59,
+            "ActionTag": -1816968757,
             "Size": {
               "X": 108.0,
               "Y": 106.0
@@ -850,8 +850,9 @@
             "ctype": "TextObjectData"
           },
           {
+            "IsCustomSize": true,
             "FontSize": 22,
-            "LabelText": "100 - 200",
+            "LabelText": "100 - 2000",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Supercell Magic.ttf",
@@ -876,7 +877,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": -128.2319,
+              "X": -95.23,
               "Y": 28.83
             },
             "Scale": {
@@ -896,20 +897,21 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -200.7319,
-            "RightMargin": 55.7319,
+            "LeftMargin": -203.23,
+            "RightMargin": -12.77,
             "TopMargin": -44.83,
             "BottomMargin": 12.83,
             "Tag": 148,
             "ActionTag": -1597720370,
             "Size": {
-              "X": 145.0,
+              "X": 216.0,
               "Y": 32.0
             },
             "Name": "numGoldGet",
             "ctype": "TextObjectData"
           },
           {
+            "IsCustomSize": true,
             "FontSize": 22,
             "LabelText": "x40 - 50",
             "FontResource": {
@@ -936,7 +938,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 129.88,
+              "X": 162.88,
               "Y": 28.83
             },
             "Scale": {
@@ -956,14 +958,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": 65.38,
-            "RightMargin": -194.38,
+            "LeftMargin": 62.88,
+            "RightMargin": -262.88,
             "TopMargin": -44.83,
             "BottomMargin": 12.83,
             "Tag": 150,
             "ActionTag": 995453402,
             "Size": {
-              "X": 129.0,
+              "X": 200.0,
               "Y": 32.0
             },
             "Name": "numCardGet",
@@ -1193,7 +1195,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 15.2,
+              "X": 17.2,
               "Y": -204.7963
             },
             "Scale": {
@@ -1210,8 +1212,8 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -16.3,
-            "RightMargin": -46.7,
+            "LeftMargin": -14.3,
+            "RightMargin": -48.7,
             "TopMargin": 188.7963,
             "BottomMargin": -220.7963,
             "Tag": 155,
@@ -1282,12 +1284,12 @@
             },
             "AnchorPoint": {},
             "Position": {
-              "X": -12.9594,
-              "Y": 368.172
+              "X": -7.4984,
+              "Y": 360.0193
             },
             "Scale": {
-              "ScaleX": 1.2,
-              "ScaleY": 1.2
+              "ScaleX": 1.25,
+              "ScaleY": 1.25
             },
             "CColor": {},
             "IconVisible": true,
@@ -1299,17 +1301,17 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -12.9594,
-            "RightMargin": 12.9594,
-            "TopMargin": -368.172,
-            "BottomMargin": 368.172,
-            "Tag": 69,
-            "ActionTag": 1526378157,
+            "LeftMargin": -7.4984,
+            "RightMargin": 7.4984,
+            "TopMargin": -360.0193,
+            "BottomMargin": 360.0193,
+            "Tag": 159,
+            "ActionTag": 453588166,
             "Size": {
               "X": 0.0,
               "Y": 0.0
             },
-            "Name": "Particle_1",
+            "Name": "particle",
             "ctype": "ParticleObjectData"
           }
         ],

@@ -10,23 +10,22 @@ var GoldFly = cc.Node.extend({
     init:function (pos, des, goldGet) {
 
         winSize = cc.director.getWinSize();
-        var goldForOne = 100
-        var _scale = 1
-        if(goldGet <200){
+        var goldForOne = 1
+        var _scale = 0.5
+        if(goldGet > 3000){
+            goldForOne = 1000
+            _scale = 1
+        }else if(goldGet >300){
+            goldForOne = 100
+            _scale = 0.8
+        }else if(goldGet >30){
             goldForOne = 10
-            _scale = 0.75
-        }
-        if(goldGet <10){
-            goldForOne = 1
-            _scale = 0.5
+            _scale = 0.65
         }
         var num = Math.floor((goldGet-1)/goldForOne)+1
         var goldForLastOne =goldGet - (goldForOne*(num-1))
-        cc.log('num='+num)
-        cc.log('goldForOne='+goldForOne)
-        cc.log('goldForLastOne='+goldForLastOne)
+        LobbyInstant.currencyPanel.updateLabelsGem(2)
         for(var i=0 ; i<num ; i++){
-            cc.log('golddddddddddddddddd')
             var gold = new cc.Sprite('asset/common/common_icon_gold_small.png')
             var w = gold.getContentSize().width*_scale
             gold.setPosition(pos)
@@ -37,11 +36,11 @@ var GoldFly = cc.Node.extend({
             gold.setScale(_scale)
             var seq
 
-            seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.65), cc.MoveTo(0.5+r2,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForOne)))
+            seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.65), cc.MoveTo(0.45+r2,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForOne)))
             if(i == num-1){
-                seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.65), cc.MoveTo(0.5+r2,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForLastOne)))
+                seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.65), cc.MoveTo(0.45+r2,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForLastOne)))
             }
-            var seq2 = cc.sequence( cc.delayTime(1), cc.scaleBy(1, 0.5/_scale))
+            var seq2 = cc.sequence( cc.delayTime(1), cc.scaleBy(0.6+r2, 0.5/_scale))
             var seq3 = cc.sequence( cc.delayTime(3), cc.callFunc(()=> this.destroy()))
             gold.runAction(seq)
             gold.runAction(seq2)
