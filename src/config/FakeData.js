@@ -26,15 +26,15 @@ fake.chests = [
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: null,
         golds: [200, 400],
-        cards: [400, 500],
+        cards: [100, 200],
         rarities: [1, 2, 3, 4],
     },
     {
         id: 3,
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: null,
-        golds: [200, 400],
-        cards: [400, 500],
+        golds: [500, 1000],
+        cards: [200, 400],
         rarities: [1, 2, 3, 4],
     },
 ];
@@ -155,4 +155,19 @@ fake.collection = [
         level: 6,
         fragment: 6,
     },
+];
+
+fake.OPEN_CHEST_NEW_CARDS = [
+    {
+        id: 102,
+        fragment: 10,
+    },
+    {
+        id: 304,
+        fragment: 20,
+    },
+    {
+        id: 201,
+        fragment: 15,
+    }
 ];

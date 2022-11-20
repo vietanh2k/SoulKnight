@@ -7,9 +7,6 @@ var CardInfoUI = cc.Layer.extend({
 
         this.card = card;
 
-        let inDeck = sharePlayerInfo.deck.find(element => element.id === card.id);
-        inDeck = inDeck !== undefined;
-
         let layerColor = new cc.LayerColor(cc.color(0, 0, 0), cf.WIDTH, cf.HEIGHT);
         layerColor.setOpacity(150);
         this.addChild(layerColor);
@@ -65,9 +62,18 @@ var CardInfoUI = cc.Layer.extend({
             scale: topPanelBackground.width * 0.07 / closeBtn.width,
         });
         closeBtn.addClickEventListener(() => {
-            this.destroy();
+            this.destroy(false);
         });
         topPanelBackground.addChild(closeBtn, 0);
+
+        this.miniatureGlow = cc.Sprite(asset.cardPanelMiniatureGlows_png[card.rarity]);
+        this.miniatureGlow.attr({
+            x: cf.WIDTH / 2,
+            y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
+            scale: cf.WIDTH * 0.5 / this.miniatureGlow.width,
+            opacity: 127,
+        });
+        this.addChild(this.miniatureGlow);
 
         if (card.isMonster()) {
             this.miniature = cc.Sprite(card.miniature);
@@ -85,7 +91,6 @@ var CardInfoUI = cc.Layer.extend({
                 scale: cf.WIDTH * 0.25 / this.miniature.width,
             });
             this.addChild(this.miniature);
-            // todo button xem các miniature khác
         }
 
         // bottom panel
@@ -98,7 +103,7 @@ var CardInfoUI = cc.Layer.extend({
         this.addChild(botPanelBackground);
 
         let botBtnX = [undefined, undefined, undefined], counter = 0;
-        if (!inDeck) {
+        if (!card.isInDeck()) {
             botBtnX[0] = 1;
             counter++;
         }
@@ -117,12 +122,12 @@ var CardInfoUI = cc.Layer.extend({
             j++;
         }
 
-        if (!inDeck) {
+        if (!card.isInDeck()) {
             let chooseBtn = new ccui.Button(asset.btnBlue_png);
             chooseBtn.setZoomScale(0);
             chooseBtn.addClickEventListener(() => {
                 let cardsUI = this.parent.tabUIs[cf.LOBBY_TAB_CARDS];
-                this.destroy();
+                this.destroy(true);
                 cardsUI.showAddCardToDeck(card);
             });
             chooseBtn.attr({
@@ -146,17 +151,17 @@ var CardInfoUI = cc.Layer.extend({
                 upgradeBtn = new ccui.Button(asset.btnGray_png);
                 upgradeBtn.addClickEventListener(() => {
                     Utils.addToastToRunningScene('Bạn không đủ thẻ nâng cấp');
-                    this.destroy();
                 });
             } else {
                 upgradeBtn = new ccui.Button(asset.btnGreen_png);
                 if (sharePlayerInfo.gold < card.reqGold) {
                     upgradeBtn.addClickEventListener(() => {
                         Utils.addToastToRunningScene('Bạn không đủ vàng nâng cấp');
-                        this.destroy();
                     });
                 } else {
-                    // TODO gửi request nâng cấp thẻ
+                    upgradeBtn.addClickEventListener(() => {
+                        testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                    });
                 }
             }
             upgradeBtn.setZoomScale(0);
@@ -210,12 +215,35 @@ var CardInfoUI = cc.Layer.extend({
             });
             showSkillBtn.addChild(lb);
         }
+
+        // fixme sửa lại hàm dưới khi có item mới ở trên topPanelBackground
+        this.addTouchListener(topPanelBackground, botPanelBackground);
     },
 
-    destroy: function () {
+    destroy: function (isShowingAddCardToDeck) {
         this.visible = false;
-        this.parent.allBtnIsActive = true;
-        this.removeFromParent();
+        this.parent.removeCardInfoUI(this, !isShowingAddCardToDeck);
     },
 
+    addTouchListener: function (top, bot) {
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            onTouchBegan: (event) => {
+                let locationY = event.getLocation().y;
+                if (locationY > top.y + top.height / 2 * top.scale ||
+                    locationY < bot.y - bot.height / 2 * bot.scale) {
+                    this.readyToDestroy = true;
+                    return true;
+                }
+                return false;
+            },
+            onTouchEnded: () => {
+                if (this.readyToDestroy) {
+                    this.destroy(false);
+                    return true;
+                }
+                return false;
+            },
+        }, this);
+    },
 });

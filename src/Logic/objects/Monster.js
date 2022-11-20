@@ -12,6 +12,8 @@ const Monster = AnimatedSprite.extend({
         this.position = new Vec2(MAP_CONFIG.CELL_WIDTH / 2.0, MAP_CONFIG.CELL_HEIGHT / 2.0)
         this.prevPosition = new Vec2(0,0)
         this.speed = 30.0
+        this.concept="monster"
+        this.health = 10;
 
         return true;
     },
@@ -49,6 +51,10 @@ const Monster = AnimatedSprite.extend({
     },
 
     logicUpdate: function (playerState, dt){
+        if(this.health<=0){
+            this.destroy();
+            return;
+        }
         this.prevPosition.set(this.position.x, this.position.y)
 
         const map = playerState.getMap()

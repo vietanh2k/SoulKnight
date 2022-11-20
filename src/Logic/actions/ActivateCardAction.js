@@ -1,29 +1,33 @@
 const ActivateCardAction = cc.Class.extend({
-    ctor: function (id, x, y) {
-        this.id = id
+    ctor: function (card_type, x,y, uid) {
+        this.card_type = card_type
         this.x = x
         this.y = y
+        this.uid = uid
     },
 
     writeTo: function (pkg) {
-        pkg.putInt(this.id)
+        pkg.putByte(this.card_type)
         pkg.putInt(this.x)
         pkg.putInt(this.y)
+        pkg.putInt(this.uid)
+        cc.log("ActivateCardAction " + this.uid)
     },
 
     getActionCode: function () {
         return ACTION_CODE.ACTIVATE_CARD_ACTION
     },
 
-    getActionDataSize: function () {
-        return 3 * 4;
+    getActionPkgSize: function () {
+        return 1+4+4+4;
     },
 
     activate: function (gameStateManager) {
-
+        GameUI.instance.activateCard(this.card_type, new Vec2(this.x, this.y), this.uid);
     }
 })
 
 ActivateCardAction.deserializer = function (pkg) {
-    return new ActivateCardAction(pkg.getInt(), new Vec2(pkg.getInt(), pkg.getInt()))
+    const card_type = pkg.getByte(), x = pkg.getInt(), y = pkg.getInt(), uid = pkg.getInt();
+    return new ActivateCardAction(card_type, x, y, uid);
 }

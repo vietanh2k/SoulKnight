@@ -34,7 +34,10 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.OPEN_CHEST_NOW:
                 fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
-            case gv.CMD.START_COOL_DOWN:
+            case gv.CMD.OPEN_CHEST:
+                cc.log('receive open chest now response')
+                break;
+            case gv.CMD.START_COOLDOWN:
                 // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
                 break;
             case gv.CMD.MATCH_REPONSE:
@@ -44,6 +47,10 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')
+                break;
+            case gv.CMD.OFFER_RESPONSE:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateShop(packet);
+                cc.log('offer reponse succeededddddddddddd')
                 break;
             case gv.CMD.BATTLE_SYNC_START:
                 //cc.log("=========================gv.CMD.BATTLE_SYNC_START================================")
@@ -55,6 +62,23 @@ testnetwork.Connector = cc.Class.extend({
                 break
             case gv.CMD.BATTLE_ACTIONS:
                 //cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
+                break
+            case gv.CMD.BUY_GEM_OR_GOLD:
+                if (packet.typee == 0) {
+                    sharePlayerInfo.gem += packet.amout
+                    LobbyInstant.currencyPanel.updateLabelsGem(10)
+                } else {
+                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                    cc.log("=========================BUY GOLD SUCCEEDED================================")
+                }
+                break
+            case gv.CMD.BUY_CARD:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyCard(packet)
+                cc.log("=========================BUY CARD SUCCEEDED================================")
+                break
+            case gv.CMD.BUY_CHEST:
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
+                cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
 
         }
@@ -94,21 +118,21 @@ testnetwork.Connector = cc.Class.extend({
         pk.putData(chest, gemSpent);
         this.gameClient.sendPacket(pk);
     },
-    sendMatchRequest:function(){
+    sendMatchRequest: function () {
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);
         cc.log(pk)
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
-    sendConfirmMatch:function(){
+    sendConfirmMatch: function () {
         cc.log("Match Confirm:");
         var pk = this.gameClient.getOutPacket(CmdMatchConfirm);
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
 
-    sendSyncStartConfirm: function(syncN){
+    sendSyncStartConfirm: function (syncN) {
         cc.log("sendSyncStartConfirm");
         GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
         const pk = this.gameClient.getOutPacket(CmdBattleSyncStartConfirm);
@@ -116,8 +140,8 @@ testnetwork.Connector = cc.Class.extend({
         this.gameClient.sendPacket(pk);
     },
 
-    sendSyncUpdateToFrameNConfirm: function(syncN, maxFrame){
-        //cc.log("sendSyncUpdateToFrameNConfirm");
+    sendSyncUpdateToFrameNConfirm: function (syncN, maxFrame) {
+        cc.log("sendSyncUpdateToFrameNConfirm");
 
         const remain = maxFrame - GameStateManagerInstance.frameCount
         for (let i = 0; i < remain; i++) {
@@ -136,8 +160,48 @@ testnetwork.Connector = cc.Class.extend({
         const pk = this.gameClient.getOutPacket(CmdBattleActions);
         pk.pack(actions);
         this.gameClient.sendPacket(pk);
-    }
+    },
+    sendRequestOffer: function () {
+        var pk = this.gameClient.getOutPacket(CmdOfferRequest);
+        cc.log(pk)
+        pk.pack(null);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyGemOrGold: function (typee, amout) {
+        var pk = this.gameClient.getOutPacket(CmdBuyGemOrGold);
+        pk.pack(typee, amout);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyCard: function (leng, buyList, cost) {
+        var pk = this.gameClient.getOutPacket(CmdBuyCard);
+        cc.log(pk)
+        pk.pack(leng, buyList, cost);
+        this.gameClient.sendPacket(pk);
+    },
+    sendBuyChest: function (leng, buyList, cost) {
+        var pk = this.gameClient.getOutPacket(CmdBuyChest);
+        cc.log(pk)
+        pk.pack(leng, buyList, cost);
+        this.gameClient.sendPacket(pk);
+    },
+    sendAddCurrencyRequest: function (isGem, amount) {
+        cc.log('Send add currency request: isGem: ' + isGem + ', amount:' + amount + '.');
+        let pk = this.gameClient.getOutPacket(CmdSendAddCurrency);
+        pk.putData(isGem, amount);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendSwapCardIntoDeckRequest: function (typeIn, typeOut) {
+        cc.log('Send swap card into deck request: typeIn = ' + typeIn + ', typeOut = ' + typeOut + '.');
+        let pk = this.gameClient.getOutPacket(CmdSendSwapCardIntoDeck);
+        pk.putData(typeIn, typeOut);
+        this.gameClient.sendPacket(pk);
+    },
+
+    sendUpgradeCardRequest: function (type, goldSpent) {
+        cc.log('Send upgrade card request: type = ' + type + ', gold spent = ' + goldSpent + '.');
+        let pk = this.gameClient.getOutPacket(CmdSendUpgradeCard);
+        pk.putData(type, goldSpent);
+        this.gameClient.sendPacket(pk);
+    },
 });
-
-
-

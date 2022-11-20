@@ -9,15 +9,6 @@ var PlayerInfo = cc.Class.extend({
         this.collection = collection;
         this.chestList = chestList;
         this.deck = deck;
-
-        // fake data
-        // this.name = FAKE.name;
-        // this.gold = FAKE.gold;
-        // this.gem = FAKE.gem;
-        // this.trophy = FAKE.trophy;
-        // this.collection = fake.collection;
-        // this.chestList = FAKE.chests;
-        // this.deck = fake.deck;
     },
 
     getChestById: function (chestId) {
@@ -32,8 +23,32 @@ var PlayerInfo = cc.Class.extend({
         return rs;
     },
 
+    /**
+     * Thêm các thẻ mới vào collection.
+     *
+     * @param {Card[]} newCards danh sách CHỨA các thẻ sau khi được cập nhật bên server (ĐÂY LÀ TRẠNG THÁI SAU CẬP NHẬT, KHÔNG PHẢI ĐƯỢC THÊM VÀO, KHÔNG PHẢI DANH SÁCH TOÀN BỘ THẺ MÀ CHỈ LÀ CÁC THẺ ĐƯỢC THÊM MỚI HOẶC TẠO MỚI)
+     * @return {void}
+     */
     addNewCards: function (newCards) {
-        // TODO add new cards after open a chest
+        for (let i = 0; i < newCards.length; i++) {
+            let j = 0;
+            for (j = 0; j < sharePlayerInfo.collection.length; j++) {
+                if (newCards[i].type === sharePlayerInfo.collection[j].type) {
+                    sharePlayerInfo.collection[j] = newCards[i];
+                    for (let k = 0; k < sharePlayerInfo.deck.length; k++) {
+                        if (newCards[i].type === sharePlayerInfo.deck[k].type) {
+                            sharePlayerInfo.deck[k] = newCards[i];
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+            if (j === sharePlayerInfo.collection.length) {
+                sharePlayerInfo.collection.push(newCards[i]);
+            }
+        }
+        LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateAllCardSlots();
     },
 
     /**
@@ -44,6 +59,21 @@ var PlayerInfo = cc.Class.extend({
      */
     sortCollectionByEnergy: function (isAscOrder) {
         this.collection.sort((a, b) => (a.energy - b.energy) * (2 * isAscOrder - 1));
+    },
+
+    updateDeckAfterSwapCard: function (typeIn, typeOut) {
+        let cardIn = this.collection.find(card => card.type === typeIn);
+        if (cardIn === undefined) {
+            cc.log('Cannot find typeIn ' + typeIn + ' in collection');
+            return;
+        }
+        for (let i = 0; i < this.deck.length; i++) {
+            if (this.deck[i].type === typeOut) {
+                this.deck[i] = cardIn;
+                return;
+            }
+        }
+        cc.log('Cannot find typeOut ' + typeOut + ' in collection');
     },
 })
 

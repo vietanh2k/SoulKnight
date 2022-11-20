@@ -113,7 +113,7 @@ var ChestSlot = ccui.Button.extend({
         iconChest.attr({
             x: this.width / 2,
             y: this.height / 2,
-            scale: this.width * 0.6 / iconChest.width,
+            scale: this.width * 0.7 / iconChest.width,
         });
         this.addChild(iconChest);
     },
