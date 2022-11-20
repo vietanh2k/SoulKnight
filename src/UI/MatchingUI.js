@@ -19,6 +19,7 @@ var MatchingUI = cc.Layer.extend({
 
 
         this.initBackGround();
+        this.runAction(cc.sequence(cc.delayTime(3), cc.callFunc(()=>this.onMatching())))
         // this.schedule(this.joinGame,7)
 
 
@@ -53,7 +54,7 @@ var MatchingUI = cc.Layer.extend({
         button.setScale((WIDTHSIZE*2.7/7)/button.getNormalTextureSize().width)
         button.setTitleFontSize(24)
         button.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*-2/9)
-        button.addClickEventListener(this.onMatching);
+        button.addClickEventListener(this.backToLobby);
         this.addChild(button);
 
         var lbFindingEnemy = new ccui.Text('Đang tìm đối thủ...', res.font_magic, 30)
@@ -107,11 +108,29 @@ var MatchingUI = cc.Layer.extend({
         cc.director.runScene(new cc.TransitionFade(1.2, scene));
 
     },
+
+    backToLobby:function () {
+        let lobbyScene = new LobbyScene();
+        cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
+
+    },
     onMatching:function()
     {
         cc.log("sendMatchingRequest");
         try{
             testnetwork.connector.sendMatchRequest();
+
+
+        } catch (e){
+            cc.log('errrrrrrrrrrror')
+        }
+
+    },
+    requestConfirmMatch:function()
+    {
+        cc.log("sendMatchingConfirm");
+        try{
+            testnetwork.connector.sendConfirmMatch();
 
 
         } catch (e){

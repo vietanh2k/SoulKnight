@@ -95,6 +95,7 @@ var GameUI = cc.Layer.extend({
                 cc.log('timeeeeeeeeeeeeeeeeeeeeeee')
                 if (this._gameStateManager.canTouchNewWave) {
                     //this.getNewWave()
+                    cc.log('//this.getNewWave()')
                     testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);
                 }
             }
@@ -585,7 +586,7 @@ var GameUI = cc.Layer.extend({
         var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (time == 0) {
-            this.getNewWave()
+            this.addMonsterToBoth()
         }
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timer3).visible = true
@@ -609,6 +610,7 @@ var GameUI = cc.Layer.extend({
     },
 
     addMonsterToBoth: function () {
+        this.getNewWave()
         const monster = this._gameStateManager.playerA._map.addMonster()
         this.addChild(monster, 2000)
         const monster2 = this._gameStateManager.playerB._map.addMonster()
