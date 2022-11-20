@@ -13,6 +13,7 @@ var ShopUI = cc.Layer.extend({
          **/
         this.numSlot = null
         this.init()
+        this.schedule(this.updateTimeUI, 1)
         // this.scheduleUpdate();
     },
     init:function () {
@@ -167,7 +168,7 @@ var ShopUI = cc.Layer.extend({
      * update moi 1s
      **/
     updateTimeUI:function (){
-        setInterval(()=>{
+        // setInterval(()=>{
             let today = new Date()
             let tomorrow =  new Date()
             tomorrow.setDate(today.getDate() + 1)
@@ -187,7 +188,7 @@ var ShopUI = cc.Layer.extend({
                 str += sec +'s'
             }
             this.getChildByName('scene').getChildByName('loginItem').getChildByName('time').setString(str)
-        },1000)
+        // },1000)
 
 
     },

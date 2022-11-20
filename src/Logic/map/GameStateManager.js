@@ -25,7 +25,7 @@ var GameStateManager = cc.Class.extend({
         this.readFrom(pkg)
         this._timer = new Timer(this)
         this.canTouchNewWave = false
-        this.curWave = 1
+        this.curWave = 0
         this.winner = null
 
         this.sumDt = 0;

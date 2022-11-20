@@ -43,7 +43,11 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.MATCH_REPONSE:
                 cc.log('matching succeededddddddddddd')
                 cc.log(packet.x)
-                this.sendConfirmMatch()
+                try{
+                    fr.getCurrentScreen().requestConfirmMatch()
+                } catch (e){
+                    cc.log('outtttttttttttttt')
+                }
                 break;
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')

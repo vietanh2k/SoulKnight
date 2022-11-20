@@ -151,6 +151,7 @@ var HomeUI = cc.Layer.extend({
                 if (fullChestSlots) {
                     Utils.addToastToRunningScene('Số lượng rương đã đạt tối đa!');
                 }
+                fr.view(MatchingUI)
             }
         });
         this.arena.addChild(this.btnBattle);
