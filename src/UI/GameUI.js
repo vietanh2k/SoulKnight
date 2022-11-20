@@ -440,7 +440,6 @@ var GameUI = cc.Layer.extend({
         var mainscene = ccs.load(res.scene, "").node;
         mainscene.setScale(0.89)
         this.addChild(mainscene);
-        cc.log(mainscene.getChildByName('avatarNode').getChildByName('name').getString())
 
     },
 
@@ -580,7 +579,6 @@ var GameUI = cc.Layer.extend({
         if (this.getChildByName('iconEnergyBar') != null) {
             this.getChildByName('iconEnergyBar').getChildByName('numEnergyBar').setString(this._gameStateManager.playerA.energy)
         }
-        cc.log(this.getChildByName('iconEnergyBar').getChildByName('numEnergyBar').getString())
     },
 
     updateTimer: function (dt) {
@@ -748,7 +746,14 @@ var GameUI = cc.Layer.extend({
         btnBack.setScale((WIDTHSIZE * 1.4 / 7) / btnBack.getNormalTextureSize().height)
         btnBack.setTitleFontSize(23)
         btnBack.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * -3.85 / 9)
+        btnBack.addClickEventListener(this.backToLobby);
         this.addChild(btnBack, 4002);
+    },
+
+    backToLobby:function () {
+        let lobbyScene = new LobbyScene();
+        cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
+
     },
 
 
