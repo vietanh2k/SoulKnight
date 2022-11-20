@@ -116,6 +116,69 @@ var CurrencyPanel = cc.Layer.extend({
         this.lbGem.scale = this.lbScale;
     },
 
+    updateLabels: function () {
+        var a = setInterval(() => {
+            if (this.tmpGold < sharePlayerInfo.gold) {
+                this.tmpGold += 30;
+                if (this.tmpGold > sharePlayerInfo.gold) {
+                    this.tmpGold = sharePlayerInfo.gold
+                }
+            }
+            if (this.tmpGold > sharePlayerInfo.gold) {
+                this.tmpGold -= 30;
+                if (this.tmpGold < sharePlayerInfo.gold) {
+                    this.tmpGold = sharePlayerInfo.gold
+                }
+            }
+            if (this.tmpGem < sharePlayerInfo.gem) {
+                this.tmpGem += 3;
+                if (this.tmpGem > sharePlayerInfo.gem) {
+                    this.tmpGem = sharePlayerInfo.gem
+                }
+            }
+            if (this.tmpGem > sharePlayerInfo.gem) {
+                this.tmpGem -= 3;
+                if (this.tmpGem < sharePlayerInfo.gem) {
+                    this.tmpGem = sharePlayerInfo.gem
+                }
+            }
+
+            this.lbGold.setString(Utils.toStringWithDots(this.tmpGold));
+            this.lbGem.setString(Utils.toStringWithDots(this.tmpGem));
+            this.updateLbScale();
+            if (this.tmpGold == sharePlayerInfo.gold && this.tmpGem == sharePlayerInfo.gem) {
+                clearInterval(a);
+            }
+            // this.lbGold.scale = this.lbScale;
+            // this.lbGem.scale = this.lbScale;
+        }, 16)
+
+
+
+    },
+
+    updateLabelsGoldFly: function (numGold) {
+        // if (this.tmpGold < sharePlayerInfo.gold) {
+        //     this.tmpGold += numGold;
+        //     if(this.tmpGold > sharePlayerInfo.gold){
+        //         this.tmpGold = sharePlayerInfo.gold
+        //     }
+        // }
+        this.tmpGold += numGold;
+        // if(this.tmpGold > sharePlayerInfo.gold){
+        //     this.tmpGold = sharePlayerInfo.gold
+        // }
+        this.lbGold.setString(Utils.toStringWithDots(this.tmpGold));
+        this.lbGem.setString(Utils.toStringWithDots(this.tmpGem));
+        LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateCanBuyUI()
+
+
+
+
+    },
+
+
+
     updateLbScale: function () {
         this.lbScale = Math.min(
             this.leftBox.width * this.leftBox.scale * 0.7 / this.lbGold.width,
