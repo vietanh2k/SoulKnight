@@ -59,8 +59,8 @@ var PopupCard = cc.Node.extend({
             card.getChildByName('background').setTexture(this.getChildByTag(100).getChildByName('cBackground').getTexture())
             card.getChildByName('border').setTexture(this.getChildByTag(100).getChildByName('cBorder').getTexture())
             card.getChildByName('item').setTexture(this.getChildByTag(100).getChildByName('cAvatar').getTexture())
-            var seq = cc.sequence(cc.ScaleBy(0.45, 0.2), cc.delayTime(delay), cc.RotateBy(0.4,-10))
-            var seq2 = cc.sequence( cc.MoveTo(0.45,new cc.p(100,-110)), cc.delayTime(delay),cc.MoveTo(0.5, new cc.p(-80,44)),cc.fadeOut(0))
+            var seq = cc.sequence(cc.delayTime(0.05),cc.ScaleBy(0.55, 0.2), cc.delayTime(delay-0.05), cc.RotateBy(0.4,-10))
+            var seq2 = cc.sequence(cc.delayTime(0.05), cc.MoveTo(0.5,new cc.p(100,-110)), cc.delayTime(delay),cc.MoveTo(0.5, new cc.p(-80,44)),cc.fadeOut(0))
 
             //,cc.callFunc(()=> this.updateLabelCard())
             card.runAction(seq)
@@ -68,7 +68,7 @@ var PopupCard = cc.Node.extend({
             this.addChild(card)
             delay+= 0.05
         }
-        var seq3 = cc.sequence( cc.delayTime(1.5), cc.callFunc(()=> this.updateLabelCard(num)))
+        var seq3 = cc.sequence( cc.delayTime(1.55), cc.callFunc(()=> this.updateLabelCard(num)))
         this.runAction(seq3)
     },
 
