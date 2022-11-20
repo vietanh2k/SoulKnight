@@ -24,11 +24,11 @@ gv.CMD.MATCH_REPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
 gv.CMD.BATTLE_START = 5001;
 
-gv.CMD.BATTLE_ACTIONS                               = 5009;
-gv.CMD.BATTLE_SYNC_START                            = 5005;
-gv.CMD.BATTLE_SYNC_START_CONFIRM                    = 5006;
+gv.CMD.BATTLE_ACTIONS = 5009;
+gv.CMD.BATTLE_SYNC_START = 5005;
+gv.CMD.BATTLE_SYNC_START_CONFIRM = 5006;
 
-gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N         = 5007;
+gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N = 5007;
 gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N_CONFIRM = 5008;
 
 testnetwork = testnetwork || {};
@@ -130,13 +130,12 @@ CmdSendMove = fr.OutPacket.extend(
 
 CmdMatchRequest = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.MATCH_REQUEST);
         },
-        pack:function(){
+        pack: function () {
             this.packHeader();
             this.updateSize();
         }
@@ -145,13 +144,12 @@ CmdMatchRequest = fr.OutPacket.extend(
 
 CmdMatchConfirm = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.MATCH_CONFIRM);
         },
-        pack:function(){
+        pack: function () {
             this.packHeader();
             this.updateSize();
         }
@@ -160,14 +158,13 @@ CmdMatchConfirm = fr.OutPacket.extend(
 
 CmdBattleActions = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.BATTLE_ACTIONS);
         },
 
-        pack:function(actions){
+        pack: function (actions) {
             this.packHeader();
 
             this.putInt(actions.length)
@@ -185,14 +182,13 @@ CmdBattleActions = fr.OutPacket.extend(
 
 CmdBattleSyncStartConfirm = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.BATTLE_SYNC_START_CONFIRM);
         },
 
-        pack: function(syncN, frameN){
+        pack: function (syncN, frameN) {
             this.packHeader();
 
             this.putLong(syncN)
@@ -203,16 +199,15 @@ CmdBattleSyncStartConfirm = fr.OutPacket.extend(
     }
 )
 
-CmdBattleSyncClientUpdateToFrameNConfirm= fr.OutPacket.extend(
+CmdBattleSyncClientUpdateToFrameNConfirm = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N_CONFIRM);
         },
 
-        pack: function(syncN){
+        pack: function (syncN) {
             this.packHeader();
             this.putLong(syncN)
             this.updateSize();
@@ -221,13 +216,12 @@ CmdBattleSyncClientUpdateToFrameNConfirm= fr.OutPacket.extend(
 )
 CmdOfferRequest = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.OFFER_REQUEST);
         },
-        pack:function(){
+        pack: function () {
             this.packHeader();
             this.updateSize();
         }
@@ -235,13 +229,12 @@ CmdOfferRequest = fr.OutPacket.extend(
 )
 CmdBuyGemOrGold = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.BUY_GEM_OR_GOLD);
         },
-        pack: function(type, amout){
+        pack: function (type, amout) {
             this.packHeader();
 
             this.putByte(type)
@@ -254,17 +247,16 @@ CmdBuyGemOrGold = fr.OutPacket.extend(
 
 CmdBuyCard = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.BUY_CARD);
         },
-        pack: function(leng, buyList, cost){
+        pack: function (leng, buyList, cost) {
             this.packHeader();
 
             this.putInt(leng)
-            for(var i=0; i<leng; i++){
+            for (var i = 0; i < leng; i++) {
                 this.putByte(buyList[i][0])
                 this.putInt(buyList[i][1])
             }
@@ -277,17 +269,16 @@ CmdBuyCard = fr.OutPacket.extend(
 
 CmdBuyChest = fr.OutPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
             this.initData(100);
             this.setCmdId(gv.CMD.BUY_CHEST);
         },
-        pack: function(leng, buyList, cost){
+        pack: function (leng, buyList, cost) {
             this.packHeader();
 
             this.putInt(leng)
-            for(var i=0; i<leng; i++){
+            for (var i = 0; i < leng; i++) {
                 this.putByte(buyList[i][0])
                 this.putInt(buyList[i][1])
             }
@@ -429,40 +420,40 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
 });
 
 testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
-        ctor: function () {
-            this._super();
-        },
+    ctor: function () {
+        this._super();
+    },
 
-        readData: function () {
-            let status = this.getString();
-            let chestID = this.getInt();
-            let newCardsSize = this.getInt();
-            cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and the amount of new cards is ' + newCardsSize + '.');
-            let newCards = [], goldReceived, serverNow;
-            if (status === "Success") {
-                for (let i = 0; i < newCardsSize; i++) {
-                    newCards.push(this.readCardData());
-                }
-                cc.log('New cards: ' + JSON.stringify(newCards));
-                goldReceived = this.getInt();
-
-                serverNow = this.getLong();
-                Utils.updateTimeDiff(serverNow);
-
-                cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
-                cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
-            } else {
-                Utils.addToastToRunningScene(status);
+    readData: function () {
+        let status = this.getString();
+        let chestID = this.getInt();
+        let newCardsSize = this.getInt();
+        cc.log('Received open chest response from server. Chest ID ' + chestID + ' with status \"' + status + '\" and the amount of new cards is ' + newCardsSize + '.');
+        let newCards = [], goldReceived, serverNow;
+        if (status === "Success") {
+            for (let i = 0; i < newCardsSize; i++) {
+                newCards.push(this.readCardData());
             }
-        },
+            cc.log('New cards: ' + JSON.stringify(newCards));
+            goldReceived = this.getInt();
 
-        readCardData: function () {
-            let type = this.getByte();
-            let level = this.getInt();
-            let fragment = this.getInt();
-            return new Card(type, level, fragment);
-        },
-    }
+            serverNow = this.getLong();
+            Utils.updateTimeDiff(serverNow);
+
+            cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
+            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+        } else {
+            Utils.addToastToRunningScene(status);
+        }
+    },
+
+    readCardData: function () {
+        let type = this.getByte();
+        let level = this.getInt();
+        let fragment = this.getInt();
+        return new Card(type, level, fragment);
+    },
+}
 );
 
 
@@ -513,11 +504,10 @@ testnetwork.packetMap[gv.CMD.MOVE] = fr.InPacket.extend(
 
 testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
         },
-        readData:function(){
+        readData: function () {
             var scene = new cc.Scene();
             scene.addChild(new GameUI(this));
             cc.director.runScene(new cc.TransitionFade(1.2, scene));
@@ -527,57 +517,54 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
 );
 testnetwork.packetMap[gv.CMD.MATCH_REPONSE] = fr.InPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
         },
-        readData:function(){
+        readData: function () {
             this.x = this.getInt();
         }
     }
 );
 
 testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
-        ctor: function()
-        {
-            this._super();
-        },
+    ctor: function () {
+        this._super();
+    },
 
-        readData: function(){
-            const num = this.getInt()
-            for (let i = 0; i < num; i++) {
-                const size = this.getInt()
-                const actionCode = this.getInt()
-                ACTION_DESERIALIZER[actionCode](this).activate(GameStateManagerInstance)
-            }
-            GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NORMAL
+    readData: function () {
+        const num = this.getInt()
+        for (let i = 0; i < num; i++) {
+            const size = this.getInt()
+            const actionCode = this.getInt()
+            ACTION_DESERIALIZER[actionCode](this).activate(GameStateManagerInstance)
         }
+        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NORMAL
     }
+}
 );
 testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
     {
-        ctor:function()
-        {
+        ctor: function () {
             this._super();
         },
-        readData:function(){
+        readData: function () {
             this.status = this.getString()
             this.numChest = this.getInt()
-            cc.log("OFFER_RESPONSE: "+ JSON.stringify(this))
+            cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
             this.chestOffers = []
-            for(var i=0; i<this.numChest; i++){
+            for (var i = 0; i < this.numChest; i++) {
                 var chestType = this.getByte(),
                     chestCost = this.getInt()
-                cc.log('chest:  '+chestType+' '+chestCost)
+                cc.log('chest:  ' + chestType + ' ' + chestCost)
                 this.chestOffers.push([chestType, chestCost])
 
             }
             this.numCard = this.getInt()
             this.cardOffers = []
-            for(var i=0; i<this.numCard; i++){
+            for (var i = 0; i < this.numCard; i++) {
                 var cardType = this.getByte(),
                     cardCost = this.getInt()
-                cc.log('card:  '+cardType+' '+cardCost)
+                cc.log('card:  ' + cardType + ' ' + cardCost)
                 this.cardOffers.push([cardType, cardCost])
             }
 
@@ -599,92 +586,87 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
 
 
 testnetwork.packetMap[gv.CMD.BATTLE_SYNC_START] = fr.InPacket.extend({
-        ctor: function()
-        {
-            this._super();
-            this.syncN = 0
-        },
+    ctor: function () {
+        this._super();
+        this.syncN = 0
+    },
 
-        readData: function(){
-            this.syncN = this.getLong()
-        }
+    readData: function () {
+        this.syncN = this.getLong()
     }
+}
 );
 
 testnetwork.packetMap[gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N] = fr.InPacket.extend({
-        ctor: function()
-        {
-            this._super();
-            this.syncN = 0
-            this.frameN = 0
-        },
+    ctor: function () {
+        this._super();
+        this.syncN = 0
+        this.frameN = 0
+    },
 
-        readData: function(){
-            cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
-            this.syncN = this.getLong()
-            this.frameN = this.getLong()
-        }
+    readData: function () {
+        cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
+        this.syncN = this.getLong()
+        this.frameN = this.getLong()
     }
+}
 );
 
 testnetwork.packetMap[gv.CMD.BUY_GEM_OR_GOLD] = fr.InPacket.extend({
-        ctor: function()
-        {
-            this._super();
-        },
+    ctor: function () {
+        this._super();
+    },
 
-        readData: function(){
-            cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
-            this.typee = this.getByte()
-            this.amout = this.getInt()
-            cc.log(this.typee+' '+this.amout)
-        }
+    readData: function () {
+        cc.log("============================recv BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N============================================")
+        this.typee = this.getByte()
+        this.amout = this.getInt()
+        cc.log(this.typee + ' ' + this.amout)
     }
+}
 );
 
 testnetwork.packetMap[gv.CMD.BUY_CARD] = fr.InPacket.extend({
-        ctor: function()
-        {
-            this._super();
-        },
+    ctor: function () {
+        this._super();
+    },
 
-        readData: function(){
-            cc.log("============================BUY CARD============================================")
-            this.status = this.getString()
-            this.leng = this.getInt(),
-                this.buyList = []
-            for(var i=0; i<this.leng; i++){
-                var typeCard = this.getByte()
-                var numCard = this.getInt()
-                this.buyList.push([typeCard, numCard])
-            }
-            this.cost = this.getInt()
+    readData: function () {
+        cc.log("============================BUY CARD============================================")
+        this.status = this.getString()
+        this.leng = this.getInt(),
+            this.buyList = []
+        for (var i = 0; i < this.leng; i++) {
+            var typeCard = this.getByte()
+            var numCard = this.getInt()
+            this.buyList.push([typeCard, numCard])
         }
+        this.cost = this.getInt()
     }
+}
 );
 
 testnetwork.packetMap[gv.CMD.BUY_CHEST] = fr.InPacket.extend({
-        ctor: function()
-        {
-            this._super();
-        },
+    ctor: function () {
+        this._super();
+    },
 
-        readData: function(){
-            cc.log("============================BUY CHEST============================================")
-            this.status = this.getString()
-            this.leng = this.getInt(),
-                this.buyList = []
-            for(var i=0; i<this.leng; i++){
-                var typeCard = this.getByte()
-                var numCard = this.getInt()
-                this.buyList.push([typeCard, numCard])
-            }
-            this.cost = this.getInt()
+    readData: function () {
+        cc.log("============================BUY CHEST============================================")
+        this.status = this.getString()
+        this.leng = this.getInt(),
+            this.buyList = []
+        for (var i = 0; i < this.leng; i++) {
+            var typeCard = this.getByte()
+            var numCard = this.getInt()
+            this.buyList.push([typeCard, numCard])
         }
+        this.cost = this.getInt()
     }
+}
 );
 
-testnetwork.packetMap[gv.CMD.BUY_GEM_OR_GOLD] = fr.InPacket.extend({
+testnetwork.packetMap[gv.CMD.ADD_CURRENCY] = fr.InPacket.extend({
     ctor: function () {
         this._super();
     },

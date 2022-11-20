@@ -82,7 +82,11 @@ var CurrencyPanel = cc.Layer.extend({
         });
         this.rightCurrencyBtn.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                testnetwork.connector.sendAddCurrencyRequest(true, cf.AMOUNT_BTN_GEM);
+                try{
+                    testnetwork.connector.sendBuyGemOrGold(0,1000);
+                } catch (e){
+                    cc.log('errrrrrrrrrrror')
+                }
             } else {
                 cc.log('allBtnIsActive is false');
             }

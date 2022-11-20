@@ -64,8 +64,13 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
                 break
             case gv.CMD.BUY_GEM_OR_GOLD:
-                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
-                cc.log("=========================BUY GOLD SUCCEEDED================================")
+                if (packet.typee == 0) {
+                    sharePlayerInfo.gem += packet.amout
+                    LobbyInstant.currencyPanel.updateLabelsGem(10)
+                } else {
+                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                    cc.log("=========================BUY GOLD SUCCEEDED================================")
+                }
                 break
             case gv.CMD.BUY_CARD:
                 LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyCard(packet)
@@ -113,21 +118,21 @@ testnetwork.Connector = cc.Class.extend({
         pk.putData(chest, gemSpent);
         this.gameClient.sendPacket(pk);
     },
-    sendMatchRequest:function(){
+    sendMatchRequest: function () {
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);
         cc.log(pk)
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
-    sendConfirmMatch:function(){
+    sendConfirmMatch: function () {
         cc.log("Match Confirm:");
         var pk = this.gameClient.getOutPacket(CmdMatchConfirm);
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
 
-    sendSyncStartConfirm: function(syncN){
+    sendSyncStartConfirm: function (syncN) {
         cc.log("sendSyncStartConfirm");
         GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
         const pk = this.gameClient.getOutPacket(CmdBattleSyncStartConfirm);
@@ -135,7 +140,7 @@ testnetwork.Connector = cc.Class.extend({
         this.gameClient.sendPacket(pk);
     },
 
-    sendSyncUpdateToFrameNConfirm: function(syncN, maxFrame){
+    sendSyncUpdateToFrameNConfirm: function (syncN, maxFrame) {
         cc.log("sendSyncUpdateToFrameNConfirm");
 
         const remain = maxFrame - GameStateManagerInstance.frameCount
@@ -156,33 +161,33 @@ testnetwork.Connector = cc.Class.extend({
         pk.pack(actions);
         this.gameClient.sendPacket(pk);
     },
-    sendRequestOffer:function(){
+    sendRequestOffer: function () {
         var pk = this.gameClient.getOutPacket(CmdOfferRequest);
         cc.log(pk)
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
-    sendBuyGemOrGold:function(typee, amout){
+    sendBuyGemOrGold: function (typee, amout) {
         var pk = this.gameClient.getOutPacket(CmdBuyGemOrGold);
         pk.pack(typee, amout);
         this.gameClient.sendPacket(pk);
     },
-    sendBuyCard:function(leng,buyList, cost){
+    sendBuyCard: function (leng, buyList, cost) {
         var pk = this.gameClient.getOutPacket(CmdBuyCard);
         cc.log(pk)
-        pk.pack(leng,buyList, cost);
+        pk.pack(leng, buyList, cost);
         this.gameClient.sendPacket(pk);
     },
-    sendBuyChest:function(leng,buyList, cost){
+    sendBuyChest: function (leng, buyList, cost) {
         var pk = this.gameClient.getOutPacket(CmdBuyChest);
         cc.log(pk)
-        pk.pack(leng,buyList, cost);
+        pk.pack(leng, buyList, cost);
         this.gameClient.sendPacket(pk);
     },
     sendAddCurrencyRequest: function (isGem, amount) {
         cc.log('Send add currency request: isGem: ' + isGem + ', amount:' + amount + '.');
-        let pk = this.gameClient.getOutPacket(CmdBuyGemOrGold);
-        pk.pack(isGem, amount);
+        let pk = this.gameClient.getOutPacket(CmdSendAddCurrency);
+        pk.putData(isGem, amount);
         this.gameClient.sendPacket(pk);
     },
 
@@ -200,6 +205,3 @@ testnetwork.Connector = cc.Class.extend({
         this.gameClient.sendPacket(pk);
     },
 });
-
-
-
