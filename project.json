@@ -109,7 +109,6 @@
         "src/Logic/GAME_CONFIG.js",
         "src/Logic/actions/ActivateCardAction.js",
         "src/Logic/actions/NextWaveAction.js",
-        "src/Logic/actions/ActivateCardAction.js",
         "src/Logic/actions/ActionsDef.js",
         "src/Logic/map/MAP_CONFIG.js",
         "src/Logic/map/Cell.js",

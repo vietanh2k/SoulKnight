@@ -18,7 +18,7 @@ const ActivateCardAction = cc.Class.extend({
         return ACTION_CODE.ACTIVATE_CARD_ACTION
     },
 
-    getActionPkgSize: function () {
+    getActionDataSize: function () {
         return 1+4+4+4;
     },
 
