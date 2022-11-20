@@ -19,8 +19,11 @@ var PopupChest= cc.Node.extend({
         popup.getChildByName('numCost').setString(item.getChildByName('numCost').getString())
         popup.getChildByName('numCost').setTextColor(item.getChildByName('numCost').getTextColor())
         var strGold = chest.golds[0]+' - '+chest.golds[1]
+        cc.log(strGold)
         popup.getChildByName('numGoldGet').setString(strGold)
+        cc.log(popup.getChildByName('numGoldGet').getString())
         var strCard ='x'+ chest.cards[0]+ ' - ' +chest.cards[1]
+        cc.log(strCard)
         popup.getChildByName('numCardGet').setString(strCard)
         for(var i=0;i<4; i++){
             if(i < chest.rarities.length){
@@ -32,7 +35,7 @@ var PopupChest= cc.Node.extend({
             // popup.getChildByName('cType'+(i+1)).setTexture( 'asset/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
         }
         popup.getChildByName('btnBack').addClickEventListener(()=>this.hide())
-        popup.getChildByName('button').addClickEventListener(()=>this.requestBuy())
+        popup.getChildByName('button').addClickEventListener(()=>this.requestBuy(chestID))
         if(sharePlayerInfo.gold < parseInt(item.getChildByName('numCost').getString())){
             popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
             popup.getChildByName('button').setTouchEnabled(false)
@@ -72,11 +75,21 @@ var PopupChest= cc.Node.extend({
 
 
 
-    requestBuy:function (){
-
-        var leng = 1
+    requestBuy:function (chestID){
+        var chest = fake.chests[chestID]
+        var numGoldGet = Math.floor(Math.random()*(chest.golds[1]-chest.golds[0]))+chest.golds[0]
+        var numCardGet = Math.floor(Math.random()*(chest.cards[1]-chest.cards[0]))+chest.cards[0]
+        var leng = chest.rarities.length
         var buyList = []
-        buyList.push([100, 0])
+        var cou = 0
+        for(var i=0; i<leng-1; i++){
+            var rd = Math.floor(Math.random()*(numCardGet/leng/2))+numCardGet/leng/2
+            buyList.push([i, rd])
+            cou += rd
+        }
+        buyList.push([leng-1, numCardGet-cou])
+
+
         var cost = parseInt(this.getChildByTag(100).getChildByName('numCost').getString())
         try{
             testnetwork.connector.sendBuyChest(leng, buyList,cost);

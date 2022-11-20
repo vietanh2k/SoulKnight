@@ -1,0 +1,671 @@
+{
+  "ID": "13cf6341-b007-4f7b-a1c6-bd3667f4e7ee",
+  "Version": "3.10.0.0",
+  "Name": "popupGold",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 56,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/common_panel_background.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 18,
+            "Scale9OriginY": 15,
+            "Scale9Width": 417,
+            "Scale9Height": 363,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.4807,
+              "Y": -53.1628
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -292.0193,
+            "RightMargin": -292.9807,
+            "TopMargin": -153.3372,
+            "BottomMargin": -259.6628,
+            "Tag": 72,
+            "ActionTag": 658467765,
+            "Size": {
+              "X": 585.0,
+              "Y": 413.0
+            },
+            "Name": "background",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/common_panel_title.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 173,
+            "Scale9OriginY": 21,
+            "Scale9Width": 180,
+            "Scale9Height": 24,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 5.7819,
+              "Y": 108.8094
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 191,
+              "G": 191,
+              "B": 191
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -257.2181,
+            "RightMargin": -268.7819,
+            "TopMargin": -141.8094,
+            "BottomMargin": 75.8094,
+            "Tag": 73,
+            "ActionTag": 1376048784,
+            "Size": {
+              "X": 526.0,
+              "Y": 66.0
+            },
+            "Name": "panelTitle",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_shop_category_gold.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 63,
+            "Scale9OriginY": 14,
+            "Scale9Width": 66,
+            "Scale9Height": 17,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -1.1592,
+              "Y": 106.34
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -97.1592,
+            "RightMargin": -94.8408,
+            "TopMargin": -128.84,
+            "BottomMargin": 83.84,
+            "Tag": 74,
+            "ActionTag": 704849224,
+            "Size": {
+              "X": 192.0,
+              "Y": 45.0
+            },
+            "Name": "title",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/border-gold-popup.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 199,
+            "Scale9OriginY": 82,
+            "Scale9Width": 206,
+            "Scale9Height": 87,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.94,
+              "Y": -44.2
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -283.06,
+            "RightMargin": -284.94,
+            "TopMargin": -75.8,
+            "BottomMargin": -164.2,
+            "Tag": 75,
+            "ActionTag": -717935426,
+            "Size": {
+              "X": 568.0,
+              "Y": 240.0
+            },
+            "Name": "Image_22",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_home_treasure_finished.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 47,
+            "Scale9OriginY": 60,
+            "Scale9Width": 49,
+            "Scale9Height": 64,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -1.6053,
+              "Y": -41.7388
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 229,
+              "G": 229,
+              "B": 229
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -73.1053,
+            "RightMargin": -69.8947,
+            "TopMargin": -50.2612,
+            "BottomMargin": -133.7388,
+            "Tag": 76,
+            "ActionTag": -1591466317,
+            "Size": {
+              "X": 143.0,
+              "Y": 184.0
+            },
+            "Name": "Image_23",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_shop_item_gold_2.png",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 1,
+              "Dst": 771
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.39,
+              "Y": -64.2146
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -61.11,
+            "RightMargin": -61.89,
+            "TopMargin": 15.7146,
+            "BottomMargin": -112.7146,
+            "Tag": 77,
+            "ActionTag": 604796715,
+            "Size": {
+              "X": 123.0,
+              "Y": 97.0
+            },
+            "Name": "item",
+            "ctype": "SpriteObjectData"
+          },
+          {
+            "FontSize": 14,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "DisabledFileData": {
+              "Type": "Default",
+              "Path": "Default/Button_Disable.png",
+              "Plist": ""
+            },
+            "NormalFileData": {
+              "Type": "Normal",
+              "Path": "common/common_panel_btn_close.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 17,
+            "Scale9Height": 25,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 1.0,
+              "ScaleY": 0.7562
+            },
+            "Position": {
+              "X": 284.144,
+              "Y": 129.83
+            },
+            "Scale": {
+              "ScaleX": 1.14,
+              "ScaleY": 1.14
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 237.144,
+            "RightMargin": -284.144,
+            "TopMargin": -141.2886,
+            "BottomMargin": 94.2886,
+            "Tag": 78,
+            "ActionTag": 1847372395,
+            "Size": {
+              "X": 47.0,
+              "Y": 47.0
+            },
+            "Name": "btnBack",
+            "ctype": "ButtonObjectData"
+          },
+          {
+            "FontSize": 48,
+            "ButtonText": "",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "TextColor": {},
+            "DisabledFileData": {
+              "Type": "Default",
+              "Path": "Default/Button_Disable.png",
+              "Plist": ""
+            },
+            "NormalFileData": {
+              "Type": "Normal",
+              "Path": "common/common_btn_orange.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 8,
+            "Scale9OriginY": 8,
+            "Scale9Width": 178,
+            "Scale9Height": 95,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 2.403,
+              "Y": -203.58
+            },
+            "Scale": {
+              "ScaleX": 0.4,
+              "ScaleY": 0.4
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -201.097,
+            "RightMargin": -205.903,
+            "TopMargin": 122.58,
+            "BottomMargin": -284.58,
+            "Tag": 79,
+            "ActionTag": -628734754,
+            "Size": {
+              "X": 407.0,
+              "Y": 162.0
+            },
+            "Name": "button",
+            "ctype": "ButtonObjectData"
+          },
+          {
+            "FontSize": 36,
+            "LabelText": "1000",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "R": 26,
+              "G": 26,
+              "B": 26
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 26,
+              "G": 26,
+              "B": 26
+            },
+            "ShadowOffsetX": 1.0,
+            "ShadowOffsetY": -3.0,
+            "ShadowEnabled": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -3.0414,
+              "Y": 25.2054
+            },
+            "Scale": {
+              "ScaleX": 0.78,
+              "ScaleY": 0.78
+            },
+            "CColor": {
+              "R": 244,
+              "G": 195,
+              "B": 74
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -65.5414,
+            "RightMargin": -59.4586,
+            "TopMargin": -50.7054,
+            "BottomMargin": -0.2946,
+            "Tag": 82,
+            "ActionTag": 1128738777,
+            "Size": {
+              "X": 125.0,
+              "Y": 51.0
+            },
+            "Name": "numGold",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 22,
+            "LabelText": "50",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 26,
+              "G": 26,
+              "B": 26
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -3.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 19.18,
+              "Y": -205.22
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -1.82,
+            "RightMargin": -40.18,
+            "TopMargin": 188.22,
+            "BottomMargin": -222.22,
+            "Tag": 80,
+            "Children": [
+              {
+                "FileData": {
+                  "Type": "Normal",
+                  "Path": "common/common_icon_g_small.png",
+                  "Plist": ""
+                },
+                "Scale9OriginX": 19,
+                "Scale9OriginY": 21,
+                "Scale9Width": 17,
+                "Scale9Height": 21,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": -18.6393,
+                  "Y": 17.0647
+                },
+                "Scale": {
+                  "ScaleX": 0.58,
+                  "ScaleY": 0.58
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": -0.4438,
+                  "Y": 0.5019
+                },
+                "PreSize": {
+                  "X": 1.3095,
+                  "Y": 1.8529
+                },
+                "LeftMargin": -46.1393,
+                "RightMargin": 33.1393,
+                "TopMargin": -14.5647,
+                "BottomMargin": -14.4353,
+                "Tag": 81,
+                "ActionTag": 1295234387,
+                "Size": {
+                  "X": 55.0,
+                  "Y": 63.0
+                },
+                "Name": "Image_2",
+                "ctype": "ImageViewObjectData"
+              }
+            ],
+            "ActionTag": 1088096528,
+            "Size": {
+              "X": 42.0,
+              "Y": 34.0
+            },
+            "Name": "numCost",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/fx/fx_particle_shop_gold.plist",
+              "Plist": ""
+            },
+            "BlendFunc": {
+              "Src": 770,
+              "Dst": 1
+            },
+            "AnchorPoint": {},
+            "Position": {
+              "X": -3.2465,
+              "Y": -57.3838
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": true,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -3.2465,
+            "RightMargin": 3.2465,
+            "TopMargin": 57.3838,
+            "BottomMargin": -57.3838,
+            "Tag": 157,
+            "ActionTag": -924611799,
+            "Size": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Name": "Particle_1",
+            "ctype": "ParticleObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "common/common_btn_orange.png",
+        "common/common_icon_g_small.png",
+        "common/common_panel_background.png",
+        "common/common_panel_btn_close.png",
+        "common/common_panel_title.png",
+        "Default/Button_Disable.png",
+        "font/SVN-Supercell Magic.ttf",
+        "lobby/border-gold-popup.png",
+        "lobby/fx/fx_particle_shop_gold.plist",
+        "lobby/fx/fx_particle_shop_gold.png",
+        "lobby/lobby_home_treasure_finished.png",
+        "lobby/lobby_shop_category_gold.png",
+        "lobby/lobby_shop_item_gold_2.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}

@@ -48,7 +48,7 @@ var PlayerInfo = cc.Class.extend({
                 sharePlayerInfo.collection.push(newCards[i]);
             }
         }
-        cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateAllCardSlots();
+        LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateAllCardSlots();
     },
 
     /**

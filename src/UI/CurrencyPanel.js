@@ -13,7 +13,10 @@ var CurrencyPanel = cc.Layer.extend({
 
     ctor: function () {
         this._super();
-
+        this.tmpGold = sharePlayerInfo.gold
+        this.tmpGem = sharePlayerInfo.gem
+        cc.log(sharePlayerInfo)
+        // this.updateLabels()
         this.currencyBackground = new cc.Sprite(asset.currencyBackground_png);
         this.currencyBackground.attr({
             anchorX: 0,
@@ -63,7 +66,8 @@ var CurrencyPanel = cc.Layer.extend({
         });
         this.leftCurrencyBtn.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                testnetwork.connector.sendAddCurrencyRequest(false, cf.AMOUNT_BTN_GOLD);
+                sharePlayerInfo.gold += cf.AMOUNT_BTN_GOLD;
+                this.updateLabels();
             } else {
                 cc.log('allBtnIsActive is false');
             }
@@ -108,7 +112,7 @@ var CurrencyPanel = cc.Layer.extend({
         this.addChild(this.lbGem, 0);
     },
 
-    updateLabels: function () {
+    updateLabel2: function () {
         this.lbGold.setString(Utils.toStringWithDots(sharePlayerInfo.gold));
         this.lbGem.setString(Utils.toStringWithDots(sharePlayerInfo.gem));
         this.updateLbScale();
@@ -117,64 +121,66 @@ var CurrencyPanel = cc.Layer.extend({
     },
 
     updateLabels: function () {
-        var a = setInterval(() => {
-            if (this.tmpGold < sharePlayerInfo.gold) {
-                this.tmpGold += 30;
-                if (this.tmpGold > sharePlayerInfo.gold) {
-                    this.tmpGold = sharePlayerInfo.gold
-                }
-            }
-            if (this.tmpGold > sharePlayerInfo.gold) {
-                this.tmpGold -= 30;
-                if (this.tmpGold < sharePlayerInfo.gold) {
-                    this.tmpGold = sharePlayerInfo.gold
-                }
-            }
-            if (this.tmpGem < sharePlayerInfo.gem) {
-                this.tmpGem += 3;
-                if (this.tmpGem > sharePlayerInfo.gem) {
-                    this.tmpGem = sharePlayerInfo.gem
-                }
-            }
-            if (this.tmpGem > sharePlayerInfo.gem) {
-                this.tmpGem -= 3;
-                if (this.tmpGem < sharePlayerInfo.gem) {
-                    this.tmpGem = sharePlayerInfo.gem
-                }
-            }
-
-            this.lbGold.setString(Utils.toStringWithDots(this.tmpGold));
-            this.lbGem.setString(Utils.toStringWithDots(this.tmpGem));
-            this.updateLbScale();
-            if (this.tmpGold == sharePlayerInfo.gold && this.tmpGem == sharePlayerInfo.gem) {
-                clearInterval(a);
-            }
-            // this.lbGold.scale = this.lbScale;
-            // this.lbGem.scale = this.lbScale;
-        }, 16)
+        this.updateLabelsGold(30)
+        this.updateLabelsGem(2)
 
 
 
     },
 
     updateLabelsGoldFly: function (numGold) {
-        // if (this.tmpGold < sharePlayerInfo.gold) {
-        //     this.tmpGold += numGold;
-        //     if(this.tmpGold > sharePlayerInfo.gold){
-        //         this.tmpGold = sharePlayerInfo.gold
-        //     }
-        // }
         this.tmpGold += numGold;
-        // if(this.tmpGold > sharePlayerInfo.gold){
-        //     this.tmpGold = sharePlayerInfo.gold
-        // }
+        if(this.tmpGold > sharePlayerInfo.gold){
+            this.tmpGold = sharePlayerInfo.gold
+        }
         this.lbGold.setString(Utils.toStringWithDots(this.tmpGold));
-        this.lbGem.setString(Utils.toStringWithDots(this.tmpGem));
         LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateCanBuyUI()
+    },
 
+    updateLabelsGem: function (gemPerFrame) {
+        var a = setInterval(()=>{
+            if (this.tmpGem < sharePlayerInfo.gem) {
+                this.tmpGem += gemPerFrame;
+                if(this.tmpGem > sharePlayerInfo.gem){
+                    this.tmpGem = sharePlayerInfo.gem
+                }
+            }
+            if (this.tmpGem > sharePlayerInfo.gem) {
+                this.tmpGem -= gemPerFrame;
+                if(this.tmpGem < sharePlayerInfo.gem){
+                    this.tmpGem = sharePlayerInfo.gem
+                }
+            }
+            this.lbGem.setString(Utils.toStringWithDots(this.tmpGem));
+            this.updateLbScale();
+            if(this.tmpGem == sharePlayerInfo.gem){
+                clearInterval(a);
+            }
 
+        },30)
+    },
 
+    updateLabelsGold: function (goldPerFrame) {
+        var b = setInterval(()=>{
+            if (this.tmpGold < sharePlayerInfo.gold) {
+                this.tmpGold += goldPerFrame;
+                if(this.tmpGold > sharePlayerInfo.gold){
+                    this.tmpGold = sharePlayerInfo.gold
+                }
+            }
+            if (this.tmpGold > sharePlayerInfo.gold) {
+                this.tmpGold -= goldPerFrame;
+                if(this.tmpGold < sharePlayerInfo.gold){
+                    this.tmpGold = sharePlayerInfo.gold
+                }
+            }
+            this.lbGold.setString(Utils.toStringWithDots(this.tmpGold));
+            this.updateLbScale();
+            if(this.tmpGold == sharePlayerInfo.gold){
+                clearInterval(b);
+            }
 
+        },30)
     },
 
 

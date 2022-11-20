@@ -20,13 +20,16 @@
     ],
     "jsList": [
         "src/UI/Asset.js",
+
         "src/base/network/GameClient.js",
         "src/base/network/GameClientListener.js",
         "src/base/network/InPacketFactory.js",
         "src/base/Resource.js",
         "src/base/UIFactory.js",
+
         "src/config/FakeData.js",
         "src/config/GameConfig.js",
+
         "src/data/Resource.js",
         "src/data/ResourceAnimation.js",
         "src/framework/AnimationMgr.js",
@@ -50,15 +53,18 @@
         "src/base/network/InPacketFactory.js",
         "src/base/Resource.js",
         "src/base/UIFactory.js",
+
         "src/Logic/Card.js",
         "src/Logic/Chest.js",
         "src/Logic/PlayerInfo.js",
+
         "src/modules/animation/ScreenDragonbones.js",
         "src/modules/localization/ScreenLocalization.js",
         "src/modules/mainmenu/ScreenMenu.js",
         "src/modules/testnetwork/network/Network.js",
         "src/modules/testnetwork/network/Packet.js",
         "src/modules/testnetwork/ScreenNetwork.js",
+
         "src/UI/CardInfoUI.js",
         "src/UI/CardSlot.js",
         "src/UI/CardsUI.js",
@@ -72,6 +78,8 @@
         "src/UI/MatchingUI.js",
         "src/UI/OpenChestAnimationUI.js",
         "src/UI/Toast.js",
+        "src/UI/ShopUI.js",
+
         "src/utils/Utils.js",
         "src/UI/MatchingUI.js",
         "src/UI/GameUI.js",
@@ -84,15 +92,20 @@
         "src/Logic/map/GameStateManager.js",
         "src/Logic/map/PlayerState.js",
         "src/Logic/map/Timer.js",
+
         "src/Logic/objects/MCard.js",
         "src/Logic/utils/AnimatedSprite.js",
         "src/Logic/objects/Monster.js",
         "src/Logic/utils/Vec2.js",
+
         "src/Logic/utils/String.js",
         "src/Logic/utils/Number.js",
         "src/Logic/utils/Convert.js",
         "src/config/GameConfig.js",
+
         "src/config/CardConfig.js",
+
+
         "src/Logic/GAME_CONFIG.js",
         "src/Logic/actions/NextWaveAction.js",
         "src/Logic/actions/ActivateCardAction.js",
@@ -101,5 +114,6 @@
         "src/Logic/map/Cell.js",
         "src/Logic/objects/Bullet.js",
         "src/Logic/objects/Tower.js"
+
     ]
 }
