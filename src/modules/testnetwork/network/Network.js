@@ -64,8 +64,13 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("=========================recv gv.CMD.BATTLE_ACTIONS================================")
                 break
             case gv.CMD.BUY_GEM_OR_GOLD:
-                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
-                cc.log("=========================BUY GOLD SUCCEEDED================================")
+                if(packet.typee == 0){
+                    sharePlayerInfo.gem += packet.amout
+                    LobbyInstant.currencyPanel.updateLabelsGem(10)
+                }else{
+                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                    cc.log("=========================BUY GOLD SUCCEEDED================================")
+                }
                 break
             case gv.CMD.BUY_CARD:
                 LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyCard(packet)
