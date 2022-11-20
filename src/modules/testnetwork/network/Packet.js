@@ -684,7 +684,7 @@ testnetwork.packetMap[gv.CMD.BUY_CHEST] = fr.InPacket.extend({
     }
 );
 
-testnetwork.packetMap[gv.CMD.ADD_CURRENCY] = fr.InPacket.extend({
+testnetwork.packetMap[gv.CMD.BUY_GEM_OR_GOLD] = fr.InPacket.extend({
     ctor: function () {
         this._super();
     },

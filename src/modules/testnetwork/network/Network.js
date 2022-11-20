@@ -181,8 +181,8 @@ testnetwork.Connector = cc.Class.extend({
     },
     sendAddCurrencyRequest: function (isGem, amount) {
         cc.log('Send add currency request: isGem: ' + isGem + ', amount:' + amount + '.');
-        let pk = this.gameClient.getOutPacket(CmdSendAddCurrency);
-        pk.putData(isGem, amount);
+        let pk = this.gameClient.getOutPacket(CmdBuyGemOrGold);
+        pk.pack(isGem, amount);
         this.gameClient.sendPacket(pk);
     },
 
