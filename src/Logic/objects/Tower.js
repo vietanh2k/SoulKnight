@@ -68,16 +68,16 @@ var Tower = TowerUI.extend({
      * */
     changDirectionHandle: function (direction) {
         var dirs = [
-            [ 10,9,8,7,6],
-            [ 11,1,1,1,5],
-            [ 12,1,1,1,4],
-            [ 13,1,1,1,3],
-            [ 14,15,0,1,2],
+            [ 10,   9,  8,  7,  6   ],
+            [ 11,   12,  8,  7,  5  ],
+            [ 12,   12, 0,  4,  4   ],
+            [ 13,   12,  0,  3,  3  ],
+            [ 14,   15, 0,  1,  2   ],
         ]
 
-        direction.set(Math.round(direction.x*2), Math.round(direction.y*2))
+        direction.set(Math.round(direction.x*2.5), Math.round(direction.y*2.5))
         if (direction) {
-            const dir = dirs[direction.y +2][direction.x +2]
+            const dir = dirs[direction.y+2][direction.x+2]
             this.updateDirection(dir)
         }
 
