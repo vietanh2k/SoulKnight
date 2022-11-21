@@ -113,6 +113,13 @@ var asset = {
     cardUpgradeReady_atlas: 'asset/lobby/fx/card_upgrade_ready.atlas',
     cardUpgradeReady_json: 'asset/lobby/fx/card_upgrade_ready.json',
 
+    cardPanelFlags_png: [
+        'asset/lobby/lobby_card_panel_flag_common.png',
+        'asset/lobby/lobby_card_panel_flag_rare.png',
+        'asset/lobby/lobby_card_panel_flag_epic.png',
+        'asset/lobby/lobby_card_panel_flag_legend.png',
+    ],
+
     cardTowerAttackSpeed_png: 'asset/card/card_tower_attack_speed.png',
     cardTowerBoomerang_png: 'asset/card/card_tower_boomerang.png',
     cardTowerCannon_png: 'asset/card/card_tower_cannon.png',

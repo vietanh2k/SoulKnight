@@ -5,7 +5,10 @@ var ChestInfoUI = cc.Layer.extend({
         this._super();
 
         let layerColor = new cc.LayerColor(cc.color(0, 0, 0), cf.WIDTH, cf.HEIGHT);
-        layerColor.setOpacity(150);
+        layerColor.attr({
+            opacity: 150,
+            scale: 10,
+        });
         this.addChild(layerColor);
 
         let panelBackground = new cc.Sprite(asset.panelBackground_png);
@@ -216,6 +219,8 @@ var ChestInfoUI = cc.Layer.extend({
             this.destroy();
         });
         panelBackground.addChild(openByGemBtn, 0);
+
+        Utils.addScaleAnimation(this);
     },
 
     destroy: function () {

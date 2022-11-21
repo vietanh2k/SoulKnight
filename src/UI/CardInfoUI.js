@@ -78,6 +78,36 @@ var CardInfoUI = cc.Layer.extend({
         });
         this.addChild(this.miniatureGlow);
 
+        let cardSlot = new CardSlot(card, false);
+        cardSlot.addClickEventListener(() => {});
+        cardSlot.attr({
+            x: topDescriptionPanel.width * 0.2,
+            y: topDescriptionPanel.height * 0.85,
+            scale: topDescriptionPanel.height * 1.1 / cardSlot.height,
+        });
+        topPanelBackground.addChild(cardSlot);
+
+        let lbCardName = new ccui.Text(card.name, asset.svnSupercellMagic_ttf, 20);
+        lbCardName.enableOutline(cc.color(0, 0, 0));
+        lbCardName.enableShadow(cc.color(0, 0, 0), cc.size(0, -1));
+        lbCardName.attr({
+            x: topDescriptionPanel.width * 0.7,
+            y: topDescriptionPanel.height * 1.3,
+        });
+        topPanelBackground.addChild(lbCardName);
+
+        let lbLevel = new ccui.Text('Cấp ' + card.level, asset.svnSupercellMagic_ttf, 20);
+        lbLevel.enableOutline(cc.color(0, 0, 0));
+        lbLevel.enableShadow(cc.color(0, 0, 0), cc.size(0, -1));
+        lbLevel.attr({
+            x: topDescriptionPanel.width * 0.7,
+            y: topDescriptionPanel.height * 1,
+            color: cc.color(255, 255, 50),
+        });
+        topPanelBackground.addChild(lbLevel);
+
+        let rarityFlag = new cc.Sprite(asset.cardPanelFlags_png[card.rarity]);
+
         if (card.isMonster()) {
             this.miniature = cc.Sprite(card.miniature);
             this.miniature.attr({
@@ -219,12 +249,10 @@ var CardInfoUI = cc.Layer.extend({
             showSkillBtn.addChild(lb);
         }
 
-        // fixme sửa lại hàm dưới khi có Node mới ở trên topPanelBackground
+        // fixme sửa lại hàm dưới khi có Node mới có y lớn hơn topPanelBackground
         this.addTouchListener(topPanelBackground, botPanelBackground);
 
-        this.scale = 0.2;
-        this.runAction(cc.fadeIn(0.2));
-        this.runAction(cc.sequence(cc.scaleBy(0.15, 5), cc.scaleBy(0.10, 0.94), cc.scaleBy(0.08, 1.06), cc.scaleBy(0.07, 0.96), cc.scaleBy(0.05, 1.04)));
+        Utils.addScaleAnimation(this);
     },
 
     destroy: function (isShowingAddCardToDeck) {
