@@ -1,5 +1,5 @@
 // var _TOWER_CONFIG;
-var TWizard = TowerUI.extend({
+var TCanon = TowerUI.extend({
         /**
          * Khởi tạo
          * @param {MCard} card:
@@ -7,6 +7,7 @@ var TWizard = TowerUI.extend({
          * @param {Vec2} position: vị trí deploy
          * @param {MapView} map: map add */
         ctor: function (card, playerState, position, map) {
+            cc.log('init canon')
             this._super(card, 0);
             // cc.log("Create new Tower: Type=" + type + "player state" + playerState + "position" + position)
 
@@ -30,6 +31,7 @@ var TWizard = TowerUI.extend({
             this.level = 1
             this.map = map
             this._is_set_pos = false
+            // this.initAnimation()
             this.resetPending();
 
             return true;
@@ -38,17 +40,14 @@ var TWizard = TowerUI.extend({
             this.initTextures = [];
             this.idlePrefixNames = [];
             this.attackPrefixNames = [];
-            if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.TWizard_plit)) {
-                cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
-            }
             for (let i = 0; i < 3; i++) {
-                this.initTextures[i] = 'asset/tower/frame/wizard_1_2/tower_wizard_idle_' + i + '_0000.png';
-                this.idlePrefixNames[i] = 'wizard/tower_wizard_idle_' + i + '_';
-                this.attackPrefixNames[i] = 'wizard/tower_wizard_attack_' + i + '_';
+                this.initTextures[i] = 'asset/tower/frame/cannon_1_2/tower_cannon_idle_' + i + '_0000.png';
+                this.idlePrefixNames[i] = 'tower_cannon_idle_' + i + '_';
+                this.attackPrefixNames[i] = 'tower_cannon_attack_' + i + '_';
             }
-            this.initTextures[3] = 'asset/tower/frame/wizard_3/tower_wizard_idle_3_0000.png';
-            this.idlePrefixNames[3] = 'wizard/tower_wizard_idle_3_';
-            this.attackPrefixNames[3] = 'wizard/tower_wizard_attack_3_';
+            this.initTextures[3] = 'asset/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
+            this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
+            this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
             this.idleIDP = 15;
             this.attackIDP = 9;
         },

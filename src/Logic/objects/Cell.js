@@ -6,6 +6,7 @@ var Cell = cc.Class.extend({
     _battle: null,
     _position:null,
     _playerState:null,
+    getObjectOn:null,
     ctor:function(arg, pos){
         this.type = arg
         this._position = pos

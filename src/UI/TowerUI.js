@@ -1,5 +1,5 @@
 var TowerUI = cc.Sprite.extend({
-    cardID: null,
+    card: null,
     evolution: null,
     initTextures: null,
     currentActions: null,
@@ -31,25 +31,14 @@ var TowerUI = cc.Sprite.extend({
         SSW: 15,
     },
 
-    ctor: function (cardID, evolution) {
-        this.cardID = cardID;
+    /**
+     * Khởi tạo dựa trên Card
+     * @param {MCard} card
+     * */
+    ctor: function (card, evolution) {
+        this.card = card;
         this.evolution = evolution;
-
-        if (cardID === 2) {
-            this.initTextures = [];
-            this.idlePrefixNames = [];
-            this.attackPrefixNames = [];
-            for (let i = 0; i < 3; i++) {
-                this.initTextures[i] = 'asset/tower/frame/cannon_1_2/tower_cannon_idle_' + i + '_0000.png';
-                this.idlePrefixNames[i] = 'tower_cannon_idle_' + i + '_';
-                this.attackPrefixNames[i] = 'tower_cannon_attack_' + i + '_';
-            }
-            this.initTextures[3] = 'asset/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
-            this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
-            this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
-            this.idleIDP = 15;
-            this.attackIDP = 9;
-        }
+        this.AnimationSetUp(card);
 
         this._super(this.initTextures[0]);
 
@@ -70,6 +59,23 @@ var TowerUI = cc.Sprite.extend({
 
         this.currentActions = [];
         this.loadAllActions();
+    },
+    AnimationSetUp: function(card){
+        if (card.id === 2) {
+            this.initTextures = [];
+            this.idlePrefixNames = [];
+            this.attackPrefixNames = [];
+            for (let i = 0; i < 3; i++) {
+                this.initTextures[i] = 'asset/tower/frame/cannon_1_2/tower_cannon_idle_' + i + '_0000.png';
+                this.idlePrefixNames[i] = 'tower_cannon_idle_' + i + '_';
+                this.attackPrefixNames[i] = 'tower_cannon_attack_' + i + '_';
+            }
+            this.initTextures[3] = 'asset/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
+            this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
+            this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
+            this.idleIDP = 15;
+            this.attackIDP = 9;
+        }
     },
 
     evolute: function () {

@@ -88,6 +88,17 @@ var MCard = cc.Sprite.extend({
     destroy:function () {
     
     },
+    getConcept: function (){
+        return "tower";
+    },
+    getInstance: function (){
+        switch (this.cardID){
+            case 2:
+                return "0"
+            default:
+                return "1"
+        }
+    }
 
 
 
