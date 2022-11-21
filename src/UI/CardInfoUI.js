@@ -23,14 +23,14 @@ var CardInfoUI = cc.Layer.extend({
         });
         this.addChild(this.midPanelBackground);
 
-        let topDescriptionPanel = cc.Sprite(asset.panelFront_png, cc.rect(0, 0, 424, 114));
-        topDescriptionPanel.attr({
+        this.topDescriptionPanel = cc.Sprite(asset.panelFront_png, cc.rect(0, 0, 424, 114));
+        this.topDescriptionPanel.attr({
             anchorY: 0,
             x: this.midPanelBackground.width / 2,
             y: this.midPanelBackground.height / 2,
-            scale: this.midPanelBackground.height * 0.5 / topDescriptionPanel.height,
+            scale: this.midPanelBackground.height * 0.5 / this.topDescriptionPanel.height,
         });
-        this.midPanelBackground.addChild(topDescriptionPanel);
+        this.midPanelBackground.addChild(this.topDescriptionPanel, 1);
 
         let botDescriptionPanel = cc.Sprite(asset.panelFront_png, cc.rect(0, 228, 424, 114));
         botDescriptionPanel.attr({
@@ -41,15 +41,7 @@ var CardInfoUI = cc.Layer.extend({
         });
         this.midPanelBackground.addChild(botDescriptionPanel);
 
-        let lbDescription = ccui.Text(this.card.description, asset.svnAvoBold_ttf, 16);
-        lbDescription.attr({
-            x: this.midPanelBackground.width / 2,
-            y: this.midPanelBackground.height / 2,
-            color: cc.color(35, 65, 155),
-        });
-        this.midPanelBackground.addChild(lbDescription);
-
-        this.initAttributeSlots(this.midPanelBackground);
+        this.initAttributeSlots();
 
         // top panel
         let topPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 0, 453, 196.5));
@@ -85,9 +77,9 @@ var CardInfoUI = cc.Layer.extend({
         let cardSlot = new CardSlot(card, false);
         cardSlot.addClickEventListener(() => {});
         cardSlot.attr({
-            x: topDescriptionPanel.width * 0.2,
-            y: topDescriptionPanel.height * 0.85,
-            scale: topDescriptionPanel.height * 1.1 / cardSlot.height,
+            x: this.topDescriptionPanel.width * 0.2,
+            y: this.topDescriptionPanel.height * 0.85,
+            scale: this.topDescriptionPanel.height * 1.1 / cardSlot.height,
         });
         topPanelBackground.addChild(cardSlot);
 
@@ -95,8 +87,8 @@ var CardInfoUI = cc.Layer.extend({
         lbCardName.enableOutline(cc.color(0, 0, 0));
         lbCardName.enableShadow(cc.color(0, 0, 0), cc.size(0, -1));
         lbCardName.attr({
-            x: topDescriptionPanel.width * 0.675,
-            y: topDescriptionPanel.height * 1.2,
+            x: this.topDescriptionPanel.width * 0.675,
+            y: this.topDescriptionPanel.height * 1.2,
         });
         topPanelBackground.addChild(lbCardName);
 
@@ -104,16 +96,16 @@ var CardInfoUI = cc.Layer.extend({
         lbLevel.enableOutline(cc.color(0, 0, 0));
         lbLevel.enableShadow(cc.color(0, 0, 0), cc.size(0, -1));
         lbLevel.attr({
-            x: topDescriptionPanel.width * 0.675,
-            y: topDescriptionPanel.height * 0.95,
+            x: this.topDescriptionPanel.width * 0.675,
+            y: this.topDescriptionPanel.height * 0.95,
             color: cc.color(255, 255, 50),
         });
         topPanelBackground.addChild(lbLevel);
 
         let rarityBox = new cc.Sprite(asset.cardPanelBox_png);
         rarityBox.attr({
-            x: topDescriptionPanel.width * 0.5,
-            y: topDescriptionPanel.height * 0.42,
+            x: this.topDescriptionPanel.width * 0.5,
+            y: this.topDescriptionPanel.height * 0.42,
             scale: cf.WIDTH * 0.18 / rarityBox.width,
         });
         topPanelBackground.addChild(rarityBox);
@@ -127,8 +119,8 @@ var CardInfoUI = cc.Layer.extend({
 
         let rarityFlag = new cc.Sprite(asset.cardPanelFlags_png[card.rarity]);
         rarityFlag.attr({
-            x: topDescriptionPanel.width * 0.5,
-            y: topDescriptionPanel.height * 0.65,
+            x: this.topDescriptionPanel.width * 0.5,
+            y: this.topDescriptionPanel.height * 0.65,
             scale: cf.WIDTH * 0.2 / rarityFlag.width,
         });
         topPanelBackground.addChild(rarityFlag);
@@ -143,8 +135,8 @@ var CardInfoUI = cc.Layer.extend({
 
         let typeBox = new cc.Sprite(asset.cardPanelBox_png);
         typeBox.attr({
-            x: topDescriptionPanel.width * 0.85,
-            y: topDescriptionPanel.height * 0.42,
+            x: this.topDescriptionPanel.width * 0.85,
+            y: this.topDescriptionPanel.height * 0.42,
             scale: cf.WIDTH * 0.18 / typeBox.width,
         });
         topPanelBackground.addChild(typeBox);
@@ -158,8 +150,8 @@ var CardInfoUI = cc.Layer.extend({
 
         let typeFlag = new cc.Sprite(asset.cardPanelFlags_png[2]);
         typeFlag.attr({
-            x: topDescriptionPanel.width * 0.85,
-            y: topDescriptionPanel.height * 0.65,
+            x: this.topDescriptionPanel.width * 0.85,
+            y: this.topDescriptionPanel.height * 0.65,
             scale: cf.WIDTH * 0.2 / typeFlag.width,
         });
         topPanelBackground.addChild(typeFlag);
@@ -325,6 +317,7 @@ var CardInfoUI = cc.Layer.extend({
     },
 
     initAttributeSlots: function () {
+        this.statSlots = [];
         if (this.card.isMonster()) {
             this.addAttributeSlotToPanel(this.card, 'hp', 0);
             this.addAttributeSlotToPanel(this.card, 'speed', 1);
@@ -361,19 +354,19 @@ var CardInfoUI = cc.Layer.extend({
         let texture, textAttribute, textStat, textUpgradeStat;
         switch (attribute) {
             case 'hp':
-                textAttribute = 'Máu';
+                textAttribute = 'Máu:';
                 texture = asset.statIcons_png['hp'];
                 textStat = card.monsterInfo.hp;
                 textUpgradeStat = undefined;
                 break;
             case 'speed':
-                textAttribute = 'Tốc chạy';
+                textAttribute = 'Tốc chạy:';
                 texture = asset.statIcons_png['speed'];
                 textStat = card.monsterInfo.speed;
                 textUpgradeStat = undefined;
                 break;
             case 'numberMonsters':
-                textAttribute = 'Số lượng';
+                textAttribute = 'Số lượng:';
                 texture = asset.statIcons_png['numberMonsters'];
                 if (card.monsterInfo.numberMonsters === 1) {
                     textStat = '1';
@@ -382,28 +375,25 @@ var CardInfoUI = cc.Layer.extend({
                 }
                 textUpgradeStat = undefined;
                 break;
+                // todo more cases
             default:
                 cc.log('Cannot find case!');
                 break;
         }
         let row = Math.floor(index / 2);
         let column = index - row * 2;
-        let slotWidth = this.midPanelBackground.width / (2 + 3 * 0.1);
-        let spaceBetween = slotWidth * 0.1;
-        // todo 
-        // let cardSlotX = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
-        // let cardSlotY = this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale * (1.32 + 0.38 * row);
-        // let newCardSlot = new CardSlot(card, false);
-        // newCardSlot.attr({
-        //     x: cardSlotX,
-        //     y: cardSlotY,
-        //     scale: slotWidth / newCardSlot.width,
-        // });
-        // this.addChild(newCardSlot);
-        // this.collectionSlots[index] = newCardSlot;
-        // if (index === sharePlayerInfo.collection.length - 1) {
-        //     this.setUpperboundBasedOnTheLowestItem(cardSlotY);
-        // }
+        let slotWidth = this.topDescriptionPanel.width / (2 + 3 * 0.15);
+        let spaceBetween = slotWidth * 0.15;
+        let statSlotX = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
+        let statSlotY = this.topDescriptionPanel.height * (0.6 - 0.5 * row);
+        let newStatSlot = new StatSlot(texture, textAttribute, textStat, textUpgradeStat);
+        newStatSlot.attr({
+            x: statSlotX,
+            y: statSlotY,
+            scale: slotWidth / newStatSlot.width,
+        });
+        this.topDescriptionPanel.addChild(newStatSlot);
+        this.statSlots[index] = newStatSlot;
     },
 
     addTouchListener: function (top, bot) {

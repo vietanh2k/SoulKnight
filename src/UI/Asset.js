@@ -114,6 +114,7 @@ var asset = {
     cardUpgradeReady_json: 'asset/lobby/fx/card_upgrade_ready.json',
 
     cardPanelBox_png: 'asset/lobby/lobby_card_panel_box.png',
+    cardPanelStat_png: 'asset/lobby/lobby_card_panel_stat.png',
     cardPanelFlags_png: [
         'asset/lobby/lobby_card_panel_flag_common.png',
         'asset/lobby/lobby_card_panel_flag_rare.png',
