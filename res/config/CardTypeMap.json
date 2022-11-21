@@ -35,31 +35,31 @@
     "concept": "monster",
     "instance": "4"
   },
-  "16": {
+  "9": {
     "concept": "tower",
     "instance": "0"
   },
-  "17": {
+  "10": {
     "concept": "tower",
     "instance": "1"
   },
-  "18": {
+  "11": {
     "concept": "tower",
     "instance": "2"
   },
-  "19": {
+  "12": {
     "concept": "tower",
     "instance": "3"
   },
-  "20": {
+  "13": {
     "concept": "tower",
     "instance": "4"
   },
-  "21": {
+  "14": {
     "concept": "tower",
     "instance": "5"
   },
-  "22": {
+  "15": {
     "concept": "tower",
     "instance": "6"
   }

@@ -287,18 +287,18 @@ var MapView = cc.Class.extend({
         }
         // cc.log('vec: '+ objectA+ ' range actual'+ range*(CELLWIDTH+CELLWIDTH)/2.0)
         this.bullets.forEach(obj=>{
-            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+            if(range*CELLWIDTH>= EuclidLength(objectA.sub(obj.position))){
                 objInRange.push(obj)
             }
         })
         this.towers.forEach(obj=>{
-            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+            if(range*CELLWIDTH>= EuclidLength(objectA.sub(obj.position))){
                 objInRange.push(obj)
             }
         })
         this.monsters.forEach(obj=>{
             // cc.log('Bvec: '+ obj.position+ ' dis = '+ EuclidLength(objectA.sub(obj.position)))
-            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+            if(range*CELLWIDTH>= EuclidLength(objectA.sub(obj.position))){
                 objInRange.push(obj)
             }
         })

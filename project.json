@@ -114,6 +114,7 @@
         "src/Logic/map/MAP_CONFIG.js",
         "src/Logic/map/Cell.js",
         "src/Logic/objects/Bullet.js",
+        "src/Logic/objects/StraightBullet.js",
         "src/Logic/objects/Tower.js",
         "src/Logic/objects/TWizard.js",
         "src/Logic/objects/TCanon.js"

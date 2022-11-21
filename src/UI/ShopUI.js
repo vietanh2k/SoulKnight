@@ -223,9 +223,9 @@ var ShopUI = cc.Layer.extend({
         // if(cardID1 >= sharePlayerInfo.collection.length){
         //     cardID1 = sharePlayerInfo.collection.length -2
         // }
-        if(cardID1 >= 8){
-            cardID1 = 7
-        }
+        // if(cardID1 >= 8){
+        //     cardID1 = 7
+        // }
         var cardInfor1 = sharePlayerInfo.collection[cardID1]
         var card1 = this.getChildByName('scene').getChildByName('nodeItem2').getChildByTag(2)
         card1.getChildByName('item').setTexture(cardInfor1.texture)
@@ -234,9 +234,9 @@ var ShopUI = cc.Layer.extend({
         card1.getChildByName('numCard').setString('x30')
         var cardID2 = pkg.cardOffers[1][0]
         cc.log(cardID2+'===========')
-        if(cardID2 >= 8){
-            cardID2 = 7
-        }
+        // if(cardID2 >= 8){
+        //     cardID2 = 7
+        // }
         var cardInfor2 = sharePlayerInfo.collection[cardID2]
         var card2 = this.getChildByName('scene').getChildByName('nodeItem3').getChildByTag(3)
         card2.getChildByName('item').setTexture(cardInfor2.texture)
