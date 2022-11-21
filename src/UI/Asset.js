@@ -175,4 +175,10 @@ var asset = {
         'asset/card/miniature_tower_wizard_2.png',
         'asset/card/miniature_tower_wizard_3.png',
     ],
+
+    battlePedestals_png: [
+        'asset/battle/battle_tower_pedestal_wood.png',
+        'asset/battle/battle_tower_pedestal_steel.png',
+        'asset/battle/battle_tower_pedestal_rock.png',
+    ],
 };

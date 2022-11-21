@@ -95,10 +95,18 @@ var ShopUI = cc.Layer.extend({
 
     updateBuyGold:function (packet){
         sharePlayerInfo.gold += parseInt(packet.amout)
-        sharePlayerInfo.gem -= parseInt(this.popup.getChildByTag(100).getChildByName('numCost').getString())
-        this.removeChild(this.popup)
-        var g = new GoldFly(new cc.p(winSize.width/2,winSize.height*0.5), new cc.p(winSize.width*0.242,winSize.height*0.968), packet.amout)
-        LobbyInstant.addChild(g,5000)
+        if(this.popup != null) {
+            if (this.popup.getChildByTag(100).getChildByName('numCost') != null) {
+                sharePlayerInfo.gem -= parseInt(this.popup.getChildByTag(100).getChildByName('numCost').getString())
+                this.removeChild(this.popup)
+                var g = new GoldFly(new cc.p(winSize.width / 2, winSize.height * 0.5), new cc.p(winSize.width * 0.242, winSize.height * 0.968), packet.amout)
+                LobbyInstant.addChild(g, 5000)
+            }
+        }
+        else{
+            LobbyInstant.currencyPanel.updateLabelsGold(20)
+            this.updateCanBuyUI()
+        }
     },
 
     updateBuyCard:function (packet){

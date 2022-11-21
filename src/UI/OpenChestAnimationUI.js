@@ -46,15 +46,13 @@ var OpenChestAnimationUI = cc.Layer.extend({
 
         let initSequence = cc.sequence(
             cc.callFunc(() => this.fxChest.setAnimation(0, 'init', false)),
-            cc.delayTime(1.2),
+            cc.delayTime(1.35),
             cc.callFunc(() => {
                 this.showReward(index);
                 index++;
             }),
-            cc.delayTime(1.8)
+            cc.delayTime(1.75)
         );
-
-
 
         let showAllRewardsSequence = cc.sequence(
             cc.callFunc(() => {
@@ -65,7 +63,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
 
         let sequence = cc.sequence(initSequence, showAllRewardsSequence);
 
-        if(newCardsSize > 1){
+        if (newCardsSize > 1) {
             let openingSequence = cc.sequence(
                 cc.callFunc(() => this.fxChest.setAnimation(0, 'opening', false)),
                 cc.delayTime(0.25),
@@ -76,7 +74,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
                 cc.delayTime(1.75)
             ).repeat(newCardsSize - 1);
 
-            sequence = cc.sequence(initSequence,openingSequence, showAllRewardsSequence);
+            sequence = cc.sequence(initSequence, openingSequence, showAllRewardsSequence);
         }
 
         this.runAction(sequence);
@@ -95,7 +93,8 @@ var OpenChestAnimationUI = cc.Layer.extend({
                 rewardSlot.levelPanel.visible = false;
                 rewardSlot.iconEnergy.visible = false;
                 rewardSlot.progressPanel.visible = false;
-                rewardSlot.addClickEventListener(() => {});
+                rewardSlot.addClickEventListener(() => {
+                });
 
                 let newFragment = this.newCards[i].fragment;
                 let oldFragment = 0;
@@ -148,7 +147,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
                 reward.setPosition(cf.WIDTH / 2, cf.HEIGHT * 0.85);
                 reward.visible = true;
             }),
-            cc.moveBy(0.5, cc.p(0, - cf.HEIGHT * 0.1)),
+            cc.moveBy(0.5, cc.p(0, -cf.HEIGHT * 0.1)),
             cc.DelayTime(1),
             cc.callFunc(() => {
                 reward.visible = false;
@@ -161,7 +160,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
     showAllRewards: function () {
         for (let i = 0; i < this.rewardSlots.length; i++) {
             this.rewardSlots[i].visible = true;
-            this.rewardSlots[i].runAction(new cc.moveBy(0.25, cc.p(0, - cf.HEIGHT * 0.05)));
+            this.rewardSlots[i].runAction(new cc.moveBy(0.25, cc.p(0, -cf.HEIGHT * 0.05)));
         }
     },
 

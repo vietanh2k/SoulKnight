@@ -137,11 +137,10 @@ var HomeUI = cc.Layer.extend({
         });
         this.btnBattle.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                // hiện tại đang dùng nút này để debug
-                Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
-                cc.log("User data: " + JSON.stringify(sharePlayerInfo));
+                // // hiện tại đang dùng nút này để debug
+                // Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
+                // cc.log("User data: " + JSON.stringify(sharePlayerInfo));
 
-                // đây mới là (một phần) tác dụng thật
                 let fullChestSlots = true;
                 for (let i = 0; i < this.chestSlots.length; i++) {
                     if (this.chestSlots[i].constructor.name === 'Sprite') {
@@ -264,6 +263,8 @@ var HomeUI = cc.Layer.extend({
         sharePlayerInfo.addNewCards(newCards);
         sharePlayerInfo.gem -= chest.waitingOpenChestResponseWithGems;
         sharePlayerInfo.gold += goldReceived;
+        sharePlayerInfo.removeChest(chestID);
+
         this.parent.currencyPanel.updateLabels();
 
         this.removeChild(this.chestSlots[chestID], true);

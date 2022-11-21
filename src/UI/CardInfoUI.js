@@ -8,7 +8,10 @@ var CardInfoUI = cc.Layer.extend({
         this.card = card;
 
         let layerColor = new cc.LayerColor(cc.color(0, 0, 0), cf.WIDTH, cf.HEIGHT);
-        layerColor.setOpacity(150);
+        layerColor.attr({
+            opacity: 150,
+            scale: 10,
+        });
         this.addChild(layerColor);
 
         // middle panel
@@ -216,8 +219,12 @@ var CardInfoUI = cc.Layer.extend({
             showSkillBtn.addChild(lb);
         }
 
-        // fixme sửa lại hàm dưới khi có item mới ở trên topPanelBackground
+        // fixme sửa lại hàm dưới khi có Node mới ở trên topPanelBackground
         this.addTouchListener(topPanelBackground, botPanelBackground);
+
+        this.scale = 0.2;
+        this.runAction(cc.fadeIn(0.2));
+        this.runAction(cc.sequence(cc.scaleBy(0.15, 5), cc.scaleBy(0.10, 0.94), cc.scaleBy(0.08, 1.06), cc.scaleBy(0.07, 0.96), cc.scaleBy(0.05, 1.04)));
     },
 
     destroy: function (isShowingAddCardToDeck) {

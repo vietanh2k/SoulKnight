@@ -24,6 +24,13 @@ var GameUI = cc.Layer.extend({
         this.init();
         this.scheduleUpdate();
 
+
+        this.towerUIMap = Utils.create2dArr(MAP_WIDTH, MAP_HEIGHT + 1, undefined);
+        for (let i = 0; i <= 3; i++) {
+            cc.spriteFrameCache.addSpriteFrames('asset/tower/frame/cannon/tower_cannon_idle_' + i + '.plist');
+            cc.spriteFrameCache.addSpriteFrames('asset/tower/frame/cannon/tower_cannon_attack_' + i + '.plist');
+        }
+
         GameUI.instance = this
 
     },
@@ -464,84 +471,135 @@ var GameUI = cc.Layer.extend({
 
     },
 
-    addListCardUI:function (){
+    addListCardUI: function () {
         var listener1 = cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
-            onTouchBegan: function (touch, event) {
+            onTouchBegan: (touch, event) => {
                 var target = event.getCurrentTarget();
                 var locationInNode = target.convertToNodeSpace(touch.getLocation());
                 var s = target.getContentSize();
                 var rect = cc.rect(0, 0, s.width, s.height);
-                if (cc.rectContainsPoint(rect, locationInNode)) {
-                    return true;
-                }
-                return false;
+                return !!cc.rectContainsPoint(rect, locationInNode);
             },
-            // onTouchMoved: function (touch, event) {
-            //     // var target = event.getCurrentTarget();
-            //     // var delta = touch.getDelta();
-            //     // target.x += delta.x;
-            //     // target.y += delta.y;
-            // },
-            onTouchEnded: function (touch, event) {
-                var target = event.getCurrentTarget();
-                if(target.getParent() != null){
-                    if(target.getParent().cardTouchSlot != target.numSlot){
+
+            onTouchMoved: (touch, event) => {
+                let target = event.getCurrentTarget();
+                let rule = getRule(target);
+                if (this.previewObject === undefined) {
+                    this.previewObject = this.generatePreviewObject(target);
+                    this.addChild(this.previewObject);
+                }
+                this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
+                this.previewObject.visible = isPosInMap(this.previewObject, rule);
+            },
+
+            onTouchEnded: (touch, event) => {
+                let target = event.getCurrentTarget();
+
+                if (this.previewObject !== undefined) {
+                    let target = event.getCurrentTarget();
+                    let rule = getRule(target);
+                    this.previewObject.removeFromParent(true);
+                    this.previewObject = undefined;
+                    let pos = touch.getLocation();
+                    let cor = convertPosToIndex(pos, rule);
+                    cc.log('there is ' + cor.x + ', ' + cor.y)
+                    if (this.towerUIMap[cor.x][cor.y] !== undefined) {
+                        if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
+                            cc.log('There is another type tower exist in this cell!');
+                        } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                            Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+                        } else {
+                            this.towerUIMap[cor.x][cor.y].evolute();
+                        }
+                    }
+                    else if (isPosInMap(pos, rule)) {
+                        MW.MOUSE = pos;
+                        this.createObjectByTouch = true;
+                    } else {
+                        cc.log('out of map! rule: ' + rule);
+                        return;
+                    }
+                }
+
+                if (target.getParent() != null) {
+                    if (target.getParent().cardTouchSlot !== target.numSlot) {
                         target.getParent().resetCardTouchState()
                         target.x += 0
-                        target.y += CELLWIDTH*0.5
+                        target.y += CELLWIDTH * 0.5
                         target.onTouch = true
-                        target.getParent().cardTouchSlot= target.numSlot
+                        target.getParent().cardTouchSlot = target.numSlot
                         target.setCardUpUI()
-                        target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
-                    }else if(target.onTouch == true){
+                        target.getParent().getChildByName('btnRemoveCard' + target.getParent().cardTouchSlot).visible = true
+                    } else if (target.onTouch === true) {
                         target.x += 0
-                        target.y -= CELLWIDTH*0.5
+                        target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
-                        target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
-                        target.getParent().cardTouchSlot = -1
+                        target.getParent().getChildByName('btnRemoveCard' + target.getParent().cardTouchSlot).visible = false
+                        setTimeout(() => target.getParent().cardTouchSlot = -1, 0.01)
                         target.setCardDownUI()
 
                     }
                 }
             }
         });
-        for(var i=1;i<=NUM_CARD_PLAYABLE;i++) {
+        for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
             var cardBox = new cc.Sprite('asset/battle/battle_card_box.png')
-            cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.43)
-            cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
+            cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.5)
+            cardBox.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 2.1 + (i - 1) * CELLWIDTH * 1.8, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 1.7)
             this.addChild(cardBox)
             var arr = this.cardPlayable
-            var card = new MCard(arr[i-1])
-            card.setScale(CELLWIDTH / card.getContentSize().width * 1.15)
-            card.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
-            this.addChild(card,0,'cardBackGround'+i)
+            var card = new MCard(arr[i - 1])
+            card.setScale(CELLWIDTH / card.getContentSize().width * 1.25)
+            card.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 2.1 + (i - 1) * CELLWIDTH * 1.8, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 1.7)
+            this.addChild(card, 0, 'cardBackGround' + i)
             card.numSlot = i
             this.listCard.push(card)
             cc.eventManager.addListener(listener1.clone(), card);
         }
-        for(var i=1;i<=NUM_CARD_PLAYABLE;i++) {
+        for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
 
-            var btnRemoveCard =new ccui.Button('asset/battle/battle_btn_destroy.png');
-            btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.4)
-            btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.8)
+            var btnRemoveCard = new ccui.Button('asset/battle/battle_btn_destroy.png');
+            btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.55)
+            btnRemoveCard.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 2.1 + (i - 1) * CELLWIDTH * 1.8, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 0.9)
             btnRemoveCard.visible = false
-            btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(3));
-            this.addChild(btnRemoveCard, 0 , 'btnRemoveCard'+i);
-
-
+            btnRemoveCard.addClickEventListener(() => this.updateCardSlot(3));
+            this.addChild(btnRemoveCard, 0, 'btnRemoveCard' + i);
         }
         var card5 = new MCard(this.cardInQueue[0])
-        card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.8)
-        card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.55, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
-        this.addChild(card5,0,'cardBackGroundd')
+        card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.9)
+        card5.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 0.3, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 0.9)
+        this.addChild(card5, 0, 'cardBackGroundd')
+    },
 
+    generatePreviewObject: function (target) {
+        if (target.cardID === 2) {
+            let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
+            towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
+            let card = new Card(16, 1, 0);
+            let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
+            let rangePreview = cc.Sprite('asset/battle/battle_tower_range_player.png');
+            rangePreview.attr({
+                x: towerPreview.width / 2,
+                y: towerPreview.height / 2,
+                scale: range * CELLWIDTH * 2 / rangePreview.height / towerPreview.scale,
+            });
+            towerPreview.addChild(rangePreview);
 
+            return towerPreview;
+        } else {
+            return new cc.Sprite(res.treeUI);
+        }
+    },
 
-
-
+    generateTowerUI: function (type, evolution, corX, corY) {
+        let towerUI = new TowerUI(type, evolution);
+        towerUI.setScale(CELLWIDTH * 4 / towerUI.width);
+        let pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY);
+        towerUI.setPosition(pos);
+        return towerUI;
     },
 
     updateCardSlot: function (numEnergy) {
@@ -577,7 +635,7 @@ var GameUI = cc.Layer.extend({
 
     updateEnergyUI: function (dt) {
         if (this.getChildByName('iconEnergyBar') != null) {
-            this.getChildByName('iconEnergyBar').getChildByName('numEnergyBar').setString(this._gameStateManager.playerA.energy)
+            this.getChildByName('iconEnergyBar').getChildByName('numEnergyBar').setString(this._gameStateManager.playerA.energy);
         }
     },
 

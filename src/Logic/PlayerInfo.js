@@ -75,6 +75,20 @@ var PlayerInfo = cc.Class.extend({
         }
         cc.log('Cannot find typeOut ' + typeOut + ' in collection');
     },
+
+    removeChest: function (chestID) {
+        let i;
+        for (i = 0; i < this.chestList.length; i++) {
+            if (this.chestList[i].id === chestID) {
+                break;
+            }
+        }
+        if (i === this.chestList.length) {
+            cc.log('Cannot find chest id ' + chestID + ' in sharePlayerInfo.');
+        } else {
+            this.chestList.splice(i, 1);
+        }
+    },
 })
 
 var sharePlayerInfo;

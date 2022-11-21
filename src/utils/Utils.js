@@ -15,6 +15,18 @@ Utils.toStringWithDots = function (number) {
     return res;
 }
 
+Utils.create2dArr = (x, y, defaultValue) => {
+    let res = [];
+    for (let i = 0; i < x; i++) {
+        let tmp = [];
+        for (let j = 0; j < y; j++) {
+            tmp.push(defaultValue);
+        }
+        res.push(tmp);
+    }
+    return res;
+};
+
 Utils.milisecondsToReadableTime = function (ms) {
     let sec = Math.ceil(ms / 1000);
     let h = Math.floor(sec / 3600);
