@@ -110,10 +110,10 @@ var GameUI = cc.Layer.extend({
 
     },
     activateCard: function (card_type, position, uid) {
-        cc.log("UID: " + uid)
+        // cc.log("UID: " + uid)
         if (uid == gv.gameClient._userId) {
             this.createObjectByTouch = false
-            cc.log('creat right')
+            // cc.log('creat right')
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
@@ -122,7 +122,8 @@ var GameUI = cc.Layer.extend({
                 this._gameStateManager.playerA._map.updatePathForCells()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
                 cc.log('loc' + JSON.stringify(loc) + 'position' + position)
-                var tower = this._gameStateManager.playerA._map.deployTower(null, position);
+                // this.listCard[this.cardTouchSlot - 1].actualType = card_type
+                var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
@@ -130,16 +131,17 @@ var GameUI = cc.Layer.extend({
                 this.resetCardTouchState()
             }
         } else {
-            cc.log('creat right')
+            // cc.log('creat right')
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = rand
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerB._map._mapController.isExistPath()) {
                 this._gameStateManager.playerB._map.updatePathForCells()
+                // this.listCard[this.cardTouchSlot - 1].actualType = card_type
                 this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 0)
                 cc.log('loc' + JSON.stringify(loc) + 'position' + position)
-                var tower = this._gameStateManager.playerB._map.deployTower(null, position);
+                var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 0)
             } else {
                 this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = tmp
@@ -157,9 +159,15 @@ var GameUI = cc.Layer.extend({
             var loc = convertPosToIndex(pos, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var position = this.screenLoc2Position(loc)
-            if (true) {
-                testnetwork.connector.sendActions([new ActivateCardAction(1, position.x, position.y,
+
+            if (!this._wizard) {
+                testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                     gv.gameClient._userId)]);
+                this._wizard = true;
+            } else {
+                testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
+                    gv.gameClient._userId)]);
+                this._wizard = false;
             }
 
 
@@ -575,7 +583,7 @@ var GameUI = cc.Layer.extend({
     },
 
     generatePreviewObject: function (target) {
-        if (target.cardID === 2) {
+        if (this._wizard) {
             let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
             towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
@@ -591,7 +599,20 @@ var GameUI = cc.Layer.extend({
 
             return towerPreview;
         } else {
-            return new cc.Sprite(res.treeUI);
+            let towerPreview = cc.Sprite(asset.cardTowerWizard_png); // fixme
+            towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
+
+            let card = new Card(17, 1, 0);
+            let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
+            let rangePreview = cc.Sprite('asset/battle/battle_tower_range_player.png');
+            rangePreview.attr({
+                x: towerPreview.width / 2,
+                y: towerPreview.height / 2,
+                scale: range * CELLWIDTH * 2 / rangePreview.height / towerPreview.scale,
+            });
+            towerPreview.addChild(rangePreview);
+
+            return towerPreview;
         }
     },
 
