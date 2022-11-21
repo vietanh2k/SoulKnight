@@ -1,0 +1,192 @@
+{
+  "ID": "e6f9ca8f-3fd4-4a7a-9b8e-5ee9f612cd1b",
+  "Version": "3.10.0.0",
+  "Name": "cancelCard",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 54,
+        "Children": [
+          {
+            "FontSize": 12,
+            "LabelText": "HỦY -",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "R": 77,
+              "G": 77,
+              "B": 77
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 26,
+              "G": 26,
+              "B": 26
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": -1.0,
+            "ShadowEnabled": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -16.4117,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -40.9117,
+            "RightMargin": -8.0883,
+            "TopMargin": -9.0,
+            "BottomMargin": -9.0,
+            "Tag": 65,
+            "ActionTag": 1954191979,
+            "Size": {
+              "X": 49.0,
+              "Y": 18.0
+            },
+            "Name": "calcelText",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/common_icon_energy.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 24,
+            "Scale9OriginY": 28,
+            "Scale9Width": 27,
+            "Scale9Height": 29,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 17.7172,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 0.22,
+              "ScaleY": 0.22
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -19.7828,
+            "RightMargin": -55.2172,
+            "TopMargin": -42.5,
+            "BottomMargin": -42.5,
+            "Tag": 64,
+            "ActionTag": -1311360773,
+            "Size": {
+              "X": 75.0,
+              "Y": 85.0
+            },
+            "Name": "Image_1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 12,
+            "LabelText": "5",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "R": 77,
+              "G": 77,
+              "B": 77
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 26,
+              "G": 26,
+              "B": 26
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": -1.0,
+            "ShadowEnabled": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 35.5876,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 28.5876,
+            "RightMargin": -42.5876,
+            "TopMargin": -9.0,
+            "BottomMargin": -9.0,
+            "Tag": 63,
+            "ActionTag": -759593138,
+            "Size": {
+              "X": 14.0,
+              "Y": 18.0
+            },
+            "Name": "numEnergy",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "common/common_icon_energy.png",
+        "font/SVN-Supercell Magic.ttf"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}

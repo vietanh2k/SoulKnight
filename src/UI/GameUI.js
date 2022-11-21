@@ -422,6 +422,10 @@ var GameUI = cc.Layer.extend({
     },
 
     addEnergyBarUI:function (){
+        var energyBar = ccs.load(res.energyBar, "").node;
+        energyBar.setPosition(winSize.width/2+CELLWIDTH*0.5, winSize.height/2- HEIGHTSIZE/2+CELLWIDTH*0.3)
+        this.addChild(energyBar,0,'energyBar')
+
         var energy = new cc.Sprite(res.energyIcon)
         var whiteColor = new cc.Color(255,255,255,255);
         var blackColor = new cc.Color(0,0,0,255);
@@ -531,13 +535,19 @@ var GameUI = cc.Layer.extend({
                         target.onTouch = true
                         target.getParent().cardTouchSlot = target.numSlot
                         target.setCardUpUI()
-                        target.getParent().getChildByName('btnRemoveCard' + target.getParent().cardTouchSlot).visible = true
-                    } else if (target.onTouch === true) {
+
+                        target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
+                        target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = true
+                    }else if(target.onTouch == true){
+
                         target.x += 0
                         target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
-                        target.getParent().getChildByName('btnRemoveCard' + target.getParent().cardTouchSlot).visible = false
+
+                        target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
+                        target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = false
                         setTimeout(() => target.getParent().cardTouchSlot = -1, 0.01)
+
                         target.setCardDownUI()
 
                     }
@@ -546,31 +556,37 @@ var GameUI = cc.Layer.extend({
         });
         for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
             var cardBox = new cc.Sprite('asset/battle/battle_card_box.png')
-            cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.5)
-            cardBox.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 2.1 + (i - 1) * CELLWIDTH * 1.8, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 1.7)
+            cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.43)
+            cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
             this.addChild(cardBox)
             var arr = this.cardPlayable
-            var card = new MCard(arr[i - 1])
-            card.setScale(CELLWIDTH / card.getContentSize().width * 1.25)
-            card.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 2.1 + (i - 1) * CELLWIDTH * 1.8, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 1.7)
-            this.addChild(card, 0, 'cardBackGround' + i)
+            var card = new MCard(arr[i-1])
+            card.setScale(CELLWIDTH / card.getContentSize().width * 1.15)
+            card.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
+            this.addChild(card,0,'cardBackGround'+i)
             card.numSlot = i
             this.listCard.push(card)
             cc.eventManager.addListener(listener1.clone(), card);
         }
         for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
 
-            var btnRemoveCard = new ccui.Button('asset/battle/battle_btn_destroy.png');
-            btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.55)
-            btnRemoveCard.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 2.1 + (i - 1) * CELLWIDTH * 1.8, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 0.9)
+            var btnRemoveCard =new ccui.Button('asset/battle/battle_btn_destroy.png');
+            btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.4)
+            btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.8)
             btnRemoveCard.visible = false
-            btnRemoveCard.addClickEventListener(() => this.updateCardSlot(3));
-            this.addChild(btnRemoveCard, 0, 'btnRemoveCard' + i);
+
+            btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(3));
+            this.addChild(btnRemoveCard, 0 , 'btnRemoveCard'+i);
+            var cancelUI = ccs.load(res.cancelCard, "").node;
+            cancelUI.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.81)
+            cancelUI.visible = false
+            this.addChild(cancelUI, 0 , 'cancelCard'+i)
+
         }
         var card5 = new MCard(this.cardInQueue[0])
-        card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.9)
-        card5.setPosition(winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH * 0.3, winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 0.9)
-        this.addChild(card5, 0, 'cardBackGroundd')
+        card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.8)
+        card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.55, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+        this.addChild(card5,0,'cardBackGroundd')
     },
 
     generatePreviewObject: function (target) {
@@ -626,6 +642,7 @@ var GameUI = cc.Layer.extend({
                 card.onTouch = false
                 card.setCardDownUI()
                 this.getChildByName('btnRemoveCard' + this.cardTouchSlot).visible = false
+                this.getChildByName('cancelCard' + this.cardTouchSlot).visible = false
                 this.cardTouchSlot = -1
             }
         }
@@ -636,6 +653,15 @@ var GameUI = cc.Layer.extend({
     updateEnergyUI: function (dt) {
         if (this.getChildByName('iconEnergyBar') != null) {
             this.getChildByName('iconEnergyBar').getChildByName('numEnergyBar').setString(this._gameStateManager.playerA.energy);
+        }
+
+        if (this.getChildByName('energyBar') != null) {
+            var percen = GameStateManagerInstance.playerA.energy/MAX_ENERGY*100
+            if(percen > 100) {
+                percen = 100
+            }
+            this.getChildByName('energyBar').getChildByName('loading').setPercent(percen);
+
         }
     },
 
@@ -797,6 +823,20 @@ var GameUI = cc.Layer.extend({
         resultAnimation.setAnimation(0, "fx_result_" + resultString + "_idle", true)
         this.addChild(resultAnimation, 4001)
 
+
+        var infor = ccs.load(res.inforEndBattle, "").node;
+        infor.getChildByName('name1').setString(sharePlayerInfo.name)
+        infor.getChildByName('health1').setString(GameStateManagerInstance.playerA.health)
+        infor.getChildByName('health2').setString(GameStateManagerInstance.playerB.health)
+        if(resultString == 'win'){
+            infor.getChildByName('trophyGet').setString(10)
+        }else{
+            infor.getChildByName('Text_12').setString('-')
+            infor.getChildByName('trophyGet').setString(8)
+        }
+        this.addChild(infor, 4002)
+
+
         var btnBack = ccui.Button('asset/common/common_btn_blue.png');
         btnBack.setTitleText('Trở Về')
         btnBack.setTitleFontName(res.font_magic)
@@ -805,7 +845,7 @@ var GameUI = cc.Layer.extend({
         btnBack.setTitleFontSize(23)
         btnBack.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * -3.85 / 9)
         btnBack.addClickEventListener(this.backToLobby);
-        this.addChild(btnBack, 4002);
+        this.addChild(btnBack, 4003);
     },
 
     backToLobby:function () {
