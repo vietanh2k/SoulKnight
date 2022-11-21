@@ -1,5 +1,5 @@
 MAX_WAVE = 25;
-
+MAX_ENERGY = 30;
 let GameStateManagerInstance = null
 
 var GameStateManager = cc.Class.extend({
@@ -68,7 +68,7 @@ var GameStateManager = cc.Class.extend({
         cc.log('iddddddddd'+gv.gameClient._userId)
     },
     isClearWave:function (){
-        if(this.playerA._map.monsters.length == 0 || this.playerB._map.monsters.length == 0){
+        if(this.playerA._map.monsters.length == 0){
             this.canTouchNewWave = true
         }
     },

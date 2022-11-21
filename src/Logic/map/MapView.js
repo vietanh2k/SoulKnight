@@ -235,9 +235,29 @@ var MapView = cc.Class.extend({
     deployTower: function (card, position){
         cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
         cc.log("TW size:" + this.towers.length)
-        var tower = new Tower("1", this._playerState, position, this);
+        var tower, is_update= false;
+        var cell = this.getCellAtPosition(position);
+        if(!cell.getObjectOn()){
+            is_update = false;
+        } else {
+            is_update = true;
+        }
+        if(is_update){
+            cell.getObjectOn().upgrade(card);
+            return;
+        }
+        switch (card){
+            case 17:
+                tower = new TWizard(card, this._playerState, position, this);
+
+                break;
+            default:
+                tower = new TCanon(card, this._playerState, position, this);
+        }
+
         this.towers.push(tower)
         GameUI.instance.addChild(tower);
+        cell.setObjectOn(tower)
         // if(cell.objectOn==undefined || cell.objectOn==null ){
         //     cell.objectOn = tower;
         // }

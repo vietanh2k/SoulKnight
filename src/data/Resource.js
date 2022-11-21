@@ -30,6 +30,9 @@ var res = {
     cardItemShop : "cardItemShop.json",
     updateBuy : "updateBuy.json",
     cardUI : "card.json",
+    cancelCard : "cancelCard.json",
+    inforEndBattle : "inforEndBattle.json",
+    energyBar : "energyBar.json",
 
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',

@@ -391,7 +391,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         chestList.forEach(chest => chest.updateClientTime());
 
         sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
-        cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo.collection));
+        cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo));
     },
 
     readCardData: function () {
@@ -563,6 +563,7 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
                 this.chestOffers.push([chestType, chestCost])
 
             }
+            cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
             this.numCard = this.getInt()
             this.cardOffers = []
             for (var i = 0; i < this.numCard; i++) {
@@ -571,7 +572,7 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
                 cc.log('card:  ' + cardType + ' ' + cardCost)
                 this.cardOffers.push([cardType, cardCost])
             }
-
+            cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
             // this.numCard = this.getInt()
             // this.cardOffers = []
             // for(var i=0; i<this.numCard; i++){

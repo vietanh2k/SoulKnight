@@ -1,154 +1,66 @@
 {
   "0": {
-    "instance": "1", 
-    "concept": "potion"
-  }, 
+    "concept": "potion",
+    "instance": "0"
+  },
   "1": {
-    "instance": "0", 
-    "concept": "potion"
-  }, 
+    "concept": "potion",
+    "instance": "1"
+  },
   "2": {
-    "instance": "3", 
-    "concept": "potion"
-  }, 
+    "concept": "potion",
+    "instance": "2"
+  },
   "3": {
-    "instance": "2", 
-    "concept": "potion"
-  }, 
+    "concept": "potion",
+    "instance": "3"
+  },
   "4": {
-    "instance": "11", 
-    "concept": "monster"
-  }, 
+    "concept": "monster",
+    "instance": "0"
+  },
   "5": {
-    "instance": "10", 
-    "concept": "monster"
-  }, 
+    "concept": "monster",
+    "instance": "1"
+  },
   "6": {
-    "instance": "12", 
-    "concept": "monster"
-  }, 
+    "concept": "monster",
+    "instance": "2"
+  },
   "7": {
-    "instance": "1", 
-    "concept": "monster"
-  }, 
+    "concept": "monster",
+    "instance": "3"
+  },
   "8": {
-    "instance": "0", 
-    "concept": "monster"
-  }, 
-  "9": {
-    "instance": "3", 
-    "concept": "monster"
-  }, 
-  "10": {
-    "instance": "2", 
-    "concept": "monster"
-  }, 
-  "11": {
-    "instance": "5", 
-    "concept": "monster"
-  }, 
-  "12": {
-    "instance": "4", 
-    "concept": "monster"
-  }, 
-  "13": {
-    "instance": "7", 
-    "concept": "monster"
-  }, 
-  "14": {
-    "instance": "6", 
-    "concept": "monster"
-  }, 
-  "15": {
-    "instance": "9", 
-    "concept": "monster"
-  }, 
+    "concept": "monster",
+    "instance": "4"
+  },
   "16": {
-    "instance": "8", 
-    "concept": "monster"
-  }, 
+    "concept": "tower",
+    "instance": "0"
+  },
   "17": {
-    "instance": "1", 
-    "concept": "targetBuff"
-  }, 
+    "concept": "tower",
+    "instance": "1"
+  },
   "18": {
-    "instance": "0", 
-    "concept": "targetBuff"
-  }, 
+    "concept": "tower",
+    "instance": "2"
+  },
   "19": {
-    "instance": "3", 
-    "concept": "targetBuff"
-  }, 
+    "concept": "tower",
+    "instance": "3"
+  },
   "20": {
-    "instance": "2", 
-    "concept": "targetBuff"
-  }, 
+    "concept": "tower",
+    "instance": "4"
+  },
   "21": {
-    "instance": "5", 
-    "concept": "targetBuff"
-  }, 
+    "concept": "tower",
+    "instance": "5"
+  },
   "22": {
-    "instance": "4", 
-    "concept": "targetBuff"
-  }, 
-  "23": {
-    "instance": "6", 
-    "concept": "targetBuff"
-  }, 
-  "24": {
-    "instance": "1", 
-    "concept": "tower"
-  }, 
-  "25": {
-    "instance": "0", 
-    "concept": "tower"
-  }, 
-  "26": {
-    "instance": "3", 
-    "concept": "tower"
-  }, 
-  "27": {
-    "instance": "2", 
-    "concept": "tower"
-  }, 
-  "28": {
-    "instance": "5", 
-    "concept": "tower"
-  }, 
-  "29": {
-    "instance": "4", 
-    "concept": "tower"
-  }, 
-  "30": {
-    "instance": "6", 
-    "concept": "tower"
-  }, 
-  "31": {
-    "instance": "1", 
-    "concept": "towerBuff"
-  }, 
-  "32": {
-    "instance": "0", 
-    "concept": "towerBuff"
-  }, 
-  "33": {
-    "instance": "3", 
-    "concept": "towerBuff"
-  }, 
-  "34": {
-    "instance": "2", 
-    "concept": "towerBuff"
-  }, 
-  "35": {
-    "instance": "5", 
-    "concept": "towerBuff"
-  }, 
-  "36": {
-    "instance": "4", 
-    "concept": "towerBuff"
-  }, 
-  "37": {
-    "instance": "6", 
-    "concept": "towerBuff"
+    "concept": "tower",
+    "instance": "6"
   }
 }

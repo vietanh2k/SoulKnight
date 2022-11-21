@@ -38,8 +38,15 @@ var MatchingUI = cc.Layer.extend({
         this.addObjectBackground(res.lightAround,0,5.5/7,0,0.3/9)
         this.addObjectBackground(res.lightAround,0,5.5/7,0,0.3/9)
         this.addObjectBackground(res.lightAround,0,5.5/7,0,0.3/9)
-        this.addObjectBackground(res.arenaForest,4.3/7,0,0,1.1/9)
+        // this.addObjectBackground(res.arenaForest,4.3/7,0,0,1.1/9)
+        var resultAnimation = new sp.SkeletonAnimation("asset/map/fx/map_icon_forest.json",
+            "asset/map/fx/map_icon_forest.atlas")
+        // resultAnimation.setAnimation(0, "init", false)
+        resultAnimation.setAnimation(0, "idle", true)
+        resultAnimation.setPosition(winSize.width/2, winSize.height*5.2/9)
 
+
+        this.addChild(resultAnimation,0,300)
 
         var battleName = new ccui.Text('ĐỒI NGỦ YÊN', res.font_magic, 33)
         battleName.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*-0.3/9)
