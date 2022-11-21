@@ -50,5 +50,11 @@ const Cell = cc.Class.extend({
 
     getEdgePositionWithNextCell: function () {
         return this.nextPos;
+    },
+    setObjectOn: function (thing){
+        this._objectOn = thing;
+    },
+    getObjectOn: function (thing){
+        return this._objectOn;
     }
 })
