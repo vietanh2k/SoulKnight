@@ -13,7 +13,7 @@ const Monster = AnimatedSprite.extend({
         this.prevPosition = new Vec2(0,0)
         this.speed = 30.0
         this.concept="monster"
-        this.health = 10;
+        this.health = 1000;
 
         return true;
     },

@@ -57,22 +57,32 @@ var Tower = TowerUI.extend({
         if (this.target.length > 0) {
             let bullet = this.getNewBullet(this.target[0]);
             this.map.addNewBullet(bullet);
-            var direction = this.target[0].position.sub(this.position);
-            cc.log("Change Direction tower: " + direction);
+            var direction = this.target[0].position.sub(this.position).normalize();
             this.changDirectionHandle(direction);
-            // this.new_direction =
         }
 
     },
-    getAnimationsByDirectionId: function (moveId) {
-        return this._animations[this.status][this.getLevel()][moveId];
-    },
     /**
      * Chuyển hướng của tháp
-     * @param {Vec2} direction: vector hướng đến mục tiêu
+     * @param {Vec2} direction
      * */
     changDirectionHandle: function (direction) {
-        cc.log("changDirectionHandle is not overwritten!")
+        var dirs = [
+            [ 10,9,8,7,6],
+            [ 11,1,1,1,5],
+            [ 12,1,1,1,4],
+            [ 13,1,1,1,3],
+            [ 14,15,0,1,2],
+        ]
+
+        direction.set(Math.round(direction.x*2), Math.round(direction.y*2))
+        if (direction) {
+            const dir = dirs[direction.y +2][direction.x +2]
+            this.updateDirection(dir)
+        }
+
+
+        // cc.log("changDirectionHandle is not overwritten!")
     },
     getNewBullet: function (object) {
         var speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
@@ -92,7 +102,7 @@ var Tower = TowerUI.extend({
         }
         this.status = 'idle'
         if (this.active) {
-            this.update(dt);
+            // this.update(dt);
 
             // cc.log('updating Tower')
             if (this.getPending() > 0) {
