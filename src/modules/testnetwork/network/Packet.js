@@ -512,7 +512,7 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
         readData: function () {
             var scene = new cc.Scene();
             scene.addChild(new GameUI(this));
-            cc.director.runScene(new cc.TransitionFade(1.2, scene));
+            cc.director.runScene(new cc.TransitionFade(1.5, scene));
             cc.log('=================')
         }
     }

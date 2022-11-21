@@ -59,6 +59,7 @@ var ShopUI = cc.Layer.extend({
 
 
 
+
     },
 
     showPopupGold:function (itemNode){
@@ -84,6 +85,9 @@ var ShopUI = cc.Layer.extend({
         this.popup = new PopupCard(cardID,numGold, numCard)
         this.popup.setPosition(winSize.width/2,winSize.height*5/9)
         this.addChild(this.popup,0,'popup')
+        // var ex = new Explosion()
+        // ex.setPosition(300, 500)
+        // this.addChild(ex, 5000)
     },
 
     showPopupChest:function (itemNode, chestID, numSlot){

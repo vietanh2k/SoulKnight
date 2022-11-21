@@ -77,6 +77,17 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false
     },
     checkWinner:function (){
+        if(this.curWave >= MAX_WAVE && this.playerA.getMap().monsters.length ==0 && this.playerB.getMap().monsters.length ==0){
+            if(this.playerA.health > this.playerB.health){
+                this.winner = 1
+            }else if(this.playerB.health > this.playerA.health){
+                this.winner = 2
+            }else{
+                this.winner = 0
+            }
+            return;
+        }
+
         if (!(this.playerA.health <= 0 || this.playerB.health <= 0)) {
             return
         }
@@ -94,6 +105,8 @@ var GameStateManager = cc.Class.extend({
         if(this.playerB.health <= 0){
             this.winner = 1
         }
+
+
     },
 
     frameUpdate: function () {

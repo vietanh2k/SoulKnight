@@ -31,8 +31,6 @@ var MatchingUI = cc.Layer.extend({
     {
         var backg = new cc.Sprite(res.logoBack_png);
         backg.setAnchorPoint(0,0)
-        backg.setScaleY(winSize.height/backg.getContentSize().height)
-        backg.setScaleX(winSize.width/backg.getContentSize().width)
         this.addChild(backg);
 
         this.addObjectBackground(res.lightAround,0,5.5/7,0,0.3/9)
@@ -60,9 +58,9 @@ var MatchingUI = cc.Layer.extend({
 
         button.setScale((WIDTHSIZE*2.7/7)/button.getNormalTextureSize().width)
         button.setTitleFontSize(24)
-        button.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*-2/9)
+        button.setPosition(winSize.width/2, winSize.height/2+HEIGHTSIZE*-2.5/9)
         button.addClickEventListener(this.backToLobby);
-        this.addChild(button);
+        this.addChild(button, 0, 'btnCalcel');
 
         var lbFindingEnemy = new ccui.Text('Đang tìm đối thủ...', res.font_magic, 30)
         lbFindingEnemy.setPosition(winSize.width/2+WIDTHSIZE*-1/9, winSize.height/2+HEIGHTSIZE*3.4/9)
@@ -133,6 +131,7 @@ var MatchingUI = cc.Layer.extend({
         }
 
     },
+
     requestConfirmMatch:function()
     {
         cc.log("sendMatchingConfirm");
@@ -144,6 +143,12 @@ var MatchingUI = cc.Layer.extend({
             cc.log('errrrrrrrrrrror')
         }
 
+    },
+    updateJoinUI:function()
+    {
+        this.getChildByName('btnCalcel').setTitleText('Vào Trận')
+        this.getChildByName('btnCalcel').loadTextureNormal('asset/common/common_btn_blue.png')
+        this.getChildByName('btnCalcel').setTouchEnabled(false)
     },
 
 

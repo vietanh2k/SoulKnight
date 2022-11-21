@@ -51,7 +51,7 @@ var PopupCard = cc.Node.extend({
         var numCardGet = this.getChildByTag(100).getChildByName('numCardGet').getString()
         var tmp = numCardGet.split('x')
         var num = parseInt(tmp[1])
-        var delay = 0.65
+        var delay = 0.6
         for(var i=0 ; i<num ; i++){
 
             var card = ccs.load(res.cardUI, "").node
@@ -68,7 +68,7 @@ var PopupCard = cc.Node.extend({
             this.addChild(card)
             delay+= 0.05
         }
-        var seq3 = cc.sequence( cc.delayTime(1.55), cc.callFunc(()=> this.updateLabelCard(num)))
+        var seq3 = cc.sequence( cc.delayTime(1.65), cc.callFunc(()=> this.updateLabelCard(num)))
         this.runAction(seq3)
     },
 

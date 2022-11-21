@@ -790,11 +790,11 @@ var GameUI = cc.Layer.extend({
         energy.addChild(lbAddIcon)
         energy.addChild(lbNumEnergy)
         energy.setScale(CELLWIDTH / energy.getContentSize().height * 0.3)
-
+        energy.setCascadeOpacityEnabled(true)
         var seq1 = cc.MoveTo(0.3, cc.p(pos.x, pos.y + CELLWIDTH * 0.5))
-        var seq2 = cc.fadeOut(0)
+        var seq2 = cc.fadeOut(0.5)
         var seq3 = cc.CallFunc(() => this.removeChild(energy), this)
-        var seq = cc.sequence(seq1, cc.delayTime(0.5), seq2, seq3)
+        var seq = cc.sequence(seq1, cc.delayTime(0.7), seq2, seq3)
         energy.runAction(seq)
         this.addChild(energy)
 

@@ -51,6 +51,11 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')
+                try{
+                    fr.getCurrentScreen().updateJoinUI()
+                } catch (e){
+                    cc.log('outtttttttttttttt')
+                }
                 break;
             case gv.CMD.OFFER_RESPONSE:
                 LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateShop(packet);
