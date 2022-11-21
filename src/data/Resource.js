@@ -33,6 +33,7 @@ var res = {
     cancelCard : "cancelCard.json",
     inforEndBattle : "inforEndBattle.json",
     energyBar : "energyBar.json",
+    cantLoadShop : "cantLoadShop.json",
 
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',

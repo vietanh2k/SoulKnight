@@ -8,6 +8,8 @@ var ShopUI = cc.Layer.extend({
         this.s = 10
 
         this.popup = null
+        this.lbCantLoad = null
+        this.checkLoadSuccess = false
         /**
          * slot đang mua là slot nào
          **/
@@ -32,17 +34,17 @@ var ShopUI = cc.Layer.extend({
     initItemUI:function()
     {
         var mainscene = ccs.load(res.shopScene, "").node;
-        var item1 = ccs.load(res.shopItem, "").node.getChildByName('itemNode')
-        item1.removeFromParent(true)
-        item1.getChildByName('button').addClickEventListener(()=>this.showPopupChest(item1, 0, 1))
-        mainscene.getChildByName('nodeItem1').addChild(item1,0,1)
-        var item2 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
-        item2.removeFromParent(true)
-        mainscene.getChildByName('nodeItem2').addChild(item2,0,2)
-        // item2.getChildByName('button').addClickEventListener(()=>this.showPopupCard(item2, 2))
-        var item3 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
-        item3.removeFromParent(true)
-        mainscene.getChildByName('nodeItem3').addChild(item3,0,3)
+        // var item1 = ccs.load(res.shopItem, "").node.getChildByName('itemNode')
+        // item1.removeFromParent(true)
+        // item1.getChildByName('button').addClickEventListener(()=>this.showPopupChest(item1, 0, 1))
+        // mainscene.getChildByName('nodeItem1').addChild(item1,0,1)
+        // var item2 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
+        // item2.removeFromParent(true)
+        // mainscene.getChildByName('nodeItem2').addChild(item2,0,2)
+        // // item2.getChildByName('button').addClickEventListener(()=>this.showPopupCard(item2, 2))
+        // var item3 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
+        // item3.removeFromParent(true)
+        // mainscene.getChildByName('nodeItem3').addChild(item3,0,3)
         // item3.getChildByName('button').addClickEventListener(()=>this.showPopupCard(item3, 3))
 
         this.addChild(mainscene,0,'scene');
@@ -53,7 +55,7 @@ var ShopUI = cc.Layer.extend({
         var golditem3 = mainscene.getChildByName('goldItem3')
         golditem3.getChildByName('button').addClickEventListener(()=>this.showPopupGold(golditem3))
         this.updateTimeUI()
-        this.updateCanBuyUI()
+
 
 
 
@@ -77,9 +79,9 @@ var ShopUI = cc.Layer.extend({
 
     },
 
-    showPopupCard:function (cardID,numGold, numSlot){
+    showPopupCard:function (cardID,numGold,numCard, numSlot){
         this.numSlot = numSlot
-        this.popup = new PopupCard(cardID,numGold)
+        this.popup = new PopupCard(cardID,numGold, numCard)
         this.popup.setPosition(winSize.width/2,winSize.height*5/9)
         this.addChild(this.popup,0,'popup')
     },
@@ -95,18 +97,10 @@ var ShopUI = cc.Layer.extend({
 
     updateBuyGold:function (packet){
         sharePlayerInfo.gold += parseInt(packet.amout)
-        if(this.popup != null) {
-            if (this.popup.getChildByTag(100).getChildByName('numCost') != null) {
-                sharePlayerInfo.gem -= parseInt(this.popup.getChildByTag(100).getChildByName('numCost').getString())
-                this.removeChild(this.popup)
-                var g = new GoldFly(new cc.p(winSize.width / 2, winSize.height * 0.5), new cc.p(winSize.width * 0.242, winSize.height * 0.968), packet.amout)
-                LobbyInstant.addChild(g, 5000)
-            }
-        }
-        else{
-            LobbyInstant.currencyPanel.updateLabelsGold(20)
-            this.updateCanBuyUI()
-        }
+        sharePlayerInfo.gem -= parseInt(this.popup.getChildByTag(100).getChildByName('numCost').getString())
+        this.removeChild(this.popup)
+        var g = new GoldFly(new cc.p(winSize.width / 2, winSize.height * 0.5), new cc.p(winSize.width * 0.242, winSize.height * 0.968), packet.amout)
+        LobbyInstant.addChild(g, 5000)
     },
 
     updateBuyCard:function (packet){
@@ -117,13 +111,13 @@ var ShopUI = cc.Layer.extend({
         cc.log(LobbyInstant.currencyPanel.tmpGold)
         // this.removeChild(this.popup)
         this.updateCanBuyUI()
-        this.updateBuySlot()
+        this.updateBuySlot(this.numSlot)
         var leng = packet.leng
         let newCards = []
         for(var i=0; i<leng; i++){
             var typeCard = packet.buyList[i][0]
             var numCardGet = packet.buyList[i][1]
-            var card = sharePlayerInfo.collection[typeCard]
+            var card = sharePlayerInfo.collection.find(element => element.type === typeCard);
             var lvl = card.level
             var newFrag = card.fragment + numCardGet
             var newCard = new Card(typeCard, lvl, newFrag);
@@ -138,7 +132,7 @@ var ShopUI = cc.Layer.extend({
         LobbyInstant.currencyPanel.updateLabelsGold(Math.floor(packet.cost/50)+1)
         this.removeChild(this.popup)
         this.updateCanBuyUI()
-        this.updateBuySlot()
+        this.updateBuySlot(this.numSlot)
         var leng = packet.leng
         let newCards = []
         for(var i=0; i<leng; i++){
@@ -161,13 +155,13 @@ var ShopUI = cc.Layer.extend({
      * moi ngay chi mua 1 lan
      * Mua xong thi khong mua duoc nua
      **/
-    updateBuySlot:function (){
-        if(this.numSlot != null){
-            this.getChildByName('scene').getChildByName( 'nodeItem' +this.numSlot).getChildByTag(this.numSlot).getChildByName('button').visible = false
-            this.getChildByName('scene').getChildByName( 'nodeItem' +this.numSlot).getChildByTag(this.numSlot).getChildByName('numCost').visible = false
-            this.getChildByName('scene').getChildByName( 'nodeItem' +this.numSlot).getChildByTag(this.numSlot).setOpacity(180)
+    updateBuySlot:function (numSlot){
+        if(numSlot != null){
+            this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).getChildByTag(numSlot).getChildByName('button').visible = false
+            this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).getChildByTag(numSlot).getChildByName('numCost').visible = false
+            this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).getChildByTag(numSlot).setOpacity(180)
             var updateBuy = ccs.load(res.updateBuy, "").node;
-            this.getChildByName('scene').getChildByName( 'nodeItem' +this.numSlot).addChild(updateBuy)
+            this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).addChild(updateBuy)
         }
     },
 
@@ -205,44 +199,79 @@ var ShopUI = cc.Layer.extend({
      * update shop daily tu server
      **/
     updateShop:function (pkg){
-        this.updateChest(pkg)
-        this.updateCard(pkg)
-        this.updateCanBuyUI()
+        if(pkg.status == 'Success') {
+            this.checkLoadSuccess = true
+            cc.log('bbbbbbbbbbbbb')
+            if(this.lbCantLoad != null){
+                this.lbCantLoad.removeFromParent(true)
+                this.lbCantLoad = null
+            }
+            this.updateChest(pkg)
+            this.updateCard(pkg)
+            this.updateCanBuyUI()
+        }else{
+            if(this.lbCantLoad == null){
+                cc.log('aaaaaaaaaaaa')
+                this.lbCantLoad = ccs.load(res.cantLoadShop, "").node;
+                this.lbCantLoad.setPosition(winSize.width/2, winSize.height*0.74)
+                this.addChild(this.lbCantLoad)
+            }
+        }
     },
 
     updateChest:function (pkg){
-        const chestID = pkg.chestOffers[0][0]
-        var chest = this.getChildByName('scene').getChildByName('nodeItem1').getChildByTag(1)
-        chest.getChildByName('button').addClickEventListener(()=>this.showPopupChest(chest, chestID, 1))
-        chest.getChildByName('numCost').setString(pkg.chestOffers[0][1])
+        var chest = ccs.load(res.shopItem, "").node.getChildByName('itemNode')
+        chest.removeFromParent(true)
+        this.getChildByName('scene').getChildByName('nodeItem1').addChild(chest,0,1)
+        if(pkg.chestOffers.length >0) {
+            const chestID = pkg.chestOffers[0][0]
+
+            chest.getChildByName('button').addClickEventListener(() => this.showPopupChest(chest, chestID, 1))
+            chest.getChildByName('numCost').setString(pkg.chestOffers[0][1])
+
+        }else{
+            this.updateBuySlot(1)
+        }
     },
 
     updateCard:function (pkg){
-        var cardID1 = pkg.cardOffers[0][0]
-        cc.log(cardID1+'===========')
-        // if(cardID1 >= sharePlayerInfo.collection.length){
-        //     cardID1 = sharePlayerInfo.collection.length -2
-        // }
-        if(cardID1 >= 8){
-            cardID1 = 7
+        var card1 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
+        card1.removeFromParent(true)
+        this.getChildByName('scene').getChildByName('nodeItem2').addChild(card1,0,2)
+        cc.log('collec:' + sharePlayerInfo.collection.length)
+        if(pkg.cardOffers[0] != undefined) {
+            var cardID1 = pkg.cardOffers[0][0]
+            // var cardInfor1 = sharePlayerInfo.collection[cardID1]
+            let cardInfor1 = sharePlayerInfo.collection.find(element => element.type === cardID1);
+
+
+            card1.getChildByName('item').setTexture(cardInfor1.texture)
+            card1.getChildByName('numCost').setString(pkg.cardOffers[0][2])
+            card1.getChildByName('button').addClickEventListener(() => this.showPopupCard(cardID1, pkg.cardOffers[0][2],pkg.cardOffers[0][1], 2))
+            card1.getChildByName('numCard').setString('x'+ pkg.cardOffers[0][1])
+
+        }else{
+            var card1 = this.getChildByName('scene').getChildByName('nodeItem2').getChildByTag(2)
+            card1.getChildByName('numCard').setString('x30')
+            this.updateBuySlot(2)
         }
-        var cardInfor1 = sharePlayerInfo.collection[cardID1]
-        var card1 = this.getChildByName('scene').getChildByName('nodeItem2').getChildByTag(2)
-        card1.getChildByName('item').setTexture(cardInfor1.texture)
-        card1.getChildByName('numCost').setString(pkg.cardOffers[0][1])
-        card1.getChildByName('button').addClickEventListener(()=>this.showPopupCard(cardID1, pkg.cardOffers[0][1], 2))
-        card1.getChildByName('numCard').setString('x30')
-        var cardID2 = pkg.cardOffers[1][0]
-        cc.log(cardID2+'===========')
-        if(cardID2 >= 8){
-            cardID2 = 7
+        var card2 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
+        card2.removeFromParent(true)
+        this.getChildByName('scene').getChildByName('nodeItem3').addChild(card2,0,3)
+        if(pkg.cardOffers[1] != undefined) {
+            var cardID2 = pkg.cardOffers[1][0]
+            let cardInfor2 = sharePlayerInfo.collection.find(element => element.type === cardID2);
+            card2.getChildByName('item').setTexture(cardInfor2.texture)
+
+            card2.getChildByName('numCost').setString(pkg.cardOffers[1][2])
+            card2.getChildByName('button').addClickEventListener(() => this.showPopupCard(cardID2, pkg.cardOffers[1][2],pkg.cardOffers[1][1], 3))
+            card2.getChildByName('numCard').setString('x'+ pkg.cardOffers[1][1])
+
+        }else{
+            var card2 = this.getChildByName('scene').getChildByName('nodeItem3').getChildByTag(3)
+            card2.getChildByName('numCard').setString('x30')
+            this.updateBuySlot(3)
         }
-        var cardInfor2 = sharePlayerInfo.collection[cardID2]
-        var card2 = this.getChildByName('scene').getChildByName('nodeItem3').getChildByTag(3)
-        card2.getChildByName('item').setTexture(cardInfor2.texture)
-        card2.getChildByName('numCost').setString(pkg.cardOffers[1][1])
-        card2.getChildByName('button').addClickEventListener(()=>this.showPopupCard(cardID2, pkg.cardOffers[1][1],3))
-        card2.getChildByName('numCard').setString('x30')
     },
 
     /**
@@ -250,10 +279,12 @@ var ShopUI = cc.Layer.extend({
      **/
     updateCanBuyUI:function (dt){
         for(var i=1 ; i<=3 ; i++){
-            if(sharePlayerInfo.gold < parseInt(this.getChildByName('scene').getChildByName('nodeItem'+i).getChildByTag(i).getChildByName('numCost').getString())) {
-                this.getChildByName('scene').getChildByName('nodeItem'+i).getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(191, 26, 64, 255))
-            }else{
-                this.getChildByName('scene').getChildByName('nodeItem'+i).getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(255, 255, 255, 255))
+            if(this.getChildByName('scene').getChildByName('nodeItem'+i) != undefined) {
+                if (sharePlayerInfo.gold < parseInt(this.getChildByName('scene').getChildByName('nodeItem' + i).getChildByTag(i).getChildByName('numCost').getString())) {
+                    this.getChildByName('scene').getChildByName('nodeItem' + i).getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(191, 26, 64, 255))
+                } else {
+                    this.getChildByName('scene').getChildByName('nodeItem' + i).getChildByTag(i).getChildByName('numCost').setTextColor(new cc.Color(255, 255, 255, 255))
+                }
             }
         }
         for(var i=4 ; i<=6 ; i++){

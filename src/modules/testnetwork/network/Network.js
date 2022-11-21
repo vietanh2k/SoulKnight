@@ -72,7 +72,12 @@ testnetwork.Connector = cc.Class.extend({
                     sharePlayerInfo.gem += packet.amout
                     LobbyInstant.currencyPanel.updateLabelsGem(10)
                 } else {
-                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                    if(packet.amout > 600) {
+                        LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                    }else{
+                        LobbyInstant.currencyPanel.updateLabelsGold(20)
+                        LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateCanBuyUI()
+                    }
                     cc.log("=========================BUY GOLD SUCCEEDED================================")
                 }
                 break

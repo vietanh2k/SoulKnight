@@ -1,20 +1,20 @@
 
 var PopupCard = cc.Node.extend({
 
-    ctor:function (cardID,numGold) {
+    ctor:function (cardID,numGold, numCard) {
         this._super();
-        this.init(cardID,numGold)
+        this.init(cardID,numGold, numCard)
         this.interval = null
 
     },
-    init:function (cardID,numGold) {
+    init:function (cardID,numGold, numCard) {
 
         winSize = cc.director.getWinSize();
-        var cardInfor = sharePlayerInfo.collection[cardID]
+        let cardInfor = sharePlayerInfo.collection.find(element => element.type === cardID);
         var popup = ccs.load(res.popupCard, "").node
         // popup.getChildByName('cBackground').setTexture(item.getChildByName('background').getTexture())
         popup.getChildByName('cAvatar').setTexture(cardInfor.texture)
-        popup.getChildByName('numCardGet').setString('x30')
+        popup.getChildByName('numCardGet').setString('x'+numCard)
         popup.getChildByName('numCost').setString(numGold)
         var strNumCard = cardInfor.fragment +'/' +cardInfor.reqFrag
         popup.getChildByName('numCard').setString(strNumCard)
@@ -26,7 +26,7 @@ var PopupCard = cc.Node.extend({
         this.addChild(popup,0,100)
         this.addBlockLayer()
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
-        this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy(cardID))
+        this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy(cardID, numCard, numGold))
         if(sharePlayerInfo.gold < parseInt(popup.getChildByName('numCost').getString())){
             popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
             popup.getChildByName('button').setTouchEnabled(false)
@@ -103,14 +103,13 @@ var PopupCard = cc.Node.extend({
 
 
 
-    requestBuy:function (cardID){
+    requestBuy:function (cardID, numCard, cost){
         this.getChildByTag(100).getChildByName('button').setColor(new cc.Color(132,117,84,255))
         this.getChildByTag(100).getChildByName('button').setTouchEnabled(false)
         this.buyUI()
         var leng = 1
         var buyList = []
-        buyList.push([cardID, 30])
-        var cost = parseInt(this.getChildByTag(100).getChildByName('numCost').getString())
+        buyList.push([cardID, numCard])
         try{
             testnetwork.connector.sendBuyCard(leng, buyList,cost);
 

@@ -116,7 +116,7 @@ var cf = cf || {};
 
 cf.TOAST_Z_ORDER = 1000;
 
-cf.AMOUNT_BTN_GOLD = 1000;
+cf.AMOUNT_BTN_GOLD = 500;
 cf.AMOUNT_BTN_GEM = 100;
 cf.LOBBY_MAX_TAB = 5;
 cf.LOBBY_MAX_CHEST = 4;

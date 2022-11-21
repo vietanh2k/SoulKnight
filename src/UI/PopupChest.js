@@ -84,7 +84,7 @@ var PopupChest= cc.Node.extend({
         var cou = 0
         for(var i=0; i<leng-1; i++){
             var rd = Math.floor(Math.random()*(numCardGet/leng/2))+numCardGet/leng/2
-            buyList.push([i, rd])
+            buyList.push([8, rd])
             cou += rd
         }
         buyList.push([leng-1, numCardGet-cou])
