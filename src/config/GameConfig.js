@@ -147,6 +147,14 @@ cf.CHEST_REWARD = [
     },
 ];
 
+cf.TEXT_RARITIES = ['Common', 'Rare', 'Epic', 'Legend'];
+cf.COLOR_RARITIES = [
+    cc.color(134, 204, 100),
+    cc.color(83, 178, 244),
+    cc.color(242, 160, 62),
+    cc.color(237, 103, 253),
+];
+
 // MCard.xlsx
 cf.CARD_LEVEL = [
     {

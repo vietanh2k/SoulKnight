@@ -113,6 +113,7 @@ var asset = {
     cardUpgradeReady_atlas: 'asset/lobby/fx/card_upgrade_ready.atlas',
     cardUpgradeReady_json: 'asset/lobby/fx/card_upgrade_ready.json',
 
+    cardPanelBox_png: 'asset/lobby/lobby_card_panel_box.png',
     cardPanelFlags_png: [
         'asset/lobby/lobby_card_panel_flag_common.png',
         'asset/lobby/lobby_card_panel_flag_rare.png',
@@ -140,6 +141,27 @@ var asset = {
     cardPotionPower_png: 'asset/card/card_potion_power.png',
     cardPotionSpeedUp_png: 'asset/card/card_potion_speed_up.png',
     cardPotionTrap_png: 'asset/card/card_potion_trap.png',
+
+    statIcons_png: {
+        'attackSpeed': 'asset/card/stat_icon/stat_icon_attack_speed.png',
+        'attackSpeedUp': 'asset/card/stat_icon/stat_icon_attack_speed_up.png',
+        'bulletRadius': 'asset/card/stat_icon/stat_icon_bullet_radius.png',
+        'damage': 'asset/card/stat_icon/stat_icon_damage.png',
+        'damageUp': 'asset/card/stat_icon/stat_icon_damage_up.png',
+        'energyGain': 'asset/card/stat_icon/stat_icon_energy_gain.png',
+        'evasion': 'asset/card/stat_icon/stat_icon_evasion.png',
+        'heal': 'asset/card/stat_icon/stat_icon_heal.png',
+        'healthUp': 'asset/card/stat_icon/stat_icon_health_up.png',
+        'hp': 'asset/card/stat_icon/stat_icon_hp.png',
+        'immobilize': 'asset/card/stat_icon/stat_icon_immobilize.png',
+        'numberMonsters': 'asset/card/stat_icon/stat_icon_number_monsters.png',
+        'potionRange': 'asset/card/stat_icon/stat_icon_potion_range.png',
+        'range': 'asset/card/stat_icon/stat_icon_range.png',
+        'rangeUp': 'asset/card/stat_icon/stat_icon_range_up.png',
+        'special': 'asset/card/stat_icon/stat_icon_special.png',
+        'speed': 'asset/card/stat_icon/stat_icon_speed.png',
+        'time': 'asset/card/stat_icon/stat_icon_time.png',
+    },
 
     miniatureMonsterAssassin_png: 'asset/card/miniature_monster_assassin.png',
     miniatureMonsterBat_png: 'asset/card/miniature_monster_bat.png',
