@@ -39,8 +39,10 @@ const Monster = AnimatedSprite.extend({
     debug: function (map) {
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
-            this.destroy()
+            this._playerState.updateHealth(-1)
             cc.log('destroy')
+            this.destroy()
+
 
             /*while (true) {
                 const c = map.getCellAtPosition(this.position);
@@ -130,14 +132,13 @@ const Monster = AnimatedSprite.extend({
     },
 
     destroy: function () {
-        this._playerState.updateHealth(-1)
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
         }
         this.visible = false;
-        this.active = false;
+        this.removeFromParent(true)
     },
 
 });

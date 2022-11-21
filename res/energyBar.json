@@ -1,0 +1,179 @@
+{
+  "ID": "0d95b048-0cb6-42b8-ad8e-1f97e821ca1f",
+  "Version": "3.10.0.0",
+  "Name": "energyBar",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 108,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_card_progress_background_deck.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 41,
+            "Scale9OriginY": 9,
+            "Scale9Width": 44,
+            "Scale9Height": 12,
+            "AnchorPoint": {
+              "ScaleX": 0.3538,
+              "ScaleY": 2.8086
+            },
+            "Position": {
+              "X": -70.1575,
+              "Y": 69.976
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -239.294,
+            "RightMargin": -238.706,
+            "TopMargin": -15.7184,
+            "BottomMargin": -14.2816,
+            "Tag": 116,
+            "ActionTag": 55273593,
+            "Size": {
+              "X": 478.0,
+              "Y": 30.0
+            },
+            "Name": "Image_3",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "ProgressInfo": 100,
+            "ImageFileData": {
+              "Type": "Normal",
+              "Path": "common/energyBar.png",
+              "Plist": ""
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0988,
+              "Y": -0.1387
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -264.4012,
+            "RightMargin": -264.5988,
+            "TopMargin": -24.8613,
+            "BottomMargin": -25.1387,
+            "Tag": 124,
+            "ActionTag": -1982822682,
+            "Size": {
+              "X": 529.0,
+              "Y": 50.0
+            },
+            "Name": "loading",
+            "ctype": "LoadingBarObjectData"
+          },
+          {
+            "FontSize": 14,
+            "LabelText": "Tối đa: 30",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "R": 25,
+              "G": 16,
+              "B": 12
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 12,
+              "G": 8,
+              "B": 6
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": -1.0,
+            "ShadowEnabled": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 178.3508,
+              "Y": 1.7761
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": 127.3508,
+            "RightMargin": -229.3508,
+            "TopMargin": -12.2761,
+            "BottomMargin": -8.7239,
+            "Tag": 112,
+            "ActionTag": -1295217991,
+            "Size": {
+              "X": 102.0,
+              "Y": 21.0
+            },
+            "Name": "maxEnergy",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "common/energyBar.png",
+        "font/SVN-Supercell Magic.ttf",
+        "lobby/lobby_card_progress_background_deck.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}
