@@ -134,6 +134,8 @@ cf.TIME_DIFF = 0; // thời gian trên server trừ thời gian trên client
 cf.UNOPEN_CHEST_TIMESTAMP = -1;
 cf.COST_GEMS_PER_HOUR = 6;
 
+cf.MAX_EVOLUTION = 2;
+
 // Treasure.json
 cf.CHEST_REWARD = [
     {
