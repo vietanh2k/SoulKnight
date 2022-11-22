@@ -73,6 +73,8 @@ const Monster = AnimatedSprite.extend({
             currentCell = currentCell.getNextCell()
         }
 
+        if (currentCell == null) return;
+
         const targetPosition = currentCell.getEdgePositionWithNextCell();
 
         if (targetPosition == null) return;
@@ -144,4 +146,6 @@ const Monster = AnimatedSprite.extend({
 
 
 
-
+MonsterFactory.prototype.addMonsterInitializer(0, "swordsman", false, function () {
+    return null
+})
