@@ -1,6 +1,7 @@
 // this.parent: LobbyScene
 var CardInfoUI = cc.Layer.extend({
     card: null,
+    skillInfoUIIsActive: false,
 
     ctor: function (card) {
         this._super();
@@ -59,7 +60,9 @@ var CardInfoUI = cc.Layer.extend({
             scale: topPanelBackground.width * 0.07 / closeBtn.width,
         });
         closeBtn.addClickEventListener(() => {
-            this.destroy(false);
+            if (!this.skillInfoUIIsActive) {
+                this.destroy(false);
+            }
         });
         topPanelBackground.addChild(closeBtn, 0);
 
@@ -75,7 +78,8 @@ var CardInfoUI = cc.Layer.extend({
         }
 
         let cardSlot = new CardSlot(card, false);
-        cardSlot.addClickEventListener(() => {});
+        cardSlot.addClickEventListener(() => {
+        });
         cardSlot.attr({
             x: this.topDescriptionPanel.width * 0.2,
             y: this.topDescriptionPanel.height * 0.85,
@@ -165,8 +169,11 @@ var CardInfoUI = cc.Layer.extend({
         typeFlag.addChild(lbTypeFlag);
 
         if (card.isMonster()) {
+            let miniatureAnchorX = 0.5;
+            if (card.id === 200) miniatureAnchorX = 0.3;
             this.miniature = cc.Sprite(card.miniature);
             this.miniature.attr({
+                anchorX: miniatureAnchorX,
                 x: cf.WIDTH * 0.5,
                 y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
                 scale: cf.WIDTH * 0.3 / this.miniature.width,
@@ -215,9 +222,11 @@ var CardInfoUI = cc.Layer.extend({
             let chooseBtn = new ccui.Button(asset.btnBlue_png);
             chooseBtn.setZoomScale(0);
             chooseBtn.addClickEventListener(() => {
-                let cardsUI = this.parent.tabUIs[cf.LOBBY_TAB_CARDS];
-                this.destroy(true);
-                cardsUI.showAddCardToDeck(card);
+                if (!this.skillInfoUIIsActive) {
+                    let cardsUI = this.parent.tabUIs[cf.LOBBY_TAB_CARDS];
+                    this.destroy(true);
+                    cardsUI.showAddCardToDeck(card);
+                }
             });
             chooseBtn.attr({
                 x: botBtnX[0],
@@ -239,17 +248,23 @@ var CardInfoUI = cc.Layer.extend({
             if (card.fragment < card.reqFrag) {
                 upgradeBtn = new ccui.Button(asset.btnGray_png);
                 upgradeBtn.addClickEventListener(() => {
-                    Utils.addToastToRunningScene('Bạn không đủ thẻ nâng cấp');
+                    if (!this.skillInfoUIIsActive) {
+                        Utils.addToastToRunningScene('Bạn không đủ thẻ nâng cấp');
+                    }
                 });
             } else {
                 upgradeBtn = new ccui.Button(asset.btnGreen_png);
                 if (sharePlayerInfo.gold < card.reqGold) {
                     upgradeBtn.addClickEventListener(() => {
-                        Utils.addToastToRunningScene('Bạn không đủ vàng nâng cấp');
+                        if (!this.skillInfoUIIsActive) {
+                            Utils.addToastToRunningScene('Bạn không đủ vàng nâng cấp');
+                        }
                     });
                 } else {
                     upgradeBtn.addClickEventListener(() => {
-                        testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                        if (!this.skillInfoUIIsActive) {
+                            testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                        }
                     });
                 }
             }
@@ -294,6 +309,11 @@ var CardInfoUI = cc.Layer.extend({
                 y: botPanelBackground.height * 0.6,
                 scale: botPanelBackground.height * 0.7 / showSkillBtn.height,
             });
+            showSkillBtn.addClickEventListener(() => {
+                let skillInfoUI = new SkillInfoUI(card);
+                this.addChild(skillInfoUI);
+                this.skillInfoUIIsActive = true;
+            });
             botPanelBackground.addChild(showSkillBtn);
 
             let lb = new ccui.Text('Kỹ Năng', asset.svnSupercellMagic_ttf, 24);
@@ -324,19 +344,23 @@ var CardInfoUI = cc.Layer.extend({
             this.addAttributeSlotToPanel(this.card, 'numberMonsters', 2);
         } else if (this.card.isTower()) {
             switch (this.card.id) {
-                case 100: case 101: case 102:
+                case 100:
+                case 101:
+                case 102:
                     this.addAttributeSlotToPanel(this.card, 'damage', 0);
                     this.addAttributeSlotToPanel(this.card, 'attackSpeed', 1);
                     this.addAttributeSlotToPanel(this.card, 'range', 2);
                     this.addAttributeSlotToPanel(this.card, 'bulletType', 3);
                     break;
-                case 103: case 104:
+                case 103:
+                case 104:
                     this.addAttributeSlotToPanel(this.card, 'bulletTargetBuffType', 0);
                     this.addAttributeSlotToPanel(this.card, 'attackSpeed', 1);
                     this.addAttributeSlotToPanel(this.card, 'range', 2);
                     this.addAttributeSlotToPanel(this.card, 'bulletType', 3);
                     break;
-                case 105: case 106:
+                case 105:
+                case 106:
                     this.addAttributeSlotToPanel(this.card, 'auraTowerBuffType', 0);
                     break;
                 default:
@@ -375,7 +399,110 @@ var CardInfoUI = cc.Layer.extend({
                 }
                 textUpgradeStat = undefined;
                 break;
-                // todo more cases
+            case 'damage':
+                textAttribute = 'Sát thương:';
+                texture = asset.statIcons_png['damage'];
+                textStat = card.towerInfo.stat[card.evolution + 1].damage;
+                textUpgradeStat = undefined;
+                if (card.evolution < 2) {
+                    let upgradeStat = card.towerInfo.stat[card.evolution + 2].damage;
+                    if (upgradeStat > textStat) {
+                        textUpgradeStat = '+' + (upgradeStat - textStat);
+                    } else if (upgradeStat < textStat) {
+                        textUpgradeStat = '-' + (textStat - upgradeStat);
+                    }
+                }
+                break;
+            case 'attackSpeed':
+                textAttribute = 'Tốc bắn: ';
+                texture = asset.statIcons_png['attackSpeed'];
+                textStat = Math.round(1000 / card.towerInfo.stat[card.evolution + 1].attackSpeed * 100) / 100;
+                textUpgradeStat = undefined;
+                if (card.evolution < 2) {
+                    let upgradeStat = Math.round(1000 / card.towerInfo.stat[card.evolution + 2].attackSpeed * 100) / 100;
+                    cc.log(upgradeStat)
+                    if (upgradeStat > textStat) {
+                        textUpgradeStat = '+' + Math.round((upgradeStat - textStat) * 100) / 100;
+                    } else if (upgradeStat < textStat) {
+                        textUpgradeStat = '-' + Math.round((textStat - upgradeStat) * 100) / 100;
+                    }
+                }
+                break;
+            case 'range':
+                textAttribute = 'Tầm bắn: ';
+                texture = asset.statIcons_png['range'];
+                textStat = card.towerInfo.stat[card.evolution + 1].range;
+                textUpgradeStat = undefined;
+                if (card.evolution < 2) {
+                    let upgradeStat = card.towerInfo.stat[card.evolution + 2].range;
+                    if (upgradeStat > textStat) {
+                        textUpgradeStat = '+' + Math.round((upgradeStat - textStat) * 100) / 100;
+                    } else if (upgradeStat < textStat) {
+                        textUpgradeStat = '-' + Math.round((textStat - upgradeStat) * 100) / 100;
+                    }
+                }
+                break;
+            case 'bulletType':
+                textAttribute = 'Loại bắn: ';
+                texture = asset.statIcons_png['bulletRadius'];
+                textStat = card.towerInfo.bulletType;
+                textUpgradeStat = undefined;
+                break;
+            case 'bulletTargetBuffType': {
+                let targetBuffConfig = cf.TARGET_BUFF.targetBuff[card.towerInfo.bulletTargetBuffType];
+                switch (targetBuffConfig.name) {
+                    case 'bulletOilGun':
+                        textAttribute = 'T. G. làm chậm:';
+                        texture = asset.statIcons_png['immobilize'];
+                        break;
+                    case 'bulletIceGun':
+                        textAttribute = 'T. G. đóng băng:';
+                        texture = asset.statIcons_png['immobilize'];
+                        break;
+                    default:
+                        cc.log('Target buff name not found!');
+                        break;
+                }
+                textStat = targetBuffConfig.duration[card.evolution + 1] / 1000;
+                textUpgradeStat = undefined;
+                if (card.evolution < 2) {
+                    let upgradeStat = targetBuffConfig.duration[card.evolution + 2] / 1000;
+                    if (upgradeStat > textStat) {
+                        textUpgradeStat = '+' + Math.round((upgradeStat - textStat) * 100) / 100;
+                    } else if (upgradeStat < textStat) {
+                        textUpgradeStat = '-' + Math.round((textStat - upgradeStat) * 100) / 100;
+                    }
+                }
+                textStat = '' + textStat + 's';
+                break;
+            }
+            case 'auraTowerBuffType': {
+                let towerBuffConfig = cf.TOWER_BUFF.towerBuff[card.towerInfo.auraTowerBuffType];
+                switch (towerBuffConfig.name) {
+                    case 'attackAura - goatAura':
+                        textAttribute = 'S. thương tăng:';
+                        texture = asset.statIcons_png['damageUp'];
+                        break;
+                    case 'attackSpeedAura - snakeAura':
+                        textAttribute = 'Tốc bắn tăng:';
+                        texture = asset.statIcons_png['attackSpeedUp'];
+                        break;
+                    default:
+                        cc.log('Target buff name not found!');
+                        break;
+                }
+                textStat = towerBuffConfig.effects[card.evolution + 1][0].value;
+                textUpgradeStat = undefined;
+                if (card.evolution < 2) {
+                    let upgradeStat = towerBuffConfig.effects[card.evolution + 2][0].value;
+                    if (upgradeStat > textStat) {
+                        textUpgradeStat = '+' + Math.round((upgradeStat - textStat) * 100) / 100;
+                    } else if (upgradeStat < textStat) {
+                        textUpgradeStat = '-' + Math.round((textStat - upgradeStat) * 100) / 100;
+                    }
+                }
+                break;
+            }
             default:
                 cc.log('Cannot find case!');
                 break;

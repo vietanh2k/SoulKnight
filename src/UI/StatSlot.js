@@ -24,20 +24,20 @@ var StatSlot = cc.Sprite.extend({
         lbStat.attr({
             anchorX: 0,
             x: this.width * 0.3,
-            y: this.height * 0.4,
+            y: this.height * 0.35,
         });
         lbStat.enableOutline(cc.color(0, 0, 0));
         this.addChild(lbStat);
 
         if (textUpgradeStat !== undefined) {
-            this.lbUpgradeStat = new ccui.Text(textUpgradeStat, asset.svnSupercellMagic_ttf, 16);
+            this.lbUpgradeStat = new ccui.Text(textUpgradeStat, asset.svnSupercellMagic_ttf, 20);
             this.lbUpgradeStat.attr({
                 anchorX: 0,
-                x: lbStat.x + lbStat.width + this.width * 0.1,
-                y: this.height * 0.3,
+                x: lbStat.x + lbStat.width * 1.1,
+                y: this.height * 0.35,
                 color: cc.color(27, 240, 87),
             });
-            lbStat.enableOutline(cc.color(0, 0, 0));
+            this.lbUpgradeStat.enableOutline(cc.color(0, 0, 0));
             this.addChild(this.lbUpgradeStat);
         }
     },
