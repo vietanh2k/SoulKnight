@@ -310,9 +310,11 @@ var CardInfoUI = cc.Layer.extend({
                 scale: botPanelBackground.height * 0.7 / showSkillBtn.height,
             });
             showSkillBtn.addClickEventListener(() => {
-                let skillInfoUI = new SkillInfoUI(card);
-                this.addChild(skillInfoUI);
-                this.skillInfoUIIsActive = true;
+                if (!this.skillInfoUIIsActive) {
+                    let skillInfoUI = new SkillInfoUI(card);
+                    this.addChild(skillInfoUI);
+                    this.skillInfoUIIsActive = true;
+                }
             });
             botPanelBackground.addChild(showSkillBtn);
 
@@ -420,7 +422,6 @@ var CardInfoUI = cc.Layer.extend({
                 textUpgradeStat = undefined;
                 if (card.evolution < 2) {
                     let upgradeStat = Math.round(1000 / card.towerInfo.stat[card.evolution + 2].attackSpeed * 100) / 100;
-                    cc.log(upgradeStat)
                     if (upgradeStat > textStat) {
                         textUpgradeStat = '+' + Math.round((upgradeStat - textStat) * 100) / 100;
                     } else if (upgradeStat < textStat) {

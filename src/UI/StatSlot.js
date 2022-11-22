@@ -1,4 +1,4 @@
-// this.parent: CardInfoUI.midPanelBackground
+// this.parent: CardInfoUI.midPanelBackground or SkillInfoUI.botPanelBackground
 var StatSlot = cc.Sprite.extend({
 
     ctor: function (texture, textAttribute, textStat, textUpgradeStat) {
@@ -14,7 +14,7 @@ var StatSlot = cc.Sprite.extend({
         let lbAttribute = new ccui.Text(textAttribute, asset.svnSupercellMagic_ttf, 16);
         lbAttribute.attr({
             anchorX: 0,
-            x: this.width * 0.3,
+            x: this.width * 0.28,
             y: this.height * 0.7,
             color: cc.color(58, 85, 100),
         });
@@ -23,7 +23,7 @@ var StatSlot = cc.Sprite.extend({
         let lbStat = new ccui.Text(textStat, asset.svnSupercellMagic_ttf, 20);
         lbStat.attr({
             anchorX: 0,
-            x: this.width * 0.3,
+            x: this.width * 0.28,
             y: this.height * 0.35,
         });
         lbStat.enableOutline(cc.color(0, 0, 0));

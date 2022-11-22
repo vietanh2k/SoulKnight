@@ -55,6 +55,18 @@ var asset = {
     panelBackground_png: 'asset/common/common_panel_background.png',
     panelFront_png: 'asset/common/common_panel_front.png',
     panelBtnClose_png: 'asset/common/common_panel_btn_close.png',
+    panelBtnBack_png: 'asset/skill/common_panel_btn_back.png',
+
+    iconSkillLocked_png: 'asset/skill/lobby_card_skill_locked.png',
+    iconSkillSeparator_png: 'asset/skill/lobby_card_skill_separator.png',
+    iconSkillResonance_png: 'asset/skill/icon_skill_05.png',
+    iconSkillIncrease_png: 'asset/skill/icon_skill_02.png',
+    iconSkillArmorBreak_png: 'asset/skill/skill_icon_armor_break.png',
+    iconSkillBurn_png: 'asset/skill/skill_icon_burn.png',
+    iconSkillPoison_png: 'asset/skill/skill_icon_poison.png',
+    iconSkillSlow_png: 'asset/skill/skill_icon_slow.png',
+    iconSkillStun_png: 'asset/skill/skill_icon_stun.png',
+
     treasurePedestal_png: 'asset/lobby/treasure/common_treasure_pedestal.png',
     iconCardsMultiple_png: [
         'asset/lobby/treasure/common_icon_card_multiple.png',
