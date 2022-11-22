@@ -110,15 +110,17 @@ var MatchingUI = cc.Layer.extend({
 
     joinGame:function () {
         cc.log('join gameeeeeeeeeeee')
-        var scene = new cc.Scene();
-        scene.addChild(new GameUI());
-        cc.director.runScene(new cc.TransitionFade(1.2, scene));
+        fr.view(GameUI)
+        // var scene = new cc.Scene();
+        // scene.addChild(new GameUI());
+        // cc.director.runScene(new cc.TransitionFade(1.2, scene));
 
     },
 
     backToLobby:function () {
-        let lobbyScene = new LobbyScene();
-        cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
+        fr.view(LobbyScene)
+        // let lobbyScene = new LobbyScene();
+        // cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
 
     },
     onMatching:function()

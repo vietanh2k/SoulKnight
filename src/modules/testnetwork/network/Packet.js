@@ -510,9 +510,10 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
             this._super();
         },
         readData: function () {
-            var scene = new cc.Scene();
-            scene.addChild(new GameUI(this));
-            cc.director.runScene(new cc.TransitionFade(1.2, scene));
+            fr.view_with_args(GameUI, this, 1.2)
+            // var scene = new cc.Scene();
+            // scene.addChild(new GameUI(this));
+            // cc.director.runScene(new cc.TransitionFade(1.2, scene));
             cc.log('=================')
         }
     }

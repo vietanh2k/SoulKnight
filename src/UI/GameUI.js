@@ -870,8 +870,9 @@ var GameUI = cc.Layer.extend({
     },
 
     backToLobby:function () {
-        let lobbyScene = new LobbyScene();
-        cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
+        fr.view(LobbyScene)
+        // let lobbyScene = new LobbyScene();
+        // cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
 
     },
 

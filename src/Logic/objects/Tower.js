@@ -32,6 +32,20 @@ var Tower = TowerUI.extend({
             }
             this._is_set_pos = true
         }
+        if (this.renderRule === 1) {
+            if (this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
+                this.updateDirection(this._new_dir)
+                this._last_dir = this._new_dir
+                this._last_status = this.status
+            }
+        } else {
+            if (this.status != this._last_status || this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir) {
+                this.updateDirection((this._new_dir+8)%16)
+                    this._last_dir = this._new_dir
+                    this._last_status = this.status
+                }
+
+        }
 
     },
     getAttackSpeed: function () {
@@ -58,7 +72,8 @@ var Tower = TowerUI.extend({
             let bullet = this.getNewBullet(this.target[0]);
             this.map.addNewBullet(bullet);
             var direction = this.target[0].position.sub(this.position).normalize();
-            this.changDirectionHandle(direction);
+            this._new_dir =  this.changDirectionHandle(direction);
+
         }
 
     },
@@ -74,12 +89,15 @@ var Tower = TowerUI.extend({
             [ 13,   12,  0,  3,  3  ],
             [ 14,   15, 0,  1,  2   ],
         ]
-
-        direction.set(Math.round(direction.x*2.5), Math.round(direction.y*2.5))
+        cc.log('Pdirection' + direction)
+        direction.set(Math.max(Math.round(2.5+ direction.x*2.5)-1, 0)
+            , Math.max(0,Math.round(2.5 +direction.y*2.5)-1))
+        cc.log('Adirection' + direction)
         if (direction) {
-            const dir = dirs[direction.y+2][direction.x+2]
-            this.updateDirection(dir)
+            const dir = dirs[direction.y][direction.x]
+            return dir
         }
+        return null;
 
 
         // cc.log("changDirectionHandle is not overwritten!")
@@ -115,11 +133,8 @@ var Tower = TowerUI.extend({
                 var self = this;
                 const map = playerState.getMap()
                 map.getObjectInRange(this.position, self.getRange()).map(function (obj) {
-                    // cc.log("found target" + this.position + "range" + self.getRange() + "B: "+obj.position)
                     if (self.checkIsTarget(obj)) {
                         self.target.push(obj);
-                        // cc.log('found target')
-                        // cc.log(obj)
                     }
                 })
                 if (this.attackCoolDown <= 0) {

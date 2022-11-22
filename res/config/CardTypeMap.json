@@ -1,98 +1,66 @@
 {
   "0": {
-    "instance": "1",
-    "concept": "potion"
+    "concept": "potion",
+    "instance": "0"
   },
   "1": {
-    "instance": "0",
-    "concept": "potion"
+    "concept": "potion",
+    "instance": "1"
   },
   "2": {
-    "instance": "3",
-    "concept": "potion"
+    "concept": "potion",
+    "instance": "2"
   },
   "3": {
-    "instance": "2",
-    "concept": "potion"
+    "concept": "potion",
+    "instance": "3"
   },
   "4": {
-    "instance": "11",
-    "concept": "monster"
+    "concept": "monster",
+    "instance": "0"
   },
   "5": {
-    "instance": "10",
-    "concept": "monster"
+    "concept": "monster",
+    "instance": "1"
   },
   "6": {
-    "instance": "12",
-    "concept": "monster"
+    "concept": "monster",
+    "instance": "2"
   },
   "7": {
-    "instance": "1",
-    "concept": "monster"
+    "concept": "monster",
+    "instance": "3"
   },
   "8": {
-    "instance": "0",
-    "concept": "monster"
-  },
-  "9": {
-    "instance": "3",
-    "concept": "monster"
-  },
-  "10": {
-    "instance": "2",
-    "concept": "monster"
-  },
-  "11": {
-    "instance": "5",
-    "concept": "monster"
-  },
-  "12": {
-    "instance": "4",
-    "concept": "monster"
-  },
-  "13": {
-    "instance": "7",
-    "concept": "monster"
-  },
-  "14": {
-    "instance": "6",
-    "concept": "monster"
-  },
-  "15": {
-    "instance": "9",
-    "concept": "monster"
+    "concept": "monster",
+    "instance": "4"
   },
   "16": {
-    "instance": "8",
-    "concept": "monster"
+    "concept": "tower",
+    "instance": "0"
   },
   "17": {
-    "instance": "1",
-    "concept": "tower"
+    "concept": "tower",
+    "instance": "1"
   },
   "18": {
-    "instance": "0",
-    "concept": "tower"
+    "concept": "tower",
+    "instance": "2"
   },
   "19": {
-    "instance": "3",
-    "concept": "tower"
+    "concept": "tower",
+    "instance": "3"
   },
   "20": {
-    "instance": "2",
-    "concept": "tower"
+    "concept": "tower",
+    "instance": "4"
   },
   "21": {
-    "instance": "5",
-    "concept": "tower"
+    "concept": "tower",
+    "instance": "5"
   },
   "22": {
-    "instance": "4",
-    "concept": "tower"
-  },
-  "23": {
-    "instance": "6",
-    "concept": "tower"
+    "concept": "tower",
+    "instance": "6"
   }
 }

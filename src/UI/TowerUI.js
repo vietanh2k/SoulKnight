@@ -59,6 +59,7 @@ var TowerUI = cc.Sprite.extend({
 
         this.currentActions = [];
         this.loadAllActions();
+        this.updateDirection();
     },
     AnimationSetUp: function(card){
         if (card.id === 2) {
@@ -83,6 +84,14 @@ var TowerUI = cc.Sprite.extend({
             cc.log('max evolution already');
             return;
         }
+        // stop all current action
+        try{
+            this.stopAllActions();
+            this.part.forEach(part=>part.stopAllActions());
+        } catch (e){
+            cc.log('No running action!')
+        }
+
         cc.log('evolute!');
         this.evolution++;
         this.pedestal.setTexture(asset.battlePedestals_png[this.evolution]);
@@ -104,31 +113,45 @@ var TowerUI = cc.Sprite.extend({
         if (this.dir === dir) {
             return;
         }
-        if (this.idleActions[0] !== null && this.idleActions[0].length > 0) {
-            if (this.currentActions[0] !== undefined) {
-                this.stopAction(this.currentActions[0]);
-                for (let i = 1; i <= this.evolution + 1; i++) {
-                    if (this.currentActions[i] !== undefined)
-                        this.part[i].stopAction(this.currentActions[i]);
-                }
-            }
-            if (dir !== this.DIR.COINCIDE) {
-                this.currentActions[0] = this.idleActions[0][dir];
-                this.runAction(this.currentActions[0]);
-                for (let i = 1; i <= this.evolution + 1; i++) {
-                    this.currentActions[i] = this.idleActions[i][dir];
-                    this.part[i].runAction(this.currentActions[i]);
-                }
-            }
-            let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;
-            this.flippedX = isFlippedX;
-            for (let i = 1; i <= this.evolution + 1; i++) {
-                this.part[i].flippedX = isFlippedX;
-            }
-            this.dir = dir;
+        // stop all current action
+        try{
+            this.stopAllActions();
+            this.part.forEach(part=>part.stopAllActions());
+        } catch (e){
+            cc.log('No running action!')
         }
-    },
+        const action2run = this.getActionByStatus()
+        try{
+            if (action2run[0] !== null && action2run[0].length > 0) {
+                if (dir !== this.DIR.COINCIDE) {
+                    this.currentActions[0] = action2run[0][dir];
+                    this.runAction(this.currentActions[0]);
+                    for (let i = 1; i <= this.evolution + 1; i++) {
+                        this.currentActions[i] = action2run[i][dir];
+                        this.part[i].runAction(this.currentActions[i]);
+                    }
+                }
+                let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;
+                this.flippedX = isFlippedX;
+                for (let i = 1; i <= this.evolution + 1; i++) {
+                    this.part[i].flippedX = isFlippedX;
+                }
+                this.dir = dir;
+            }
+        } catch (e) {
+            cc.log(e)
+            cc.log('Can not change dir!')
+        }
 
+
+
+    },
+    getActionByStatus: function (){
+        if(this.status=='attack'){
+            return this.attackActions
+        }
+        return this.idleActions
+    },
     loadAllActions: function () {
         this.loadIdleActions();
         this.loadAttackActions();
