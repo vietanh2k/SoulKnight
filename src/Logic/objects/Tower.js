@@ -34,13 +34,27 @@ var Tower = TowerUI.extend({
         }
         if (this.renderRule === 1) {
             if (this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
-                this.updateDirection(this._new_dir)
-                this._last_dir = this._new_dir
-                this._last_status = this.status
+                if(this.status=='idle'){
+                    this.updateDirection(this._new_dir);
+                } else {
+                    this.playAttack(this._new_dir);
+                    this.status='idle'
+                }
+
+                this._last_dir = this._new_dir;
+                this._last_status = this.status;
             }
         } else {
             if (this.status != this._last_status || this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir) {
-                this.updateDirection((this._new_dir+8)%16)
+                var dir = (this._new_dir+8)%16;
+                if(this.status=='idle'){
+                    this.updateDirection(dir);
+                } else {
+                    this.playAttack(dir);
+                    this.status='idle'
+                }
+
+                // this.updateDirection((this._new_dir+8)%16)
                     this._last_dir = this._new_dir
                     this._last_status = this.status
                 }

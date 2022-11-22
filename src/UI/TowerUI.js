@@ -59,7 +59,11 @@ var TowerUI = cc.Sprite.extend({
 
         this.currentActions = [];
         this.loadAllActions();
-        this.updateDirection();
+        try{
+            this.runAction(this.idleActions[0][0])
+        } catch (e) {
+            cc.log('this.runAction(this.idleActions[0][0])'+e)
+        }
     },
     AnimationSetUp: function(card){
         if (card.id === 2) {
@@ -84,13 +88,8 @@ var TowerUI = cc.Sprite.extend({
             cc.log('max evolution already');
             return;
         }
-        // stop all current action
-        try{
-            this.stopAllActions();
-            this.part.forEach(part=>part.stopAllActions());
-        } catch (e){
-            cc.log('No running action!')
-        }
+        this.stopActions();
+        this.updateDirection(this.dir, true);
 
         cc.log('evolute!');
         this.evolution++;
@@ -108,19 +107,26 @@ var TowerUI = cc.Sprite.extend({
         let dir = Math.floor(Date.now() / 1000) % 16;
         this.updateDirection(dir);
     },
-
-    updateDirection: function (dir) {
-        if (this.dir === dir) {
-            return;
-        }
-        // stop all current action
+    stopActions: function (){
         try{
             this.stopAllActions();
             this.part.forEach(part=>part.stopAllActions());
+            this.currentActions.forEach(ani=>ani.retain());
         } catch (e){
             cc.log('No running action!')
         }
-        const action2run = this.getActionByStatus()
+    },
+    /**
+     * Update Idle animation by direction
+     * @param {number} dir: direction index
+     * @param {boolean} force: force to change*/
+    updateDirection: function (dir, force=false) {
+        if (this.dir === dir && !force) {
+            return;
+        }
+        // stop all current action
+        this.stopActions()
+        const action2run = this.idleActions
         try{
             if (action2run[0] !== null && action2run[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
@@ -142,15 +148,36 @@ var TowerUI = cc.Sprite.extend({
             cc.log(e)
             cc.log('Can not change dir!')
         }
-
-
-
     },
-    getActionByStatus: function (){
-        if(this.status=='attack'){
-            return this.attackActions
+    playAttack: function (dir){
+        // stop all current action
+        this.stopActions();
+        let sequence, self = this;
+        const action2run = this.attackActions;
+        try{
+            if (action2run[0] !== null && action2run[0].length > 0) {
+                if (dir !== this.DIR.COINCIDE) {
+                    this.currentActions[0] = action2run[0][dir];
+                    sequence = cc.sequence(
+                        action2run[0][dir],
+                        cc.callFunc(() => {self.updateDirection(dir, true)}));
+                    this.runAction(sequence);
+                    for (let i = 1; i <= this.evolution + 1; i++) {
+                        this.currentActions[i] = action2run[i][dir];
+                        this.part[i].runAction(this.currentActions[i]);
+                    }
+                }
+                let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;
+                this.flippedX = isFlippedX;
+                for (let i = 1; i <= this.evolution + 1; i++) {
+                    this.part[i].flippedX = isFlippedX;
+                }
+            }
+        } catch (e) {
+            cc.log(e)
+            cc.log('Can not change dir!')
         }
-        return this.idleActions
+
     },
     loadAllActions: function () {
         this.loadIdleActions();
@@ -175,7 +202,7 @@ var TowerUI = cc.Sprite.extend({
             this.attackActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
                 let frame = this.loadAnimation(Math.min(i, 16 - i) * this.attackIDP, this.attackIDP, this.attackPrefixNames[j]);
-                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 1 / this.attackIDP)).repeatForever());
+                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 1 / this.attackIDP)));
                 this.attackActions[j][i].retain();
             }
         }
