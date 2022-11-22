@@ -146,7 +146,7 @@ var Tower = TowerUI.extend({
                 this.target = [];
                 var self = this;
                 const map = playerState.getMap()
-                map.getObjectInRange(this.position, self.getRange()).map(function (obj) {
+                map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
                     if (self.checkIsTarget(obj)) {
                         self.target.push(obj);
                     }
