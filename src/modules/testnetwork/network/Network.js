@@ -31,9 +31,9 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("MOVE:", packet.x, packet.y);
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
-            case gv.CMD.OPEN_CHEST_NOW:
-                fr.getCurrentScreen().onReceivedServerResponse(packet.status);
-                break;
+            // case gv.CMD.OPEN_CHEST_NOW:
+            //     // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
+            //     break;
             case gv.CMD.OPEN_CHEST:
                 cc.log('receive open chest now response')
                 break;
@@ -91,7 +91,7 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
             case gv.CMD.BUY_CHEST:
-                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
+                // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
                 cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
 

@@ -1,0 +1,120 @@
+{
+  "ID": "42d3db32-d78b-4b7a-aa7a-eb73a32229a9",
+  "Version": "3.10.0.0",
+  "Name": "healthMonster",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/health2.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 89,
+            "Scale9OriginY": 24,
+            "Scale9Width": 92,
+            "Scale9Height": 12,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 0.3,
+              "ScaleY": 0.3
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -250.0,
+            "RightMargin": -250.0,
+            "TopMargin": -40.0,
+            "BottomMargin": -40.0,
+            "Tag": 4,
+            "ActionTag": -1066240830,
+            "Size": {
+              "X": 500.0,
+              "Y": 80.0
+            },
+            "Name": "image",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "ProgressInfo": 0,
+            "ImageFileData": {
+              "Type": "Normal",
+              "Path": "common/health1.png",
+              "Plist": ""
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.5,
+              "Y": -0.0759
+            },
+            "Scale": {
+              "ScaleX": 0.4,
+              "ScaleY": 0.4
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -190.0,
+            "RightMargin": -191.0,
+            "TopMargin": -33.9241,
+            "BottomMargin": -34.0759,
+            "Tag": 5,
+            "ActionTag": 37786710,
+            "Size": {
+              "X": 381.0,
+              "Y": 68.0
+            },
+            "Name": "loading",
+            "ctype": "LoadingBarObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "common/health1.png",
+        "common/health2.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}

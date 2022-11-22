@@ -34,7 +34,7 @@ var res = {
     inforEndBattle : "inforEndBattle.json",
     energyBar : "energyBar.json",
     cantLoadShop : "cantLoadShop.json",
-
+    healthMonster : "healthMonster.json",
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',
     font_normal : 'asset/font/SVN-Avo bold.ttf',

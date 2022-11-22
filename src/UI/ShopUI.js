@@ -131,25 +131,12 @@ var ShopUI = cc.Layer.extend({
 
     },
 
-    updateBuyChest:function (packet){
-        sharePlayerInfo.gold -= parseInt(packet.cost)
-        LobbyInstant.currencyPanel.updateLabelsGold(Math.floor(packet.cost/50)+1)
+    updateBuyChest:function (newCards, goldGet){
+        sharePlayerInfo.gold += parseInt(goldGet)
+        LobbyInstant.currencyPanel.updateLabelsGold(Math.floor(goldGet/50)+1)
         this.removeChild(this.popup)
         this.updateCanBuyUI()
         this.updateBuySlot(this.numSlot)
-        var leng = packet.leng
-        let newCards = []
-        for(var i=0; i<leng; i++){
-            var typeCard = packet.buyList[i][0]
-            var numCardGet = packet.buyList[i][1]
-            var card = sharePlayerInfo.collection[typeCard]
-            var lvl = card.level
-            var newFrag = card.fragment + numCardGet
-            var newCard = new Card(typeCard, lvl, newFrag);
-            cc.log(newFrag+'newFrag')
-            newCards.push(newCard)
-            // newCards2.push(newCard)
-        }
         LobbyInstant.addChild(new OpenChestAnimationUI(newCards, 100),3);
         sharePlayerInfo.addNewCards(newCards);
 

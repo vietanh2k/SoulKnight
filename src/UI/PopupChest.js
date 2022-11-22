@@ -76,23 +76,13 @@ var PopupChest= cc.Node.extend({
 
 
     requestBuy:function (chestID){
-        var chest = fake.chests[chestID]
-        var numGoldGet = Math.floor(Math.random()*(chest.golds[1]-chest.golds[0]))+chest.golds[0]
-        var numCardGet = Math.floor(Math.random()*(chest.cards[1]-chest.cards[0]))+chest.cards[0]
-        var leng = chest.rarities.length
         var buyList = []
-        var cou = 0
-        for(var i=0; i<leng-1; i++){
-            var rd = Math.floor(Math.random()*(numCardGet/leng/2))+numCardGet/leng/2
-            buyList.push([8, rd])
-            cou += rd
-        }
-        buyList.push([leng-1, numCardGet-cou])
-
-
+        buyList.push([chestID, 1])
         var cost = parseInt(this.getChildByTag(100).getChildByName('numCost').getString())
+        sharePlayerInfo.gold -= parseInt(cost)
+        LobbyInstant.currencyPanel.updateLabelsGold(Math.floor(cost/50)+1)
         try{
-            testnetwork.connector.sendBuyChest(leng, buyList,cost);
+            testnetwork.connector.sendBuyChest(1, buyList,cost);
 
 
         } catch (e){

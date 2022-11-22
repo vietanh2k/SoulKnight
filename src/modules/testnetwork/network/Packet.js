@@ -440,9 +440,14 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
 
             serverNow = this.getLong();
             Utils.updateTimeDiff(serverNow);
-
-            cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+            if(chestID != -1) {
+                {
+                    LobbyInstant.runOpenChestAnimation(newCards, goldReceived);
+                    LobbyInstant.tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+                }
+            }else{
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(newCards, goldReceived)
+            }
         } else {
             Utils.addToastToRunningScene(status);
         }
