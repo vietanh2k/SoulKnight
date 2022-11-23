@@ -98,6 +98,7 @@ var Bullet = cc.Sprite.extend({
         for (let object of objectList) {
             if (this.canAttack(object)) {
                 object.health -= this.getDamage();
+                object.hurtUI()
             }
         }
         this.isDestroy = true;

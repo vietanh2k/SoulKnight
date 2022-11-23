@@ -14,6 +14,9 @@ const Monster = AnimatedSprite.extend({
         this.speed = 30.0
         this.concept="monster"
         this.health = 30;
+        this.MaxHealth = 30;
+        this.healthUI = null
+        this.addHealthUI()
 
         return true;
     },
@@ -129,6 +132,21 @@ const Monster = AnimatedSprite.extend({
             const v = this.animationIds[dir.y +1]
             if (v) this.play(v[dir.x +1])
         }
+    },
+
+    addHealthUI: function () {
+        this.healthUI = ccs.load(res.healthMonster, "").node;
+        this.healthUI.opacity = 0
+        this.healthUI.setScale(0.3)
+        this.healthUI.setPosition(CELLWIDTH*0.73,CELLWIDTH*1.25)
+        this.addChild(this.healthUI)
+    },
+    hurtUI: function () {
+        this.healthUI.stopAllActions()
+        var percen = this.health / this.MaxHealth*100
+        this.healthUI.getChildByName('loading').setPercent(percen)
+        var seq = cc.sequence(cc.fadeIn(0), cc.delayTime(2),cc.fadeOut(0.6))
+        this.healthUI.runAction(seq)
     },
 
     destroy: function () {
