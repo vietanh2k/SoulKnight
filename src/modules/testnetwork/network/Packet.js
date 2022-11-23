@@ -440,9 +440,14 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
 
             serverNow = this.getLong();
             Utils.updateTimeDiff(serverNow);
-
-            cc.director.getRunningScene().runOpenChestAnimation(newCards, goldReceived);
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+            if(chestID != -1) {
+                {
+                    LobbyInstant.runOpenChestAnimation(newCards, goldReceived);
+                    LobbyInstant.tabUIs[cf.LOBBY_TAB_HOME].openChestSlot(chestID, newCards, goldReceived);
+                }
+            }else{
+                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(newCards, goldReceived)
+            }
         } else {
             Utils.addToastToRunningScene(status);
         }
@@ -510,10 +515,7 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
             this._super();
         },
         readData: function () {
-            fr.view_with_args(GameUI, this, 1.2)
-            // var scene = new cc.Scene();
-            // scene.addChild(new GameUI(this));
-            // cc.director.runScene(new cc.TransitionFade(1.2, scene));
+            fr.view_with_args(GameUI, this, 1.2);
             cc.log('=================')
         }
     }

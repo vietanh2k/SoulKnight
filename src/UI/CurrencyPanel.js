@@ -65,14 +65,10 @@ var CurrencyPanel = cc.Layer.extend({
         });
         this.leftCurrencyBtn.addClickEventListener(() => {
             if (this.parent.allBtnIsActive) {
-                try {
-                    testnetwork.connector.sendBuyGemOrGold(1, cf.AMOUNT_BTN_GOLD);
-                } catch (e) {
-                    cc.log('errrrrrrrrrrror')
-                }
+                LobbyInstant.changeToTab(cf.LOBBY_TAB_SHOP)
             } else {
-                cc.log('allBtnIsActive is false');
-            }
+            cc.log('allBtnIsActive is false');
+        }
         });
         this.addChild(this.leftCurrencyBtn, 0);
 

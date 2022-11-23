@@ -113,7 +113,7 @@ var LobbyScene = cc.Scene.extend({
     },
 
     changeToTab: function (newTab) {
-        if(newTab == cf.LOBBY_TAB_SHOP) {
+        if(newTab == cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess == false) {
             // fr.view(ShopUI);
             this.requestOffer()
         }

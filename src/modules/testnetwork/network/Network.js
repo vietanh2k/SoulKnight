@@ -31,9 +31,9 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("MOVE:", packet.x, packet.y);
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
-            case gv.CMD.OPEN_CHEST_NOW:
-                fr.getCurrentScreen().onReceivedServerResponse(packet.status);
-                break;
+            // case gv.CMD.OPEN_CHEST_NOW:
+            //     // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
+            //     break;
             case gv.CMD.OPEN_CHEST:
                 cc.log('receive open chest now response')
                 break;
@@ -51,6 +51,11 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')
+                try{
+                    fr.getCurrentScreen().updateJoinUI()
+                } catch (e){
+                    cc.log('outtttttttttttttt')
+                }
                 break;
             case gv.CMD.OFFER_RESPONSE:
                 LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateShop(packet);
@@ -72,7 +77,12 @@ testnetwork.Connector = cc.Class.extend({
                     sharePlayerInfo.gem += packet.amout
                     LobbyInstant.currencyPanel.updateLabelsGem(10)
                 } else {
-                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                    if(packet.amout > 600) {
+                        LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyGold(packet)
+                    }else{
+                        LobbyInstant.currencyPanel.updateLabelsGold(20)
+                        LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateCanBuyUI()
+                    }
                     cc.log("=========================BUY GOLD SUCCEEDED================================")
                 }
                 break
@@ -81,7 +91,7 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
             case gv.CMD.BUY_CHEST:
-                LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
+                // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
                 cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
 
