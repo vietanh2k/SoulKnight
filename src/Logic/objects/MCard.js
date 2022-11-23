@@ -6,7 +6,7 @@ var MCard = cc.Sprite.extend({
     ctor:function (cardID) {
         this.cardID = cardID
         this.energy = -1
-        this._super('asset/card/card_background_4.png');
+        this._super('res/card/card_background_4.png');
         this.initCardUI(cardID)
         this.onTouch = false
         this.numSlot = -1
@@ -37,7 +37,7 @@ var MCard = cc.Sprite.extend({
         this.addChild(cardBorder,0,'cardBorder')
         this.addChild(cardAvatar,0,'cardAvatar')
         if(CardConfig[cardID].numEnergy >= 0){
-            // var btnRemoveCard = ccui.Button('asset/battle/battle_btn_destroy.png');
+            // var btnRemoveCard = ccui.Button('res/battle/battle_btn_destroy.png');
             // btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 2.2)
             // btnRemoveCard.setPosition(this.getContentSize().width * 0.5, -CELLWIDTH*0.6)
             // btnRemoveCard.addClickEventListener(()=>this.touchRemoveCard);

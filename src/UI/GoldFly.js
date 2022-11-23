@@ -26,7 +26,7 @@ var GoldFly = cc.Node.extend({
         var goldForLastOne =goldGet - (goldForOne*(num-1))
         LobbyInstant.currencyPanel.updateLabelsGem(2)
         for(var i=0 ; i<num ; i++){
-            var gold = new cc.Sprite('asset/common/common_icon_gold_small.png')
+            var gold = new cc.Sprite('res/common/common_icon_gold_small.png')
             var w = gold.getContentSize().width*_scale
             gold.setPosition(pos)
             var rx = (Math.random() * w*2)-w;

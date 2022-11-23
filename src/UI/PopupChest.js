@@ -27,12 +27,12 @@ var PopupChest= cc.Node.extend({
         popup.getChildByName('numCardGet').setString(strCard)
         for(var i=0;i<4; i++){
             if(i < chest.rarities.length){
-                popup.getChildByName('cType'+(i+1)).loadTexture( 'asset/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
+                popup.getChildByName('cType'+(i+1)).loadTexture( 'res/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
             }else{
                 popup.getChildByName('cType'+(i+1)).removeFromParent(true)
             }
             cc.log(i)
-            // popup.getChildByName('cType'+(i+1)).setTexture( 'asset/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
+            // popup.getChildByName('cType'+(i+1)).setTexture( 'res/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
         }
         popup.getChildByName('btnBack').addClickEventListener(()=>this.hide())
         popup.getChildByName('button').addClickEventListener(()=>this.requestBuy(chestID))
@@ -52,8 +52,8 @@ var PopupChest= cc.Node.extend({
     },
 
     addAtlas:function (){
-        var resultAnimation = new sp.SkeletonAnimation("asset/lobby/treasure/fx/fx_vip.json",
-            "asset/lobby/treasure/fx/fx_vip.atlas")
+        var resultAnimation = new sp.SkeletonAnimation("res/lobby/treasure/fx/fx_vip.json",
+            "res/lobby/treasure/fx/fx_vip.atlas")
         resultAnimation.setPosition(0, winSize.height*1/3)
         resultAnimation.setAnimation(0, "animation", true)
         resultAnimation.setOpacity(0)

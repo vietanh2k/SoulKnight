@@ -5,8 +5,8 @@ var TWizardBullet = Bullet.extend({
     ctor: function (target, speed, damage, radius, position) {
         this._super(res.Wizard_Bullet);
         this.reset(target, speed, damage, radius, position)
-        this.fx = new sp.SkeletonAnimation('asset/tower/fx/tower_'+this.name+ '_fx.json',
-            'asset/tower/fx/tower_'+this.name+ '_fx.atlas', true, 0.1);
+        this.fx = new sp.SkeletonAnimation('res/tower/fx/tower_'+this.name+ '_fx.json',
+            'res/tower/fx/tower_'+this.name+ '_fx.atlas', true, 0.1);
 
         this.fx.setAnimation(0, 'attack_1', true);
 
