@@ -148,8 +148,8 @@ var TowerUI = cc.Sprite.extend({
                 this.dir = dir;
             }
         } catch (e) {
-            cc.log(e)
-            cc.log('Can not change dir!')
+            // cc.log(e)
+            // cc.log('Can not change dir!')
         }
     },
     playAttack: function (dir) {
@@ -160,7 +160,7 @@ var TowerUI = cc.Sprite.extend({
         try {
             if (action2run[0] !== null && action2run[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
-                    this.currentActions[0] = action2run[0][dir];
+                    // this.currentActions[0] = action2run[0][dir];
                     sequence = cc.sequence(
                         action2run[0][dir],
                         cc.callFunc(() => {
@@ -168,8 +168,8 @@ var TowerUI = cc.Sprite.extend({
                         }));
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
-                        this.currentActions[i] = action2run[i][dir];
-                        this.part[i].runAction(this.currentActions[i]);
+                        // this.currentActions[i] = action2run[i][dir];
+                        this.part[i].runAction(action2run[i][dir]);
                     }
                 }
                 let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;

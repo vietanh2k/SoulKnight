@@ -242,7 +242,11 @@ var MapView = cc.Class.extend({
         if(!cell.getObjectOn()){
             is_update = false;
         } else {
-            is_update = true;
+            if((cell.getObjectOn().instance=="0" && card==16) || (cell.getObjectOn().instance=="1" && card==17)){
+                is_update = true;
+            } else {
+                return;
+            }
         }
         if(is_update){
             cell.getObjectOn().upgrade(card);

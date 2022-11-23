@@ -80,7 +80,7 @@ var GameUI = cc.Layer.extend({
             cc.log(loc.x + '---' + loc.y)
             if (loc.x >= 0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
                 loc.y >= 0 && loc.y < this._gameStateManager.playerA._map._mapController.intArray[0].length) {
-                if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0) {
+                if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0||this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] ==999) {
                     if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy) {
                         cc.log('touch right')
                         this.createObjectByTouch = true
@@ -110,14 +110,14 @@ var GameUI = cc.Layer.extend({
 
     },
     activateCard: function (card_type, position, uid) {
-        // cc.log("UID: " + uid)
+        // 999: cell with position
         if (uid == gv.gameClient._userId) {
             this.createObjectByTouch = false
             // cc.log('creat right')
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
-            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
+            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
                 this._gameStateManager.playerA._map.updatePathForCells()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
