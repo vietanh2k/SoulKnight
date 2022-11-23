@@ -41,11 +41,11 @@ var TCanon = Tower.extend({
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
         for (let i = 0; i < 3; i++) {
-            this.initTextures[i] = 'asset/tower/frame/cannon_1_2/tower_cannon_idle_' + i + '_0000.png';
+            this.initTextures[i] = 'res/tower/frame/cannon_1_2/tower_cannon_idle_' + i + '_0000.png';
             this.idlePrefixNames[i] = 'tower_cannon_idle_' + i + '_';
             this.attackPrefixNames[i] = 'tower_cannon_attack_' + i + '_';
         }
-        this.initTextures[3] = 'asset/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
+        this.initTextures[3] = 'res/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
         this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
         this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
         this.idleIDP = 15;

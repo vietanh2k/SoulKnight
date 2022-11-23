@@ -27,8 +27,8 @@ var GameUI = cc.Layer.extend({
 
         this.towerUIMap = Utils.create2dArr(MAP_WIDTH, MAP_HEIGHT + 1, undefined);
         for (let i = 0; i <= 3; i++) {
-            cc.spriteFrameCache.addSpriteFrames('asset/tower/frame/cannon/tower_cannon_idle_' + i + '.plist');
-            cc.spriteFrameCache.addSpriteFrames('asset/tower/frame/cannon/tower_cannon_attack_' + i + '.plist');
+            cc.spriteFrameCache.addSpriteFrames('res/tower/frame/cannon/tower_cannon_idle_' + i + '.plist');
+            cc.spriteFrameCache.addSpriteFrames('res/tower/frame/cannon/tower_cannon_attack_' + i + '.plist');
         }
 
         GameUI.instance = this
@@ -447,7 +447,7 @@ var GameUI = cc.Layer.extend({
         energy.setPosition(winSize.width/2- WIDTHSIZE/2+CELLWIDTH*1.32, winSize.height/2- HEIGHTSIZE/2+CELLWIDTH*0.35)
         this.addChild(energy,0,'iconEnergyBar')
 
-        // var energyBarBackground = new cc.Sprite('asset/lobby/lobby_card_progress_background_deck.png')
+        // var energyBarBackground = new cc.Sprite('res/lobby/lobby_card_progress_background_deck.png')
         // energyBarBackground.setScaleY(CELLWIDTH/energyBarBackground.getContentSize().height*0.25)
         // energyBarBackground.setScaleX(CELLWIDTH/energyBarBackground.getContentSize().width*6)
         // energyBarBackground.setPosition(winSize.width/2+CELLWIDTH*1, winSize.height/2- HEIGHTSIZE/2+CELLWIDTH*0.4)
@@ -466,7 +466,7 @@ var GameUI = cc.Layer.extend({
         this.addObjectBackground(res.deck,0,2.65/15,0,-6.15/15)
         this.addListCardUI()
         this.addEnergyBarUI()
-        var btnChat = ccui.Button('asset/battle/battle_btn_chat.png');
+        var btnChat = ccui.Button('res/battle/battle_btn_chat.png');
         btnChat.setScale(CELLWIDTH/btnChat.getNormalTextureSize().width*0.85)
         btnChat.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.53, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*2.5)
         this.addChild(btnChat,0);
@@ -563,7 +563,7 @@ var GameUI = cc.Layer.extend({
             }
         });
         for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
-            var cardBox = new cc.Sprite('asset/battle/battle_card_box.png')
+            var cardBox = new cc.Sprite('res/battle/battle_card_box.png')
             cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.43)
             cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
             this.addChild(cardBox)
@@ -578,7 +578,7 @@ var GameUI = cc.Layer.extend({
         }
         for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
 
-            var btnRemoveCard =new ccui.Button('asset/battle/battle_btn_destroy.png');
+            var btnRemoveCard =new ccui.Button('res/battle/battle_btn_destroy.png');
             btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.4)
             btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.8)
             btnRemoveCard.visible = false
@@ -604,7 +604,7 @@ var GameUI = cc.Layer.extend({
 
             let card = new Card(16, 1, 0);
             let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
-            let rangePreview = cc.Sprite('asset/battle/battle_tower_range_player.png');
+            let rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
             rangePreview.attr({
                 x: towerPreview.width / 2,
                 y: towerPreview.height / 2,
@@ -619,7 +619,7 @@ var GameUI = cc.Layer.extend({
 
             let card = new Card(17, 1, 0);
             let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
-            let rangePreview = cc.Sprite('asset/battle/battle_tower_range_player.png');
+            let rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
             rangePreview.attr({
                 x: towerPreview.width / 2,
                 y: towerPreview.height / 2,
@@ -837,8 +837,8 @@ var GameUI = cc.Layer.extend({
     },
     showResultBattleUI: function (resultString) {
 
-        var resultAnimation = new sp.SkeletonAnimation("asset/battle_result/fx/fx_result_" + resultString + ".json",
-            "asset/battle_result/fx/fx_result_" + resultString + ".atlas")
+        var resultAnimation = new sp.SkeletonAnimation("res/battle_result/fx/fx_result_" + resultString + ".json",
+            "res/battle_result/fx/fx_result_" + resultString + ".atlas")
         resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
         resultAnimation.setPosition(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2)
         resultAnimation.setAnimation(0, "fx_result_" + resultString + "_idle", true)
@@ -858,7 +858,7 @@ var GameUI = cc.Layer.extend({
         this.addChild(infor, 4002)
 
 
-        var btnBack = ccui.Button('asset/common/common_btn_blue.png');
+        var btnBack = ccui.Button('res/common/common_btn_blue.png');
         btnBack.setTitleText('Trở Về')
         btnBack.setTitleFontName(res.font_magic)
 

@@ -251,7 +251,6 @@ var MapView = cc.Class.extend({
         switch (card){
             case 17:
                 tower = new TWizard(card, this._playerState, position, this);
-
                 break;
             default:
                 tower = new TCanon(card, this._playerState, position, this);

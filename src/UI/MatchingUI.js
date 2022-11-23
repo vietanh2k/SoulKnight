@@ -37,8 +37,8 @@ var MatchingUI = cc.Layer.extend({
         this.addObjectBackground(res.lightAround,0,5.5/7,0,0.3/9)
         this.addObjectBackground(res.lightAround,0,5.5/7,0,0.3/9)
         // this.addObjectBackground(res.arenaForest,4.3/7,0,0,1.1/9)
-        var resultAnimation = new sp.SkeletonAnimation("asset/map/fx/map_icon_forest.json",
-            "asset/map/fx/map_icon_forest.atlas")
+        var resultAnimation = new sp.SkeletonAnimation("res/map/fx/map_icon_forest.json",
+            "res/map/fx/map_icon_forest.atlas")
         // resultAnimation.setAnimation(0, "init", false)
         resultAnimation.setAnimation(0, "idle", true)
         resultAnimation.setPosition(winSize.width/2, winSize.height*5.2/9)
@@ -149,7 +149,7 @@ var MatchingUI = cc.Layer.extend({
     updateJoinUI:function()
     {
         this.getChildByName('btnCalcel').setTitleText('Vào Trận')
-        this.getChildByName('btnCalcel').loadTextureNormal('asset/common/common_btn_blue.png')
+        this.getChildByName('btnCalcel').loadTextureNormal('res/common/common_btn_blue.png')
         this.getChildByName('btnCalcel').setTouchEnabled(false)
     },
 
