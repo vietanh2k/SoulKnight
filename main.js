@@ -25,7 +25,7 @@ cc.game.onStart = function () {
             HEIGHTSIZE = DESIGN_RESOLUTION_HEIGHT
             WIDTHSIZE = HEIGHTSIZE/1.875
         }else{
-            WIDTHSIZE = DESIGN_RESOLUTION_WIDTH
+            WIDTHSIZE = DESIGN_RESOLUTION_WIDTH*0.95
             HEIGHTSIZE = WIDTHSIZE*1.875
         }
         cc.log(frameSize.height)
