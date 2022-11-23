@@ -571,9 +571,10 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
             this.cardOffers = []
             for (var i = 0; i < this.numCard; i++) {
                 var cardType = this.getByte(),
+                    fragment = this.getInt(),
                     cardCost = this.getInt()
                 cc.log('card:  ' + cardType + ' ' + cardCost)
-                this.cardOffers.push([cardType, cardCost])
+                this.cardOffers.push([cardType,fragment, cardCost])
             }
             cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
             // this.numCard = this.getInt()
@@ -635,23 +636,24 @@ testnetwork.packetMap[gv.CMD.BUY_GEM_OR_GOLD] = fr.InPacket.extend({
 );
 
 testnetwork.packetMap[gv.CMD.BUY_CARD] = fr.InPacket.extend({
-    ctor: function () {
-        this._super();
-    },
+        ctor: function () {
+            this._super();
+        },
 
-    readData: function () {
-        cc.log("============================BUY CARD============================================")
-        this.status = this.getString()
-        this.leng = this.getInt(),
-            this.buyList = []
-        for (var i = 0; i < this.leng; i++) {
-            var typeCard = this.getByte()
-            var numCard = this.getInt()
-            this.buyList.push([typeCard, numCard])
+        readData: function () {
+
+            this.status = this.getString()
+            cc.log("============================BUY CARD============================================"+this.status)
+            this.leng = this.getInt(),
+                this.buyList = []
+            for (var i = 0; i < this.leng; i++) {
+                var typeCard = this.getByte()
+                var numCard = this.getInt()
+                this.buyList.push([typeCard, numCard])
+            }
+            this.cost = this.getInt()
         }
-        this.cost = this.getInt()
     }
-}
 );
 
 testnetwork.packetMap[gv.CMD.BUY_CHEST] = fr.InPacket.extend({
