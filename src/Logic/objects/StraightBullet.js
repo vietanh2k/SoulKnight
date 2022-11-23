@@ -9,10 +9,9 @@ var TWizardBullet = Bullet.extend({
             'asset/tower/fx/tower_'+this.name+ '_fx.atlas', true, 0.1);
 
         this.fx.setAnimation(0, 'attack_1', true);
-        this.fx.setSkin('default');
+
         this.addChild(this.fx);
-        // this.runAction(this.fx)
-        // this.fxExplose.visible = false;
+        // this.fx.visible = false;
 
 
     },
@@ -38,20 +37,10 @@ var TWizardBullet = Bullet.extend({
             }
         }
         this.isDestroy = true;
+
+        this.fx.setAnimation(0, 'hit_target_eff', false);
         this.active = false;
         this.visible = false;
-        var self=this
-        this.fx.attr({
-            x: self.x,
-            y: self.y,
-            scale: CELLWIDTH / self.fx.getBoundingBox().width,
-        });
-        this.fx.setAnimation(0, 'hit_target_eff', false);
-        // this.runAction(explose)
-
-
-
-        // GameUI.instance.removeChild(this)
     }
 })
 

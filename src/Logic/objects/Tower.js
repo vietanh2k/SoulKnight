@@ -18,6 +18,7 @@ var Tower = TowerUI.extend({
 
                 this.x = dx + x
                 this.y = height - y
+
             } else {
                 // dir.set(-dir.x, dir.y)
                 let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
@@ -30,10 +31,11 @@ var Tower = TowerUI.extend({
 
                 this.setPosition(width - x, height + y)
             }
+            // this.addTimerUI()
             this._is_set_pos = true
         }
         if (this.renderRule === 1) {
-            if (this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
+            if (this._last_status==undefined || this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
                 if(this.status=='idle'){
                     this.updateDirection(this._new_dir);
                 } else {
@@ -45,7 +47,7 @@ var Tower = TowerUI.extend({
                 this._last_status = this.status;
             }
         } else {
-            if (this.status != this._last_status || this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir) {
+            if (this._last_status==undefined || this.status != this._last_status || this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir) {
                 var dir = (this._new_dir+8)%16;
                 if(this.status=='idle'){
                     this.updateDirection(dir);
@@ -70,11 +72,18 @@ var Tower = TowerUI.extend({
     },
     resetPending: function () {
         this.pendingSecond = this.getConfig()["buildingTime"] / 1000;
+        this.max_pending = this.pendingSecond;
     },
     updatePending: function (dt) {
         if (this.pendingSecond > 0) {
             this.pendingSecond -= dt;
         }
+        try{
+            this.timerBar.setPercentage(this.pendingSecond/this.max_pending)
+        } catch (e){
+            cc.log('can not update timer tower!')
+        }
+
     },
     prioritize: function (map, object) {
         if (map.getDistanceBetween(object.position, this.position) <= this.getRange()) {
@@ -139,7 +148,7 @@ var Tower = TowerUI.extend({
             // cc.log('updating Tower')
             if (this.getPending() > 0) {
                 this.updatePending(dt);
-                this.visible = false;
+                // this.visible = false;
 
             } else {
                 this.visible = true;

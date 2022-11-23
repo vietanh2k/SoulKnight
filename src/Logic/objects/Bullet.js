@@ -68,12 +68,13 @@ var Bullet = cc.Sprite.extend({
 
             this.setPosition(width - x, height + y)
         }
+        // if(this.fx!=null||undefined){
+        //     this.fx.setPosition(cc.p(this.x, this.y))
+        // }
     },
     logicUpdate: function (playerState, dt) {
         if (this.active) {
-            if(this.fx!=null){
-                this.fx.update(dt)
-            }
+
             var pos = this.getTargetPosition()
             if (euclid_distance(this.position, pos) > this.getSpeed() * dt) {
                 // cc.log('bullet í moving')
@@ -83,6 +84,9 @@ var Bullet = cc.Sprite.extend({
             } else {
                 cc.log('bullet explose')
                 this.explose(playerState, pos);
+            }
+            if(this.fx!=null){
+                this.fx.update(dt)
             }
         }
 

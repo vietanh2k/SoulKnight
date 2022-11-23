@@ -59,13 +59,14 @@ var TowerUI = cc.Sprite.extend({
 
         this.currentActions = [];
         this.loadAllActions();
-        try{
+        // this.addTimerUI();
+        try {
             this.runAction(this.idleActions[0][0])
         } catch (e) {
-            cc.log('this.runAction(this.idleActions[0][0])'+e)
+            cc.log('this.runAction(this.idleActions[0][0])' + e)
         }
     },
-    AnimationSetUp: function(card){
+    AnimationSetUp: function (card) {
         if (card.id === 2) {
             this.initTextures = [];
             this.idlePrefixNames = [];
@@ -89,7 +90,6 @@ var TowerUI = cc.Sprite.extend({
             return;
         }
         this.stopActions();
-        this.updateDirection(this.dir, true);
 
         cc.log('evolute!');
         this.evolution++;
@@ -97,6 +97,8 @@ var TowerUI = cc.Sprite.extend({
         this.part[this.evolution + 1] = new cc.Sprite(this.initTextures[this.evolution + 1]);
         this.part[this.evolution + 1].setPosition(this.width / 2, this.height / 2);
         this.addChild(this.part[this.evolution + 1]);
+
+        this.updateDirection(this.dir, true);
     },
 
     update: function (dt) {
@@ -107,12 +109,12 @@ var TowerUI = cc.Sprite.extend({
         let dir = Math.floor(Date.now() / 1000) % 16;
         this.updateDirection(dir);
     },
-    stopActions: function (){
-        try{
+    stopActions: function () {
+        try {
             this.stopAllActions();
-            this.part.forEach(part=>part.stopAllActions());
-            this.currentActions.forEach(ani=>ani.retain());
-        } catch (e){
+            this.part.forEach(part => part.stopAllActions());
+            this.currentActions.forEach(ani => ani.retain());
+        } catch (e) {
             cc.log('No running action!')
         }
     },
@@ -120,14 +122,14 @@ var TowerUI = cc.Sprite.extend({
      * Update Idle animation by direction
      * @param {number} dir: direction index
      * @param {boolean} force: force to change*/
-    updateDirection: function (dir, force=false) {
+    updateDirection: function (dir, force = false) {
         if (this.dir === dir && !force) {
             return;
         }
         // stop all current action
         this.stopActions()
         const action2run = this.idleActions
-        try{
+        try {
             if (action2run[0] !== null && action2run[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
                     this.currentActions[0] = action2run[0][dir];
@@ -149,18 +151,20 @@ var TowerUI = cc.Sprite.extend({
             cc.log('Can not change dir!')
         }
     },
-    playAttack: function (dir){
+    playAttack: function (dir) {
         // stop all current action
         this.stopActions();
         let sequence, self = this;
         const action2run = this.attackActions;
-        try{
+        try {
             if (action2run[0] !== null && action2run[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
                     this.currentActions[0] = action2run[0][dir];
                     sequence = cc.sequence(
                         action2run[0][dir],
-                        cc.callFunc(() => {self.updateDirection(dir, true)}));
+                        cc.callFunc(() => {
+                            self.updateDirection(dir, true)
+                        }));
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
                         this.currentActions[i] = action2run[i][dir];
@@ -222,5 +226,32 @@ var TowerUI = cc.Sprite.extend({
             frames.push(frame);
         }
         return frames;
-    }
+    },
+    addTimerUI: function () {
+        if (this.timerBar==null||undefined){
+            this.addObjectBackground(res.timer1, 0.8 / 8, 0)
+            // this.addObjectBackground(res.timer2,0.8/8,0,0,1/15)
+            var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+            timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
+            timeBar.setBarChangeRate(cc.p(1, 0));
+            timeBar.setMidpoint(cc.p(0.5, 0.5))
+            timeBar.setScale(WIDTHSIZE / timeBar.getContentSize().width * 0.8 / 8)
+            this.addChild(timeBar, 0, 'timeBar');
+            var time3 = this.addObjectBackground(res.timer3, 0.8 / 8, 0)
+            time3.visible = false;
+            this.timerBar = timeBar;
+        }
+
+    },
+    addObjectBackground: function (res, scaleW, scaleH) {
+        var obj = new cc.Sprite(res);
+        if (scaleW > 0) {
+            obj.setScale(WIDTHSIZE / obj.getContentSize().width * scaleW)
+        } else if (scaleH > 0) {
+            obj.setScale(HEIGHTSIZE / obj.getContentSize().height * scaleH)
+        }
+        obj.setPosition(0,0)
+        this.addChild(obj, 0, res);
+        return obj
+    },
 });
