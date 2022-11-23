@@ -5,12 +5,12 @@ var TWizardBullet = Bullet.extend({
     ctor: function (target, speed, damage, radius, position) {
         this._super(res.Wizard_Bullet);
         this.reset(target, speed, damage, radius, position)
-        this.fx = new sp.SkeletonAnimation('res/tower/fx/tower_'+this.name+ '_fx.json',
-            'res/tower/fx/tower_'+this.name+ '_fx.atlas', true, 0.1);
-
-        this.fx.setAnimation(0, 'attack_1', true);
-
-        this.addChild(this.fx);
+        // this.fx = new sp.SkeletonAnimation('res/tower/fx/tower_'+this.name+ '_fx.json',
+        //     'res/tower/fx/tower_'+this.name+ '_fx.atlas', true, 0.1);
+        //
+        // this.fx.setAnimation(0, 'attack_1', true);
+        //
+        // this.addChild(this.fx);
         // this.fx.visible = false;
 
 
@@ -38,7 +38,7 @@ var TWizardBullet = Bullet.extend({
         }
         this.isDestroy = true;
 
-        this.fx.setAnimation(0, 'hit_target_eff', false);
+        // this.fx.setAnimation(0, 'hit_target_eff', false);
         this.active = false;
         this.visible = false;
     }

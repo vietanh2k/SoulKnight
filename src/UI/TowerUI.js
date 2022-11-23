@@ -65,6 +65,7 @@ var TowerUI = cc.Sprite.extend({
         } catch (e) {
             cc.log('this.runAction(this.idleActions[0][0])' + e)
         }
+        this.visible = true;
     },
     AnimationSetUp: function (card) {
         if (card.id === 2) {

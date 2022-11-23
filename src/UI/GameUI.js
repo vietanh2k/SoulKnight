@@ -160,14 +160,13 @@ var GameUI = cc.Layer.extend({
             var rand = Math.floor(Math.random() * 2) + 1;
             var position = this.screenLoc2Position(loc)
 
-            if (!this._wizard) {
+            if (this.listCard[this.cardTouchSlot - 1].cardID == 0) {
                 testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                     gv.gameClient._userId)]);
-                this._wizard = true;
-            } else {
+            }
+            if(this.listCard[this.cardTouchSlot - 1].cardID ==2){
                 testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
                     gv.gameClient._userId)]);
-                this._wizard = false;
             }
 
 
@@ -598,7 +597,7 @@ var GameUI = cc.Layer.extend({
     },
 
     generatePreviewObject: function (target) {
-        if (this._wizard) {
+        if (this.listCard[this.cardTouchSlot - 1].cardID == 2) {
             let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
             towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
