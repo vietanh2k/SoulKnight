@@ -139,7 +139,7 @@ var GameUI = cc.Layer.extend({
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerB._map._mapController.isExistPath()) {
                 this._gameStateManager.playerB._map.updatePathForCells()
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
-                this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 0)
+                this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
                 cc.log('loc' + JSON.stringify(loc) + 'position' + position)
                 var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 0)
@@ -496,44 +496,44 @@ var GameUI = cc.Layer.extend({
             },
 
             onTouchMoved: (touch, event) => {
-                let target = event.getCurrentTarget();
-                let rule = getRule(target);
-                if (this.previewObject === undefined) {
-                    this.previewObject = this.generatePreviewObject(target);
-                    this.addChild(this.previewObject);
-                }
-                this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
-                this.previewObject.visible = isPosInMap(this.previewObject, rule);
+                // let target = event.getCurrentTarget();
+                // let rule = getRule(target);
+                // if (this.previewObject === undefined) {
+                //     this.previewObject = this.generatePreviewObject(target);
+                //     this.addChild(this.previewObject);
+                // }
+                // this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
+                // this.previewObject.visible = isPosInMap(this.previewObject, rule);
             },
 
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
 
-                if (this.previewObject !== undefined) {
-                    let target = event.getCurrentTarget();
-                    let rule = getRule(target);
-                    this.previewObject.removeFromParent(true);
-                    this.previewObject = undefined;
-                    let pos = touch.getLocation();
-                    let cor = convertPosToIndex(pos, rule);
-                    cc.log('there is ' + cor.x + ', ' + cor.y)
-                    if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                        if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
-                            cc.log('There is another type tower exist in this cell!');
-                        } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
-                            Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                        } else {
-                            this.towerUIMap[cor.x][cor.y].evolute();
-                        }
-                    }
-                    else if (isPosInMap(pos, rule)) {
-                        MW.MOUSE = pos;
-                        this.createObjectByTouch = true;
-                    } else {
-                        cc.log('out of map! rule: ' + rule);
-                        return;
-                    }
-                }
+                // if (this.previewObject !== undefined) {
+                //     let target = event.getCurrentTarget();
+                //     let rule = getRule(target);
+                //     this.previewObject.removeFromParent(true);
+                //     this.previewObject = undefined;
+                //     let pos = touch.getLocation();
+                //     let cor = convertPosToIndex(pos, rule);
+                //     cc.log('there is ' + cor.x + ', ' + cor.y)
+                //     if (this.towerUIMap[cor.x][cor.y] !== undefined) {
+                //         if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
+                //             cc.log('There is another type tower exist in this cell!');
+                //         } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                //             Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+                //         } else {
+                //             this.towerUIMap[cor.x][cor.y].evolute();
+                //         }
+                //     }
+                //     else if (isPosInMap(pos, rule)) {
+                //         MW.MOUSE = pos;
+                //         this.createObjectByTouch = true;
+                //     } else {
+                //         cc.log('out of map! rule: ' + rule);
+                //         return;
+                //     }
+                // }
 
                 if (target.getParent() != null) {
                     if (target.getParent().cardTouchSlot !== target.numSlot) {
@@ -554,7 +554,7 @@ var GameUI = cc.Layer.extend({
 
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = false
-                        setTimeout(() => target.getParent().cardTouchSlot = -1, 0.01)
+                        target.getParent().cardTouchSlot = -1
 
                         target.setCardDownUI()
 
