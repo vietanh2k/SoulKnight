@@ -72,6 +72,8 @@ const Monster = AnimatedSprite.extend({
     route: function (map, distance, prevCell) {
         let currentCell = map.getCellAtPosition(this.position);
 
+        if (currentCell == null) return;
+
         if (currentCell === prevCell) {
             currentCell = currentCell.getNextCell()
         }
@@ -168,4 +170,6 @@ const Monster = AnimatedSprite.extend({
 
 
 
-
+MonsterFactory.prototype.addMonsterInitializer(0, "swordsman", false, function () {
+    return null
+})

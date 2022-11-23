@@ -97,7 +97,9 @@
 
         "src/Logic/objects/MCard.js",
         "src/Logic/utils/AnimatedSprite.js",
-        "src/Logic/objects/Monster.js",
+
+        "src/Logic/objects/monsters/MonsterFactory.js",
+        "src/Logic/objects/monsters/Monster.js",
         "src/Logic/utils/Vec2.js",
 
         "src/Logic/utils/String.js",
