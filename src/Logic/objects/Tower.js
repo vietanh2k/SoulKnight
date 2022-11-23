@@ -35,31 +35,31 @@ var Tower = TowerUI.extend({
             this._is_set_pos = true
         }
         if (this.renderRule === 1) {
-            if (this._last_status==undefined || this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
-                if(this.status=='idle'){
+            if (this._last_status == undefined || this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
+                if (this.status == 'idle') {
                     this.updateDirection(this._new_dir);
                 } else {
                     this.playAttack(this._new_dir);
-                    this.status='idle'
+                    this.status = 'idle'
                 }
 
                 this._last_dir = this._new_dir;
                 this._last_status = this.status;
             }
         } else {
-            if (this._last_status==undefined || this.status != this._last_status || this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir) {
-                var dir = (this._new_dir+8)%16;
-                if(this.status=='idle'){
+            if (this._last_status == undefined || this.status != this._last_status || this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir) {
+                var dir = (this._new_dir + 8) % 16;
+                if (this.status == 'idle') {
                     this.updateDirection(dir);
                 } else {
                     this.playAttack(dir);
-                    this.status='idle'
+                    this.status = 'idle'
                 }
 
                 // this.updateDirection((this._new_dir+8)%16)
-                    this._last_dir = this._new_dir
-                    this._last_status = this.status
-                }
+                this._last_dir = this._new_dir
+                this._last_status = this.status
+            }
 
         }
 
@@ -95,7 +95,7 @@ var Tower = TowerUI.extend({
             let bullet = this.getNewBullet(this.target[0]);
             this.map.addNewBullet(bullet);
             var direction = this.target[0].position.sub(this.position).normalize();
-            this._new_dir =  this.changDirectionHandle(direction);
+            this._new_dir = this.changDirectionHandle(direction);
 
         }
 
@@ -106,15 +106,15 @@ var Tower = TowerUI.extend({
      * */
     changDirectionHandle: function (direction) {
         var dirs = [
-            [ 10,   9,  8,  7,  6   ],
-            [ 11,   12,  8,  7,  5  ],
-            [ 12,   12, 0,  4,  4   ],
-            [ 13,   12,  0,  3,  3  ],
-            [ 14,   15, 0,  1,  2   ],
+            [10, 9, 8, 7, 6],
+            [11, 12, 8, 7, 5],
+            [12, 12, 0, 4, 4],
+            [13, 12, 0, 3, 3],
+            [14, 15, 0, 1, 2],
         ]
         cc.log('Pdirection' + direction)
-        direction.set(Math.max(Math.round(2.5+ direction.x*2.5)-1, 0)
-            , Math.max(0,Math.round(2.5 +direction.y*2.5)-1))
+        direction.set(Math.max(Math.round(2.5 + direction.x * 2.5) - 1, 0)
+            , Math.max(0, Math.round(2.5 + direction.y * 2.5) - 1))
         cc.log('Adirection' + direction)
         if (direction) {
             const dir = dirs[direction.y][direction.x]
@@ -201,12 +201,12 @@ var Tower = TowerUI.extend({
     },
     upgrade: function (card) {
         this.evolute();
-        if(this.level<3){
+        if (this.level < 3) {
             this.level += 1;
         }
     }
 
-    }
+}
 )
 
 Tower.TOWER_FACTORY = {}
@@ -229,4 +229,3 @@ Tower.getOrCreate = function (card) {
     }
     return Tower.TOWER_FACTORY[card.id]();
 }
-

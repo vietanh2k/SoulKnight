@@ -22,18 +22,23 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.USER_LOGIN:
                 this.sendGetUserInfo();
-                fr.getCurrentScreen().onFinishLogin();
+                if(fr.getCurrentScreen()!=null){
+                    // if current screen is opening (login)
+                    fr.getCurrentScreen().onFinishLogin();
+                }
+
                 break;
             case gv.CMD.USER_INFO:
-                fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
+                if(fr.getCurrentScreen()!=null){
+                    // if current screen is opening (lobby)
+                    fr.getCurrentScreen().onUserInfo(packet.name, packet.x, packet.y);
+                }
                 break;
             case gv.CMD.MOVE:
                 cc.log("MOVE:", packet.x, packet.y);
                 fr.getCurrentScreen().updateMove(packet.x, packet.y);
                 break;
-            // case gv.CMD.OPEN_CHEST_NOW:
-            //     // fr.getCurrentScreen().onReceivedServerResponse(packet.status);
-            //     break;
+
             case gv.CMD.OPEN_CHEST:
                 cc.log('receive open chest now response')
                 break;
