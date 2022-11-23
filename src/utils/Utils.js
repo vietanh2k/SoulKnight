@@ -70,8 +70,9 @@ Utils.updateTimeDiff = function (serverNow) {
 }
 
 Utils.addToastToRunningScene = function (message) {
-    cc.director.getRunningScene().addChild(new Toast(message), cf.TOAST_Z_ORDER);
-}
+    if(fr.getCurrentScreen()!=null||undefined){
+        fr.getCurrentScreen().addChild(new Toast(message), cf.TOAST_Z_ORDER);
+    }}
 
 Utils.addScaleAnimation = function (obj) {
     obj.scale = 0.2;

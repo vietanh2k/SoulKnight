@@ -493,7 +493,7 @@ testnetwork.packetMap[gv.CMD.START_COOLDOWN] = fr.InPacket.extend({
             return;
         }
 
-        cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_HOME].startCooldownChestSlot(chestID, openOnServerTimestamp);
+        LobbyInstant.tabUIs[cf.LOBBY_TAB_HOME].startCooldownChestSlot(chestID, openOnServerTimestamp);
     }
 });
 
@@ -692,7 +692,7 @@ testnetwork.packetMap[gv.CMD.ADD_CURRENCY] = fr.InPacket.extend({
 
         if (status === "Success") {
             this.updatePlayerResource(type, amount);
-            cc.director.getRunningScene().currencyPanel.updateLabels();
+            LobbyInstant.currencyPanel.updateLabels();
         } else {
             Utils.addToastToRunningScene(status);
         }
@@ -720,11 +720,11 @@ testnetwork.packetMap[gv.CMD.SWAP_CARD_INTO_DECK] = fr.InPacket.extend({
 
         if (status === "Success") {
             sharePlayerInfo.updateDeckAfterSwapCard(typeIn, typeOut);
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateSwapCardIntoDeck();
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateSwapCardIntoDeck();
         } else {
             Utils.addToastToRunningScene(status);
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].swapInCardSlot.removeFromParent(true);
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].quitAddCardToDeck();
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].swapInCardSlot.removeFromParent(true);
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].quitAddCardToDeck();
         }
     },
 });
@@ -757,8 +757,8 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
                     break;
                 }
             }
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
-            cc.director.getRunningScene().getChildByTag(cf.TAG_CARDINFOUI).destroy();
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
+            LobbyInstant.getChildByTag(cf.TAG_CARDINFOUI).destroy();
         } else {
             Utils.addToastToRunningScene(status);
         }
