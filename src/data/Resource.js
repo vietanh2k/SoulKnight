@@ -33,7 +33,8 @@ var res = {
     cancelCard : "cancelCard.json",
     inforEndBattle : "inforEndBattle.json",
     energyBar : "energyBar.json",
-
+    cantLoadShop : "cantLoadShop.json",
+    healthMonster : "healthMonster.json",
     
     font_magic : 'asset/font/SVN-Supercell Magic.ttf',
     font_normal : 'asset/font/SVN-Avo bold.ttf',
@@ -51,7 +52,7 @@ var res = {
     hole : 'asset/battle/UI/ui_hole.png',
     treeUI: 'asset/map/map_forest_obstacle_1.png',
     logo_png : 'asset/map/b.png',
-    logoBack_png : 'asset/map/lobby_background.png',
+    logoBack_png : 'asset/lobby/lobby_background.png',
     mapbackground00: 'asset/map/map_background.png',
     mapbackground0: 'asset/map/map_background_0000.png',
     mapbackground01: 'asset/map/map_background_0001.png',
@@ -91,6 +92,8 @@ var res = {
     highlightPath: 'asset/battle/UI/ui_transparent_square.png',
     iconArrow: 'asset/battle/UI/ui_icon_arrow.png',
     Swordman_plist:'res/swordsman.plist',
+    explosion_plist:'res/game/animation/explosion/explosion.plist',
+    explosion_png:'res/game/animation/explosion/explosion.png',
     timer1:'asset/battle/battle_timer_background.png',
     timer2:'asset/battle/battle_timer.png',
     timer3:'asset/battle/battle_timer_border.png',
@@ -167,5 +170,7 @@ var g_resources = [
     res.timer2,
     res.timer3,
     res.health_box,
-    res.energyIcon
+    res.energyIcon,
+    res.explosion_plist,
+    res.explosion_png
 ];

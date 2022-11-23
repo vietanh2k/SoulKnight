@@ -82,6 +82,7 @@
         "src/UI/ShopUI.js",
         "src/UI/SkillInfoUI.js",
         "src/UI/StatSlot.js",
+        "src/UI/Explosion.js",
 
         "src/utils/Utils.js",
         "src/UI/MatchingUI.js",
@@ -116,6 +117,7 @@
         "src/Logic/map/MAP_CONFIG.js",
         "src/Logic/map/Cell.js",
         "src/Logic/objects/Bullet.js",
+        "src/Logic/objects/StraightBullet.js",
         "src/Logic/objects/Tower.js",
         "src/Logic/objects/TWizard.js",
         "src/Logic/objects/TCanon.js"

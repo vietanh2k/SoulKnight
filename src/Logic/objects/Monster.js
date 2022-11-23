@@ -13,7 +13,7 @@ const Monster = AnimatedSprite.extend({
         this.prevPosition = new Vec2(0,0)
         this.speed = 30.0
         this.concept="monster"
-        this.health = 10;
+        this.health = 30;
 
         return true;
     },
@@ -136,8 +136,13 @@ const Monster = AnimatedSprite.extend({
         this.isDestroy = true
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
+            var ex = new Explosion(cc.p(this.x, this.y))
+            this.getParent().addChild(ex)
         }
         this.visible = false;
+        // var ex = new Explosion()
+        // ex.setPosition(300, 500)
+        // this.addChild(ex, 5000)
         this.removeFromParent(true)
     },
 

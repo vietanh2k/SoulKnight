@@ -1,6 +1,8 @@
 /**
  * Đối tượng Map trong thiết kế
  * */
+
+const SERVER_CELL_WIDTH_CONFIG = SERVER_CELL_WIDTH_CONFIG || 50;
 var MapView = cc.Class.extend({
     trees: null,
     monsters: null,
@@ -281,24 +283,20 @@ var MapView = cc.Class.extend({
      * @param {Vec2} objectA: vị trí trên map
      * @param {Number} range: độ dài tính theo ô*/
     getObjectInRange: function (objectA, range){
-        var objInRange = []
-        var EuclidLength = function (vec) {
-            return Math.sqrt(vec.x * vec.x + vec.y * vec.y)
-        }
-        // cc.log('vec: '+ objectA+ ' range actual'+ range*(CELLWIDTH+CELLWIDTH)/2.0)
+        let objInRange = [];
+        const range_in_number = range*SERVER_CELL_WIDTH_CONFIG;
         this.bullets.forEach(obj=>{
-            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+            if(range_in_number>= objectA.sub(obj.position).length()){
                 objInRange.push(obj)
             }
         })
         this.towers.forEach(obj=>{
-            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+            if(range_in_number>= objectA.sub(obj.position).length()){
                 objInRange.push(obj)
             }
         })
         this.monsters.forEach(obj=>{
-            // cc.log('Bvec: '+ obj.position+ ' dis = '+ EuclidLength(objectA.sub(obj.position)))
-            if(range*(CELLWIDTH+CELLWIDTH)/2.0>= EuclidLength(objectA.sub(obj.position))){
+            if(range_in_number>= objectA.sub(obj.position).length()){
                 objInRange.push(obj)
             }
         })

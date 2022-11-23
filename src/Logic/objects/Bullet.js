@@ -1,4 +1,5 @@
 var Bullet = cc.Sprite.extend({
+    fx:null,
     ctor: function (target, speed, damage, radius, position) {
         this._super(res.Wizard_Bullet);
         this.target = target
@@ -67,9 +68,13 @@ var Bullet = cc.Sprite.extend({
 
             this.setPosition(width - x, height + y)
         }
+        // if(this.fx!=null||undefined){
+        //     this.fx.setPosition(cc.p(this.x, this.y))
+        // }
     },
     logicUpdate: function (playerState, dt) {
         if (this.active) {
+
             var pos = this.getTargetPosition()
             if (euclid_distance(this.position, pos) > this.getSpeed() * dt) {
                 // cc.log('bullet í moving')
@@ -79,6 +84,9 @@ var Bullet = cc.Sprite.extend({
             } else {
                 cc.log('bullet explose')
                 this.explose(playerState, pos);
+            }
+            if(this.fx!=null){
+                this.fx.update(dt)
             }
         }
 
@@ -97,6 +105,4 @@ var Bullet = cc.Sprite.extend({
         this.visible = false;
         GameUI.instance.removeChild(this)
     }
-
-
 })

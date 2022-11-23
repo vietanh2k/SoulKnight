@@ -102,6 +102,7 @@ var OpenChestAnimationUI = cc.Layer.extend({
                 if (updatedCard !== undefined) {
                     oldFragment = updatedCard.fragment;
                 }
+                cc.log('newFragment ' + newFragment + ', old: ' + oldFragment)
                 this.addAmount(rewardSlot, newFragment - oldFragment);
             } else {
                 rewardSlot = new cc.Sprite(asset.iconGold_png);

@@ -19,10 +19,15 @@ var LobbyScene = cc.Scene.extend({
         this._super();
         LobbyInstant = this
         this.initBackGround(0);
+        cc.log('initBackGround')
         this.initCurrencyPanel(2);
+        cc.log('initCurrencyPanel')
         this.calcTabBtnSize();
+        cc.log('calcTabBtnSize')
         this.initTabs(2);
+        cc.log('initTabs')
         this.initTabUIs(1);
+        cc.log('initTabUIs')
     },
 
     initBackGround: function (localZOrder) {
@@ -108,7 +113,7 @@ var LobbyScene = cc.Scene.extend({
     },
 
     changeToTab: function (newTab) {
-        if(newTab == cf.LOBBY_TAB_SHOP) {
+        if(newTab == cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess == false) {
             // fr.view(ShopUI);
             this.requestOffer()
         }
@@ -143,7 +148,9 @@ var LobbyScene = cc.Scene.extend({
 
     initTabUIs: function (localZOrder) {
         this.tabUIs = [];
+        cc.log('cf.LOBBY_TAB_SHOP')
         this.tabUIs[cf.LOBBY_TAB_SHOP] = new ShopUI();
+        cc.log('cf.LOBBY_TAB_CARDS')
         this.tabUIs[cf.LOBBY_TAB_CARDS] = new CardsUI();
         this.tabUIs[cf.LOBBY_TAB_HOME] = new HomeUI();
         for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {

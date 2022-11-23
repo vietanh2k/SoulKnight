@@ -72,9 +72,11 @@ var SignInScreen = cc.Layer.extend({
      */
     onUserInfo: function () {
         // gv.gameClient.sendBuyRequest()
-        let lobbyScene = new LobbyScene();
-        cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
-        cc.log('Current time on client: ' + Date.now());
+        cc.log('on User Info')
+        fr.view(LobbyScene)
+        // let lobbyScene = new LobbyScene();
+        // cc.director.runScene(new cc.TransitionFade(0.5, lobbyScene));
+        // cc.log('Current time on client: ' + Date.now());
     },
     onFinishLogin: function () {
 
