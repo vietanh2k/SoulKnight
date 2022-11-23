@@ -80,6 +80,8 @@
         "src/UI/Toast.js",
         "src/UI/TowerUI.js",
         "src/UI/ShopUI.js",
+        "src/UI/SkillInfoUI.js",
+        "src/UI/StatSlot.js",
         "src/UI/Explosion.js",
 
         "src/utils/Utils.js",

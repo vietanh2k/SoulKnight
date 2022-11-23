@@ -74,6 +74,12 @@ Utils.addToastToRunningScene = function (message) {
         fr.getCurrentScreen().addChild(new Toast(message), cf.TOAST_Z_ORDER);
     }}
 
+Utils.addScaleAnimation = function (obj) {
+    obj.scale = 0.2;
+    obj.runAction(cc.fadeIn(0.2));
+    obj.runAction(cc.sequence(cc.scaleBy(0.15, 5), cc.scaleBy(0.10, 0.94), cc.scaleBy(0.08, 1.06), cc.scaleBy(0.07, 0.96), cc.scaleBy(0.05, 1.04)));
+}
+
 Utils.loadCardConfig = function () {
     cc.loader.load('json/CardTypeMap.json', (err, res) => {
         cf.CARD_TYPE = res[0];
@@ -86,5 +92,11 @@ Utils.loadCardConfig = function () {
     });
     cc.loader.load('json/Potion.json', (err, res) => {
         cf.POTION = res[0];
+    });
+    cc.loader.load('json/TowerBuff.json', (err, res) => {
+        cf.TOWER_BUFF = res[0];
+    });
+    cc.loader.load('json/TargetBuff.json', (err, res) => {
+        cf.TARGET_BUFF = res[0];
     });
 }

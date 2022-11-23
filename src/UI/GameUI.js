@@ -159,7 +159,8 @@ var GameUI = cc.Layer.extend({
             var loc = convertPosToIndex(pos, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var position = this.screenLoc2Position(loc)
-
+            let cor = convertPosToIndex(pos, 1);
+            this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, 1));
             if (this.listCard[this.cardTouchSlot - 1].cardID == 0) {
                 testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                     gv.gameClient._userId)]);
@@ -892,6 +893,32 @@ var GameUI = cc.Layer.extend({
 
 
     },
+    addTimerBeforeCreateTower: function (pos) {
+        let timerBackground = new cc.Sprite(res.timer1);
+        timerBackground.setPosition(pos);
+        timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
+        this.addChild(timerBackground, 0, 'timerBackground');
+
+        let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
+        timerTower.setBarChangeRate(cc.p(1, 0));
+        timerTower.setMidpoint(cc.p(0.5, 0.5));
+        timerTower.setPercentage(100);
+        timerTower.setPosition(pos);
+        timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
+        this.addChild(timerTower, 0, 'timerTower');
+
+        timerTower.runAction(
+            cc.sequence(
+                cc.progressTo(cf.DROP_TOWER_DELAY, 0),
+                cc.callFunc(() => {
+                    timerBackground.removeFromParent(true);
+                }),
+                cc.removeSelf()
+            )
+        );
+    },
+
 
 });
 

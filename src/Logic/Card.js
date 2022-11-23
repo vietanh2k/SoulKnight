@@ -36,6 +36,7 @@ var Card = cc.Class.extend({
             this.energy = cardConfig.energy;
             this.texture = cardConfig.texture;
             this.miniature = cardConfig.miniature;
+            this.skill = cardConfig.skill;
             this.name = cardConfig.name;
             this.description = cardConfig.description;
         }
@@ -96,5 +97,14 @@ var Card = cc.Class.extend({
     isInDeck: function () {
         let inDeck = sharePlayerInfo.deck.find(element => element.type === this.type);
         return inDeck !== undefined;
+    },
+
+    getTextType: function () {
+        if (this.isMonster()) return 'Quái vật';
+        if (this.isSpell()) return 'Phép thuật';
+        if ([100, 101, 102].indexOf(this.id) !== -1) return 'Trụ c. đấu';
+        if ([103, 104].indexOf(this.id) !== -1) return 'Trụ p. thuật';
+        if ([105, 106].indexOf(this.id) !== -1) return 'Trụ hỗ trợ';
+
     },
 });

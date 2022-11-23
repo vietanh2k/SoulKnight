@@ -55,6 +55,18 @@ var asset = {
     panelBackground_png: 'res/common/common_panel_background.png',
     panelFront_png: 'res/common/common_panel_front.png',
     panelBtnClose_png: 'res/common/common_panel_btn_close.png',
+    panelBtnBack_png: 'res/skill/common_panel_btn_back.png',
+
+    iconSkillLocked_png: 'res/skill/lobby_card_skill_locked.png',
+    iconSkillSeparator_png: 'res/skill/lobby_card_skill_separator.png',
+    iconSkillResonance_png: 'res/skill/icon_skill_05.png',
+    iconSkillIncrease_png: 'res/skill/icon_skill_02.png',
+    iconSkillArmorBreak_png: 'res/skill/skill_icon_armor_break.png',
+    iconSkillBurn_png: 'res/skill/skill_icon_burn.png',
+    iconSkillPoison_png: 'res/skill/skill_icon_poison.png',
+    iconSkillSlow_png: 'res/skill/skill_icon_slow.png',
+    iconSkillStun_png: 'res/skill/skill_icon_stun.png',
+
     treasurePedestal_png: 'res/lobby/treasure/common_treasure_pedestal.png',
     iconCardsMultiple_png: [
         'res/lobby/treasure/common_icon_card_multiple.png',
@@ -113,6 +125,15 @@ var asset = {
     cardUpgradeReady_atlas: 'res/lobby/fx/card_upgrade_ready.atlas',
     cardUpgradeReady_json: 'res/lobby/fx/card_upgrade_ready.json',
 
+    cardPanelBox_png: 'res/lobby/lobby_card_panel_box.png',
+    cardPanelStat_png: 'res/lobby/lobby_card_panel_stat.png',
+    cardPanelFlags_png: [
+        'res/lobby/lobby_card_panel_flag_common.png',
+        'res/lobby/lobby_card_panel_flag_rare.png',
+        'res/lobby/lobby_card_panel_flag_epic.png',
+        'res/lobby/lobby_card_panel_flag_legend.png',
+    ],
+
     cardTowerAttackSpeed_png: 'res/card/card_tower_attack_speed.png',
     cardTowerBoomerang_png: 'res/card/card_tower_boomerang.png',
     cardTowerCannon_png: 'res/card/card_tower_cannon.png',
@@ -133,6 +154,27 @@ var asset = {
     cardPotionPower_png: 'res/card/card_potion_power.png',
     cardPotionSpeedUp_png: 'res/card/card_potion_speed_up.png',
     cardPotionTrap_png: 'res/card/card_potion_trap.png',
+
+    statIcons_png: {
+        'attackSpeed': 'res/card/stat_icon/stat_icon_attack_speed.png',
+        'attackSpeedUp': 'res/card/stat_icon/stat_icon_attack_speed_up.png',
+        'bulletRadius': 'res/card/stat_icon/stat_icon_bullet_radius.png',
+        'damage': 'res/card/stat_icon/stat_icon_damage.png',
+        'damageUp': 'res/card/stat_icon/stat_icon_damage_up.png',
+        'energyGain': 'res/card/stat_icon/stat_icon_energy_gain.png',
+        'evasion': 'res/card/stat_icon/stat_icon_evasion.png',
+        'heal': 'res/card/stat_icon/stat_icon_heal.png',
+        'healthUp': 'res/card/stat_icon/stat_icon_health_up.png',
+        'hp': 'res/card/stat_icon/stat_icon_hp.png',
+        'immobilize': 'res/card/stat_icon/stat_icon_immobilize.png',
+        'numberMonsters': 'res/card/stat_icon/stat_icon_number_monsters.png',
+        'potionRange': 'res/card/stat_icon/stat_icon_potion_range.png',
+        'range': 'res/card/stat_icon/stat_icon_range.png',
+        'rangeUp': 'res/card/stat_icon/stat_icon_range_up.png',
+        'special': 'res/card/stat_icon/stat_icon_special.png',
+        'speed': 'res/card/stat_icon/stat_icon_speed.png',
+        'time': 'res/card/stat_icon/stat_icon_time.png',
+    },
 
     miniatureMonsterAssassin_png: 'res/card/miniature_monster_assassin.png',
     miniatureMonsterBat_png: 'res/card/miniature_monster_bat.png',

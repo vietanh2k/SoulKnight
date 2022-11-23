@@ -136,6 +136,8 @@ cf.COST_GEMS_PER_HOUR = 6;
 
 cf.MAX_EVOLUTION = 2;
 
+cf.DROP_TOWER_DELAY = 1;
+
 // Treasure.json
 cf.CHEST_REWARD = [
     {
@@ -145,6 +147,14 @@ cf.CHEST_REWARD = [
         cards: 2,
         rarities: [1, 2, 3, 4],
     },
+];
+
+cf.TEXT_RARITIES = ['Common', 'Rare', 'Epic', 'Legend'];
+cf.COLOR_RARITIES = [
+    cc.color(134, 204, 100),
+    cc.color(83, 178, 244),
+    cc.color(242, 160, 62),
+    cc.color(237, 103, 253),
 ];
 
 // MCard.xlsx
@@ -219,6 +229,18 @@ cf.CARD = [
         energy: 8,
         texture: asset.cardTowerCannon_png,
         miniature: asset.miniaturesTowerCannon_png,
+        skill: {
+            texture: asset.iconSkillStun_png,
+            name: 'Đan Choáng',
+            description: 'Gây mini choáng cho quái.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['time'],
+                    textAttribute: 'Thời gian:',
+                    textStat: '0.2s',
+                },
+            ],
+        },
         name: 'Pháo Cú',
         description:
             'Bắn đơn một mục tiêu,\n' +
@@ -230,6 +252,20 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerWizard_png,
         miniature: asset.miniaturesTowerWizard_png,
+        skill: {
+            texture: asset.iconSkillResonance_png,
+            name: 'Cộng Hưởng',
+            description:
+                'Cộng thêm sát thương khi trong\n' +
+                'vùng nổ đạn có trên 5 quái.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damageUp'],
+                    textAttribute: 'S. thương tăng:',
+                    textStat: '10',
+                },
+            ],
+        },
         name: 'Quạ Pháp Sư',
         description:
             'Bắn cầu lửa vào vị trí xác định\n' +
@@ -241,6 +277,20 @@ cf.CARD = [
         energy: 10,
         texture: asset.cardTowerBoomerang_png,
         miniature: asset.miniaturesTowerBoomerang_png,
+        skill: {
+            texture: asset.iconSkillIncrease_png,
+            name: 'Tăng Sát',
+            description:
+                'Tăng thêm sát thương cho lần\n' +
+                'gây sát thương tiếp theo của đạn.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damageUp'],
+                    textAttribute: 'S. thương tăng:',
+                    textStat: '50%',
+                },
+            ],
+        },
         name: 'Ếch Đồ Tể',
         description:
             'Bắn dao phay vào vị trí xác định\n' +
@@ -254,6 +304,23 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerOilGun_png,
         miniature: asset.miniaturesTowerOilGun_png,
+        skill: {
+            texture: asset.iconSkillPoison_png,
+            name: 'Nhớt Độc',
+            description: 'Gây độc cho quái bị dính đạn.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damage'],
+                    textAttribute: 'Sát thương:',
+                    textStat: '2',
+                },
+                {
+                    texture: asset.statIcons_png['time'],
+                    textAttribute: 'Thời gian:',
+                    textStat: '3s',
+                },
+            ],
+        },
         name: 'Thỏ Xả Nhớt',
         description:
             'Bắn đạn nhớt của sên\n' +
@@ -266,6 +333,20 @@ cf.CARD = [
         energy: 10,
         texture: asset.cardTowerIceGun_png,
         miniature: asset.miniaturesTowerIceGun_png,
+        skill: {
+            texture: asset.iconSkillArmorBreak_png,
+            name: 'Băng Sát',
+            description:
+                'Quái nhận thêm sát thương\n' +
+                'khi đang bị đóng băng.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damageUp'],
+                    textAttribute: 'S. thương tăng:',
+                    textStat: '50%',
+                },
+            ],
+        },
         name: 'Gấu Bắc Cực',
         description:
             'Bắn đạn băng vào một mục tiêu,\n' +
@@ -277,6 +358,20 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerDamage_png,
         miniature: asset.miniaturesTowerDamage_png,
+        skill: {
+            texture: asset.iconSkillSlow_png,
+            name: 'Làm Chậm',
+            description:
+                'Quái đi vào vùng trụ\n' +
+                'sẽ bị làm chậm.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['immobilize'],
+                    textAttribute: 'Làm chậm:',
+                    textStat: '80%',
+                },
+            ],
+        },
         name: 'Dê Phát Động',
         description:
             'Tăng Sát thương cho các Tháp\n' +
@@ -287,6 +382,20 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerAttackSpeed_png,
         miniature: asset.miniaturesTowerAttackSpeed_png,
+        skill: {
+            texture: asset.iconSkillBurn_png,
+            name: 'Đốt Máu',
+            description:
+                'Đốt máu quái khi đi\n' +
+                'vào vùng ảnh hưởng.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damage'],
+                    textAttribute: 'Sát thương:',
+                    textStat: '1%, tối đa 5',
+                },
+            ],
+        },
         name: 'Rắn Tóc Đỏ',
         description:
             'Tăng Tốc bắn cho các Tháp\n' +
