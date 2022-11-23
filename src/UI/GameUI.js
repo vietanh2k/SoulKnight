@@ -529,6 +529,7 @@ var GameUI = cc.Layer.extend({
                     else if (isPosInMap(pos, rule)) {
                         MW.MOUSE = pos;
                         this.createObjectByTouch = true;
+                        this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, rule));
                     } else {
                         cc.log('out of map! rule: ' + rule);
                         return;
@@ -595,6 +596,21 @@ var GameUI = cc.Layer.extend({
         card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.8)
         card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.55, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
         this.addChild(card5,0,'cardBackGroundd')
+    },
+
+    addTimerBeforeCreateTower: function (pos) {
+        let timerBackground = new cc.Sprite(res.timer1);
+        timerBackground.setPosition(pos);
+        timerBackground.setScale(WIDTHSIZE / tmp.getContentSize().width * 0.8 / 8);
+        this.addChild(timerBackground);
+
+        // let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        // timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
+        // timerTower.setBarChangeRate(cc.p(1, 0));
+        // timerTower.setMidpoint(cc.p(0.5, 0.5))
+        // timerTower.setPosition(pos);
+        // timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.8 / 8);
+        // this.addChild(timeBar, 0, 'timerTower');
     },
 
     generatePreviewObject: function (target) {

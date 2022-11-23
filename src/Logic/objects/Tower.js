@@ -78,11 +78,11 @@ var Tower = TowerUI.extend({
         if (this.pendingSecond > 0) {
             this.pendingSecond -= dt;
         }
-        try{
-            this.timerBar.setPercentage(this.pendingSecond/this.max_pending)
-        } catch (e){
-            cc.log('can not update timer tower!')
-        }
+        // try{
+        //     this.timerBar.setPercentage(this.pendingSecond/this.max_pending)
+        // } catch (e){
+        //     cc.log('can not update timer tower!')
+        // }
 
     },
     prioritize: function (map, object) {
