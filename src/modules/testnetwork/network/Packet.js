@@ -757,8 +757,8 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
                     break;
                 }
             }
-            cc.director.getRunningScene().tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
-            cc.director.getRunningScene().getChildByTag(cf.TAG_CARDINFOUI).destroy();
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
+            LobbyInstant.getChildByTag(cf.TAG_CARDINFOUI).destroy();
         } else {
             Utils.addToastToRunningScene(status);
         }
