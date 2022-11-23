@@ -136,6 +136,8 @@ cf.COST_GEMS_PER_HOUR = 6;
 
 cf.MAX_EVOLUTION = 2;
 
+cf.DROP_TOWER_DELAY = 1;
+
 // Treasure.json
 cf.CHEST_REWARD = [
     {

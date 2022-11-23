@@ -159,7 +159,8 @@ var GameUI = cc.Layer.extend({
             var loc = convertPosToIndex(pos, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var position = this.screenLoc2Position(loc)
-
+            let cor = convertPosToIndex(pos, 1);
+            this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, 1));
             if (!this._wizard) {
                 testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                     gv.gameClient._userId)]);
@@ -496,45 +497,45 @@ var GameUI = cc.Layer.extend({
             },
 
             onTouchMoved: (touch, event) => {
-                let target = event.getCurrentTarget();
-                let rule = getRule(target);
-                if (this.previewObject === undefined) {
-                    this.previewObject = this.generatePreviewObject(target);
-                    this.addChild(this.previewObject);
-                }
-                this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
-                this.previewObject.visible = isPosInMap(this.previewObject, rule);
+                // let target = event.getCurrentTarget();
+                // let rule = getRule(target);
+                // if (this.previewObject === undefined) {
+                //     this.previewObject = this.generatePreviewObject(target);
+                //     this.addChild(this.previewObject);
+                // }
+                // this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
+                // this.previewObject.visible = isPosInMap(this.previewObject, rule);
             },
 
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
 
-                if (this.previewObject !== undefined) {
-                    let target = event.getCurrentTarget();
-                    let rule = getRule(target);
-                    this.previewObject.removeFromParent(true);
-                    this.previewObject = undefined;
-                    let pos = touch.getLocation();
-                    let cor = convertPosToIndex(pos, rule);
-                    cc.log('there is ' + cor.x + ', ' + cor.y)
-                    if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                        if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
-                            cc.log('There is another type tower exist in this cell!');
-                        } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
-                            Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                        } else {
-                            this.towerUIMap[cor.x][cor.y].evolute();
-                        }
-                    }
-                    else if (isPosInMap(pos, rule)) {
-                        MW.MOUSE = pos;
-                        this.createObjectByTouch = true;
-                        this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, rule));
-                    } else {
-                        cc.log('out of map! rule: ' + rule);
-                        return;
-                    }
-                }
+                // if (this.previewObject !== undefined) {
+                //     let target = event.getCurrentTarget();
+                //     let rule = getRule(target);
+                //     this.previewObject.removeFromParent(true);
+                //     this.previewObject = undefined;
+                //     let pos = touch.getLocation();
+                //     let cor = convertPosToIndex(pos, rule);
+                //     cc.log('there is ' + cor.x + ', ' + cor.y)
+                //     if (this.towerUIMap[cor.x][cor.y] !== undefined) {
+                //         if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
+                //             cc.log('There is another type tower exist in this cell!');
+                //         } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                //             Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+                //         } else {
+                //             this.towerUIMap[cor.x][cor.y].evolute();
+                //         }
+                //     }
+                //     else if (isPosInMap(pos, rule)) {
+                //         MW.MOUSE = pos;
+                //         this.createObjectByTouch = true;
+                //         this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, rule));
+                //     } else {
+                //         cc.log('out of map! rule: ' + rule);
+                //         return;
+                //     }
+                // }
 
                 if (target.getParent() != null) {
                     if (target.getParent().cardTouchSlot !== target.numSlot) {
@@ -555,7 +556,8 @@ var GameUI = cc.Layer.extend({
 
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = false
-                        setTimeout(() => target.getParent().cardTouchSlot = -1, 0.01)
+                        // setTimeout(() => target.getParent().cardTouchSlot = -1, 0.01)
+                        target.getParent().cardTouchSlot = -1;
 
                         target.setCardDownUI()
 
@@ -601,16 +603,27 @@ var GameUI = cc.Layer.extend({
     addTimerBeforeCreateTower: function (pos) {
         let timerBackground = new cc.Sprite(res.timer1);
         timerBackground.setPosition(pos);
-        timerBackground.setScale(WIDTHSIZE / tmp.getContentSize().width * 0.8 / 8);
-        this.addChild(timerBackground);
+        timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
+        this.addChild(timerBackground, 0, 'timerBackground');
 
-        // let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
-        // timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
-        // timerTower.setBarChangeRate(cc.p(1, 0));
-        // timerTower.setMidpoint(cc.p(0.5, 0.5))
-        // timerTower.setPosition(pos);
-        // timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.8 / 8);
-        // this.addChild(timeBar, 0, 'timerTower');
+        let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
+        timerTower.setBarChangeRate(cc.p(1, 0));
+        timerTower.setMidpoint(cc.p(0.5, 0.5));
+        timerTower.setPercentage(100);
+        timerTower.setPosition(pos);
+        timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
+        this.addChild(timerTower, 0, 'timerTower');
+
+        timerTower.runAction(
+            cc.sequence(
+                cc.progressTo(cf.DROP_TOWER_DELAY, 0),
+                cc.callFunc(() => {
+                    timerBackground.removeFromParent(true);
+                }),
+                cc.removeSelf()
+            )
+        );
     },
 
     generatePreviewObject: function (target) {
