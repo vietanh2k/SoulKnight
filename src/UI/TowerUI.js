@@ -227,31 +227,4 @@ var TowerUI = cc.Sprite.extend({
         }
         return frames;
     },
-    addTimerUI: function () {
-        if (this.timerBar==null||undefined){
-            this.addObjectBackground(res.timer1, 0.8 / 8, 0)
-            // this.addObjectBackground(res.timer2,0.8/8,0,0,1/15)
-            var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
-            timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
-            timeBar.setBarChangeRate(cc.p(1, 0));
-            timeBar.setMidpoint(cc.p(0.5, 0.5))
-            timeBar.setScale(WIDTHSIZE / timeBar.getContentSize().width * 0.8 / 8)
-            this.addChild(timeBar, 0, 'timeBar');
-            var time3 = this.addObjectBackground(res.timer3, 0.8 / 8, 0)
-            time3.visible = false;
-            this.timerBar = timeBar;
-        }
-
-    },
-    addObjectBackground: function (res, scaleW, scaleH) {
-        var obj = new cc.Sprite(res);
-        if (scaleW > 0) {
-            obj.setScale(WIDTHSIZE / obj.getContentSize().width * scaleW)
-        } else if (scaleH > 0) {
-            obj.setScale(HEIGHTSIZE / obj.getContentSize().height * scaleH)
-        }
-        obj.setPosition(0,0)
-        this.addChild(obj, 0, res);
-        return obj
-    },
 });
