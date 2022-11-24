@@ -92,6 +92,8 @@ var res = {
     highlightPath: 'res/battle/UI/ui_transparent_square.png',
     iconArrow: 'res/battle/UI/ui_icon_arrow.png',
     Swordman_plist:'res/swordsman.plist',
+    assassin_plist:'res/assassin.plist',
+
     explosion_plist:'res/game/animation/explosion/explosion.plist',
     explosion_png:'res/game/animation/explosion/explosion.png',
     timer1:'res/battle/battle_timer_background.png',

@@ -6,23 +6,31 @@ const Monster = AnimatedSprite.extend({
         this.initAnimation()
         this.active = true
         this.visible = true
-        this.energyFromDestroy = 6
+
         this.renderRule = this._playerState.rule
 
         this.position = new Vec2(MAP_CONFIG.CELL_WIDTH / 2.0, MAP_CONFIG.CELL_HEIGHT / 2.0)
         this.prevPosition = new Vec2(0,0)
-        this.speed = 30.0
+
         this.concept="monster"
-        this.health = 30;
-        this.MaxHealth = 30;
         this.healthUI = null
+
+        this.initConfig()
         this.addHealthUI()
 
         return true;
     },
 
+    initConfig: function () {
+        this.speed = 30.0
+        this.health = 30;
+        this.MaxHealth = 30;
+        this.energyFromDestroy = 6
+        this.energyWhileImpactMainTower = 1
+    },
+
     initAnimation: function (){
-        const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
+        /*const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
         const moveDownRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 12, 23, 1)
         const moveRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 24, 35, 1)
         const moveUpRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 36, 47, 1)
@@ -36,13 +44,13 @@ const Monster = AnimatedSprite.extend({
             [ moveLeftAnimId,           moveUpAnimId,            moveRightAnimId     ],
             [ moveUpLeftAnimId,         moveUpAnimId,            moveUpRightAnimId   ],
         ]
-        this.play(0)
+        this.play(0)*/
     },
 
     debug: function (map) {
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
-            this._playerState.updateHealth(-1)
+            this._playerState.updateHealth(-this.energyWhileImpactMainTower)
             cc.log('destroy')
             this.destroy()
 
@@ -164,12 +172,7 @@ const Monster = AnimatedSprite.extend({
         // ex.setPosition(300, 500)
         // this.addChild(ex, 5000)
         this.removeFromParent(true)
+        this.animationCleanup()
     },
 
 });
-
-
-
-MonsterFactory.prototype.addMonsterInitializer(0, "swordsman", false, function () {
-    return null
-})

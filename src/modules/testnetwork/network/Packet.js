@@ -537,9 +537,8 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
     },
 
         readData: function(){
-            cc.log("Activate actions at frame " + GameStateManagerInstance.frameCount)
-
             const num = this.getInt()
+            cc.log("Activate " + num + " actions at frame " + GameStateManagerInstance.frameCount)
             for (let i = 0; i < num; i++) {
                 const size = this.getInt()
                 const actionCode = this.getInt()

@@ -22,6 +22,7 @@ var GameStateManager = cc.Class.extend({
         this.init();
         this.playerA = new PlayerState(1)
         this.playerB = new PlayerState(2)
+        this.monsterFactory = new MonsterFactory()
         this.readFrom(pkg)
         this._timer = new Timer(this)
         this.canTouchNewWave = false
@@ -139,5 +140,23 @@ var GameStateManager = cc.Class.extend({
         }
     },
 
+    getNextWaveMonstersId: function () {
+        const monstersId = [];
+        monstersId.push(0);
+        monstersId.push(1);
+        return monstersId;
+    },
+
+    activateNextWave: function (ui, monstersId) {
+        for (let i = 0; i < monstersId.length; i++) {
+            const m1 = this.monsterFactory.getMonster(this.playerA, monstersId[i])
+            this.playerA.addMonster(m1)
+            ui.addChild(m1)
+
+            const m2 = this.monsterFactory.getMonster(this.playerB, monstersId[i])
+            this.playerB.addMonster(m2)
+            ui.addChild(m2)
+        }
+    },
 
 });

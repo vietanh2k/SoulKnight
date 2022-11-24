@@ -693,7 +693,7 @@ var GameUI = cc.Layer.extend({
         var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (time == 0) {
-            this.addMonsterToBoth()
+            testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);//this.addMonsterToBoth()
         }
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timer3).visible = true
@@ -722,6 +722,11 @@ var GameUI = cc.Layer.extend({
         this.addChild(monster, 2000)
         const monster2 = this._gameStateManager.playerB._map.addMonster()
         this.addChild(monster2, 2000)
+    },
+
+    activateNextWave: function (monstersId) {
+        this.getNewWave()
+        this._gameStateManager.activateNextWave(this, monstersId)
     },
 
     initCellSlot: function (mapArray, rule) {

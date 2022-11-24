@@ -76,6 +76,11 @@ var PlayerState = cc.Class.extend({
 
     getMap: function () {
         return this._map
-    }
+    },
+
+    addMonster: function (monster){
+        this._map.monsters.push(monster)
+        return monster
+    },
 
 });

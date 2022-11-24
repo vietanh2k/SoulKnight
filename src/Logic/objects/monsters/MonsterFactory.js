@@ -8,8 +8,8 @@ const MonsterFactory = cc.Class.extend({
     normalMonsterNames: [],
     bossNames: [],
 
-    getMonster: function (id) {
-        return this.initializers[this.normalMonsterNames[id]].initializer.initialize();
+    getMonster: function (playerState, id) {
+        return this.initializers[this.normalMonsterNames[id]].initializer(playerState);
     }
 })
 
