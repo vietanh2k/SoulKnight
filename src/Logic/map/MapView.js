@@ -90,7 +90,7 @@ var MapView = cc.Class.extend({
 
                 if (parent.x === -1000) {
                     cell.nextCell = null
-                    cell.prevCell = null
+                    //cell.prevCell = null
                     cell.state = 1
                     continue;
                 }
@@ -103,7 +103,7 @@ var MapView = cc.Class.extend({
                 }
 
                 cell.nextCell = this.cells[parent.x][parent.y];
-                this.cells[parent.x][parent.y].prevCell = cell;
+                //this.cells[parent.x][parent.y].prevCell = cell;
 
                 if (!cell.nextCell) {
                     cc.log( "parent: " + parent + "\tcell.nextCell: " + this.cells[parent.x][parent.y])
@@ -112,7 +112,7 @@ var MapView = cc.Class.extend({
             }
         }
 
-        this.cells[0][0].prevCell = this.gateCell;
+        //this.cells[0][0].prevCell = this.gateCell;
         this.cells[MAP_CONFIG.MAP_WIDTH - 1][MAP_CONFIG.MAP_HEIGHT - 1].nextCell = this.mainTowerCell;
 
         if (this.cells[0][0].state === 1) {
@@ -122,6 +122,9 @@ var MapView = cc.Class.extend({
         for (let x = 0; x < MAP_WIDTH; x++) {
             for (let y = 0; y < MAP_HEIGHT; y++) {
                 const currentCell = this.cells[x][y];
+
+                currentCell.nextPos = null;
+                currentCell.outPos = null;
 
                 if (currentCell.getNextCell() == null) {
                     continue
