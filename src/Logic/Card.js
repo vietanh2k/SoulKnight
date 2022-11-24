@@ -18,6 +18,7 @@ var Card = cc.Class.extend({
                 break;
             case 'monster':
                 this.monsterInfo = cf.MONSTER.monster[this.instance];
+                this.minNumberMonsters = this.monsterInfo.numberMonsters;
                 break;
             case 'potion':
                 this.spellInfo = cf.POTION.potion[this.instance];
@@ -58,6 +59,30 @@ var Card = cc.Class.extend({
             } else {
                 this.reqGold = nextLevelConfig.gold;
                 this.reqFrag = nextLevelConfig.fragment;
+            }
+        }
+
+        if (this.isMonster()) {
+            this.hp = cardConfig.hp * Math.pow(1.1, this.level - 1);
+            this.speed = cardConfig.speed;
+            if (this.rarity === 3) this.speed += 1;
+            this.maxNumberMonsters = cardConfig.maxNumberMonsters[this.rarity];
+        } else if (this.isTower()) {
+            this.damage = this.towerInfo.stat[this.evolution + 1].damage * Math.pow(1.1, this.level - 1);
+        } else if (this.isSpell()) {
+            if (typeof cardConfig.potionRange === 'object') {
+                this.potionRange = cardConfig.potionRange[this.rarity];
+            }
+            if (typeof cardConfig.damage === 'object') {
+                this.damage = cardConfig.damage[this.level];
+            }
+            this.heal = cardConfig.heal;
+            this.speedIncrease = cardConfig.speedIncrease;
+            this.strengthIncrease = cardConfig.strengthIncrease;
+            if (typeof cardConfig.duration === 'number') {
+                this.duration = cardConfig.duration;
+            } else if (typeof cardConfig.duration === 'object') {
+                this.duration = cardConfig.duration[this.level];
             }
         }
     },
@@ -105,6 +130,13 @@ var Card = cc.Class.extend({
         if ([100, 101, 102].indexOf(this.id) !== -1) return 'Trụ c. đấu';
         if ([103, 104].indexOf(this.id) !== -1) return 'Trụ p. thuật';
         if ([105, 106].indexOf(this.id) !== -1) return 'Trụ hỗ trợ';
-
     },
+
+    getNextLevelSample: function () {
+        if (this.level === 10) {
+            cc.log('Cannot get next level sample because level already maxed.');
+            return this;
+        }
+        return new Card(this.type, this.level + 1, 0);
+    }
 });

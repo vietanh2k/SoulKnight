@@ -50,7 +50,7 @@ var LobbyScene = cc.Scene.extend({
         const ACTIVE_INACTIVE_WIDTH_RATIO = 164 / 122 / 123 * 110;
         this.inactiveTabBtnWidth = cf.WIDTH / (cf.LOBBY_MAX_TAB - 1 + ACTIVE_INACTIVE_WIDTH_RATIO);
         this.activeTabBtnWidth = cf.WIDTH / (1 + (cf.LOBBY_MAX_TAB - 1) / ACTIVE_INACTIVE_WIDTH_RATIO);
-        this.tabBtnHeight = this.inactiveTabBtnWidth / 123 * 110;
+        this.tabBtnHeight = this.inactiveTabBtnWidth / 123 * 110 * 1.03;
     },
 
     findTabAnchorPosX: function (tab) {
@@ -81,6 +81,7 @@ var LobbyScene = cc.Scene.extend({
                 newTabIcon.y = newTab.height / 2;
                 newTabText.visible = false;
             }
+            newTab.setZoomScale(0);
             newTabIcon.attr({
                 x: newTab.width / 2,
                 scale: newTab.height * 0.8 / newTabIcon.height,
@@ -137,7 +138,6 @@ var LobbyScene = cc.Scene.extend({
                 this.tabTexts[i].visible = false;
             }
             this.tabBtns[i].attr({
-                pressedActionEnabled: true, // enable zooming action when button is pressed
                 x: this.findTabAnchorPosX(i),
                 scale: this.tabBtnHeight / this.tabBtns[i].height,
             });
