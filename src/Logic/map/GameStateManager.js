@@ -69,7 +69,10 @@ var GameStateManager = cc.Class.extend({
         cc.log('iddddddddd'+gv.gameClient._userId)
     },
     isClearWave:function (){
-        if(this.playerA._map.monsters.length == 0){
+        /*if(this.playerA._map.monsters.length == 0){
+            this.canTouchNewWave = true
+        }*/
+        if(this.playerA.isClearWave()){
             this.canTouchNewWave = true
         }
     },

@@ -130,17 +130,10 @@ var MapView = cc.Class.extend({
             for (let y = 0; y < MAP_HEIGHT; y++) {
                 const currentCell = this.cells[x][y];
 
-                if (currentCell.getNextCell() == null || currentCell.getPrevCell() == null) {
+                if (currentCell.getNextCell() == null) {
                     continue
                 }
 
-                currentCell.isCornerCell =
-                    currentCell.getPrevCell().getLocation()
-                        .sub(currentCell.getLocation())
-                        .dot(
-                            currentCell.getNextCell().getLocation()
-                                .sub(currentCell.getLocation())
-                        ) === 0
                 currentCell.updateEdgePositionWithNextCell()
             }
         }
@@ -148,11 +141,12 @@ var MapView = cc.Class.extend({
 
     updateMonster:function (dt) {
         try {
-            var leng = this.monsters.length
-            for (i in this.monsters){
-                this.monsters[i].logicUpdate(this._playerState, dt)
-                if(this.monsters[leng-i-1].isDestroy){
-                    this.monsters.splice(leng-i-1, 1)
+            const len = this.monsters.length
+            for (let i = len - 1; i !== -1; i--) {
+                const monster = this.monsters[i]
+                monster.logicUpdate(this._playerState, dt)
+                if(monster.isDestroy){
+                    this.monsters.splice(i, 1)
                 }
             }
         } catch (e) {

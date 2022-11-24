@@ -88,7 +88,29 @@ const Monster = AnimatedSprite.extend({
 
         if (currentCell == null) return;
 
-        const targetPosition = currentCell.getEdgePositionWithNextCell();
+        let targetPosition = currentCell.getEdgePositionWithNextCell();
+
+
+        // corner movement
+        const next = currentCell.getNextCell();
+        if (next) {
+            const relPos = this.position.sub(currentCell.getCenterPosition());
+            const dir = relPos.normal();
+            const outDir =  next.getCenterPosition().sub(currentCell.getCenterPosition()).normalize();
+
+            dir.set(Math.round(dir.x), Math.round((dir.y)))
+            outDir.set(Math.round(outDir.x), Math.round((outDir.y)))
+
+            if (!outDir.equals(dir)) {
+                if (Math.abs(relPos.x) <= MAP_CONFIG.CELL_WIDTH / 4.0 && Math.abs(relPos.y) <= MAP_CONFIG.CELL_HEIGHT / 4.0) {
+                    targetPosition = currentCell.getCornerCellOutPos();
+                } else {
+                    //dir.set(-dir.x, -dir.y)
+                    targetPosition = currentCell.getCenterPosition().add(dir.mul(MAP_CONFIG.HALF_CELL_DIMENSIONS_OFFSET[dir.y + 1][dir.x + 1] / 2.0));
+                }
+            }
+        }
+
 
         if (targetPosition == null) return;
 

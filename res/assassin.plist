@@ -1050,7 +1050,7 @@
             <key>format</key>
             <integer>2</integer>
             <key>realTextureFileName</key>
-            <string>Assassin.png</string>
+            <string>assassin.png</string>
             <key>size</key>
             <string>{512,512}</string>
             <key>smartupdate</key>

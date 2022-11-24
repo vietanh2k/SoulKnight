@@ -24,8 +24,6 @@ const Swordsman = Monster.extend({
             [ moveUpLeftAnimId,         moveUpAnimId,            moveUpRightAnimId   ],
         ]
 
-        cc.log("====================================Swordsman=============================================")
-
         this.play(0)
     }
 })

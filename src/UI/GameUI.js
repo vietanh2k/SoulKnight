@@ -693,7 +693,8 @@ var GameUI = cc.Layer.extend({
         var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (time == 0) {
-            testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);//this.addMonsterToBoth()
+            testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]); //this.addMonsterToBoth()
+            this._gameStateManager._timer.resetTime(TIME_WAVE)
         }
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timer3).visible = true
