@@ -4,14 +4,7 @@
 
 const SERVER_CELL_WIDTH_CONFIG = SERVER_CELL_WIDTH_CONFIG || 50;
 var MapView = cc.Class.extend({
-    trees: null,
-    //monsters: null,
-    spells: null,
-    //bullets:null,
-    //towers:null,
-    _mapController:null,
-    _playerState: null,
-    rule:null,
+
 
 
     ctor:function (playerState, intArray, rule) {
@@ -186,8 +179,13 @@ var MapView = cc.Class.extend({
         }
     },
 
-    renderMonster: function () {
+    renderMonster: function (rule) {
         for (i in this.monsters){
+            if(this.rule == 1) {
+                this.monsters[i].setLocalZOrder(this.monsters[i].position.y)
+            }else{
+                this.monsters[i].setLocalZOrder(99999- this.monsters[i].position.y)
+            }
             this.monsters[i].render(this._playerState)
         }
     },

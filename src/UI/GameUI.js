@@ -43,7 +43,7 @@ var GameUI = cc.Layer.extend({
         this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
         this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
         this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-        // cc.log(this._gameStateManager.playerA._map.monsters[0])
+
         // this.addChild(this._gameStateManager.playerA._map.monsters[0],2000)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
         //this.callMonster()
@@ -62,7 +62,6 @@ var GameUI = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             // swallowTouches: true,
             onTouchBegan: function (touch, event) {
-                cc.log("touch began2: " + touch.getLocationX());
                 MW.MOUSE.x = touch.getLocationX();
                 MW.MOUSE.y = touch.getLocationY();
                 MW.TOUCH = true;
@@ -77,12 +76,10 @@ var GameUI = cc.Layer.extend({
             MW.TOUCH = false
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = convertPosToIndex(pos, 1)
-            cc.log(loc.x + '---' + loc.y)
             if (loc.x >= 0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
                 loc.y >= 0 && loc.y < this._gameStateManager.playerA._map._mapController.intArray[0].length) {
                 if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0||this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] ==999) {
                     if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy) {
-                        cc.log('touch right')
                         this.createObjectByTouch = true
                     } else {
                         this.resetCardTouchState()
@@ -99,10 +96,7 @@ var GameUI = cc.Layer.extend({
             var vecClick = new Vec2(pos.x, pos.y)
             var dist = (vecClick.sub(vecTime)).length()
             if (dist < 0.9 * timer.getContentSize().width / 2) {
-                cc.log('timeeeeeeeeeeeeeeeeeeeeeee')
                 if (this._gameStateManager.canTouchNewWave) {
-                    //this.getNewWave()
-                    cc.log('//this.getNewWave()')
                     testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);
                 }
             }
@@ -113,7 +107,6 @@ var GameUI = cc.Layer.extend({
         // 999: cell with position
         if (uid == gv.gameClient._userId) {
             this.createObjectByTouch = false
-            // cc.log('creat right')
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
@@ -121,8 +114,8 @@ var GameUI = cc.Layer.extend({
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
                 this._gameStateManager.playerA._map.updatePathForCells()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-                cc.log('loc' + JSON.stringify(loc) + 'position' + position)
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
+                this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                 var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
@@ -131,7 +124,6 @@ var GameUI = cc.Layer.extend({
                 this.resetCardTouchState()
             }
         } else {
-            // cc.log('creat right')
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y]
@@ -140,7 +132,6 @@ var GameUI = cc.Layer.extend({
                 this._gameStateManager.playerB._map.updatePathForCells()
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
                 this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-                cc.log('loc' + JSON.stringify(loc) + 'position' + position)
                 var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 0)
             } else {
@@ -154,13 +145,12 @@ var GameUI = cc.Layer.extend({
     createObjectByTouch2: function () {
         if (this.createObjectByTouch) {
             this.createObjectByTouch = false
-            cc.log('creat right')
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = convertPosToIndex(pos, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var position = this.screenLoc2Position(loc)
             let cor = convertPosToIndex(pos, 1);
-            this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, 1));
+            // this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, 1));
             if (this.listCard[this.cardTouchSlot - 1].cardID == 0) {
                 testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                     gv.gameClient._userId)]);
@@ -181,17 +171,13 @@ var GameUI = cc.Layer.extend({
         return new Vec2((loc.x) * MAP_CONFIG.CELL_WIDTH + MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y - 1) * MAP_CONFIG.CELL_HEIGHT + MAP_CONFIG.CELL_HEIGHT / 2.0)
     },
     isNodehasMonsterAbove: function (loc) {
-
-        var children = this.children
-        for (i in children) {
-            if (children[i]._curNode2 != undefined) {
-                var monsterLoc = children[i]._curNode2;
-                if (monsterLoc.x == loc.x && monsterLoc.y == loc.y) {
-                    return true
-                }
+        var monsterList = GameStateManagerInstance.playerA.getMap().monsters;
+        var map = GameStateManagerInstance.playerA.getMap()
+        for (i in monsterList){
+            if(monsterList[i].isAtLocation(map, loc)){
+                return true;
             }
         }
-
         return false
     },
 
@@ -200,7 +186,6 @@ var GameUI = cc.Layer.extend({
 
             this.removeChild(this.getChildByName(res.highlightPath + rule))
         }
-        cc.log(res.highlightPath + rule)
         while (this.getChildByName(res.iconArrow + rule) != null) {
             this.removeChild(this.getChildByName(res.iconArrow + rule))
         }
@@ -833,7 +818,6 @@ var GameUI = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: function (touch, event) {
-                cc.log("touch began2333333333: " + touch.getLocationX());
 
                 return true;
 
@@ -843,36 +827,8 @@ var GameUI = cc.Layer.extend({
     },
     showResultBattleUI: function (resultString) {
 
-        var resultAnimation = new sp.SkeletonAnimation("res/battle_result/fx/fx_result_" + resultString + ".json",
-            "res/battle_result/fx/fx_result_" + resultString + ".atlas")
-        resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
-        resultAnimation.setPosition(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2)
-        resultAnimation.setAnimation(0, "fx_result_" + resultString + "_idle", true)
-        this.addChild(resultAnimation, 4001)
-
-
-        var infor = ccs.load(res.inforEndBattle, "").node;
-        infor.getChildByName('name1').setString(sharePlayerInfo.name)
-        infor.getChildByName('health1').setString(GameStateManagerInstance.playerA.health)
-        infor.getChildByName('health2').setString(GameStateManagerInstance.playerB.health)
-        if(resultString == 'win'){
-            infor.getChildByName('trophyGet').setString(10)
-        }else{
-            infor.getChildByName('Text_12').setString('-')
-            infor.getChildByName('trophyGet').setString(8)
-        }
-        this.addChild(infor, 4002)
-
-
-        var btnBack = ccui.Button('res/common/common_btn_blue.png');
-        btnBack.setTitleText('Trở Về')
-        btnBack.setTitleFontName(res.font_magic)
-
-        btnBack.setScale((WIDTHSIZE * 1.4 / 7) / btnBack.getNormalTextureSize().height)
-        btnBack.setTitleFontSize(23)
-        btnBack.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * -3.85 / 9)
-        btnBack.addClickEventListener(this.backToLobby);
-        this.addChild(btnBack, 4003);
+        var end = new EndBattleUI(resultString,15)
+        this.addChild(end, 4000)
     },
 
     backToLobby:function () {

@@ -41,6 +41,9 @@ var PlayerState = cc.Class.extend({
     },
     updateHealth:function (amount) {
         this.health += amount
+        if(this.health < 0){
+            this.health = 0
+        }
 
     },
     updateEnergy:function (amount) {

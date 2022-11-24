@@ -4,6 +4,7 @@ const Monster = AnimatedSprite.extend({
         this._playerState = playerState
         this.isDestroy = false
         this.initAnimation()
+        this.setScale(1.2)
         this.active = true
         this.visible = true
 
@@ -61,6 +62,22 @@ const Monster = AnimatedSprite.extend({
                 x++
             }*/
         }
+    },
+
+    isAtLocation: function (map, loc) {
+
+        const currentCell = map.getCellAtPosition(this.position);
+        cc.log('222222222222:'+currentCell.getLocation().x+''+currentCell.getLocation().y)
+        cc.log('333333333333:'+loc.x+''+loc.y)
+        if (currentCell != null) {
+            var curLoc = currentCell.getLocation();
+            if(curLoc.x == loc.x && curLoc.y == loc.y-1){
+                cc.log('trueeeeeeee')
+                return true;
+            }
+        }
+        cc.log('falseeeeeeeeee')
+        return false;
     },
 
     logicUpdate: function (playerState, dt){
