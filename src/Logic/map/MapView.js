@@ -5,10 +5,10 @@
 const SERVER_CELL_WIDTH_CONFIG = SERVER_CELL_WIDTH_CONFIG || 50;
 var MapView = cc.Class.extend({
     trees: null,
-    monsters: null,
+    //monsters: null,
     spells: null,
-    bullets:null,
-    towers:null,
+    //bullets:null,
+    //towers:null,
     _mapController:null,
     _playerState: null,
     rule:null,
