@@ -31,8 +31,7 @@ var CardSlot = ccui.Button.extend({
         this.texture.attr({
             x: this.width / 2,
             y: this.height / 2,
-            scaleX: this.width / this.texture.width,
-            scaleY: this.height / this.texture.height,
+            scale: this.width / this.texture.width,
         })
         this.addChild(this.texture);
 

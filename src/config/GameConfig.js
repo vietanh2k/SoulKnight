@@ -1,28 +1,26 @@
-
-
 var MW = MW || {};
 
 //game state
 MW.GAME_STATE = {
-    HOME:0,
-    PLAY:1,
-    OVER:2
+    HOME: 0,
+    PLAY: 1,
+    OVER: 2
 };
 
 //keys
 MW.KEYS = [];
 
 //mouse position
-MW.MOUSE = cc.p(240,0);
+MW.MOUSE = cc.p(240, 0);
 MW.TOUCH = false
 //number shield
 MW.SHIELD = 0;
 
 //level
 MW.LEVEL = {
-    STAGE1:1,
-    STAGE2:2,
-    STAGE3:3
+    STAGE1: 1,
+    STAGE2: 2,
+    STAGE3: 3
 };
 
 //life
@@ -36,10 +34,10 @@ MW.SOUND = true;
 
 //enemy move type
 MW.ENEMY_MOVE_TYPE = {
-    ATTACK:0,
-    VERTICAL:1,
-    HORIZONTAL:2,
-    OVERLAP:3
+    ATTACK: 0,
+    VERTICAL: 1,
+    HORIZONTAL: 2,
+    OVERLAP: 3
 };
 
 //delta x
@@ -53,27 +51,27 @@ MW.ROT = -5.625;
 
 //bullet type
 MW.BULLET_TYPE = {
-    PLAYER:1,
-    ENEMY:2
+    PLAYER: 1,
+    ENEMY: 2
 };
 
 //weapon type
 MW.WEAPON_TYPE = {
-    ONE:1
+    ONE: 1
 };
 
 //unit tag
 MW.UNIT_TAG = {
-    ENMEY_BULLET:900,
-    PLAYER_BULLET:901,
-    ENEMY:1000,
-    PLAYER:1000
+    ENMEY_BULLET: 900,
+    PLAYER_BULLET: 901,
+    ENEMY: 1000,
+    PLAYER: 1000
 };
 
 //attack mode
 MW.ENEMY_ATTACK_MODE = {
-    NORMAL:1,
-    TSUIHIKIDAN:2
+    NORMAL: 1,
+    TSUIHIKIDAN: 2
 };
 
 //life up sorce
@@ -81,20 +79,20 @@ MW.LIFEUP_SORCE = [50000, 100000, 150000, 200000, 250000, 300000];
 
 //container
 MW.CONTAINER = {
-    ENEMIES:[],
-    ENEMY_BULLETS:[],
-    PLAYER_BULLETS:[],
-    EXPLOSIONS:[],
-    SPARKS:[],
-    HITS:[],
-    BACKSKYS:[],
-    BACKTILEMAPS:[]
+    ENEMIES: [],
+    ENEMY_BULLETS: [],
+    PLAYER_BULLETS: [],
+    EXPLOSIONS: [],
+    SPARKS: [],
+    HITS: [],
+    BACKSKYS: [],
+    BACKTILEMAPS: []
 };
 
 //bullet speed
 MW.BULLET_SPEED = {
-    ENEMY:-200,
-    SHIP:900
+    ENEMY: -200,
+    SHIP: 900
 };
 // the counter of active enemies
 MW.ACTIVE_ENEMIES = 0;
@@ -231,7 +229,7 @@ cf.CARD = [
         miniature: asset.miniaturesTowerCannon_png,
         skill: {
             texture: asset.iconSkillStun_png,
-            name: 'Đan Choáng',
+            name: 'Đạn Choáng',
             description: 'Gây mini choáng cho quái.',
             stats: [
                 {
@@ -410,6 +408,9 @@ cf.CARD = [
         miniature: asset.miniatureMonsterSwordsman_png,
         name: 'Kiếm Ma',
         description: 'Máu thường, tốc độ thường',
+        maxNumberMonsters: [5, 8, 12, 12],
+        hp: 18,
+        speed: 0.8,
     },
     {
         id: 201,
@@ -418,6 +419,9 @@ cf.CARD = [
         miniature: asset.miniatureMonsterAssassin_png,
         name: 'Quạ Xương',
         description: 'Máu thấp, chạy rất nhanh',
+        maxNumberMonsters: [3, 5, 8, 8],
+        hp: 12,
+        speed: 1.4,
     },
     {
         id: 202,
@@ -426,6 +430,9 @@ cf.CARD = [
         miniature: asset.miniatureMonsterGiant_png,
         name: 'Khổng Lồ',
         description: 'Máu cao, đi chậm',
+        maxNumberMonsters: [2, 3, 4, 4],
+        hp: 82,
+        speed: 0.5,
     },
     {
         id: 203,
@@ -434,6 +441,9 @@ cf.CARD = [
         miniature: asset.miniatureMonsterBat_png,
         name: 'Dơi Quỷ',
         description: 'Máu thường, tốc độ thường',
+        maxNumberMonsters: [5, 8, 12, 12],
+        hp: 14,
+        speed: 1,
     },
     {
         id: 204,
@@ -442,6 +452,9 @@ cf.CARD = [
         miniature: asset.miniatureMonsterNinja_png,
         name: 'Xương Độn Thổ',
         description: 'Máu thường, tốc độ thường',
+        maxNumberMonsters: [3, 4, 5, 5],
+        hp: 24,
+        speed: 0.8,
     },
 
     // spells
@@ -453,6 +466,8 @@ cf.CARD = [
         description:
             'Thả cầu lửa gây sát thương\n' +
             'một vùng ngay lập tức',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        damage: [50, 55, 61, 67, 73, 81, 90, 101, 113, 127],
     },
     {
         id: 301,
@@ -465,6 +480,9 @@ cf.CARD = [
             'lập tức, đồng thời đóng băng\n' +
             'quái tấn công mình hoặc\n' +
             'trụ đối thủ trong vùng đó',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        damage: [10, 11, 12, 13, 15, 16, 18, 20, 23, 25],
+        duration: 5,
     },
     {
         id: 302,
@@ -475,6 +493,9 @@ cf.CARD = [
             'Thả phép tạo vùng hồi máu,\n' +
             'quái đi vào sẽ được\n' +
             'hồi máu một thời gian',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        heal: 20,
+        duration: 3,
     },
     {
         id: 303,
@@ -484,6 +505,9 @@ cf.CARD = [
         description:
             'Thả phép tạo một vùng tăng tốc,\n' +
             'quái đi vào sẽ tăng tốc độ chạy',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        speedIncrease: 1.5,
+        duration: [1.5, 1.8, 2.1, 2.4, 2.7, 3, 3.3, 3.6, 3.9, 4.2],
     },
     {
         id: 304,
@@ -494,6 +518,8 @@ cf.CARD = [
             'Đặt lò xo trên bản đồ,\n' +
             'quái di chuyển vào lò xo\n' +
             'sẽ bị bật trở lại cổng ra quái',
+        potionRange: [0.2, 0.25, 0.3, 0.35],
+        damage: [20, 22, 24, 27, 29, 32, 36, 40, 45, 51],
     },
     {
         id: 305,
@@ -504,5 +530,8 @@ cf.CARD = [
             'Tạo một vùng tăng sức mạnh,\n' +
             'trụ nằm trong vùng này\n' +
             'sẽ được tăng sức mạnh',
+        potionRange: [0.6, 1, 1.4, 1.8],
+        strengthIncrease: 1.5,
+        duration: [1.5, 1.8, 2.1, 2.4, 2.7, 3, 3.3, 3.6, 3.9, 4.2],
     },
 ];
