@@ -142,6 +142,7 @@ var GameUI = cc.Layer.extend({
                 this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                 var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
                 this.towerUIMap[loc.x][loc.y] = tower;
+                tower.cardID = this.listCard[this.cardTouchSlot - 1].cardID;
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
@@ -532,15 +533,18 @@ var GameUI = cc.Layer.extend({
                     let pos = touch.getLocation();
                     let cor = convertPosToIndex(pos, rule);
                     cc.log('there is ' + cor.x + ', ' + cor.y)
-                    if(GameStateManagerInstance.playerA.energy >= target.energy){
+                    if (GameStateManagerInstance.playerA.energy >= target.energy) {
                         if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                            // fixme khác loại trụ?
-                            if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                            if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[this.cardTouchSlot - 1].cardID) {
+                                Utils.addToastToRunningScene('Không thể nâng cấp loại trụ khác!');
+                                this.resetCardTouchState();
+                            }
+                            else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
                                 Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                                this.resetCardTouchState()
+                                this.resetCardTouchState();
                             } else {
                                 this.towerUIMap[cor.x][cor.y].evolute();
-                                this.updateCardSlot(target.energy)
+                                this.updateCardSlot(target.energy);
                             }
                         }
                         else if (isPosInMap(pos, rule) && GameStateManagerInstance.playerA.getMap()._mapController.intArray[cor.x][cor.y] <= 0) {
