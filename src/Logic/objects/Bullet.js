@@ -90,9 +90,9 @@ var Bullet = cc.Sprite.extend({
                 //cc.log('bullet explose')
                 this.explose(playerState, pos);
             }
-            if(this.fx!=null){
-                this.fx.update(dt)
-            }
+            // if(this.fx!=null){
+            //     this.fx.update(dt)
+            // }
         }
 
     },
