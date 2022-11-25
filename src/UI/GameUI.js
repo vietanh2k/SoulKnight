@@ -13,6 +13,7 @@ var GameUI = cc.Layer.extend({
     deleteObjectByTouch: null,
 
     ctor: function (pkg) {
+        cc.spriteFrameCache.addSpriteFrames(res.explosion_plist, res.explosion_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this.cardTouchSlot = -1
@@ -52,10 +53,10 @@ var GameUI = cc.Layer.extend({
         // this.schedule(this.update, 0.1);
         // var map = new MapController(this)
         this.addTouchListener()
-        cc.log(this.cardTouchSlot)
-        var a = setInterval(()=>{
-            cc.log('slot: '+this.cardTouchSlot);
-        }, 500)
+        // cc.log(this.cardTouchSlot)
+        // var a = setInterval(()=>{
+        //     cc.log('slot: '+this.cardTouchSlot);
+        // }, 500)
 
 
         return true;

@@ -12,7 +12,6 @@ var Explosion = cc.Sprite.extend({
     },
 
     init:function (){
-        cc.spriteFrameCache.addSpriteFrames(res.explosion_plist, res.explosion_png);
         var framelist = []
         for(var i=1; i<=9; i++) {
             var str  = 'a'+i+'.png'
