@@ -111,7 +111,7 @@ Utils.generateCardAttributes = function (card, index) {
             textStat = Math.round(card.hp * 100) / 100;
             diff = card.getNextLevelSample().hp - card.hp;
             if (diff > 0) {
-                textUpgradeStat = '+' + (Math.round(diff * 100) / 100);
+                textUpgradeStat = '+' + Math.round(diff * 100) / 100;
             }
             break;
         case 'speed':
