@@ -80,6 +80,10 @@ var GameUI = cc.Layer.extend({
 
         }, this);
     },
+
+    /*
+    * check xem đã touch vào màn hình và touch vào 1 cell trong map
+    * */
     checkTouch: function () {
         if (MW.TOUCH) {
             cc.log('touchhhhhhhhhhhhhhhhhhhh')
@@ -94,6 +98,7 @@ var GameUI = cc.Layer.extend({
                     if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy) {
                         this.createObjectByTouch = true
                     } else {
+                        Utils.addToastToRunningScene('Không đủ mana!');
                         this.resetCardTouchState()
                     }
                 } else if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0) {
@@ -118,6 +123,9 @@ var GameUI = cc.Layer.extend({
     readyTouch:function (){
         MW.DELAY_TOUCH = false
     },
+    /*
+    * deploy tower cho 2 client
+    * */
     activateCard: function (card_type, position, uid) {
         // 999: cell with position
         if (uid == gv.gameClient._userId ) {
@@ -156,7 +164,9 @@ var GameUI = cc.Layer.extend({
         this.resetCardTouchState()
     },
 
-
+    /*
+    * send request deploy tower khi đã check đủ energy và đã chọn 1 thẻ
+    * */
     createObjectByTouch2: function () {
         if (this.createObjectByTouch) {
             this.createObjectByTouch = false
@@ -513,7 +523,6 @@ var GameUI = cc.Layer.extend({
                 MW.DELAY_TOUCH = true;
                 this.runAction(cc.sequence(cc.delayTime(0.25),cc.callFunc(()=> this.readyTouch(), this)));
                 if (this.previewObject !== undefined) {
-                    cc.log('111111111111111111111111111111')
                     let target = event.getCurrentTarget();
                     this.cardTouchSlot = target.numSlot
                     let rule = getRule(target);
@@ -536,6 +545,7 @@ var GameUI = cc.Layer.extend({
                             MW.MOUSE = pos;
                             this.createObjectByTouch = true;
                         }else{
+                            Utils.addToastToRunningScene('Không đủ mana!');
                             this.resetCardTouchState()
                         }
                     } else {
@@ -546,7 +556,6 @@ var GameUI = cc.Layer.extend({
                 }else if (target.getParent() != null) {
 
                     if (target.getParent().cardTouchSlot !== target.numSlot) {
-                        cc.log('22222222222222222222222222222222')
                         target.getParent().resetCardTouchState()
                         target.x += 0
                         target.y += CELLWIDTH * 0.5
@@ -557,7 +566,6 @@ var GameUI = cc.Layer.extend({
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = true
                     }else if(target.onTouch == true){
-                        cc.log('333333333333333333333333333333333333')
                         target.x += 0
                         target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
@@ -649,6 +657,9 @@ var GameUI = cc.Layer.extend({
         return towerUI;
     },
 
+    /*
+    * Trừ energy và update thẻ mới trong queue
+    * */
     updateCardSlot: function (numEnergy) {
         if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= numEnergy) {
             this._gameStateManager.playerA.energy -= numEnergy
@@ -664,6 +675,10 @@ var GameUI = cc.Layer.extend({
 
 
     },
+
+    /*
+    * reset về không chọn thẻ nào cả
+    * */
     resetCardTouchState: function () {
         for (var i = 1; i <= NUM_CARD_PLAYABLE; i++) {
             var card = this.getChildByName('cardBackGround' + i)
@@ -711,6 +726,9 @@ var GameUI = cc.Layer.extend({
         }
     },
 
+    /*
+        * reset trạng thái wave mới
+        * */
     getNewWave: function () {
         this.getChildByName(res.timer3).visible = false
         this._gameStateManager.updateStateNewWave()
@@ -839,6 +857,9 @@ var GameUI = cc.Layer.extend({
         blockLayer.setScaleY(1.3 * winSize.height / blockLayer.getContentSize().height)
         blockLayer.setPosition(winSize.width / 2, winSize.height / 2)
         this.addChild(blockLayer, 4000)
+        blockLayer.setOpacity(0)
+        let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.3))
+        blockLayer.runAction(seq)
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,

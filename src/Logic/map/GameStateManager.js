@@ -73,7 +73,7 @@ var GameStateManager = cc.Class.extend({
         /*if(this.playerA._map.monsters.length == 0){
             this.canTouchNewWave = true
         }*/
-        if(this.playerA.isClearWave()){
+        if(this.playerA.isClearWave() && this.curWave < MAX_WAVE){
             this.canTouchNewWave = true
         }
     },
