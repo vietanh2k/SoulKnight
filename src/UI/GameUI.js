@@ -13,7 +13,7 @@ var GameUI = cc.Layer.extend({
     deleteObjectByTouch: null,
 
     ctor: function (pkg) {
-        cc.spriteFrameCache.addSpriteFrames(res.explosion_plist, res.explosion_png);
+        cc.spriteFrameCache.addSpriteFrames(res.explosion2_plist, res.explosion2_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this.delayTouch = false
@@ -84,7 +84,7 @@ var GameUI = cc.Layer.extend({
         if (MW.TOUCH) {
             cc.log('touchhhhhhhhhhhhhhhhhhhh')
             MW.TOUCH = false
-            this.runAction(cc.sequence(cc.delayTime(0.6),cc.callFunc(()=> this.readyTouch(), this)))
+            this.runAction(cc.sequence(cc.delayTime(0.25),cc.callFunc(()=> this.readyTouch(), this)))
             cc.log('touchhhhhhhhhhhhhhhhhhhh2')
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = convertPosToIndex(pos, 1)
@@ -511,7 +511,7 @@ var GameUI = cc.Layer.extend({
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
                 MW.DELAY_TOUCH = true;
-                this.runAction(cc.sequence(cc.delayTime(0.6),cc.callFunc(()=> this.readyTouch(), this)));
+                this.runAction(cc.sequence(cc.delayTime(0.25),cc.callFunc(()=> this.readyTouch(), this)));
                 if (this.previewObject !== undefined) {
                     cc.log('111111111111111111111111111111')
                     let target = event.getCurrentTarget();
@@ -593,7 +593,7 @@ var GameUI = cc.Layer.extend({
             btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.8)
             btnRemoveCard.visible = false
 
-            btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(3));
+            btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(5));
             this.addChild(btnRemoveCard, 0 , 'btnRemoveCard'+i);
             var cancelUI = ccs.load(res.cancelCard, "").node;
             cancelUI.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.81)

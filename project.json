@@ -84,6 +84,7 @@
         "src/UI/SkillInfoUI.js",
         "src/UI/StatSlot.js",
         "src/UI/Explosion.js",
+        "src/UI/SoulFly.js",
         "src/UI/EndBattleUI.js",
 
         "src/utils/Utils.js",
