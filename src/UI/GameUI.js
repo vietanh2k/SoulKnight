@@ -14,6 +14,7 @@ var GameUI = cc.Layer.extend({
 
     ctor: function (pkg) {
         cc.spriteFrameCache.addSpriteFrames(res.explosion_plist, res.explosion_png);
+        cc.spriteFrameCache.addSpriteFrames(res.explosion2_plist, res.explosion2_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
         this.delayTouch = false

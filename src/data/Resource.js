@@ -96,6 +96,8 @@ var res = {
 
     explosion_plist:'res/game/animation/explosion/explosion.plist',
     explosion_png:'res/game/animation/explosion/explosion.png',
+    explosion2_plist:'res/game/animation/explosion/monster_die_fx.plist',
+    explosion2_png:'res/game/animation/explosion/monster_die_fx.png',
     timer1:'res/battle/battle_timer_background.png',
     timer2:'res/battle/battle_timer.png',
     timer3:'res/battle/battle_timer_border.png',

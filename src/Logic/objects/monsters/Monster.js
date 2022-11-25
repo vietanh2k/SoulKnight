@@ -204,7 +204,9 @@ const Monster = AnimatedSprite.extend({
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
             var ex = new Explosion(cc.p(this.x, this.y))
+            var soul = new SoulFly(cc.p(this.x, this.y))
             this.getParent().addChild(ex)
+            this.getParent().addChild(soul)
         }
         this.visible = false;
         // var ex = new Explosion()
