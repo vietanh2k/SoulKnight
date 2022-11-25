@@ -187,7 +187,7 @@ var MapView = cc.Class.extend({
             if(this.rule == 1) {
                 this.monsters[i].setLocalZOrder(this.monsters[i].position.y)
             }else{
-                this.monsters[i].setLocalZOrder(99999- this.monsters[i].position.y)
+                this.monsters[i].setLocalZOrder(winSize.height- this.monsters[i].position.y)
             }
             this.monsters[i].render(this._playerState)
         }

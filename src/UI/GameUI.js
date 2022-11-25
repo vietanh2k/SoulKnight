@@ -52,7 +52,10 @@ var GameUI = cc.Layer.extend({
         // this.schedule(this.update, 0.1);
         // var map = new MapController(this)
         this.addTouchListener()
-
+        cc.log(this.cardTouchSlot)
+        var a = setInterval(()=>{
+            cc.log('slot: '+this.cardTouchSlot);
+        }, 500)
 
 
         return true;
@@ -105,7 +108,8 @@ var GameUI = cc.Layer.extend({
     },
     activateCard: function (card_type, position, uid) {
         // 999: cell with position
-        if (uid == gv.gameClient._userId) {
+        cc.log(uid+' '+gv.gameClient._userId)
+        if (uid == gv.gameClient._userId ) {
             this.createObjectByTouch = false
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
@@ -121,7 +125,6 @@ var GameUI = cc.Layer.extend({
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
-                this.resetCardTouchState()
             }
         } else {
             var loc = convertLogicalPosToIndex(position, 1)
@@ -134,11 +137,12 @@ var GameUI = cc.Layer.extend({
                 this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
                 var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 0)
+                // this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
                 this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = tmp
             }
         }
-
+        this.resetCardTouchState()
     },
 
 
@@ -159,7 +163,6 @@ var GameUI = cc.Layer.extend({
                 testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
                     gv.gameClient._userId)]);
             }
-
 
         }
 
@@ -481,47 +484,57 @@ var GameUI = cc.Layer.extend({
             },
 
             onTouchMoved: (touch, event) => {
-                // let target = event.getCurrentTarget();
-                // let rule = getRule(target);
-                // if (this.previewObject === undefined) {
-                //     this.previewObject = this.generatePreviewObject(target);
-                //     this.addChild(this.previewObject);
-                // }
-                // this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
-                // this.previewObject.visible = isPosInMap(this.previewObject, rule);
+
+                if(this.cardTouchSlot == -1) {
+                    let target = event.getCurrentTarget();
+                    let rule = getRule(target);
+                    if (this.previewObject === undefined) {
+                        this.previewObject = this.generatePreviewObject(target);
+                        this.addChild(this.previewObject);
+                    }
+                    this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
+                    this.previewObject.visible = isPosInMap(this.previewObject, rule);
+                }
             },
 
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
 
-                // if (this.previewObject !== undefined) {
-                //     let target = event.getCurrentTarget();
-                //     let rule = getRule(target);
-                //     this.previewObject.removeFromParent(true);
-                //     this.previewObject = undefined;
-                //     let pos = touch.getLocation();
-                //     let cor = convertPosToIndex(pos, rule);
-                //     cc.log('there is ' + cor.x + ', ' + cor.y)
-                //     if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                //         if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
-                //             cc.log('There is another type tower exist in this cell!');
-                //         } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
-                //             Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                //         } else {
-                //             this.towerUIMap[cor.x][cor.y].evolute();
-                //         }
-                //     }
-                //     else if (isPosInMap(pos, rule)) {
-                //         MW.MOUSE = pos;
-                //         this.createObjectByTouch = true;
-                //     } else {
-                //         cc.log('out of map! rule: ' + rule);
-                //         return;
-                //     }
-                // }
+                if (this.previewObject !== undefined) {
+                    cc.log('111111111111111111111111111111')
+                    let target = event.getCurrentTarget();
+                    this.cardTouchSlot = target.numSlot
+                    let rule = getRule(target);
+                    this.previewObject.removeFromParent(true);
+                    this.previewObject = undefined;
+                    let pos = touch.getLocation();
+                    let cor = convertPosToIndex(pos, rule);
+                    cc.log('there is ' + cor.x + ', ' + cor.y)
+                    if (this.towerUIMap[cor.x][cor.y] !== undefined) {
+                        if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
+                            cc.log('There is another type tower exist in this cell!');
+                        } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                            Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+                        } else {
+                            this.towerUIMap[cor.x][cor.y].evolute();
+                        }
+                    }
+                    else if (isPosInMap(pos, rule)) {
+                        if(GameStateManagerInstance.playerA.energy >= target.energy) {
+                            MW.MOUSE = pos;
+                            this.createObjectByTouch = true;
+                        }else{
+                            this.resetCardTouchState()
+                        }
+                    } else {
+                        this.resetCardTouchState()
+                        cc.log('out of map! rule: ' + rule);
+                        return;
+                    }
+                }else if (target.getParent() != null) {
 
-                if (target.getParent() != null) {
                     if (target.getParent().cardTouchSlot !== target.numSlot) {
+                        cc.log('22222222222222222222222222222222')
                         target.getParent().resetCardTouchState()
                         target.x += 0
                         target.y += CELLWIDTH * 0.5
@@ -532,7 +545,7 @@ var GameUI = cc.Layer.extend({
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = true
                     }else if(target.onTouch == true){
-
+                        cc.log('333333333333333333333333333333333333')
                         target.x += 0
                         target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
@@ -583,7 +596,7 @@ var GameUI = cc.Layer.extend({
     },
 
     generatePreviewObject: function (target) {
-        if (this.listCard[this.cardTouchSlot - 1].cardID == 2) {
+        if (target.cardID == 2) {
             let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
             towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
@@ -649,9 +662,9 @@ var GameUI = cc.Layer.extend({
                 card.setCardDownUI()
                 this.getChildByName('btnRemoveCard' + this.cardTouchSlot).visible = false
                 this.getChildByName('cancelCard' + this.cardTouchSlot).visible = false
-                this.cardTouchSlot = -1
             }
         }
+        this.cardTouchSlot = -1
     },
 
 
