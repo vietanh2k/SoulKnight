@@ -174,6 +174,10 @@ var LobbyScene = cc.Scene.extend({
         this.allBtnIsActive = false;
     },
 
+    runUpgradeCardAnimations: function (oldCard, newCard) {
+
+    },
+
     removeCardInfoUI: function (child, resetAllBtnIsActive) {
         child.removeFromParent(true);
         if (resetAllBtnIsActive) {

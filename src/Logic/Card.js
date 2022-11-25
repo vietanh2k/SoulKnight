@@ -37,6 +37,7 @@ var Card = cc.Class.extend({
             this.energy = cardConfig.energy;
             this.texture = cardConfig.texture;
             this.miniature = cardConfig.miniature;
+            this.statTypes = cardConfig.statTypes;
             this.skill = cardConfig.skill;
             this.name = cardConfig.name;
             this.description = cardConfig.description;

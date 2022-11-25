@@ -264,6 +264,7 @@ var CardInfoUI = cc.Layer.extend({
                     upgradeBtn.addClickEventListener(() => {
                         if (!this.skillInfoUIIsActive) {
                             testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                            this.destroy(false);
                         }
                     });
                 }
@@ -333,77 +334,21 @@ var CardInfoUI = cc.Layer.extend({
         Utils.addScaleAnimation(this);
     },
 
-    destroy: function (isShowingAddCardToDeck) {
+    destroy: function (enterAddCardToDeckUI) {
         this.visible = false;
-        this.parent.removeCardInfoUI(this, !isShowingAddCardToDeck);
+        this.parent.removeCardInfoUI(this, !enterAddCardToDeckUI);
     },
 
     initAttributeSlots: function () {
         this.statSlots = [];
-        if (this.card.isMonster()) {
-            this.addAttributeSlotToPanel(this.card, 'hp', 0);
-            this.addAttributeSlotToPanel(this.card, 'speed', 1);
-            this.addAttributeSlotToPanel(this.card, 'numberMonsters', 2);
-        } else if (this.card.isTower()) {
-            switch (this.card.id) {
-                case 100:
-                case 101:
-                case 102:
-                    this.addAttributeSlotToPanel(this.card, 'damage', 0);
-                    this.addAttributeSlotToPanel(this.card, 'attackSpeed', 1);
-                    this.addAttributeSlotToPanel(this.card, 'range', 2);
-                    this.addAttributeSlotToPanel(this.card, 'bulletType', 3);
-                    break;
-                case 103:
-                case 104:
-                    this.addAttributeSlotToPanel(this.card, 'bulletTargetBuffType', 0);
-                    this.addAttributeSlotToPanel(this.card, 'attackSpeed', 1);
-                    this.addAttributeSlotToPanel(this.card, 'range', 2);
-                    this.addAttributeSlotToPanel(this.card, 'bulletType', 3);
-                    break;
-                case 105:
-                case 106:
-                    this.addAttributeSlotToPanel(this.card, 'auraTowerBuffType', 0);
-                    break;
-                default:
-                    cc.log('Cannot find card id ' + this.card.id);
-                    break;
-            }
-        } else if (this.card.isSpell()) {
-            switch (this.card.id) {
-                case 300:
-                    this.addAttributeSlotToPanel(this.card, 'damage', 0);
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 1);
-                    break;
-                case 301:
-                case 303:
-                    this.addAttributeSlotToPanel(this.card, 'duration', 0);
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 1);
-                    break;
-                case 302:
-                    this.addAttributeSlotToPanel(this.card, 'heal', 0);
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 1);
-                    this.addAttributeSlotToPanel(this.card, 'duration', 2);
-                    break;
-                case 304:
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 0);
-                    break;
-                case 305:
-                    this.addAttributeSlotToPanel(this.card, 'strengthIncrease', 0);
-                    this.addAttributeSlotToPanel(this.card, 'duration', 1);
-                    break;
-                default:
-                    cc.log('Cannot find card id ' + this.card.id);
-                    break;
-            }
-        } else {
-            cc.log('This card is neither a monster, a tower, nor a spell.');
+        for (let i = 0; i < this.card.statTypes.length; i++) {
+            this.addAttributeSlotToPanel(this.card, i);
         }
     },
 
-    addAttributeSlotToPanel: function (card, attribute, index) {
+    addAttributeSlotToPanel: function (card, index) {
         let texture, textAttribute, textStat, diff, textUpgradeStat = undefined;
-        switch (attribute) {
+        switch (this.card.statTypes[index]) {
             case 'hp':
                 textAttribute = 'Máu:';
                 texture = asset.statIcons_png['hp'];
