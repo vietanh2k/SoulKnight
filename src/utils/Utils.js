@@ -109,9 +109,9 @@ Utils.generateCardAttributes = function (card, index) {
             textAttribute = 'Máu:';
             texture = asset.statIcons_png['hp'];
             textStat = Math.round(card.hp * 100) / 100;
-            diff = card.getNextLevelSample().hp > card.hp;
+            diff = card.getNextLevelSample().hp - card.hp;
             if (diff > 0) {
-                textUpgradeStat = '+' + Math.round(diff * 100) / 100;
+                textUpgradeStat = '+' + (Math.round(diff * 100) / 100);
             }
             break;
         case 'speed':
