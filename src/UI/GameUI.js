@@ -96,7 +96,7 @@ var GameUI = cc.Layer.extend({
                         if(this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy){
                             this.createObjectByTouch = true
                         } else {
-                            Utils.addToastToRunningScene('Không đủ mana!');
+                            Utils.addToastToRunningScene('Không đủ năng lượng!');
                             this.resetCardTouchState()
                         }
                     }
@@ -553,7 +553,7 @@ var GameUI = cc.Layer.extend({
                             return;
                         }
                     }else{
-                        Utils.addToastToRunningScene('Không đủ mana!');
+                        Utils.addToastToRunningScene('Không đủ năng lượng!');
                         this.resetCardTouchState()
                     }
 
