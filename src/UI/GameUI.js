@@ -132,6 +132,7 @@ var GameUI = cc.Layer.extend({
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
                 this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                 var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
+                this.towerUIMap[loc.x][loc.y] = tower;
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
@@ -165,7 +166,6 @@ var GameUI = cc.Layer.extend({
             var rand = Math.floor(Math.random() * 2) + 1;
             var position = this.screenLoc2Position(loc)
             let cor = convertPosToIndex(pos, 1);
-            // this.addTimerBeforeCreateTower(convertIndexToPos(cor.x, cor.y, 1));
             if (this.listCard[this.cardTouchSlot - 1].cardID == 0) {
                 testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                     gv.gameClient._userId)]);
@@ -523,9 +523,8 @@ var GameUI = cc.Layer.extend({
                     let cor = convertPosToIndex(pos, rule);
                     cc.log('there is ' + cor.x + ', ' + cor.y)
                     if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                        if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
-                            cc.log('There is another type tower exist in this cell!');
-                        } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                        // fixme khác loại trụ?
+                        if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
                             Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
                         } else {
                             this.towerUIMap[cor.x][cor.y].evolute();
