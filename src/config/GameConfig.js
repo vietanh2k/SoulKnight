@@ -13,6 +13,7 @@ MW.KEYS = [];
 //mouse position
 MW.MOUSE = cc.p(240, 0);
 MW.TOUCH = false
+MW.DELAY_TOUCH = false
 //number shield
 MW.SHIELD = 0;
 

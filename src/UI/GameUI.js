@@ -16,6 +16,7 @@ var GameUI = cc.Layer.extend({
         cc.spriteFrameCache.addSpriteFrames(res.explosion_plist, res.explosion_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
+        this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
         this.cardInQueue = [0, 2, 0, 2]
@@ -66,9 +67,13 @@ var GameUI = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             // swallowTouches: true,
             onTouchBegan: function (touch, event) {
-                MW.MOUSE.x = touch.getLocationX();
-                MW.MOUSE.y = touch.getLocationY();
-                MW.TOUCH = true;
+                cc.log(MW.DELAY_TOUCH+'this.delayTouch')
+                if(!MW.DELAY_TOUCH) {
+                    MW.MOUSE.x = touch.getLocationX();
+                    MW.MOUSE.y = touch.getLocationY();
+                    MW.TOUCH = true;
+                    MW.DELAY_TOUCH = true
+                }
                 return true;
 
             }
@@ -77,7 +82,10 @@ var GameUI = cc.Layer.extend({
     },
     checkTouch: function () {
         if (MW.TOUCH) {
+            cc.log('touchhhhhhhhhhhhhhhhhhhh')
             MW.TOUCH = false
+            this.runAction(cc.sequence(cc.delayTime(0.6),cc.callFunc(()=> this.readyTouch(), this)))
+            cc.log('touchhhhhhhhhhhhhhhhhhhh2')
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = convertPosToIndex(pos, 1)
             if (loc.x >= 0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
@@ -107,9 +115,11 @@ var GameUI = cc.Layer.extend({
         }
 
     },
+    readyTouch:function (){
+        MW.DELAY_TOUCH = false
+    },
     activateCard: function (card_type, position, uid) {
         // 999: cell with position
-        cc.log(uid+' '+gv.gameClient._userId)
         if (uid == gv.gameClient._userId ) {
             this.createObjectByTouch = false
             var loc = convertLogicalPosToIndex(position, 1)
@@ -500,7 +510,8 @@ var GameUI = cc.Layer.extend({
 
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
-
+                MW.DELAY_TOUCH = true;
+                this.runAction(cc.sequence(cc.delayTime(0.6),cc.callFunc(()=> this.readyTouch(), this)));
                 if (this.previewObject !== undefined) {
                     cc.log('111111111111111111111111111111')
                     let target = event.getCurrentTarget();
