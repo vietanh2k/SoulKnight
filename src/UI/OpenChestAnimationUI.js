@@ -166,22 +166,23 @@ var OpenChestAnimationUI = cc.Layer.extend({
     },
 
     addExitBtn: function () {
-        let exitBtn = new ccui.Button(asset.btnGreen_png);
-        exitBtn.setZoomScale(0);
-        exitBtn.attr({
+        if (this.exitBtn !== undefined) return;
+        this.exitBtn = new ccui.Button(asset.btnGreen_png);
+        this.exitBtn.setZoomScale(0);
+        this.exitBtn.attr({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.1,
-            scale: cf.HEIGHT * 0.1 / exitBtn.height,
+            scale: cf.HEIGHT * 0.1 / this.exitBtn.height,
         });
-        exitBtn.addClickEventListener(() => {
+        this.exitBtn.addClickEventListener(() => {
             this.destroy();
         });
-        this.addChild(exitBtn);
+        this.addChild(this.exitBtn);
 
         let lbExit = new ccui.Text('Nhận', asset.svnSupercellMagic_ttf, 24);
         lbExit.enableShadow();
-        lbExit.setPosition(exitBtn.width / 2, exitBtn.height / 2);
-        exitBtn.addChild(lbExit);
+        lbExit.setPosition(this.exitBtn.width / 2, this.exitBtn.height / 2);
+        this.exitBtn.addChild(lbExit);
     },
 
     destroy: function () {
