@@ -758,7 +758,7 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
                     break;
                 }
             }
-            LobbyInstant.runUpgradeCardAnimations(oldCard, newCard);
+            LobbyInstant.runUpgradeCardAnimation(oldCard, newCard);
             LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
         } else {
             Utils.addToastToRunningScene(status);

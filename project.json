@@ -77,6 +77,7 @@
         "src/UI/LoginScreen.js",
         "src/UI/MatchingUI.js",
         "src/UI/OpenChestAnimationUI.js",
+        "src/UI/UpgradeCardAnimationUI.js",
         "src/UI/Toast.js",
         "src/UI/TowerUI.js",
         "src/UI/ShopUI.js",

@@ -41,6 +41,10 @@ var Card = cc.Class.extend({
             this.skill = cardConfig.skill;
             this.name = cardConfig.name;
             this.description = cardConfig.description;
+            if (this.isMonster()) {
+                this.energyPerUnit = this.energy;
+                this.energy *= this.minNumberMonsters;
+            }
         }
 
         let levelConfig = cf.CARD_LEVEL.find(element => element.level === this.level);
@@ -138,6 +142,6 @@ var Card = cc.Class.extend({
             cc.log('Cannot get next level sample because level already maxed.');
             return this;
         }
-        return new Card(this.type, this.level + 1, 0);
+        return new Card(this.type, this.level + 1, this.fragment - this.reqFrag);
     }
 });
