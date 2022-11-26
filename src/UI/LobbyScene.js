@@ -50,7 +50,7 @@ var LobbyScene = cc.Scene.extend({
         const ACTIVE_INACTIVE_WIDTH_RATIO = 164 / 122 / 123 * 110;
         this.inactiveTabBtnWidth = cf.WIDTH / (cf.LOBBY_MAX_TAB - 1 + ACTIVE_INACTIVE_WIDTH_RATIO);
         this.activeTabBtnWidth = cf.WIDTH / (1 + (cf.LOBBY_MAX_TAB - 1) / ACTIVE_INACTIVE_WIDTH_RATIO);
-        this.tabBtnHeight = this.inactiveTabBtnWidth / 123 * 110;
+        this.tabBtnHeight = this.inactiveTabBtnWidth / 123 * 110 * 1.03;
     },
 
     findTabAnchorPosX: function (tab) {
@@ -81,6 +81,7 @@ var LobbyScene = cc.Scene.extend({
                 newTabIcon.y = newTab.height / 2;
                 newTabText.visible = false;
             }
+            newTab.setZoomScale(0);
             newTabIcon.attr({
                 x: newTab.width / 2,
                 scale: newTab.height * 0.8 / newTabIcon.height,
@@ -116,6 +117,8 @@ var LobbyScene = cc.Scene.extend({
         if(newTab == cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess == false) {
             // fr.view(ShopUI);
             this.requestOffer()
+        }else{
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
         }
         if (newTab === this.activeTab) {
             return;
@@ -137,7 +140,6 @@ var LobbyScene = cc.Scene.extend({
                 this.tabTexts[i].visible = false;
             }
             this.tabBtns[i].attr({
-                pressedActionEnabled: true, // enable zooming action when button is pressed
                 x: this.findTabAnchorPosX(i),
                 scale: this.tabBtnHeight / this.tabBtns[i].height,
             });
@@ -171,6 +173,11 @@ var LobbyScene = cc.Scene.extend({
 
     runOpenChestAnimation: function (newCards, goldReceived) {
         this.addChild(new OpenChestAnimationUI(newCards, goldReceived), 3);
+        this.allBtnIsActive = false;
+    },
+
+    runUpgradeCardAnimation: function (oldCard, newCard) {
+        this.addChild(new UpgradeCardAnimationUI(oldCard, newCard), 5);
         this.allBtnIsActive = false;
     },
 

@@ -13,8 +13,10 @@ var GameUI = cc.Layer.extend({
     deleteObjectByTouch: null,
 
     ctor: function (pkg) {
+        cc.spriteFrameCache.addSpriteFrames(res.explosion2_plist, res.explosion2_png);
         this.createObjectByTouch = false
         this.deleteObjectByTouch = false
+        this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
         this.cardInQueue = [0, 2, 0, 2]
@@ -43,7 +45,7 @@ var GameUI = cc.Layer.extend({
         this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
         this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
         this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-        // cc.log(this._gameStateManager.playerA._map.monsters[0])
+
         // this.addChild(this._gameStateManager.playerA._map.monsters[0],2000)
         // this._gameStateManager.playerA._map.monsters[0].updateCurNode()
         //this.callMonster()
@@ -52,7 +54,10 @@ var GameUI = cc.Layer.extend({
         // this.schedule(this.update, 0.1);
         // var map = new MapController(this)
         this.addTouchListener()
-
+        // cc.log(this.cardTouchSlot)
+        // var a = setInterval(()=>{
+        //     cc.log('slot: '+this.cardTouchSlot);
+        // }, 500)
 
 
         return true;
@@ -62,31 +67,41 @@ var GameUI = cc.Layer.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             // swallowTouches: true,
             onTouchBegan: function (touch, event) {
-                cc.log("touch began2: " + touch.getLocationX());
-                MW.MOUSE.x = touch.getLocationX();
-                MW.MOUSE.y = touch.getLocationY();
-                MW.TOUCH = true;
+                if(!MW.DELAY_TOUCH) {
+                    MW.MOUSE.x = touch.getLocationX();
+                    MW.MOUSE.y = touch.getLocationY();
+                    MW.TOUCH = true;
+                    MW.DELAY_TOUCH = true
+                }
                 return true;
 
             }
 
         }, this);
     },
+
+    /*
+    * check xem đã touch vào màn hình và touch vào 1 cell trong map
+    * */
     checkTouch: function () {
         if (MW.TOUCH) {
             MW.TOUCH = false
+            this.runAction(cc.sequence(cc.delayTime(0.25),cc.callFunc(()=> this.readyTouch(), this)))
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = convertPosToIndex(pos, 1)
-            cc.log(loc.x + '---' + loc.y)
             if (loc.x >= 0 && loc.x < this._gameStateManager.playerA._map._mapController.intArray.length &&
                 loc.y >= 0 && loc.y < this._gameStateManager.playerA._map._mapController.intArray[0].length) {
-                if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0) {
-                    if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy) {
-                        cc.log('touch right')
-                        this.createObjectByTouch = true
-                    } else {
-                        this.resetCardTouchState()
+                if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] <= 0||this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] ==999) {
+                    if (this.cardTouchSlot >= 0 ) {
+                        if(this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy){
+                            this.createObjectByTouch = true
+                        } else {
+                            Utils.addToastToRunningScene('Không đủ mana!');
+                            this.resetCardTouchState()
+                        }
                     }
+
+
                 } else if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] > 0) {
                     this.deleteObjectByTouch = true
                 }
@@ -99,39 +114,40 @@ var GameUI = cc.Layer.extend({
             var vecClick = new Vec2(pos.x, pos.y)
             var dist = (vecClick.sub(vecTime)).length()
             if (dist < 0.9 * timer.getContentSize().width / 2) {
-                cc.log('timeeeeeeeeeeeeeeeeeeeeeee')
                 if (this._gameStateManager.canTouchNewWave) {
-                    //this.getNewWave()
-                    cc.log('//this.getNewWave()')
                     testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);
                 }
             }
         }
 
     },
+    readyTouch:function (){
+        MW.DELAY_TOUCH = false
+    },
+    /*
+    * deploy tower cho 2 client
+    * */
     activateCard: function (card_type, position, uid) {
-        // cc.log("UID: " + uid)
-        if (uid == gv.gameClient._userId) {
+        // 999: cell with position
+        if (uid == gv.gameClient._userId ) {
             this.createObjectByTouch = false
-            // cc.log('creat right')
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
-            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = rand
+            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
                 this._gameStateManager.playerA._map.updatePathForCells()
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-                cc.log('loc' + JSON.stringify(loc) + 'position' + position)
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
+                this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                 var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
+                this.towerUIMap[loc.x][loc.y] = tower;
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
-                this.resetCardTouchState()
             }
         } else {
-            // cc.log('creat right')
             var loc = convertLogicalPosToIndex(position, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y]
@@ -140,36 +156,35 @@ var GameUI = cc.Layer.extend({
                 this._gameStateManager.playerB._map.updatePathForCells()
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
                 this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-                cc.log('loc' + JSON.stringify(loc) + 'position' + position)
                 var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 0)
+                // this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
                 this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = tmp
             }
         }
-
+        this.resetCardTouchState()
     },
 
-
+    /*
+    * send request deploy tower khi đã check đủ energy và đã chọn 1 thẻ
+    * */
     createObjectByTouch2: function () {
         if (this.createObjectByTouch) {
             this.createObjectByTouch = false
-            cc.log('creat right')
             var pos = new cc.p(MW.MOUSE.x, MW.MOUSE.y)
             var loc = convertPosToIndex(pos, 1)
             var rand = Math.floor(Math.random() * 2) + 1;
             var position = this.screenLoc2Position(loc)
-
-            if (!this._wizard) {
+            let cor = convertPosToIndex(pos, 1);
+            if (this.listCard[this.cardTouchSlot - 1].cardID == 0) {
                 testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                     gv.gameClient._userId)]);
-                this._wizard = true;
-            } else {
+            }
+            if(this.listCard[this.cardTouchSlot - 1].cardID ==2){
                 testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
                     gv.gameClient._userId)]);
-                this._wizard = false;
             }
-
 
         }
 
@@ -181,17 +196,13 @@ var GameUI = cc.Layer.extend({
         return new Vec2((loc.x) * MAP_CONFIG.CELL_WIDTH + MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y - 1) * MAP_CONFIG.CELL_HEIGHT + MAP_CONFIG.CELL_HEIGHT / 2.0)
     },
     isNodehasMonsterAbove: function (loc) {
-
-        var children = this.children
-        for (i in children) {
-            if (children[i]._curNode2 != undefined) {
-                var monsterLoc = children[i]._curNode2;
-                if (monsterLoc.x == loc.x && monsterLoc.y == loc.y) {
-                    return true
-                }
+        var monsterList = GameStateManagerInstance.playerA.getMap().monsters;
+        var map = GameStateManagerInstance.playerA.getMap()
+        for (i in monsterList){
+            if(monsterList[i].isAtLocation(map, loc)){
+                return true;
             }
         }
-
         return false
     },
 
@@ -200,7 +211,6 @@ var GameUI = cc.Layer.extend({
 
             this.removeChild(this.getChildByName(res.highlightPath + rule))
         }
-        cc.log(res.highlightPath + rule)
         while (this.getChildByName(res.iconArrow + rule) != null) {
             this.removeChild(this.getChildByName(res.iconArrow + rule))
         }
@@ -496,46 +506,59 @@ var GameUI = cc.Layer.extend({
             },
 
             onTouchMoved: (touch, event) => {
-                // let target = event.getCurrentTarget();
-                // let rule = getRule(target);
-                // if (this.previewObject === undefined) {
-                //     this.previewObject = this.generatePreviewObject(target);
-                //     this.addChild(this.previewObject);
-                // }
-                // this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
-                // this.previewObject.visible = isPosInMap(this.previewObject, rule);
+
+                if(this.cardTouchSlot == -1) {
+                    let target = event.getCurrentTarget();
+                    let rule = getRule(target);
+                    if (this.previewObject === undefined) {
+                        this.previewObject = this.generatePreviewObject(target);
+                        this.addChild(this.previewObject);
+                    }
+                    this.previewObject.setPosition(getMiddleOfCell(touch.getLocation(), rule));
+                    this.previewObject.visible = isPosInMap(this.previewObject, rule);
+                }
             },
 
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
+                MW.DELAY_TOUCH = true;
+                this.runAction(cc.sequence(cc.delayTime(0.25),cc.callFunc(()=> this.readyTouch(), this)));
+                if (this.previewObject !== undefined) {
+                    let target = event.getCurrentTarget();
+                    this.cardTouchSlot = target.numSlot
+                    let rule = getRule(target);
+                    this.previewObject.removeFromParent(true);
+                    this.previewObject = undefined;
+                    let pos = touch.getLocation();
+                    let cor = convertPosToIndex(pos, rule);
+                    cc.log('there is ' + cor.x + ', ' + cor.y)
+                    if(GameStateManagerInstance.playerA.energy >= target.energy){
+                        if (this.towerUIMap[cor.x] !== undefined && this.towerUIMap[cor.x][cor.y] !== undefined) {
+                            // fixme khác loại trụ?
+                            if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                                Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+                                this.resetCardTouchState()
+                            } else {
+                                this.towerUIMap[cor.x][cor.y].evolute();
+                                this.updateCardSlot(target.energy)
+                            }
+                        }
+                        else if (isPosInMap(pos, rule) && GameStateManagerInstance.playerA.getMap()._mapController.intArray[cor.x][cor.y] <= 0) {
+                                MW.MOUSE = pos;
+                                this.createObjectByTouch = true;
 
-                // if (this.previewObject !== undefined) {
-                //     let target = event.getCurrentTarget();
-                //     let rule = getRule(target);
-                //     this.previewObject.removeFromParent(true);
-                //     this.previewObject = undefined;
-                //     let pos = touch.getLocation();
-                //     let cor = convertPosToIndex(pos, rule);
-                //     cc.log('there is ' + cor.x + ', ' + cor.y)
-                //     if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                //         if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[target.numSlot - 1].cardID) {
-                //             cc.log('There is another type tower exist in this cell!');
-                //         } else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
-                //             Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                //         } else {
-                //             this.towerUIMap[cor.x][cor.y].evolute();
-                //         }
-                //     }
-                //     else if (isPosInMap(pos, rule)) {
-                //         MW.MOUSE = pos;
-                //         this.createObjectByTouch = true;
-                //     } else {
-                //         cc.log('out of map! rule: ' + rule);
-                //         return;
-                //     }
-                // }
+                        } else {
+                            this.resetCardTouchState()
+                            cc.log('out of map! rule: ' + rule);
+                            return;
+                        }
+                    }else{
+                        Utils.addToastToRunningScene('Không đủ mana!');
+                        this.resetCardTouchState()
+                    }
 
-                if (target.getParent() != null) {
+                }else if (target.getParent() != null) {
+
                     if (target.getParent().cardTouchSlot !== target.numSlot) {
                         target.getParent().resetCardTouchState()
                         target.x += 0
@@ -547,7 +570,6 @@ var GameUI = cc.Layer.extend({
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = true
                     }else if(target.onTouch == true){
-
                         target.x += 0
                         target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
@@ -583,7 +605,7 @@ var GameUI = cc.Layer.extend({
             btnRemoveCard.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.8)
             btnRemoveCard.visible = false
 
-            btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(3));
+            btnRemoveCard.addClickEventListener(()=> this.updateCardSlot(5));
             this.addChild(btnRemoveCard, 0 , 'btnRemoveCard'+i);
             var cancelUI = ccs.load(res.cancelCard, "").node;
             cancelUI.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.81)
@@ -598,7 +620,7 @@ var GameUI = cc.Layer.extend({
     },
 
     generatePreviewObject: function (target) {
-        if (this._wizard) {
+        if (target.cardID == 2) {
             let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
             towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
@@ -639,6 +661,9 @@ var GameUI = cc.Layer.extend({
         return towerUI;
     },
 
+    /*
+    * Trừ energy và update thẻ mới trong queue
+    * */
     updateCardSlot: function (numEnergy) {
         if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= numEnergy) {
             this._gameStateManager.playerA.energy -= numEnergy
@@ -654,6 +679,10 @@ var GameUI = cc.Layer.extend({
 
 
     },
+
+    /*
+    * reset về không chọn thẻ nào cả
+    * */
     resetCardTouchState: function () {
         for (var i = 1; i <= NUM_CARD_PLAYABLE; i++) {
             var card = this.getChildByName('cardBackGround' + i)
@@ -664,9 +693,9 @@ var GameUI = cc.Layer.extend({
                 card.setCardDownUI()
                 this.getChildByName('btnRemoveCard' + this.cardTouchSlot).visible = false
                 this.getChildByName('cancelCard' + this.cardTouchSlot).visible = false
-                this.cardTouchSlot = -1
             }
         }
+        this.cardTouchSlot = -1
     },
 
 
@@ -693,13 +722,17 @@ var GameUI = cc.Layer.extend({
         var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (time == 0) {
-            this.addMonsterToBoth()
+            testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]); //this.addMonsterToBoth()
+            this._gameStateManager._timer.resetTime(TIME_WAVE)
         }
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timer3).visible = true
         }
     },
 
+    /*
+        * reset trạng thái wave mới
+        * */
     getNewWave: function () {
         this.getChildByName(res.timer3).visible = false
         this._gameStateManager.updateStateNewWave()
@@ -722,6 +755,11 @@ var GameUI = cc.Layer.extend({
         this.addChild(monster, 2000)
         const monster2 = this._gameStateManager.playerB._map.addMonster()
         this.addChild(monster2, 2000)
+    },
+
+    activateNextWave: function (monstersId) {
+        this.getNewWave()
+        this._gameStateManager.activateNextWave(this, monstersId)
     },
 
     initCellSlot: function (mapArray, rule) {
@@ -823,11 +861,13 @@ var GameUI = cc.Layer.extend({
         blockLayer.setScaleY(1.3 * winSize.height / blockLayer.getContentSize().height)
         blockLayer.setPosition(winSize.width / 2, winSize.height / 2)
         this.addChild(blockLayer, 4000)
+        blockLayer.setOpacity(0)
+        let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.15))
+        blockLayer.runAction(seq)
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: function (touch, event) {
-                cc.log("touch began2333333333: " + touch.getLocationX());
 
                 return true;
 
@@ -837,36 +877,8 @@ var GameUI = cc.Layer.extend({
     },
     showResultBattleUI: function (resultString) {
 
-        var resultAnimation = new sp.SkeletonAnimation("res/battle_result/fx/fx_result_" + resultString + ".json",
-            "res/battle_result/fx/fx_result_" + resultString + ".atlas")
-        resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
-        resultAnimation.setPosition(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2)
-        resultAnimation.setAnimation(0, "fx_result_" + resultString + "_idle", true)
-        this.addChild(resultAnimation, 4001)
-
-
-        var infor = ccs.load(res.inforEndBattle, "").node;
-        infor.getChildByName('name1').setString(sharePlayerInfo.name)
-        infor.getChildByName('health1').setString(GameStateManagerInstance.playerA.health)
-        infor.getChildByName('health2').setString(GameStateManagerInstance.playerB.health)
-        if(resultString == 'win'){
-            infor.getChildByName('trophyGet').setString(10)
-        }else{
-            infor.getChildByName('Text_12').setString('-')
-            infor.getChildByName('trophyGet').setString(8)
-        }
-        this.addChild(infor, 4002)
-
-
-        var btnBack = ccui.Button('res/common/common_btn_blue.png');
-        btnBack.setTitleText('Trở Về')
-        btnBack.setTitleFontName(res.font_magic)
-
-        btnBack.setScale((WIDTHSIZE * 1.4 / 7) / btnBack.getNormalTextureSize().height)
-        btnBack.setTitleFontSize(23)
-        btnBack.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * -3.85 / 9)
-        btnBack.addClickEventListener(this.backToLobby);
-        this.addChild(btnBack, 4003);
+        var end = new EndBattleUI(resultString,15)
+        this.addChild(end, 4000)
     },
 
     backToLobby:function () {
@@ -893,6 +905,32 @@ var GameUI = cc.Layer.extend({
 
 
     },
+    addTimerBeforeCreateTower: function (pos) {
+        let timerBackground = new cc.Sprite(res.timer1);
+        timerBackground.setPosition(pos);
+        timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
+        this.addChild(timerBackground, 0, 'timerBackground');
+
+        let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
+        timerTower.setBarChangeRate(cc.p(1, 0));
+        timerTower.setMidpoint(cc.p(0.5, 0.5));
+        timerTower.setPercentage(100);
+        timerTower.setPosition(pos);
+        timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
+        this.addChild(timerTower, 0, 'timerTower');
+
+        timerTower.runAction(
+            cc.sequence(
+                cc.progressTo(cf.DROP_TOWER_DELAY, 0),
+                cc.callFunc(() => {
+                    timerBackground.removeFromParent(true);
+                }),
+                cc.removeSelf()
+            )
+        );
+    },
+
 
 });
 

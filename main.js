@@ -28,8 +28,8 @@ cc.game.onStart = function () {
             WIDTHSIZE = DESIGN_RESOLUTION_WIDTH*0.95
             HEIGHTSIZE = WIDTHSIZE*1.875
         }
-        cc.log(WIDTHSIZE)
-        cc.log(HEIGHTSIZE)
+        cc.log(frameSize.height)
+
         CELLWIDTH = WIDTHSIZE/8
         if(ratio < 1136/640){
             // DESIGN_RESOLUTION_HEIGHT = frameSize.height

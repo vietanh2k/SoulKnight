@@ -1,6 +1,7 @@
 // this.parent: LobbyScene
 var CardInfoUI = cc.Layer.extend({
     card: null,
+    skillInfoUIIsActive: false,
 
     ctor: function (card) {
         this._super();
@@ -15,45 +16,39 @@ var CardInfoUI = cc.Layer.extend({
         this.addChild(layerColor);
 
         // middle panel
-        let midPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 98.25, 453, 196.5));
-        midPanelBackground.attr({
+        this.midPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 98.25, 453, 196.5));
+        this.midPanelBackground.attr({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.4,
-            scale: cf.WIDTH * 0.9 / midPanelBackground.width,
+            scale: cf.WIDTH * 0.9 / this.midPanelBackground.width,
         });
-        this.addChild(midPanelBackground);
+        this.addChild(this.midPanelBackground);
 
-        let topDescriptionPanel = cc.Sprite(asset.panelFront_png, cc.rect(0, 0, 424, 114));
-        topDescriptionPanel.attr({
+        this.topDescriptionPanel = cc.Sprite(asset.panelFront_png, cc.rect(0, 0, 424, 114));
+        this.topDescriptionPanel.attr({
             anchorY: 0,
-            x: midPanelBackground.width / 2,
-            y: midPanelBackground.height / 2,
-            scale: midPanelBackground.height * 0.5 / topDescriptionPanel.height,
+            x: this.midPanelBackground.width / 2,
+            y: this.midPanelBackground.height / 2,
+            scale: this.midPanelBackground.height * 0.5 / this.topDescriptionPanel.height,
         });
-        midPanelBackground.addChild(topDescriptionPanel);
+        this.midPanelBackground.addChild(this.topDescriptionPanel, 1);
 
         let botDescriptionPanel = cc.Sprite(asset.panelFront_png, cc.rect(0, 228, 424, 114));
         botDescriptionPanel.attr({
             anchorY: 1,
-            x: midPanelBackground.width / 2,
-            y: midPanelBackground.height / 2,
-            scale: midPanelBackground.height * 0.5 / botDescriptionPanel.height,
+            x: this.midPanelBackground.width / 2,
+            y: this.midPanelBackground.height / 2,
+            scale: this.midPanelBackground.height * 0.5 / botDescriptionPanel.height,
         });
-        midPanelBackground.addChild(botDescriptionPanel);
+        this.midPanelBackground.addChild(botDescriptionPanel);
 
-        let lbDescription = ccui.Text(this.card.description, asset.svnAvoBold_ttf, 16);
-        lbDescription.attr({
-            x: midPanelBackground.width / 2,
-            y: midPanelBackground.height / 2,
-            color: cc.color(35, 65, 155),
-        });
-        midPanelBackground.addChild(lbDescription);
+        this.initAttributeSlots();
 
         // top panel
         let topPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 0, 453, 196.5));
         topPanelBackground.attr({
             x: cf.WIDTH / 2,
-            y: cf.HEIGHT * 0.4 + midPanelBackground.height * midPanelBackground.scale,
+            y: cf.HEIGHT * 0.4 + this.midPanelBackground.height * this.midPanelBackground.scale,
             scale: cf.WIDTH * 0.9 / topPanelBackground.width,
         });
         this.addChild(topPanelBackground);
@@ -65,25 +60,123 @@ var CardInfoUI = cc.Layer.extend({
             scale: topPanelBackground.width * 0.07 / closeBtn.width,
         });
         closeBtn.addClickEventListener(() => {
-            this.destroy(false);
+            if (!this.skillInfoUIIsActive) {
+                this.destroy(false);
+            }
         });
         topPanelBackground.addChild(closeBtn, 0);
 
-        this.miniatureGlow = cc.Sprite(asset.cardPanelMiniatureGlows_png[card.rarity]);
-        this.miniatureGlow.attr({
-            x: cf.WIDTH / 2,
-            y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
-            scale: cf.WIDTH * 0.5 / this.miniatureGlow.width,
-            opacity: 127,
-        });
-        this.addChild(this.miniatureGlow);
-
-        if (card.isMonster()) {
-            this.miniature = cc.Sprite(card.miniature);
-            this.miniature.attr({
+        if (!this.card.isSpell()) {
+            this.miniatureGlow = cc.Sprite(asset.cardPanelMiniatureGlows_png[card.rarity]);
+            this.miniatureGlow.attr({
                 x: cf.WIDTH / 2,
                 y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
-                scale: cf.WIDTH * 0.25 / this.miniature.width,
+                scale: cf.WIDTH * 0.5 / this.miniatureGlow.width,
+                opacity: 127,
+            });
+            this.addChild(this.miniatureGlow);
+        }
+
+        let cardSlot = new CardSlot(card, false);
+        cardSlot.addClickEventListener(() => {
+        });
+        cardSlot.attr({
+            x: this.topDescriptionPanel.width * 0.2,
+            y: this.topDescriptionPanel.height * 0.85,
+            scale: this.topDescriptionPanel.height * 1.1 / cardSlot.height,
+        });
+        topPanelBackground.addChild(cardSlot);
+
+        let lbCardName = new ccui.Text(card.name, asset.svnSupercellMagic_ttf, 20);
+        lbCardName.enableOutline(cc.color(0, 0, 0));
+        lbCardName.enableShadow(cc.color(0, 0, 0), cc.size(0, -1));
+        lbCardName.attr({
+            x: this.topDescriptionPanel.width * 0.675,
+            y: this.topDescriptionPanel.height * 1.2,
+        });
+        topPanelBackground.addChild(lbCardName);
+
+        let lbLevel = new ccui.Text('Cấp ' + card.level, asset.svnSupercellMagic_ttf, 20);
+        lbLevel.enableOutline(cc.color(0, 0, 0));
+        lbLevel.enableShadow(cc.color(0, 0, 0), cc.size(0, -1));
+        lbLevel.attr({
+            x: this.topDescriptionPanel.width * 0.675,
+            y: this.topDescriptionPanel.height * 0.95,
+            color: cc.color(255, 255, 50),
+        });
+        topPanelBackground.addChild(lbLevel);
+
+        let rarityBox = new cc.Sprite(asset.cardPanelBox_png);
+        rarityBox.attr({
+            x: this.topDescriptionPanel.width * 0.5,
+            y: this.topDescriptionPanel.height * 0.42,
+            scale: cf.WIDTH * 0.18 / rarityBox.width,
+        });
+        topPanelBackground.addChild(rarityBox);
+        let lbRarityBox = new ccui.Text(cf.TEXT_RARITIES[card.rarity], asset.svnSupercellMagic_ttf, 17);
+        lbRarityBox.attr({
+            x: rarityBox.width / 2,
+            y: rarityBox.height * 0.45,
+            color: cf.COLOR_RARITIES[card.rarity],
+        });
+        rarityBox.addChild(lbRarityBox);
+
+        let rarityFlag = new cc.Sprite(asset.cardPanelFlags_png[card.rarity]);
+        rarityFlag.attr({
+            x: this.topDescriptionPanel.width * 0.5,
+            y: this.topDescriptionPanel.height * 0.65,
+            scale: cf.WIDTH * 0.2 / rarityFlag.width,
+        });
+        topPanelBackground.addChild(rarityFlag);
+        let lbRarityFlag = new ccui.Text('Độ Hiếm', asset.svnSupercellMagic_ttf, 17);
+        lbRarityFlag.attr({
+            x: rarityFlag.width / 2,
+            y: rarityFlag.height * 0.55,
+            color: cc.color(0, 0, 0),
+            opacity: 127,
+        });
+        rarityFlag.addChild(lbRarityFlag);
+
+        let typeBox = new cc.Sprite(asset.cardPanelBox_png);
+        typeBox.attr({
+            x: this.topDescriptionPanel.width * 0.85,
+            y: this.topDescriptionPanel.height * 0.42,
+            scale: cf.WIDTH * 0.18 / typeBox.width,
+        });
+        topPanelBackground.addChild(typeBox);
+        let lbTypeBox = new ccui.Text(this.card.getTextType(), asset.svnSupercellMagic_ttf, 17);
+        lbTypeBox.attr({
+            x: rarityBox.width / 2,
+            y: rarityBox.height * 0.45,
+            color: cf.COLOR_RARITIES[2],
+        });
+        typeBox.addChild(lbTypeBox);
+
+        let typeFlag = new cc.Sprite(asset.cardPanelFlags_png[2]);
+        typeFlag.attr({
+            x: this.topDescriptionPanel.width * 0.85,
+            y: this.topDescriptionPanel.height * 0.65,
+            scale: cf.WIDTH * 0.2 / typeFlag.width,
+        });
+        topPanelBackground.addChild(typeFlag);
+        let lbTypeFlag = new ccui.Text('Loại', asset.svnSupercellMagic_ttf, 17);
+        lbTypeFlag.attr({
+            x: typeFlag.width / 2,
+            y: typeFlag.height * 0.55,
+            color: cc.color(0, 0, 0),
+            opacity: 127,
+        });
+        typeFlag.addChild(lbTypeFlag);
+
+        if (card.isMonster()) {
+            let miniatureAnchorX = 0.5;
+            if (card.id === 200) miniatureAnchorX = 0.3;
+            this.miniature = cc.Sprite(card.miniature);
+            this.miniature.attr({
+                anchorX: miniatureAnchorX,
+                x: cf.WIDTH * 0.5,
+                y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
+                scale: cf.WIDTH * 0.3 / this.miniature.width,
             });
             this.addChild(this.miniature);
         } else if (card.isTower()) {
@@ -91,7 +184,7 @@ var CardInfoUI = cc.Layer.extend({
             this.miniature.attr({
                 x: cf.WIDTH / 2,
                 y: topPanelBackground.y + topPanelBackground.height * topPanelBackground.scale * 0.75,
-                scale: cf.WIDTH * 0.25 / this.miniature.width,
+                scale: cf.WIDTH * 0.3 / this.miniature.width,
             });
             this.addChild(this.miniature);
         }
@@ -100,10 +193,10 @@ var CardInfoUI = cc.Layer.extend({
         let botPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 294.75, 453, 98.25));
         botPanelBackground.attr({
             x: cf.WIDTH / 2,
-            y: cf.HEIGHT * 0.4 - midPanelBackground.height * midPanelBackground.scale * 0.75,
+            y: cf.HEIGHT * 0.4 - this.midPanelBackground.height * this.midPanelBackground.scale * 0.75,
             scale: cf.WIDTH * 0.9 / botPanelBackground.width,
         });
-        this.addChild(botPanelBackground);
+        this.addChild(botPanelBackground,0,'botPanelBackground');
 
         let botBtnX = [undefined, undefined, undefined], counter = 0;
         if (!card.isInDeck()) {
@@ -129,9 +222,11 @@ var CardInfoUI = cc.Layer.extend({
             let chooseBtn = new ccui.Button(asset.btnBlue_png);
             chooseBtn.setZoomScale(0);
             chooseBtn.addClickEventListener(() => {
-                let cardsUI = this.parent.tabUIs[cf.LOBBY_TAB_CARDS];
-                this.destroy(true);
-                cardsUI.showAddCardToDeck(card);
+                if (!this.skillInfoUIIsActive) {
+                    let cardsUI = this.parent.tabUIs[cf.LOBBY_TAB_CARDS];
+                    this.destroy(true);
+                    cardsUI.showAddCardToDeck(card);
+                }
             });
             chooseBtn.attr({
                 x: botBtnX[0],
@@ -153,17 +248,24 @@ var CardInfoUI = cc.Layer.extend({
             if (card.fragment < card.reqFrag) {
                 upgradeBtn = new ccui.Button(asset.btnGray_png);
                 upgradeBtn.addClickEventListener(() => {
-                    Utils.addToastToRunningScene('Bạn không đủ thẻ nâng cấp');
+                    if (!this.skillInfoUIIsActive) {
+                        Utils.addToastToRunningScene('Bạn không đủ thẻ nâng cấp');
+                    }
                 });
             } else {
                 upgradeBtn = new ccui.Button(asset.btnGreen_png);
                 if (sharePlayerInfo.gold < card.reqGold) {
                     upgradeBtn.addClickEventListener(() => {
-                        Utils.addToastToRunningScene('Bạn không đủ vàng nâng cấp');
+                        if (!this.skillInfoUIIsActive) {
+                            Utils.addToastToRunningScene('Bạn không đủ vàng nâng cấp');
+                        }
                     });
                 } else {
                     upgradeBtn.addClickEventListener(() => {
-                        testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                        if (!this.skillInfoUIIsActive) {
+                            testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                            this.destroy(false);
+                        }
                     });
                 }
             }
@@ -208,6 +310,13 @@ var CardInfoUI = cc.Layer.extend({
                 y: botPanelBackground.height * 0.6,
                 scale: botPanelBackground.height * 0.7 / showSkillBtn.height,
             });
+            showSkillBtn.addClickEventListener(() => {
+                if (!this.skillInfoUIIsActive) {
+                    let skillInfoUI = new SkillInfoUI(card);
+                    this.addChild(skillInfoUI);
+                    this.skillInfoUIIsActive = true;
+                }
+            });
             botPanelBackground.addChild(showSkillBtn);
 
             let lb = new ccui.Text('Kỹ Năng', asset.svnSupercellMagic_ttf, 24);
@@ -219,30 +328,54 @@ var CardInfoUI = cc.Layer.extend({
             showSkillBtn.addChild(lb);
         }
 
-        // fixme sửa lại hàm dưới khi có Node mới ở trên topPanelBackground
+        // fixme sửa lại hàm dưới khi có Node mới có y lớn hơn topPanelBackground
         this.addTouchListener(topPanelBackground, botPanelBackground);
 
-        this.scale = 0.2;
-        this.runAction(cc.fadeIn(0.2));
-        this.runAction(cc.sequence(cc.scaleBy(0.15, 5), cc.scaleBy(0.10, 0.94), cc.scaleBy(0.08, 1.06), cc.scaleBy(0.07, 0.96), cc.scaleBy(0.05, 1.04)));
+        Utils.addScaleAnimation(this);
     },
 
-    destroy: function (isShowingAddCardToDeck) {
+    destroy: function (enterAddCardToDeckUI) {
         this.visible = false;
-        this.parent.removeCardInfoUI(this, !isShowingAddCardToDeck);
+        this.parent.removeCardInfoUI(this, !enterAddCardToDeckUI);
+    },
+
+    initAttributeSlots: function () {
+        this.statSlots = [];
+        for (let i = 0; i < this.card.statTypes.length; i++) {
+            this.addAttributeSlotToPanel(this.card, i);
+        }
+    },
+
+    addAttributeSlotToPanel: function (card, index) {
+        let [texture, textAttribute, textStat, textUpgradeStat] = Utils.generateCardAttributes(card, index);
+        let row = Math.floor(index / 2);
+        let column = index - row * 2;
+        let slotWidth = this.topDescriptionPanel.width / (2 + 3 * 0.15);
+        let spaceBetween = slotWidth * 0.15;
+        let statSlotX = spaceBetween * (column + 1) + slotWidth * (column + 0.5);
+        let statSlotY = this.topDescriptionPanel.height * (0.6 - 0.5 * row);
+        let newStatSlot = new StatSlot(texture, textAttribute, textStat, textUpgradeStat);
+        newStatSlot.attr({
+            x: statSlotX,
+            y: statSlotY,
+            scale: slotWidth / newStatSlot.width,
+        });
+        this.topDescriptionPanel.addChild(newStatSlot);
+        this.statSlots[index] = newStatSlot;
     },
 
     addTouchListener: function (top, bot) {
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
             onTouchBegan: (event) => {
                 let locationY = event.getLocation().y;
                 if (locationY > top.y + top.height / 2 * top.scale ||
                     locationY < bot.y - bot.height / 2 * bot.scale) {
                     this.readyToDestroy = true;
-                    return true;
+                    // return true;
                 }
-                return false;
+                return true;
             },
             onTouchEnded: () => {
                 if (this.readyToDestroy) {

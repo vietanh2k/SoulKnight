@@ -77,10 +77,15 @@
         "src/UI/LoginScreen.js",
         "src/UI/MatchingUI.js",
         "src/UI/OpenChestAnimationUI.js",
+        "src/UI/UpgradeCardAnimationUI.js",
         "src/UI/Toast.js",
         "src/UI/TowerUI.js",
         "src/UI/ShopUI.js",
+        "src/UI/SkillInfoUI.js",
+        "src/UI/StatSlot.js",
         "src/UI/Explosion.js",
+        "src/UI/SoulFly.js",
+        "src/UI/EndBattleUI.js",
 
         "src/utils/Utils.js",
         "src/UI/MatchingUI.js",
@@ -97,7 +102,13 @@
 
         "src/Logic/objects/MCard.js",
         "src/Logic/utils/AnimatedSprite.js",
-        "src/Logic/objects/Monster.js",
+
+        "src/Logic/objects/monsters/MONSTER_ID.js",
+        "src/Logic/objects/monsters/MonsterFactory.js",
+        "src/Logic/objects/monsters/Monster.js",
+        "src/Logic/objects/monsters/Swordsman.js",
+        "src/Logic/objects/monsters/Assassin.js",
+
         "src/Logic/utils/Vec2.js",
 
         "src/Logic/utils/String.js",

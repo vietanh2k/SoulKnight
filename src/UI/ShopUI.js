@@ -34,18 +34,6 @@ var ShopUI = cc.Layer.extend({
     initItemUI:function()
     {
         var mainscene = ccs.load(res.shopScene, "").node;
-        // var item1 = ccs.load(res.shopItem, "").node.getChildByName('itemNode')
-        // item1.removeFromParent(true)
-        // item1.getChildByName('button').addClickEventListener(()=>this.showPopupChest(item1, 0, 1))
-        // mainscene.getChildByName('nodeItem1').addChild(item1,0,1)
-        // var item2 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
-        // item2.removeFromParent(true)
-        // mainscene.getChildByName('nodeItem2').addChild(item2,0,2)
-        // // item2.getChildByName('button').addClickEventListener(()=>this.showPopupCard(item2, 2))
-        // var item3 = ccs.load(res.cardItemShop, "").node.getChildByName('itemNode')
-        // item3.removeFromParent(true)
-        // mainscene.getChildByName('nodeItem3').addChild(item3,0,3)
-        // item3.getChildByName('button').addClickEventListener(()=>this.showPopupCard(item3, 3))
 
         this.addChild(mainscene,0,'scene');
         var golditem1 = mainscene.getChildByName('goldItem1')
@@ -59,31 +47,18 @@ var ShopUI = cc.Layer.extend({
 
 
 
-
     },
+
 
     showPopupGold:function (itemNode){
         this.popup = new PopupGold(itemNode)
-        this.popup.setPosition(winSize.width/2,winSize.height*5/9)
         this.addChild(this.popup,0,'popup')
-        // let newCards = []
-        // for(var i=0; i<1; i++){
-        //     var typeCard = 2
-        //     var numCardGet = 35
-        //     var card = sharePlayerInfo.collection[typeCard]
-        //     var lvl = card.level
-        //     var newFrag = card.fragment + numCardGet
-        //     var newCard = new Card(typeCard, lvl, 35);
-        //     newCards.push(newCard)
-        // }
-        // LobbyInstant.addChild(new OpenChestAnimationUI(newCards, 20),3);
-
     },
 
     showPopupCard:function (cardID,numGold,numCard, numSlot){
         this.numSlot = numSlot
         this.popup = new PopupCard(cardID,numGold, numCard)
-        this.popup.setPosition(winSize.width/2,winSize.height*5/9)
+
         this.addChild(this.popup,0,'popup')
         // var ex = new Explosion()
         // ex.setPosition(300, 500)
@@ -93,7 +68,6 @@ var ShopUI = cc.Layer.extend({
     showPopupChest:function (itemNode, chestID, numSlot){
         this.numSlot = numSlot
         this.popup = new PopupChest(itemNode, chestID)
-        this.popup.setPosition(winSize.width/2,winSize.height*0.425)
         this.addChild(this.popup,0,'popup')
 
 
@@ -137,7 +111,7 @@ var ShopUI = cc.Layer.extend({
         this.removeChild(this.popup)
         this.updateCanBuyUI()
         this.updateBuySlot(this.numSlot)
-        LobbyInstant.addChild(new OpenChestAnimationUI(newCards, 100),3);
+        LobbyInstant.addChild(new OpenChestAnimationUI(newCards, goldGet),3);
         sharePlayerInfo.addNewCards(newCards);
 
 
@@ -289,6 +263,12 @@ var ShopUI = cc.Layer.extend({
 
     update:function (dt){
 
+    },
+
+    destroyPopup:function (){
+        while (this.getChildByName('popup') != null) {
+            this.removeChild(this.getChildByName('popup'))
+        }
     },
 
 

@@ -1,28 +1,27 @@
-
-
 var MW = MW || {};
 
 //game state
 MW.GAME_STATE = {
-    HOME:0,
-    PLAY:1,
-    OVER:2
+    HOME: 0,
+    PLAY: 1,
+    OVER: 2
 };
 
 //keys
 MW.KEYS = [];
 
 //mouse position
-MW.MOUSE = cc.p(240,0);
+MW.MOUSE = cc.p(240, 0);
 MW.TOUCH = false
+MW.DELAY_TOUCH = false
 //number shield
 MW.SHIELD = 0;
 
 //level
 MW.LEVEL = {
-    STAGE1:1,
-    STAGE2:2,
-    STAGE3:3
+    STAGE1: 1,
+    STAGE2: 2,
+    STAGE3: 3
 };
 
 //life
@@ -36,10 +35,10 @@ MW.SOUND = true;
 
 //enemy move type
 MW.ENEMY_MOVE_TYPE = {
-    ATTACK:0,
-    VERTICAL:1,
-    HORIZONTAL:2,
-    OVERLAP:3
+    ATTACK: 0,
+    VERTICAL: 1,
+    HORIZONTAL: 2,
+    OVERLAP: 3
 };
 
 //delta x
@@ -53,27 +52,27 @@ MW.ROT = -5.625;
 
 //bullet type
 MW.BULLET_TYPE = {
-    PLAYER:1,
-    ENEMY:2
+    PLAYER: 1,
+    ENEMY: 2
 };
 
 //weapon type
 MW.WEAPON_TYPE = {
-    ONE:1
+    ONE: 1
 };
 
 //unit tag
 MW.UNIT_TAG = {
-    ENMEY_BULLET:900,
-    PLAYER_BULLET:901,
-    ENEMY:1000,
-    PLAYER:1000
+    ENMEY_BULLET: 900,
+    PLAYER_BULLET: 901,
+    ENEMY: 1000,
+    PLAYER: 1000
 };
 
 //attack mode
 MW.ENEMY_ATTACK_MODE = {
-    NORMAL:1,
-    TSUIHIKIDAN:2
+    NORMAL: 1,
+    TSUIHIKIDAN: 2
 };
 
 //life up sorce
@@ -81,20 +80,20 @@ MW.LIFEUP_SORCE = [50000, 100000, 150000, 200000, 250000, 300000];
 
 //container
 MW.CONTAINER = {
-    ENEMIES:[],
-    ENEMY_BULLETS:[],
-    PLAYER_BULLETS:[],
-    EXPLOSIONS:[],
-    SPARKS:[],
-    HITS:[],
-    BACKSKYS:[],
-    BACKTILEMAPS:[]
+    ENEMIES: [],
+    ENEMY_BULLETS: [],
+    PLAYER_BULLETS: [],
+    EXPLOSIONS: [],
+    SPARKS: [],
+    HITS: [],
+    BACKSKYS: [],
+    BACKTILEMAPS: []
 };
 
 //bullet speed
 MW.BULLET_SPEED = {
-    ENEMY:-200,
-    SHIP:900
+    ENEMY: -200,
+    SHIP: 900
 };
 // the counter of active enemies
 MW.ACTIVE_ENEMIES = 0;
@@ -136,6 +135,8 @@ cf.COST_GEMS_PER_HOUR = 6;
 
 cf.MAX_EVOLUTION = 2;
 
+cf.DROP_TOWER_DELAY = 1;
+
 // Treasure.json
 cf.CHEST_REWARD = [
     {
@@ -145,6 +146,14 @@ cf.CHEST_REWARD = [
         cards: 2,
         rarities: [1, 2, 3, 4],
     },
+];
+
+cf.TEXT_RARITIES = ['Common', 'Rare', 'Epic', 'Legend'];
+cf.COLOR_RARITIES = [
+    cc.color(134, 204, 100),
+    cc.color(83, 178, 244),
+    cc.color(242, 160, 62),
+    cc.color(237, 103, 253),
 ];
 
 // MCard.xlsx
@@ -219,6 +228,19 @@ cf.CARD = [
         energy: 8,
         texture: asset.cardTowerCannon_png,
         miniature: asset.miniaturesTowerCannon_png,
+        statTypes: ['damage', 'attackSpeed', 'range', 'bulletType'],
+        skill: {
+            texture: asset.iconSkillStun_png,
+            name: 'Đạn Choáng',
+            description: 'Gây mini choáng cho quái.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['time'],
+                    textAttribute: 'Thời gian:',
+                    textStat: '0.2s',
+                },
+            ],
+        },
         name: 'Pháo Cú',
         description:
             'Bắn đơn một mục tiêu,\n' +
@@ -230,6 +252,21 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerWizard_png,
         miniature: asset.miniaturesTowerWizard_png,
+        statTypes: ['damage', 'attackSpeed', 'range', 'bulletType'],
+        skill: {
+            texture: asset.iconSkillResonance_png,
+            name: 'Cộng Hưởng',
+            description:
+                'Cộng thêm sát thương khi trong\n' +
+                'vùng nổ đạn có trên 5 quái.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damageUp'],
+                    textAttribute: 'S. thương tăng:',
+                    textStat: '10',
+                },
+            ],
+        },
         name: 'Quạ Pháp Sư',
         description:
             'Bắn cầu lửa vào vị trí xác định\n' +
@@ -241,6 +278,21 @@ cf.CARD = [
         energy: 10,
         texture: asset.cardTowerBoomerang_png,
         miniature: asset.miniaturesTowerBoomerang_png,
+        statTypes: ['damage', 'attackSpeed', 'range', 'bulletType'],
+        skill: {
+            texture: asset.iconSkillIncrease_png,
+            name: 'Tăng Sát',
+            description:
+                'Tăng thêm sát thương cho lần\n' +
+                'gây sát thương tiếp theo của đạn.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damageUp'],
+                    textAttribute: 'S. thương tăng:',
+                    textStat: '50%',
+                },
+            ],
+        },
         name: 'Ếch Đồ Tể',
         description:
             'Bắn dao phay vào vị trí xác định\n' +
@@ -254,6 +306,24 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerOilGun_png,
         miniature: asset.miniaturesTowerOilGun_png,
+        statTypes: ['bulletTargetBuffType', 'attackSpeed', 'range', 'bulletType'],
+        skill: {
+            texture: asset.iconSkillPoison_png,
+            name: 'Nhớt Độc',
+            description: 'Gây độc cho quái bị dính đạn.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damage'],
+                    textAttribute: 'Sát thương:',
+                    textStat: '2',
+                },
+                {
+                    texture: asset.statIcons_png['time'],
+                    textAttribute: 'Thời gian:',
+                    textStat: '3s',
+                },
+            ],
+        },
         name: 'Thỏ Xả Nhớt',
         description:
             'Bắn đạn nhớt của sên\n' +
@@ -266,6 +336,21 @@ cf.CARD = [
         energy: 10,
         texture: asset.cardTowerIceGun_png,
         miniature: asset.miniaturesTowerIceGun_png,
+        statTypes: ['bulletTargetBuffType', 'attackSpeed', 'range', 'bulletType'],
+        skill: {
+            texture: asset.iconSkillArmorBreak_png,
+            name: 'Băng Sát',
+            description:
+                'Quái nhận thêm sát thương\n' +
+                'khi đang bị đóng băng.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damageUp'],
+                    textAttribute: 'S. thương tăng:',
+                    textStat: '50%',
+                },
+            ],
+        },
         name: 'Gấu Bắc Cực',
         description:
             'Bắn đạn băng vào một mục tiêu,\n' +
@@ -277,6 +362,21 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerDamage_png,
         miniature: asset.miniaturesTowerDamage_png,
+        statTypes: ['auraTowerBuffType'],
+        skill: {
+            texture: asset.iconSkillSlow_png,
+            name: 'Làm Chậm',
+            description:
+                'Quái đi vào vùng trụ\n' +
+                'sẽ bị làm chậm.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['immobilize'],
+                    textAttribute: 'Làm chậm:',
+                    textStat: '80%',
+                },
+            ],
+        },
         name: 'Dê Phát Động',
         description:
             'Tăng Sát thương cho các Tháp\n' +
@@ -287,6 +387,21 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerAttackSpeed_png,
         miniature: asset.miniaturesTowerAttackSpeed_png,
+        statTypes: ['auraTowerBuffType'],
+        skill: {
+            texture: asset.iconSkillBurn_png,
+            name: 'Đốt Máu',
+            description:
+                'Đốt máu quái khi đi\n' +
+                'vào vùng ảnh hưởng.',
+            stats: [
+                {
+                    texture: asset.statIcons_png['damage'],
+                    textAttribute: 'Sát thương:',
+                    textStat: '1%, tối đa 5',
+                },
+            ],
+        },
         name: 'Rắn Tóc Đỏ',
         description:
             'Tăng Tốc bắn cho các Tháp\n' +
@@ -299,40 +414,60 @@ cf.CARD = [
         energy: 1,
         texture: asset.cardMonsterSwordsman_png,
         miniature: asset.miniatureMonsterSwordsman_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Kiếm Ma',
         description: 'Máu thường, tốc độ thường',
+        maxNumberMonsters: [5, 8, 12, 12],
+        hp: 18,
+        speed: 0.8,
     },
     {
         id: 201,
         energy: 1,
         texture: asset.cardMonsterAssassin_png,
         miniature: asset.miniatureMonsterAssassin_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Quạ Xương',
         description: 'Máu thấp, chạy rất nhanh',
+        maxNumberMonsters: [3, 5, 8, 8],
+        hp: 12,
+        speed: 1.4,
     },
     {
         id: 202,
         energy: 3,
         texture: asset.cardMonsterGiant_png,
         miniature: asset.miniatureMonsterGiant_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Khổng Lồ',
         description: 'Máu cao, đi chậm',
+        maxNumberMonsters: [2, 3, 4, 4],
+        hp: 82,
+        speed: 0.5,
     },
     {
         id: 203,
         energy: 2,
         texture: asset.cardMonsterBat_png,
         miniature: asset.miniatureMonsterBat_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Dơi Quỷ',
         description: 'Máu thường, tốc độ thường',
+        maxNumberMonsters: [5, 8, 12, 12],
+        hp: 14,
+        speed: 1,
     },
     {
         id: 204,
         energy: 1,
         texture: asset.cardMonsterNinja_png,
         miniature: asset.miniatureMonsterNinja_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Xương Độn Thổ',
         description: 'Máu thường, tốc độ thường',
+        maxNumberMonsters: [3, 4, 5, 5],
+        hp: 24,
+        speed: 0.8,
     },
 
     // spells
@@ -340,15 +475,19 @@ cf.CARD = [
         id: 300,
         energy: 8,
         texture: asset.cardPotionFireball_png,
+        statTypes: ['damage', 'potionRange'],
         name: 'Cầu Lửa',
         description:
             'Thả cầu lửa gây sát thương\n' +
             'một vùng ngay lập tức',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        damage: [50, 55, 61, 67, 73, 81, 90, 101, 113, 127],
     },
     {
         id: 301,
         energy: 8,
         texture: asset.cardPotionFrozen_png,
+        statTypes: ['duration', 'potionRange'],
         name: 'Đóng Băng',
         description:
             'Thả phép đóng băng gây\n' +
@@ -356,44 +495,62 @@ cf.CARD = [
             'lập tức, đồng thời đóng băng\n' +
             'quái tấn công mình hoặc\n' +
             'trụ đối thủ trong vùng đó',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        damage: [10, 11, 12, 13, 15, 16, 18, 20, 23, 25],
+        duration: 5,
     },
     {
         id: 302,
         energy: 12,
         texture: asset.cardPotionHeal_png,
+        statTypes: ['heal', 'potionRange', 'duration'],
         name: 'Hồi Máu',
         description:
             'Thả phép tạo vùng hồi máu,\n' +
             'quái đi vào sẽ được\n' +
             'hồi máu một thời gian',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        heal: 20,
+        duration: 3,
     },
     {
         id: 303,
         energy: 12,
         texture: asset.cardPotionSpeedUp_png,
+        statTypes: ['duration', 'potionRange'],
         name: 'Tăng Tốc',
         description:
             'Thả phép tạo một vùng tăng tốc,\n' +
             'quái đi vào sẽ tăng tốc độ chạy',
+        potionRange: [0.8, 1, 1.2, 1.4],
+        speedIncrease: 1.5,
+        duration: [1.5, 1.8, 2.1, 2.4, 2.7, 3, 3.3, 3.6, 3.9, 4.2],
     },
     {
         id: 304,
         energy: 10,
         texture: asset.cardPotionTrap_png,
+        statTypes: ['potionRange'],
         name: 'Lò Xo',
         description:
             'Đặt lò xo trên bản đồ,\n' +
             'quái di chuyển vào lò xo\n' +
             'sẽ bị bật trở lại cổng ra quái',
+        potionRange: [0.2, 0.25, 0.3, 0.35],
+        damage: [20, 22, 24, 27, 29, 32, 36, 40, 45, 51],
     },
     {
         id: 305,
         energy: 10,
         texture: asset.cardPotionPower_png,
+        statTypes: ['strengthIncrease', 'duration'],
         name: 'Tăng Sức Mạnh Trụ',
         description:
             'Tạo một vùng tăng sức mạnh,\n' +
             'trụ nằm trong vùng này\n' +
             'sẽ được tăng sức mạnh',
+        potionRange: [0.6, 1, 1.4, 1.8],
+        strengthIncrease: 1.5,
+        duration: [1.5, 1.8, 2.1, 2.4, 2.7, 3, 3.3, 3.6, 3.9, 4.2],
     },
 ];

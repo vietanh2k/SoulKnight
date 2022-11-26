@@ -1,10 +1,17 @@
 const NextWaveAction = cc.Class.extend({
-    ctor: function (N) {
+    ctor: function (N, monstersId) {
         this.N = N
+
+        if (monstersId) {
+            this.monstersId = monstersId
+        } else {
+            this.monstersId = null
+        }
     },
 
     writeTo: function (pkg) {
         pkg.putInt(this.N)
+        pkg.putInt(0)
         cc.log("NextWaveAction")
     },
 
@@ -13,12 +20,14 @@ const NextWaveAction = cc.Class.extend({
     },
 
     getActionDataSize: function () {
-        return 4;
+        return 4 + 4;
     },
 
     activate: function (gameStateManager) {
         if (gameStateManager.waveCount === this.N) {
-            GameUI.instance.addMonsterToBoth()
+            //GameUI.instance.addMonsterToBoth()
+
+            GameUI.instance.activateNextWave(this.monstersId)
             gameStateManager.waveCount++
         }
     }
@@ -26,5 +35,14 @@ const NextWaveAction = cc.Class.extend({
 
 NextWaveAction.deserializer = function (pkg) {
     const N = pkg.getInt()
-    return new NextWaveAction(N)
+    const num = pkg.getInt()
+
+    cc.log("======================= Wave monster count: " + num)
+
+    const monstersId = []
+    for (let i = 0; i < num; i++) {
+        monstersId.push(pkg.getInt())
+    }
+
+    return new NextWaveAction(N, monstersId)
 }

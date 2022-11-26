@@ -3,6 +3,7 @@ var PopupGold = cc.Node.extend({
 
     ctor:function (item) {
         this._super();
+        this.setPosition(winSize.width/2,winSize.height*5/9)
         this.init(item)
         this.da= 312
 

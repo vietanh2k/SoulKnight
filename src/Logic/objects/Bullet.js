@@ -12,6 +12,8 @@ var Bullet = cc.Sprite.extend({
         this.active = true
         this._lastLoc = null
 
+        if (this.target && this.target.retain) this.target.retain()
+
     },
 
     getSpeed: function () {
@@ -76,13 +78,16 @@ var Bullet = cc.Sprite.extend({
         if (this.active) {
 
             var pos = this.getTargetPosition()
+
+            if (!pos) return;
+
             if (euclid_distance(this.position, pos) > this.getSpeed() * dt) {
                 // cc.log('bullet í moving')
                 let direction = pos.sub(this.position).l2norm();
                 this.position.x += direction.x * this.getSpeed() * dt;
                 this.position.y += direction.y * this.getSpeed() * dt;
             } else {
-                cc.log('bullet explose')
+                //cc.log('bullet explose')
                 this.explose(playerState, pos);
             }
             if(this.fx!=null){
@@ -105,5 +110,7 @@ var Bullet = cc.Sprite.extend({
         this.active = false;
         this.visible = false;
         GameUI.instance.removeChild(this)
+
+        if (this.target && this.target.release) this.target.release()
     }
 })

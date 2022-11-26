@@ -23,7 +23,7 @@ const AnimatedSprite = cc.Sprite.extend({
         this.setBlendFunc(cc.SRC_ALPHA, cc.ONE)
     },
 
-    cleanup: function () {
+    animationCleanup: function () {
         for (let i = 0; i < this.animations.length; i++) {
             this.animateActions[i].release()
         }

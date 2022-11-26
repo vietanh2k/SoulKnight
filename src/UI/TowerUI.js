@@ -65,6 +65,7 @@ var TowerUI = cc.Sprite.extend({
         } catch (e) {
             cc.log('this.runAction(this.idleActions[0][0])' + e)
         }
+        this.visible = true;
     },
     AnimationSetUp: function (card) {
         if (card.id === 2) {
@@ -147,8 +148,8 @@ var TowerUI = cc.Sprite.extend({
                 this.dir = dir;
             }
         } catch (e) {
-            cc.log(e)
-            cc.log('Can not change dir!')
+            // cc.log(e)
+            // cc.log('Can not change dir!')
         }
     },
     playAttack: function (dir) {
@@ -159,7 +160,7 @@ var TowerUI = cc.Sprite.extend({
         try {
             if (action2run[0] !== null && action2run[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
-                    this.currentActions[0] = action2run[0][dir];
+                    // this.currentActions[0] = action2run[0][dir];
                     sequence = cc.sequence(
                         action2run[0][dir],
                         cc.callFunc(() => {
@@ -167,8 +168,8 @@ var TowerUI = cc.Sprite.extend({
                         }));
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
-                        this.currentActions[i] = action2run[i][dir];
-                        this.part[i].runAction(this.currentActions[i]);
+                        // this.currentActions[i] = action2run[i][dir];
+                        this.part[i].runAction(action2run[i][dir]);
                     }
                 }
                 let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;
@@ -226,32 +227,5 @@ var TowerUI = cc.Sprite.extend({
             frames.push(frame);
         }
         return frames;
-    },
-    addTimerUI: function () {
-        if (this.timerBar==null||undefined){
-            this.addObjectBackground(res.timer1, 0.8 / 8, 0)
-            // this.addObjectBackground(res.timer2,0.8/8,0,0,1/15)
-            var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
-            timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
-            timeBar.setBarChangeRate(cc.p(1, 0));
-            timeBar.setMidpoint(cc.p(0.5, 0.5))
-            timeBar.setScale(WIDTHSIZE / timeBar.getContentSize().width * 0.8 / 8)
-            this.addChild(timeBar, 0, 'timeBar');
-            var time3 = this.addObjectBackground(res.timer3, 0.8 / 8, 0)
-            time3.visible = false;
-            this.timerBar = timeBar;
-        }
-
-    },
-    addObjectBackground: function (res, scaleW, scaleH) {
-        var obj = new cc.Sprite(res);
-        if (scaleW > 0) {
-            obj.setScale(WIDTHSIZE / obj.getContentSize().width * scaleW)
-        } else if (scaleH > 0) {
-            obj.setScale(HEIGHTSIZE / obj.getContentSize().height * scaleH)
-        }
-        obj.setPosition(0,0)
-        this.addChild(obj, 0, res);
-        return obj
     },
 });

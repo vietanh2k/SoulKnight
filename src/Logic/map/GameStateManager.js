@@ -1,5 +1,6 @@
 MAX_WAVE = 25;
 MAX_ENERGY = 30;
+MAX_VALUE = 99999
 let GameStateManagerInstance = null
 
 var GameStateManager = cc.Class.extend({
@@ -10,6 +11,7 @@ var GameStateManager = cc.Class.extend({
     canTouchNewWave:null,
     curWave:null,
     winner:null,
+
 
     UPDATE_TYPE_NORMAL: 0,
     UPDATE_TYPE_NO_UPDATE: 1,
@@ -22,11 +24,13 @@ var GameStateManager = cc.Class.extend({
         this.init();
         this.playerA = new PlayerState(1)
         this.playerB = new PlayerState(2)
+        this.monsterFactory = new MonsterFactory()
         this.readFrom(pkg)
         this._timer = new Timer(this)
         this.canTouchNewWave = false
         this.curWave = 0
         this.winner = null
+        this.isLastWave= false
 
         this.sumDt = 0;
         this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME
@@ -68,7 +72,10 @@ var GameStateManager = cc.Class.extend({
         cc.log('iddddddddd'+gv.gameClient._userId)
     },
     isClearWave:function (){
-        if(this.playerA._map.monsters.length == 0){
+        /*if(this.playerA._map.monsters.length == 0){
+            this.canTouchNewWave = true
+        }*/
+        if(this.playerA.isClearWave() && this.curWave < MAX_WAVE){
             this.canTouchNewWave = true
         }
     },
@@ -77,7 +84,7 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false
     },
     checkWinner:function (){
-        if(this.curWave >= MAX_WAVE && this.playerA.getMap().monsters.length ==0 && this.playerB.getMap().monsters.length ==0){
+        if(this.curWave >= MAX_WAVE && this.playerA.isClearWave() && this.playerB.isClearWave()){
             if(this.playerA.health > this.playerB.health){
                 this.winner = 1
             }else if(this.playerB.health > this.playerA.health){
@@ -139,5 +146,26 @@ var GameStateManager = cc.Class.extend({
         }
     },
 
+    getNextWaveMonstersId: function () {
+        const monstersId = [];
+        monstersId.push(0);
+        monstersId.push(1);
+        return monstersId;
+    },
+
+    activateNextWave: function (ui, monstersId) {
+        for (let i = 0; i < monstersId.length; i++) {
+            const m1 = this.monsterFactory.getMonster(this.playerA, monstersId[i])
+            this.playerA.addMonster(m1)
+            ui.addChild(m1)
+
+            const m2 = this.monsterFactory.getMonster(this.playerB, monstersId[i])
+            this.playerB.addMonster(m2)
+            ui.addChild(m2)
+        }
+        if(this.curWave >= MAX_WAVE){
+            this.isLastWave = true
+        }
+    },
 
 });

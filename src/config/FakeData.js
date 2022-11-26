@@ -10,7 +10,7 @@ fake.chests = [
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: 0,
         golds: [10, 20],
-        cards: [4, 5],
+        cards: [5, 10],
         rarities: [1, 2],
     },
     {
@@ -18,7 +18,7 @@ fake.chests = [
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: 1668007241022,
         golds: [100, 200],
-        cards: [40, 50],
+        cards: [50, 100],
         rarities: [1, 2, 3],
     },
     {
@@ -26,15 +26,15 @@ fake.chests = [
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: null,
         golds: [200, 400],
-        cards: [100, 200],
+        cards: [600, 1000],
         rarities: [1, 2, 3, 4],
     },
     {
         id: 3,
         openTimeRequired: 3 * 60 * 60 * 1000,
         openTimeStarted: null,
-        golds: [500, 1000],
-        cards: [200, 400],
+        golds: [10, 300],
+        cards: [10, 20],
         rarities: [1, 2, 3, 4],
     },
 ];

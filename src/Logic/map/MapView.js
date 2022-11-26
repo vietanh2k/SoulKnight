@@ -4,14 +4,7 @@
 
 const SERVER_CELL_WIDTH_CONFIG = SERVER_CELL_WIDTH_CONFIG || 50;
 var MapView = cc.Class.extend({
-    trees: null,
-    monsters: null,
-    spells: null,
-    bullets:null,
-    towers:null,
-    _mapController:null,
-    _playerState: null,
-    rule:null,
+
 
 
     ctor:function (playerState, intArray, rule) {
@@ -97,7 +90,7 @@ var MapView = cc.Class.extend({
 
                 if (parent.x === -1000) {
                     cell.nextCell = null
-                    cell.prevCell = null
+                    //cell.prevCell = null
                     cell.state = 1
                     continue;
                 }
@@ -110,7 +103,7 @@ var MapView = cc.Class.extend({
                 }
 
                 cell.nextCell = this.cells[parent.x][parent.y];
-                this.cells[parent.x][parent.y].prevCell = cell;
+                //this.cells[parent.x][parent.y].prevCell = cell;
 
                 if (!cell.nextCell) {
                     cc.log( "parent: " + parent + "\tcell.nextCell: " + this.cells[parent.x][parent.y])
@@ -119,7 +112,7 @@ var MapView = cc.Class.extend({
             }
         }
 
-        this.cells[0][0].prevCell = this.gateCell;
+        //this.cells[0][0].prevCell = this.gateCell;
         this.cells[MAP_CONFIG.MAP_WIDTH - 1][MAP_CONFIG.MAP_HEIGHT - 1].nextCell = this.mainTowerCell;
 
         if (this.cells[0][0].state === 1) {
@@ -130,17 +123,13 @@ var MapView = cc.Class.extend({
             for (let y = 0; y < MAP_HEIGHT; y++) {
                 const currentCell = this.cells[x][y];
 
-                if (currentCell.getNextCell() == null || currentCell.getPrevCell() == null) {
+                currentCell.nextPos = null;
+                currentCell.outPos = null;
+
+                if (currentCell.getNextCell() == null) {
                     continue
                 }
 
-                currentCell.isCornerCell =
-                    currentCell.getPrevCell().getLocation()
-                        .sub(currentCell.getLocation())
-                        .dot(
-                            currentCell.getNextCell().getLocation()
-                                .sub(currentCell.getLocation())
-                        ) === 0
                 currentCell.updateEdgePositionWithNextCell()
             }
         }
@@ -148,11 +137,12 @@ var MapView = cc.Class.extend({
 
     updateMonster:function (dt) {
         try {
-            var leng = this.monsters.length
-            for (i in this.monsters){
-                this.monsters[i].logicUpdate(this._playerState, dt)
-                if(this.monsters[leng-i-1].isDestroy){
-                    this.monsters.splice(leng-i-1, 1)
+            const len = this.monsters.length
+            for (let i = len - 1; i !== -1; i--) {
+                const monster = this.monsters[i]
+                monster.logicUpdate(this._playerState, dt)
+                if(monster.isDestroy){
+                    this.monsters.splice(i, 1)
                 }
             }
         } catch (e) {
@@ -192,8 +182,13 @@ var MapView = cc.Class.extend({
         }
     },
 
-    renderMonster: function () {
+    renderMonster: function (rule) {
         for (i in this.monsters){
+            if(this.rule == 1) {
+                this.monsters[i].setLocalZOrder(this.monsters[i].position.y)
+            }else{
+                this.monsters[i].setLocalZOrder(winSize.height- this.monsters[i].position.y)
+            }
             this.monsters[i].render(this._playerState)
         }
     },
@@ -242,7 +237,11 @@ var MapView = cc.Class.extend({
         if(!cell.getObjectOn()){
             is_update = false;
         } else {
-            is_update = true;
+            if((cell.getObjectOn().instance=="0" && card==16) || (cell.getObjectOn().instance=="1" && card==17)){
+                is_update = true;
+            } else {
+                return;
+            }
         }
         if(is_update){
             cell.getObjectOn().upgrade(card);

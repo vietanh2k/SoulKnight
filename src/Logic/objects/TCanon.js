@@ -16,7 +16,7 @@ var TCanon = Tower.extend({
         this.visible = false
 
         this.attackCoolDown = 0;
-        this.instance = "1";
+        this.instance = "0";
         this.target = [];
         this.position = position;
         this.health = 100

@@ -4,25 +4,34 @@ const Monster = AnimatedSprite.extend({
         this._playerState = playerState
         this.isDestroy = false
         this.initAnimation()
+        this.setScale(1.2)
         this.active = true
         this.visible = true
-        this.energyFromDestroy = 6
+
         this.renderRule = this._playerState.rule
 
         this.position = new Vec2(MAP_CONFIG.CELL_WIDTH / 2.0, MAP_CONFIG.CELL_HEIGHT / 2.0)
         this.prevPosition = new Vec2(0,0)
-        this.speed = 30.0
+
         this.concept="monster"
-        this.health = 30;
-        this.MaxHealth = 30;
         this.healthUI = null
+
+        this.initConfig()
         this.addHealthUI()
 
         return true;
     },
 
+    initConfig: function () {
+        this.speed = 30.0
+        this.health = 30;
+        this.MaxHealth = 30;
+        this.energyFromDestroy = 6
+        this.energyWhileImpactMainTower = 1
+    },
+
     initAnimation: function (){
-        const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
+        /*const moveDownAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 0, 11, 1)
         const moveDownRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 12, 23, 1)
         const moveRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 24, 35, 1)
         const moveUpRightAnimId = this.load(res.Swordman_plist, 'monster_swordsman_run_%04d.png', 36, 47, 1)
@@ -36,13 +45,13 @@ const Monster = AnimatedSprite.extend({
             [ moveLeftAnimId,           moveUpAnimId,            moveRightAnimId     ],
             [ moveUpLeftAnimId,         moveUpAnimId,            moveUpRightAnimId   ],
         ]
-        this.play(0)
+        this.play(0)*/
     },
 
     debug: function (map) {
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
-            this._playerState.updateHealth(-1)
+            this._playerState.updateHealth(-this.energyWhileImpactMainTower)
             cc.log('destroy')
             this.destroy()
 
@@ -53,6 +62,22 @@ const Monster = AnimatedSprite.extend({
                 x++
             }*/
         }
+    },
+
+    isAtLocation: function (map, loc) {
+
+        const currentCell = map.getCellAtPosition(this.position);
+        cc.log('222222222222:'+currentCell.getLocation().x+''+currentCell.getLocation().y)
+        cc.log('333333333333:'+loc.x+''+loc.y)
+        if (currentCell != null) {
+            var curLoc = currentCell.getLocation();
+            if(curLoc.x == loc.x && curLoc.y == loc.y-1){
+                cc.log('trueeeeeeee')
+                return true;
+            }
+        }
+        cc.log('falseeeeeeeeee')
+        return false;
     },
 
     logicUpdate: function (playerState, dt){
@@ -72,13 +97,37 @@ const Monster = AnimatedSprite.extend({
     route: function (map, distance, prevCell) {
         let currentCell = map.getCellAtPosition(this.position);
 
+        if (currentCell == null) return;
+
         if (currentCell === prevCell) {
             currentCell = currentCell.getNextCell()
         }
 
         if (currentCell == null) return;
 
-        const targetPosition = currentCell.getEdgePositionWithNextCell();
+        let targetPosition = currentCell.getEdgePositionWithNextCell();
+
+
+        // corner movement
+        const next = currentCell.getNextCell();
+        if (next) {
+            const relPos = this.position.sub(currentCell.getCenterPosition());
+            const dir = relPos.normal();
+            const outDir =  next.getCenterPosition().sub(currentCell.getCenterPosition()).normalize();
+
+            dir.set(Math.round(dir.x), Math.round((dir.y)))
+            outDir.set(Math.round(outDir.x), Math.round((outDir.y)))
+
+            if (!outDir.equals(dir)) {
+                if (Math.abs(relPos.x) <= MAP_CONFIG.CELL_WIDTH / 4.0 && Math.abs(relPos.y) <= MAP_CONFIG.CELL_HEIGHT / 4.0) {
+                    targetPosition = currentCell.getCornerCellOutPos();
+                } else {
+                    //dir.set(-dir.x, -dir.y)
+                    targetPosition = currentCell.getCenterPosition().add(dir.mul(MAP_CONFIG.HALF_CELL_DIMENSIONS_OFFSET[dir.y + 1][dir.x + 1] / 2.0));
+                }
+            }
+        }
+
 
         if (targetPosition == null) return;
 
@@ -155,17 +204,16 @@ const Monster = AnimatedSprite.extend({
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
             var ex = new Explosion(cc.p(this.x, this.y))
+            var soul = new SoulFly(cc.p(this.x, this.y))
             this.getParent().addChild(ex)
+            this.getParent().addChild(soul)
         }
         this.visible = false;
         // var ex = new Explosion()
         // ex.setPosition(300, 500)
         // this.addChild(ex, 5000)
         this.removeFromParent(true)
+        this.animationCleanup()
     },
 
 });
-
-
-
-
