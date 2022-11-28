@@ -177,6 +177,9 @@ var LobbyScene = cc.Scene.extend({
                 this.tabUIs[i].x = cf.WIDTH * (i - this.activeTab);
             }
         }
+        if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
+            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+        }
     },
 
     runOpenChestAnimation: function (newCards, goldReceived) {
@@ -201,7 +204,7 @@ var LobbyScene = cc.Scene.extend({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: false,
             onTouchBegan: () => {
-                if (!this.allBtnIsActive || this.scrollTouching) {
+                if (!this.allBtnIsActive) {
                     return false;
                 }
                 this.isScrolling = false;
@@ -224,6 +227,7 @@ var LobbyScene = cc.Scene.extend({
                 if (!this.allBtnIsActive || !this.scrollTouching) {
                     return false;
                 }
+                this.scrollTouching = false;
                 let sequence = cc.sequence(
                     cc.callFunc(() => {
                         let record = cf.WIDTH * 10;
@@ -233,6 +237,9 @@ var LobbyScene = cc.Scene.extend({
                                 this.activeTab = i;
                             }
                         }
+                        if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
+                            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+                        }
                         this.resizeTabs();
                         let distance = this.tabUIs[this.activeTab].x;
                         for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
@@ -241,10 +248,7 @@ var LobbyScene = cc.Scene.extend({
                             }
                         }
                     }),
-                    cc.DelayTime(0.25),
-                    cc.callFunc(() => {
-                        this.scrollTouching = false;
-                    })
+                    cc.DelayTime(0.25)
                 );
                 this.runAction(sequence);
                 return true;
