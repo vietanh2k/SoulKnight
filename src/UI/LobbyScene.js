@@ -15,6 +15,8 @@ var LobbyScene = cc.Scene.extend({
 
     allBtnIsActive: true,
 
+    DISTANCE_SCROLL_ACCEPT: 5,
+
     ctor: function () {
         this._super();
         LobbyInstant = this
@@ -28,6 +30,7 @@ var LobbyScene = cc.Scene.extend({
         cc.log('initTabs')
         this.initTabUIs(1);
         cc.log('initTabUIs')
+        this.addHorizontalScrollByTouchListener();
     },
 
     initBackGround: function (localZOrder) {
@@ -118,7 +121,7 @@ var LobbyScene = cc.Scene.extend({
     },
 
     changeToTab: function (newTab) {
-        if(newTab == cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess == false) {
+        if(newTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
             // fr.view(ShopUI);
             this.requestOffer()
         }
@@ -171,7 +174,7 @@ var LobbyScene = cc.Scene.extend({
     updateTabUIsVisibility: function () {
         for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
             if (this.tabUIs[i] !== undefined) {
-                this.tabUIs[i].visible = i === this.activeTab;
+                this.tabUIs[i].x = cf.WIDTH * (i - this.activeTab);
             }
         }
     },
@@ -192,6 +195,63 @@ var LobbyScene = cc.Scene.extend({
             setTimeout(() => this.allBtnIsActive = true, 0.01);
         }
     },
+
+    addHorizontalScrollByTouchListener: function () {
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: false,
+            onTouchBegan: () => {
+                if (!this.allBtnIsActive || this.scrollTouching) {
+                    return false;
+                }
+                this.isScrolling = false;
+                this.scrollTouching = true;
+                return true;
+            },
+            onTouchMoved: (touch) => {
+                if (!this.allBtnIsActive || !this.scrollTouching) {
+                    return false;
+                }
+                let delta = touch.getDelta();
+                this.currentScroll += delta.x;
+                this.tabUIs.forEach(tab => tab.x += delta.x);
+                if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.DISTANCE_SCROLL_ACCEPT) {
+                    this.isScrolling = true;
+                }
+                return true;
+            },
+            onTouchEnded: () => {
+                if (!this.allBtnIsActive || !this.scrollTouching) {
+                    return false;
+                }
+                let sequence = cc.sequence(
+                    cc.callFunc(() => {
+                        let record = cf.WIDTH * 10;
+                        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+                            if (this.tabUIs[i] !== undefined && Math.abs(this.tabUIs[i].x) < record) {
+                                record = Math.abs(this.tabUIs[i].x);
+                                this.activeTab = i;
+                            }
+                        }
+                        this.resizeTabs();
+                        let distance = this.tabUIs[this.activeTab].x;
+                        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+                            if (this.tabUIs[i] !== undefined) {
+                                this.tabUIs[i].runAction(new cc.moveBy(0.25, cc.p(-distance, 0)));
+                            }
+                        }
+                    }),
+                    cc.DelayTime(0.25),
+                    cc.callFunc(() => {
+                        this.scrollTouching = false;
+                    })
+                );
+                this.runAction(sequence);
+                return true;
+            },
+        }, this);
+    },
+
     requestOffer: function () {
         cc.log("sendRequestOffer");
         try{
