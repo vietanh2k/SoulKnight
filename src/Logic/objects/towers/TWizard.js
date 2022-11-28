@@ -30,7 +30,7 @@ var TWizard = Tower.extend({
             this.level = 1
             this.map = map
             this._is_set_pos = false
-            this.setScale(1.2)
+            this.setScale(1.25)
             this.resetPending();
 
 
@@ -53,13 +53,22 @@ var TWizard = Tower.extend({
             this.attackPrefixNames[3] = 'wizard/tower_wizard_attack_3_';
             this.idleIDP = 15;
             this.attackIDP = 9;
+            this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
+            this.bullet_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
+            GameUI.instance.addChild(this.fire_fx, 900);
+            GameUI.instance.addChild(this.bullet_fx, 900);
+            this.fire_fx.visible = false;
+            this.bullet_fx.visible = false;
+
         },
         getNewBullet: function (object) {
             var speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
                 damage = this.getConfig()['stat'][this.getLevel()]['damage'],
                 radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
                 position = new Vec2(this.position.x, this.position.y);
-            return new TWizardBullet(new Vec2(object.position.x, object.position.y), speed, damage, radius, new Vec2(position.x, position.y));
+            return new TWizardBullet(
+                new Vec2(object.position.x, object.position.y),
+                speed, damage, radius, new Vec2(position.x, position.y), this.bullet_fx);
         },
 
 

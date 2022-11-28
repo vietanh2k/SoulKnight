@@ -1,4 +1,5 @@
 var _TOWER_CONFIG;
+const TOWER_SCALE = 1.2;
 
 /**
  * Abstract class*/
@@ -33,7 +34,11 @@ var Tower = TowerUI.extend({
             }
             // this.addTimerUI()
             this._is_set_pos = true
+            if(this.fire_fx!=null){
+                this.fire_fx.setPosition(this.x, this.y);
+            }
         }
+
         if (this.renderRule === 1) {
             if (this._last_status == undefined || this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
                 if (this.status == 'idle') {

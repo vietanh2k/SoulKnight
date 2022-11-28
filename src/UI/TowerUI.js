@@ -11,6 +11,7 @@ var TowerUI = cc.Sprite.extend({
     idleActions: null,
     attackActions: null,
     dir: null,
+    fire_fx:null,
     DIR: {
         COINCIDE: -1,
         S: 0,
@@ -171,6 +172,21 @@ var TowerUI = cc.Sprite.extend({
                         // this.currentActions[i] = action2run[i][dir];
                         this.part[i].runAction(action2run[i][dir]);
                     }
+                }
+                if(this.fire_fx!=null){
+                    var  seq = cc.sequence(
+                        cc.callFunc(() => {this.fire_fx.visible = true;}),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_1', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_2', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_3', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_4', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_5', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_6', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_7', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_8', false)),
+                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_9', false))
+                    );
+                    this.runAction(seq)
                 }
                 let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;
                 this.flippedX = isFlippedX;

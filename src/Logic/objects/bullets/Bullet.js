@@ -1,21 +1,11 @@
 var Bullet = cc.Sprite.extend({
     fx:null,
-    ctor: function (target, speed, damage, radius, position) {
-        this._super(res.Wizard_Bullet);
-        this.target = target
-        this.speed = 60
-        this.damage = damage
-        this.radius = radius
-        this.isDestroy = false;
-        this.concept="bullet"
-        this.position = position
-        this.active = true
-        this._lastLoc = null
-
-        if (this.target && this.target.retain) this.target.retain()
+    concept:"bullet",
+    ctor: function (res, target, speed, damage, radius, position) {
+        this._super(res);
+        this.reset(target, speed, damage, radius, position);
 
     },
-
     getSpeed: function () {
         return this.speed
     },
@@ -38,6 +28,20 @@ var Bullet = cc.Sprite.extend({
             return this.target
         }
     },
+
+    reset: function (target, speed, damage, radius, position){
+        this.target = target
+        this.speed = speed
+        this.damage = damage
+        this.radius = radius
+        this.isDestroy = false;
+        this.position = position
+        this.active = true
+        this._lastLoc = null
+        this.activate=true
+
+        if (this.target && this.target.retain) this.target.retain()
+    },
     canAttack: function (object) {
         if(object.concept=='monster'){
             return true;
@@ -49,7 +53,6 @@ var Bullet = cc.Sprite.extend({
         this.renderRule = playerState.rule
 
         if (this.renderRule === 1) {
-            // dir.set(dir.x, -dir.y)
             let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
             let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
             let height = dy + CELLWIDTH * 5
@@ -59,7 +62,6 @@ var Bullet = cc.Sprite.extend({
             this.x = dx + x
             this.y = height - y
         } else {
-            // dir.set(-dir.x, dir.y)
             let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
             let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
             let height = dy + CELLWIDTH * 6
@@ -70,16 +72,17 @@ var Bullet = cc.Sprite.extend({
 
             this.setPosition(width - x, height + y)
         }
-        // if(this.fx!=null||undefined){
-        //     this.fx.setPosition(cc.p(this.x, this.y))
-        // }
     },
     logicUpdate: function (playerState, dt) {
         if (this.active) {
 
             var pos = this.getTargetPosition()
 
-            if (!pos) return;
+            if (!pos) {
+                // target disappear!
+                this.explose(playerState, pos);
+                return;
+            }
 
             if (euclid_distance(this.position, pos) > this.getSpeed() * dt) {
                 // cc.log('bullet í moving')
@@ -90,15 +93,13 @@ var Bullet = cc.Sprite.extend({
                 //cc.log('bullet explose')
                 this.explose(playerState, pos);
             }
-            // if(this.fx!=null){
-            //     this.fx.update(dt)
-            // }
         }
 
     },
 
     explose: function (playerState, pos) {
         const map = playerState.getMap();
+
         let objectList = map.getObjectInRange(pos, this.getRadius());
         for (let object of objectList) {
             if (this.canAttack(object)) {
@@ -109,8 +110,8 @@ var Bullet = cc.Sprite.extend({
         this.isDestroy = true;
         this.active = false;
         this.visible = false;
-        GameUI.instance.removeChild(this)
 
+        GameUI.instance.removeChild(this);
         if (this.target && this.target.release) this.target.release()
     }
 })

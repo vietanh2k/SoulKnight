@@ -105,7 +105,8 @@ var res = {
     house_box: 'res/battle/battle_info_box.png',
     energyIcon: 'res/common/common_icon_energy.png',
     TWizard_plit: 'res/tower/frame/wizard/TWz.plist',
-    Wizard_Bullet:'res/tower/frame/wizard/tower_wizard_bullet_0000.png'
+    Wizard_Bullet:'res/tower/frame/wizard/tower_wizard_bullet_0000.png',
+    TCannon_Bullet: 'res/tower/frame/cannon/tower_cannon_bullet_0000.png',
 
 };
 

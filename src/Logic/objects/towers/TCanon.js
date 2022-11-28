@@ -31,7 +31,7 @@ var TCanon = Tower.extend({
         this.level = 1
         this.map = map
         this._is_set_pos = false
-        // this.initAnimation()
+        this.setScale(1.1)
         this.resetPending();
 
         return true;
@@ -50,13 +50,16 @@ var TCanon = Tower.extend({
         this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
         this.idleIDP = 15;
         this.attackIDP = 9;
+        this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
+        GameUI.instance.addChild(this.fire_fx, 900);
+        this.fire_fx.visible = false;
     },
     getNewBullet: function (object) {
         var speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
             damage = this.getConfig()['stat'][this.getLevel()]['damage'],
             radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
             position = new Vec2(this.position.x, this.position.y);
-        return new Bullet(object, speed, damage, radius, position);
+        return new TCannonBullet(object, speed, damage, radius, position);
     },
 
 })
