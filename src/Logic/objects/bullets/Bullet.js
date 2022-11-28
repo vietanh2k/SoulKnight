@@ -37,7 +37,7 @@ var Bullet = cc.Sprite.extend({
         this.isDestroy = false;
         this.position = position
         this.active = true
-        this._lastLoc = null
+        this._lastLoc = new Vec2(position.x, position.y)
         this.activate=true
 
         if (this.target && this.target.retain) this.target.retain()
@@ -80,7 +80,7 @@ var Bullet = cc.Sprite.extend({
 
             if (!pos) {
                 // target disappear!
-                this.explose(playerState, pos);
+                this.explose(playerState, this._lastLoc);
                 return;
             }
 
