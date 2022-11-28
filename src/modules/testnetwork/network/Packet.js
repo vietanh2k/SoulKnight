@@ -736,28 +736,30 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
     readData: function () {
         let type = this.getByte();
         let status = this.getString();
-        let card = this.readCardData();
+        let newCard = this.readCardData();
 
-        cc.log('Get upgrade card response from server. Status: ' + status + ', type: ' + type + ', card: ' + JSON.stringify(card) + '.');
+        cc.log('Get upgrade card response from server. Status: ' + status + ', type: ' + type + ', card: ' + JSON.stringify(newCard) + '.');
 
         let serverNow = this.getLong();
         Utils.updateTimeDiff(serverNow);
 
         if (status === "Success") {
+            let oldCard = undefined;
             for (let i = 0; i < sharePlayerInfo.collection.length; i++) {
                 if (sharePlayerInfo.collection[i].type === type) {
-                    sharePlayerInfo.collection[i] = card;
+                    oldCard = sharePlayerInfo.collection[i];
+                    sharePlayerInfo.collection[i] = newCard;
                     break;
                 }
             }
             for (let i = 0; i < sharePlayerInfo.deck.length; i++) {
                 if (sharePlayerInfo.deck[i].type === type) {
-                    sharePlayerInfo.deck[i] = card;
+                    sharePlayerInfo.deck[i] = newCard;
                     break;
                 }
             }
+            LobbyInstant.runUpgradeCardAnimation(oldCard, newCard);
             LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
-            LobbyInstant.getChildByTag(cf.TAG_CARDINFOUI).destroy();
         } else {
             Utils.addToastToRunningScene(status);
         }

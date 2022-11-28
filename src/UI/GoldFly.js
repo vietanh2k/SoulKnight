@@ -32,15 +32,15 @@ var GoldFly = cc.Node.extend({
             var rx = (Math.random() * w*2)-w;
             var ry = (Math.random() * w*2)-w;
             var p = new cc.p(pos.x+rx,pos.y+ ry)
-            var r2 = ((Math.random() * 3)-1.5)/10
+            var r2 = ((Math.random() * 5)-2.5)/10
             gold.setScale(_scale)
             var seq
 
-            seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.65), cc.MoveTo(0.45+r2,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForOne)))
+            seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.45+r2), cc.MoveTo(0.45,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForOne)))
             if(i == num-1){
-                seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.65), cc.MoveTo(0.45+r2,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForLastOne)))
+                seq = cc.sequence(cc.MoveTo(0.35, p), cc.delayTime(0.45+r2), cc.MoveTo(0.45,des),cc.fadeOut(0),cc.callFunc(()=> this.updateLabel(goldForLastOne)))
             }
-            var seq2 = cc.sequence( cc.delayTime(1), cc.scaleBy(0.6+r2, 0.5/_scale))
+            var seq2 = cc.sequence( cc.delayTime(0.8), cc.scaleBy(0.6+r2, 0.5/_scale))
             var seq3 = cc.sequence( cc.delayTime(3), cc.callFunc(()=> this.destroy()))
             gold.runAction(seq)
             gold.runAction(seq2)

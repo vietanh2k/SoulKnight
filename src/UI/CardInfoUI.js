@@ -264,6 +264,7 @@ var CardInfoUI = cc.Layer.extend({
                     upgradeBtn.addClickEventListener(() => {
                         if (!this.skillInfoUIIsActive) {
                             testnetwork.connector.sendUpgradeCardRequest(card.type, card.reqGold);
+                            this.destroy(false);
                         }
                     });
                 }
@@ -333,237 +334,20 @@ var CardInfoUI = cc.Layer.extend({
         Utils.addScaleAnimation(this);
     },
 
-    destroy: function (isShowingAddCardToDeck) {
+    destroy: function (enterAddCardToDeckUI) {
         this.visible = false;
-        this.parent.removeCardInfoUI(this, !isShowingAddCardToDeck);
+        this.parent.removeCardInfoUI(this, !enterAddCardToDeckUI);
     },
 
     initAttributeSlots: function () {
         this.statSlots = [];
-        if (this.card.isMonster()) {
-            this.addAttributeSlotToPanel(this.card, 'hp', 0);
-            this.addAttributeSlotToPanel(this.card, 'speed', 1);
-            this.addAttributeSlotToPanel(this.card, 'numberMonsters', 2);
-        } else if (this.card.isTower()) {
-            switch (this.card.id) {
-                case 100:
-                case 101:
-                case 102:
-                    this.addAttributeSlotToPanel(this.card, 'damage', 0);
-                    this.addAttributeSlotToPanel(this.card, 'attackSpeed', 1);
-                    this.addAttributeSlotToPanel(this.card, 'range', 2);
-                    this.addAttributeSlotToPanel(this.card, 'bulletType', 3);
-                    break;
-                case 103:
-                case 104:
-                    this.addAttributeSlotToPanel(this.card, 'bulletTargetBuffType', 0);
-                    this.addAttributeSlotToPanel(this.card, 'attackSpeed', 1);
-                    this.addAttributeSlotToPanel(this.card, 'range', 2);
-                    this.addAttributeSlotToPanel(this.card, 'bulletType', 3);
-                    break;
-                case 105:
-                case 106:
-                    this.addAttributeSlotToPanel(this.card, 'auraTowerBuffType', 0);
-                    break;
-                default:
-                    cc.log('Cannot find card id ' + this.card.id);
-                    break;
-            }
-        } else if (this.card.isSpell()) {
-            switch (this.card.id) {
-                case 300:
-                    this.addAttributeSlotToPanel(this.card, 'damage', 0);
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 1);
-                    break;
-                case 301:
-                case 303:
-                    this.addAttributeSlotToPanel(this.card, 'duration', 0);
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 1);
-                    break;
-                case 302:
-                    this.addAttributeSlotToPanel(this.card, 'heal', 0);
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 1);
-                    this.addAttributeSlotToPanel(this.card, 'duration', 2);
-                    break;
-                case 304:
-                    this.addAttributeSlotToPanel(this.card, 'potionRange', 0);
-                    break;
-                case 305:
-                    this.addAttributeSlotToPanel(this.card, 'strengthIncrease', 0);
-                    this.addAttributeSlotToPanel(this.card, 'duration', 1);
-                    break;
-                default:
-                    cc.log('Cannot find card id ' + this.card.id);
-                    break;
-            }
-        } else {
-            cc.log('This card is neither a monster, a tower, nor a spell.');
+        for (let i = 0; i < this.card.statTypes.length; i++) {
+            this.addAttributeSlotToPanel(this.card, i);
         }
     },
 
-    addAttributeSlotToPanel: function (card, attribute, index) {
-        let texture, textAttribute, textStat, diff, textUpgradeStat = undefined;
-        switch (attribute) {
-            case 'hp':
-                textAttribute = 'Máu:';
-                texture = asset.statIcons_png['hp'];
-                textStat = Math.round(card.hp * 100) / 100;
-                diff = card.getNextLevelSample().hp > card.hp;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff * 100) / 100;
-                }
-                break;
-            case 'speed':
-                textAttribute = 'Tốc chạy:';
-                texture = asset.statIcons_png['speed'];
-                textStat = Math.round(card.speed * 100) / 100;
-                diff = card.getNextLevelSample().speed - card.speed;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff * 100) / 100;
-                }
-                break;
-            case 'numberMonsters':
-                textAttribute = 'Số lượng:';
-                texture = asset.statIcons_png['numberMonsters'];
-                textStat = '' + card.minNumberMonsters + ' - ' + card.maxNumberMonsters;
-                diff = card.getNextLevelSample().maxNumberMonsters - card.maxNumberMonsters;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff);
-                }
-                break;
-            case 'damage':
-                textAttribute = 'Sát thương:';
-                texture = asset.statIcons_png['damage'];
-                textStat = Math.round(card.damage * 100) / 100;
-                diff = card.getNextLevelSample().damage - card.damage;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff);
-                }
-                break;
-            case 'attackSpeed':
-                textAttribute = 'Tốc bắn: ';
-                texture = asset.statIcons_png['attackSpeed'];
-                textStat = Math.round(1000 / card.towerInfo.stat[card.evolution + 1].attackSpeed * 100) / 100;
-                if (card.evolution < 2) {
-                    diff = 1000 / card.towerInfo.stat[card.evolution + 2].attackSpeed - 1000 / card.towerInfo.stat[card.evolution + 1].attackSpeed;
-                    if (diff > 0) {
-                        textUpgradeStat = '+' + Math.round((diff) * 100) / 100;
-                    } else if (diff < 0) {
-                        textUpgradeStat = '-' + Math.round((-diff) * 100) / 100;
-                    }
-                }
-                break;
-            case 'range':
-                textAttribute = 'Tầm bắn: ';
-                texture = asset.statIcons_png['range'];
-                textStat = Math.round(card.towerInfo.stat[card.evolution + 1].range * 100) / 100;
-                if (card.evolution < 2) {
-                    diff = card.towerInfo.stat[card.evolution + 2].range - card.towerInfo.stat[card.evolution + 1].range;
-                    if (diff > 0) {
-                        textUpgradeStat = '+' + Math.round((diff) * 100) / 100;
-                    } else if (diff < 0) {
-                        textUpgradeStat = '-' + Math.round((-diff) * 100) / 100;
-                    }
-                }
-                break;
-            case 'bulletType':
-                textAttribute = 'Loại bắn: ';
-                texture = asset.statIcons_png['bulletRadius'];
-                textStat = card.towerInfo.bulletType;
-                break;
-            case 'bulletTargetBuffType': {
-                let targetBuffConfig = cf.TARGET_BUFF.targetBuff[card.towerInfo.bulletTargetBuffType];
-                switch (targetBuffConfig.name) {
-                    case 'bulletOilGun':
-                        textAttribute = 'T. G. làm chậm:';
-                        texture = asset.statIcons_png['immobilize'];
-                        break;
-                    case 'bulletIceGun':
-                        textAttribute = 'T. G. đóng băng:';
-                        texture = asset.statIcons_png['immobilize'];
-                        break;
-                    default:
-                        cc.log('Target buff name not found!');
-                        break;
-                }
-                textStat = Math.round(targetBuffConfig.duration[card.evolution + 1] / 1000);
-                if (card.evolution < 2) {
-                    diff = targetBuffConfig.duration[card.evolution + 2] / 1000 - targetBuffConfig.duration[card.evolution + 1] / 1000;
-                    if (diff > 0) {
-                        textUpgradeStat = '+' + Math.round((diff) * 100) / 100;
-                    } else if (diff < 0) {
-                        textUpgradeStat = '-' + Math.round((-diff) * 100) / 100;
-                    }
-                }
-                textStat = '' + textStat + 's';
-                break;
-            }
-            case 'auraTowerBuffType': {
-                let towerBuffConfig = cf.TOWER_BUFF.towerBuff[card.towerInfo.auraTowerBuffType];
-                switch (towerBuffConfig.name) {
-                    case 'attackAura - goatAura':
-                        textAttribute = 'S. thương tăng:';
-                        texture = asset.statIcons_png['damageUp'];
-                        break;
-                    case 'attackSpeedAura - snakeAura':
-                        textAttribute = 'Tốc bắn tăng:';
-                        texture = asset.statIcons_png['attackSpeedUp'];
-                        break;
-                    default:
-                        cc.log('Target buff name not found!');
-                        break;
-                }
-                textStat = Math.round(towerBuffConfig.effects[card.evolution + 1][0].value * 100) / 100;
-                if (card.evolution < 2) {
-                    diff = towerBuffConfig.effects[card.evolution + 2][0].value - towerBuffConfig.effects[card.evolution + 1][0].value;
-                    if (diff > 0) {
-                        textUpgradeStat = '+' + Math.round((diff) * 100) / 100;
-                    } else if (diff < 0) {
-                        textUpgradeStat = '-' + Math.round((-diff) * 100) / 100;
-                    }
-                }
-                break;
-            }
-            case 'potionRange':
-                textAttribute = 'Khoảng t. dụng:';
-                texture = asset.statIcons_png['potionRange'];
-                textStat = Math.round(card.potionRange * 100) / 100;
-                diff = card.getNextLevelSample().potionRange - card.potionRange;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff * 100) / 100;
-                }
-                break;
-            case 'duration':
-                textAttribute = 'Thời gian TD:';
-                texture = asset.statIcons_png['time'];
-                textStat = Math.round(card.duration * 100) / 100;
-                diff = card.getNextLevelSample().duration - card.duration;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff * 100) / 100;
-                }
-                break;
-            case 'heal':
-                textAttribute = 'Hồi máu:';
-                texture = asset.statIcons_png['heal'];
-                textStat = '' + Math.round(card.heal * 100) / 100 + '/s';
-                diff = card.getNextLevelSample().heal - card.heal;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff * 100) / 100;
-                }
-                break;
-            case 'strengthIncrease':
-                textAttribute = 'Sát thương tăng:';
-                texture = asset.statIcons_png['damageUp'];
-                textStat = '' + Math.round(card.strengthIncrease * 100) + '%';
-                diff = card.getNextLevelSample().strengthIncrease - card.strengthIncrease;
-                if (diff > 0) {
-                    textUpgradeStat = '+' + Math.round(diff * 100) + '%';
-                }
-                break;
-            default:
-                cc.log('Cannot find case!');
-                break;
-        }
+    addAttributeSlotToPanel: function (card, index) {
+        let [texture, textAttribute, textStat, textUpgradeStat] = Utils.generateCardAttributes(card, index);
         let row = Math.floor(index / 2);
         let column = index - row * 2;
         let slotWidth = this.topDescriptionPanel.width / (2 + 3 * 0.15);

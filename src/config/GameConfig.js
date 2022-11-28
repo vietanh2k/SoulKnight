@@ -13,6 +13,7 @@ MW.KEYS = [];
 //mouse position
 MW.MOUSE = cc.p(240, 0);
 MW.TOUCH = false
+MW.DELAY_TOUCH = false
 //number shield
 MW.SHIELD = 0;
 
@@ -227,6 +228,7 @@ cf.CARD = [
         energy: 8,
         texture: asset.cardTowerCannon_png,
         miniature: asset.miniaturesTowerCannon_png,
+        statTypes: ['damage', 'attackSpeed', 'range', 'bulletType'],
         skill: {
             texture: asset.iconSkillStun_png,
             name: 'Đạn Choáng',
@@ -250,6 +252,7 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerWizard_png,
         miniature: asset.miniaturesTowerWizard_png,
+        statTypes: ['damage', 'attackSpeed', 'range', 'bulletType'],
         skill: {
             texture: asset.iconSkillResonance_png,
             name: 'Cộng Hưởng',
@@ -275,6 +278,7 @@ cf.CARD = [
         energy: 10,
         texture: asset.cardTowerBoomerang_png,
         miniature: asset.miniaturesTowerBoomerang_png,
+        statTypes: ['damage', 'attackSpeed', 'range', 'bulletType'],
         skill: {
             texture: asset.iconSkillIncrease_png,
             name: 'Tăng Sát',
@@ -302,6 +306,7 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerOilGun_png,
         miniature: asset.miniaturesTowerOilGun_png,
+        statTypes: ['bulletTargetBuffType', 'attackSpeed', 'range', 'bulletType'],
         skill: {
             texture: asset.iconSkillPoison_png,
             name: 'Nhớt Độc',
@@ -331,6 +336,7 @@ cf.CARD = [
         energy: 10,
         texture: asset.cardTowerIceGun_png,
         miniature: asset.miniaturesTowerIceGun_png,
+        statTypes: ['bulletTargetBuffType', 'attackSpeed', 'range', 'bulletType'],
         skill: {
             texture: asset.iconSkillArmorBreak_png,
             name: 'Băng Sát',
@@ -356,6 +362,7 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerDamage_png,
         miniature: asset.miniaturesTowerDamage_png,
+        statTypes: ['auraTowerBuffType'],
         skill: {
             texture: asset.iconSkillSlow_png,
             name: 'Làm Chậm',
@@ -380,6 +387,7 @@ cf.CARD = [
         energy: 12,
         texture: asset.cardTowerAttackSpeed_png,
         miniature: asset.miniaturesTowerAttackSpeed_png,
+        statTypes: ['auraTowerBuffType'],
         skill: {
             texture: asset.iconSkillBurn_png,
             name: 'Đốt Máu',
@@ -406,6 +414,7 @@ cf.CARD = [
         energy: 1,
         texture: asset.cardMonsterSwordsman_png,
         miniature: asset.miniatureMonsterSwordsman_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Kiếm Ma',
         description: 'Máu thường, tốc độ thường',
         maxNumberMonsters: [5, 8, 12, 12],
@@ -417,6 +426,7 @@ cf.CARD = [
         energy: 1,
         texture: asset.cardMonsterAssassin_png,
         miniature: asset.miniatureMonsterAssassin_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Quạ Xương',
         description: 'Máu thấp, chạy rất nhanh',
         maxNumberMonsters: [3, 5, 8, 8],
@@ -428,6 +438,7 @@ cf.CARD = [
         energy: 3,
         texture: asset.cardMonsterGiant_png,
         miniature: asset.miniatureMonsterGiant_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Khổng Lồ',
         description: 'Máu cao, đi chậm',
         maxNumberMonsters: [2, 3, 4, 4],
@@ -439,6 +450,7 @@ cf.CARD = [
         energy: 2,
         texture: asset.cardMonsterBat_png,
         miniature: asset.miniatureMonsterBat_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Dơi Quỷ',
         description: 'Máu thường, tốc độ thường',
         maxNumberMonsters: [5, 8, 12, 12],
@@ -450,6 +462,7 @@ cf.CARD = [
         energy: 1,
         texture: asset.cardMonsterNinja_png,
         miniature: asset.miniatureMonsterNinja_png,
+        statTypes: ['hp', 'speed', 'numberMonsters'],
         name: 'Xương Độn Thổ',
         description: 'Máu thường, tốc độ thường',
         maxNumberMonsters: [3, 4, 5, 5],
@@ -462,6 +475,7 @@ cf.CARD = [
         id: 300,
         energy: 8,
         texture: asset.cardPotionFireball_png,
+        statTypes: ['damage', 'potionRange'],
         name: 'Cầu Lửa',
         description:
             'Thả cầu lửa gây sát thương\n' +
@@ -473,6 +487,7 @@ cf.CARD = [
         id: 301,
         energy: 8,
         texture: asset.cardPotionFrozen_png,
+        statTypes: ['duration', 'potionRange'],
         name: 'Đóng Băng',
         description:
             'Thả phép đóng băng gây\n' +
@@ -488,6 +503,7 @@ cf.CARD = [
         id: 302,
         energy: 12,
         texture: asset.cardPotionHeal_png,
+        statTypes: ['heal', 'potionRange', 'duration'],
         name: 'Hồi Máu',
         description:
             'Thả phép tạo vùng hồi máu,\n' +
@@ -501,6 +517,7 @@ cf.CARD = [
         id: 303,
         energy: 12,
         texture: asset.cardPotionSpeedUp_png,
+        statTypes: ['duration', 'potionRange'],
         name: 'Tăng Tốc',
         description:
             'Thả phép tạo một vùng tăng tốc,\n' +
@@ -513,6 +530,7 @@ cf.CARD = [
         id: 304,
         energy: 10,
         texture: asset.cardPotionTrap_png,
+        statTypes: ['potionRange'],
         name: 'Lò Xo',
         description:
             'Đặt lò xo trên bản đồ,\n' +
@@ -525,6 +543,7 @@ cf.CARD = [
         id: 305,
         energy: 10,
         texture: asset.cardPotionPower_png,
+        statTypes: ['strengthIncrease', 'duration'],
         name: 'Tăng Sức Mạnh Trụ',
         description:
             'Tạo một vùng tăng sức mạnh,\n' +

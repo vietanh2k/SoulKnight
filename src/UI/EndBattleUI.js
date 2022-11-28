@@ -15,9 +15,9 @@ let EndBattleUI = cc.Layer.extend({
             numTrophy = Math.floor(numTrophy/4);
         }
         let delayT = numTrophy*0.05+0.5;
-        let seq1 = cc.sequence(cc.delayTime(0.4), cc.callFunc(()=>this.addAtlasEndBattle(resultString)),
+        let seq1 = cc.sequence(cc.delayTime(0.7), cc.callFunc(()=>this.addAtlasEndBattle(resultString)),
             cc.delayTime(0.15), cc.callFunc(()=>this.addInforEndBattle(resultString)),
-            cc.delayTime(1.4), cc.callFunc(()=>this.addTrophyEndBattle(numTrophy)),
+            cc.delayTime(1.7), cc.callFunc(()=>this.addTrophyEndBattle(numTrophy)),
             cc.delayTime(delayT), cc.callFunc(()=>this.addBtnBackEndBattle(resultString)))
 
         this.runAction(seq1)
@@ -32,11 +32,11 @@ let EndBattleUI = cc.Layer.extend({
         let resultAnimation = new sp.SkeletonAnimation("res/battle_result/fx/fx_result_" + resultString + ".json",
             "res/battle_result/fx/fx_result_" + resultString + ".atlas")
         resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
-        resultAnimation.setPosition(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2+CELLWIDTH*2)
+        resultAnimation.setPosition(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2+CELLWIDTH*3)
         resultAnimation.setAnimation(0, "fx_result_" + resultString + "_idle", true)
         resultAnimation.setOpacity(0)
-        let seq = cc.sequence(cc.delayTime(0.5), cc.MoveTo(0.15,cc.p(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2)))
-        let seq2 = cc.sequence(cc.delayTime(0.3), cc.fadeIn(0.4))
+        let seq = cc.sequence(cc.delayTime(0.5), cc.MoveTo(0.2,cc.p(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2)))
+        let seq2 = cc.sequence(cc.delayTime(0.3), cc.fadeIn(0.55))
         resultAnimation.runAction(seq)
         resultAnimation.runAction(seq2)
         this.addChild(resultAnimation, 4001)
@@ -63,8 +63,8 @@ let EndBattleUI = cc.Layer.extend({
         }
         infor.setPosition(0, -CELLWIDTH);
         infor.setOpacity(0);
-        let seq = cc.sequence(cc.delayTime(0.8), cc.MoveBy(0.2,cc.p(0,CELLWIDTH)));
-        let seq2 = cc.sequence(cc.delayTime(0.8), cc.fadeIn(0.25));
+        let seq = cc.sequence(cc.delayTime(0.95), cc.MoveBy(0.3,cc.p(0,CELLWIDTH)));
+        let seq2 = cc.sequence(cc.delayTime(0.95), cc.fadeIn(0.35));
         infor.runAction(seq);
         infor.runAction(seq2);
         this.addChild(infor, 4002, 4002);
@@ -93,7 +93,7 @@ let EndBattleUI = cc.Layer.extend({
         btnBack.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * -3.85 / 9-CELLWIDTH)
         btnBack.addClickEventListener(this.backToLobby);
         btnBack.opacity = 0
-        let seq = cc.sequence( cc.MoveBy(0.2,cc.p(0,CELLWIDTH)))
+        let seq = cc.sequence( cc.MoveBy(0.25,cc.p(0,CELLWIDTH)))
         let seq2 = cc.sequence(cc.fadeIn(0.35))
         btnBack.runAction(seq)
         btnBack.runAction(seq2)
