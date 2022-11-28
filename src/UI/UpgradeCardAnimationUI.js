@@ -164,6 +164,21 @@ var UpgradeCardAnimationUI = cc.Layer.extend({
                     this.statSlots[i].y = cf.HEIGHT * (0.5 - 0.08 * i);
                     this.statSlots[i].visible = true;
                 }
+
+                progress.stopAllActions();
+                progress.setPercentage(newCard.fragment / newCard.reqFrag * 100);
+                this.lbFragment.setString(this.newCard.fragment);
+
+                oldCardSlot.visible = false;
+                cardSlot.opacity = 255;
+                cardSlot.getChildren().forEach(child => {
+                    child.opacity = 255;
+                    child.getChildren().forEach(grantchild => {
+                        grantchild.opacity = 255;
+                    });
+                });
+                glossy.runAction(cc.sequence(cc.FadeOut(1), cc.FadeIn(1)).repeatForever());
+
                 this.addExitBtn();
             }
         });
