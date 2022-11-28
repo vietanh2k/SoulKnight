@@ -139,6 +139,14 @@ var MatchingUI = cc.Layer.extend({
         cc.log("sendMatchingConfirm");
         try{
             testnetwork.connector.sendConfirmMatch();
+            this.getChildByName('btnCalcel').loadTextureNormal('res/common/common_btn_gray.png');
+            this.getChildByName('btnCalcel').setTouchEnabled(false);
+            this.runAction(cc.sequence(
+                cc.delayTime(1.5), cc.callFunc(()=>{
+                    this.getChildByName('btnCalcel').loadTextureNormal('res/common/common_btn_red.png');
+                    this.getChildByName('btnCalcel').setTouchEnabled(true);
+                })
+            ))
 
 
         } catch (e){

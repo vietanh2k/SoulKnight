@@ -12,6 +12,7 @@ var GameStateManager = cc.Class.extend({
     curWave:null,
     winner:null,
 
+
     UPDATE_TYPE_NORMAL: 0,
     UPDATE_TYPE_NO_UPDATE: 1,
     UPDATE_TYPE_UPDATE_TO_FRAME_N: 2,
@@ -29,6 +30,7 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false
         this.curWave = 0
         this.winner = null
+        this.isLastWave= false
 
         this.sumDt = 0;
         this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME
@@ -82,7 +84,7 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false
     },
     checkWinner:function (){
-        if(this.curWave >= MAX_WAVE && this.playerA.getMap().monsters.length ==0 && this.playerB.getMap().monsters.length ==0){
+        if(this.curWave >= MAX_WAVE && this.playerA.isClearWave() && this.playerB.isClearWave()){
             if(this.playerA.health > this.playerB.health){
                 this.winner = 1
             }else if(this.playerB.health > this.playerA.health){
@@ -160,6 +162,9 @@ var GameStateManager = cc.Class.extend({
             const m2 = this.monsterFactory.getMonster(this.playerB, monstersId[i])
             this.playerB.addMonster(m2)
             ui.addChild(m2)
+        }
+        if(this.curWave >= MAX_WAVE){
+            this.isLastWave = true
         }
     },
 

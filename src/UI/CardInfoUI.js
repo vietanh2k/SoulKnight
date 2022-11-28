@@ -196,7 +196,7 @@ var CardInfoUI = cc.Layer.extend({
             y: cf.HEIGHT * 0.4 - this.midPanelBackground.height * this.midPanelBackground.scale * 0.75,
             scale: cf.WIDTH * 0.9 / botPanelBackground.width,
         });
-        this.addChild(botPanelBackground);
+        this.addChild(botPanelBackground,0,'botPanelBackground');
 
         let botBtnX = [undefined, undefined, undefined], counter = 0;
         if (!card.isInDeck()) {
@@ -367,14 +367,15 @@ var CardInfoUI = cc.Layer.extend({
     addTouchListener: function (top, bot) {
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
             onTouchBegan: (event) => {
                 let locationY = event.getLocation().y;
                 if (locationY > top.y + top.height / 2 * top.scale ||
                     locationY < bot.y - bot.height / 2 * bot.scale) {
                     this.readyToDestroy = true;
-                    return true;
+                    // return true;
                 }
-                return false;
+                return true;
             },
             onTouchEnded: () => {
                 if (this.readyToDestroy) {

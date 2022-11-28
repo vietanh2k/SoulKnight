@@ -3,6 +3,7 @@ var PopupChest= cc.Node.extend({
 
     ctor:function (item,chestID) {
         this._super();
+        this.setPosition(winSize.width/2,winSize.height*0.425)
         this.init(item,chestID)
         this.da= 312
 

@@ -778,22 +778,52 @@
             "ctype": "SpriteObjectData"
           },
           {
-            "FileData": {
+            "FontSize": 14,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "DisabledFileData": {
+              "Type": "Default",
+              "Path": "Default/Button_Disable.png",
+              "Plist": ""
+            },
+            "PressedFileData": {
               "Type": "Normal",
               "Path": "card/card_border_3.png",
               "Plist": ""
             },
-            "BlendFunc": {
-              "Src": 1,
-              "Dst": 771
+            "NormalFileData": {
+              "Type": "Normal",
+              "Path": "card/card_border_3.png",
+              "Plist": ""
             },
+            "Scale9Enable": true,
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 109,
+            "Scale9Height": 164,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
             },
             "Position": {
               "X": 0.0,
-              "Y": -61.7549
+              "Y": -61.75
             },
             "Scale": {
               "ScaleX": 0.9,
@@ -811,16 +841,16 @@
             },
             "LeftMargin": -69.5,
             "RightMargin": -69.5,
-            "TopMargin": -31.2451,
-            "BottomMargin": -154.7549,
-            "Tag": 189,
-            "ActionTag": 1358959279,
+            "TopMargin": -31.25,
+            "BottomMargin": -154.75,
+            "Tag": 28,
+            "ActionTag": 1912551061,
             "Size": {
               "X": 139.0,
               "Y": 186.0
             },
             "Name": "cBorder",
-            "ctype": "SpriteObjectData"
+            "ctype": "ButtonObjectData"
           },
           {
             "FontSize": 24,

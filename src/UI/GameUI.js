@@ -96,7 +96,7 @@ var GameUI = cc.Layer.extend({
                         if(this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy){
                             this.createObjectByTouch = true
                         } else {
-                            Utils.addToastToRunningScene('Không đủ năng lượng!');
+                            Utils.addToastToRunningScene('Không đủ mana!');
                             this.resetCardTouchState()
                         }
                     }
@@ -142,7 +142,6 @@ var GameUI = cc.Layer.extend({
                 this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                 var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
                 this.towerUIMap[loc.x][loc.y] = tower;
-                tower.cardID = this.listCard[this.cardTouchSlot - 1].cardID;
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
@@ -533,18 +532,15 @@ var GameUI = cc.Layer.extend({
                     let pos = touch.getLocation();
                     let cor = convertPosToIndex(pos, rule);
                     cc.log('there is ' + cor.x + ', ' + cor.y)
-                    if (GameStateManagerInstance.playerA.energy >= target.energy) {
-                        if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                            if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[this.cardTouchSlot - 1].cardID) {
-                                Utils.addToastToRunningScene('Không thể nâng cấp loại trụ khác!');
-                                this.resetCardTouchState();
-                            }
-                            else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                    if(GameStateManagerInstance.playerA.energy >= target.energy){
+                        if (this.towerUIMap[cor.x] !== undefined && this.towerUIMap[cor.x][cor.y] !== undefined) {
+                            // fixme khác loại trụ?
+                            if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
                                 Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                                this.resetCardTouchState();
+                                this.resetCardTouchState()
                             } else {
                                 this.towerUIMap[cor.x][cor.y].evolute();
-                                this.updateCardSlot(target.energy);
+                                this.updateCardSlot(target.energy)
                             }
                         }
                         else if (isPosInMap(pos, rule) && GameStateManagerInstance.playerA.getMap()._mapController.intArray[cor.x][cor.y] <= 0) {
@@ -557,7 +553,7 @@ var GameUI = cc.Layer.extend({
                             return;
                         }
                     }else{
-                        Utils.addToastToRunningScene('Không đủ năng lượng!');
+                        Utils.addToastToRunningScene('Không đủ mana!');
                         this.resetCardTouchState()
                     }
 
@@ -866,7 +862,7 @@ var GameUI = cc.Layer.extend({
         blockLayer.setPosition(winSize.width / 2, winSize.height / 2)
         this.addChild(blockLayer, 4000)
         blockLayer.setOpacity(0)
-        let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.3))
+        let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.15))
         blockLayer.runAction(seq)
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,

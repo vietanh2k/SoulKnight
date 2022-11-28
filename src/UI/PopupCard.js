@@ -3,6 +3,7 @@ var PopupCard = cc.Node.extend({
 
     ctor:function (cardID,numGold, numCard) {
         this._super();
+        this.setPosition(winSize.width/2,winSize.height*5/9)
         this.init(cardID,numGold, numCard)
         this.interval = null
 
@@ -20,6 +21,11 @@ var PopupCard = cc.Node.extend({
         popup.getChildByName('numCard').setString(strNumCard)
         var percen = cardInfor.fragment / cardInfor.reqFrag*100
         popup.getChildByName('loading1').setPercent(percen)
+        popup.getChildByName('cBorder').addClickEventListener(()=>{
+            let cardInfoUI = new CardInfoUI(new Card(cardInfor.type, cardInfor.level, cardInfor.fragment))
+            cardInfoUI.getChildByName('botPanelBackground').removeAllChildrenWithCleanup(true)
+            LobbyInstant.addChild(cardInfoUI, 6000, cf.TAG_CARDINFOUI);
+        })
         if(percen < 100) {
             popup.getChildByName('loadingMax').visible = false
         }
@@ -57,7 +63,7 @@ var PopupCard = cc.Node.extend({
             var card = ccs.load(res.cardUI, "").node
             card.setPosition(0, -61.75)
             card.getChildByName('background').setTexture(this.getChildByTag(100).getChildByName('cBackground').getTexture())
-            card.getChildByName('border').setTexture(this.getChildByTag(100).getChildByName('cBorder').getTexture())
+            // card.getChildByName('border').setTexture(this.getChildByTag(100).getChildByName('cBorder').getTextureNormal())
             card.getChildByName('item').setTexture(this.getChildByTag(100).getChildByName('cAvatar').getTexture())
             var seq = cc.sequence(cc.delayTime(0.05),cc.ScaleBy(0.55, 0.2), cc.delayTime(delay-0.05), cc.RotateBy(0.4,-10))
             var seq2 = cc.sequence(cc.delayTime(0.05), cc.MoveTo(0.5,new cc.p(100,-110)), cc.delayTime(delay),cc.MoveTo(0.5, new cc.p(-80,44)),cc.fadeOut(0))
@@ -139,11 +145,6 @@ var PopupCard = cc.Node.extend({
         } , blockLayer);
 
     },
-
-    destroy:function (){
-        clearInterval(this.interval);
-        this.removeFromParent(true)
-    }
 
 
 

@@ -1056,7 +1056,7 @@
             <key>smartupdate</key>
             <string>$TexturePacker:SmartUpdate:ac700221bebfd6afad64d49fc246dc31:1/1$</string>
             <key>textureFileName</key>
-            <string>Assassin.png</string>
+            <string>assassin.png</string>
         </dict>
     </dict>
 </plist>

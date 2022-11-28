@@ -117,6 +117,8 @@ var LobbyScene = cc.Scene.extend({
         if(newTab == cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess == false) {
             // fr.view(ShopUI);
             this.requestOffer()
+        }else{
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
         }
         if (newTab === this.activeTab) {
             return;
