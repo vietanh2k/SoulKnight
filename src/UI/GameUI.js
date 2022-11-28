@@ -198,12 +198,22 @@ var GameUI = cc.Layer.extend({
     isNodehasMonsterAbove: function (loc) {
         var monsterList = GameStateManagerInstance.playerA.getMap().monsters;
         var map = GameStateManagerInstance.playerA.getMap()
-        for (i in monsterList){
+        /*for (i in monsterList){
             if(monsterList[i].isAtLocation(map, loc)){
                 return true;
             }
-        }
-        return false
+        }*/
+
+        let ret = false
+
+        monsterList.forEach((monster, id, list) => {
+            if(monster.isAtLocation(map, loc)){
+                ret = true
+                return true
+            }
+        })
+
+        return ret
     },
 
     showPathUI: function (path, rule) {
@@ -742,7 +752,7 @@ var GameUI = cc.Layer.extend({
         //this.callMonster()
     },
 
-    callMonster: function () {
+    /*callMonster: function () {
         var monster = this._gameStateManager.playerA._map.addMonster()
         this.addChild(monster, 2000)
         var monster2 = this._gameStateManager.playerB._map.addMonster()
@@ -755,7 +765,7 @@ var GameUI = cc.Layer.extend({
         this.addChild(monster, 2000)
         const monster2 = this._gameStateManager.playerB._map.addMonster()
         this.addChild(monster2, 2000)
-    },
+    },*/
 
     activateNextWave: function (monstersId) {
         this.getNewWave()

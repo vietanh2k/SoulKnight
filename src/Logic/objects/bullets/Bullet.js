@@ -3,6 +3,9 @@ var Bullet = cc.Sprite.extend({
     concept:"bullet",
     ctor: function (res, target, speed, damage, radius, position) {
         this._super(res);
+
+        this.mapId = -1
+
         this.reset(target, speed, damage, radius, position);
 
     },

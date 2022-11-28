@@ -8,6 +8,9 @@ const Monster = AnimatedSprite.extend({
         this.active = true
         this.visible = true
 
+        this.mapId = -1
+        this.isChosen = false
+
         this.renderRule = this._playerState.rule
 
         this.position = new Vec2(MAP_CONFIG.CELL_WIDTH / 2.0, MAP_CONFIG.CELL_HEIGHT / 2.0)
@@ -28,6 +31,8 @@ const Monster = AnimatedSprite.extend({
         this.MaxHealth = 30;
         this.energyFromDestroy = 6
         this.energyWhileImpactMainTower = 1
+
+        this.hitRadius = 0.15 * MAP_CONFIG.CELL_WIDTH;
     },
 
     initAnimation: function (){
@@ -177,6 +182,10 @@ const Monster = AnimatedSprite.extend({
             this.setPosition(width - x, height + y)
         }
 
+        if (this.healthUI.opacity !== 0) {
+            this.healthUI.setPosition(this.width / 2.0, this.height * 1.0)
+        }
+
         if (dir) {
             const v = this.animationIds[dir.y +1]
             if (v) this.play(v[dir.x +1])
@@ -186,8 +195,8 @@ const Monster = AnimatedSprite.extend({
     addHealthUI: function () {
         this.healthUI = ccs.load(res.healthMonster, "").node;
         this.healthUI.opacity = 0
+
         this.healthUI.setScale(0.3)
-        this.healthUI.setPosition(CELLWIDTH*0.73,CELLWIDTH*1.25)
         this.addChild(this.healthUI)
     },
     hurtUI: function () {

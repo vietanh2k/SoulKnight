@@ -101,7 +101,13 @@
         "src/Logic/map/Timer.js",
 
         "src/Logic/objects/MCard.js",
+
+        "src/Logic/utils/UnorderedList.js",
         "src/Logic/utils/AnimatedSprite.js",
+        "src/Logic/utils/String.js",
+        "src/Logic/utils/Number.js",
+        "src/Logic/utils/Convert.js",
+        "src/Logic/utils/Shape.js",
 
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
@@ -111,9 +117,6 @@
 
         "src/Logic/utils/Vec2.js",
 
-        "src/Logic/utils/String.js",
-        "src/Logic/utils/Number.js",
-        "src/Logic/utils/Convert.js",
         "src/config/GameConfig.js",
 
         "src/config/CardConfig.js",

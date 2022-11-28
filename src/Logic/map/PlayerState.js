@@ -81,7 +81,8 @@ var PlayerState = cc.Class.extend({
     update: function (dt){
         if ((this.timePerMonster -= dt) <= 0) {
             if (this.monstersToSpawn.length !== 0) {
-                this._map.monsters.push(this.monstersToSpawn.shift())
+                //this._map.monsters.push(this.monstersToSpawn.shift())
+                this._map.addMonster(this.monstersToSpawn.shift())
             }
 
             this.timePerMonster = this.timePerMonsterMax
@@ -103,7 +104,7 @@ var PlayerState = cc.Class.extend({
     },
 
     isClearWave: function () {
-        return this.monstersToSpawn.length === 0 && this._map.monsters.length === 0
+        return this.monstersToSpawn.length === 0 && this._map.monsters.size() === 0 //.length === 0
     },
 
 });
