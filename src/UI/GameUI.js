@@ -142,7 +142,6 @@ var GameUI = cc.Layer.extend({
                 this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                 var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
                 this.towerUIMap[loc.x][loc.y] = tower;
-                tower.cardID = this.listCard[this.cardTouchSlot - 1].cardID;
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
@@ -535,11 +534,8 @@ var GameUI = cc.Layer.extend({
                     cc.log('there is ' + cor.x + ', ' + cor.y)
                     if (GameStateManagerInstance.playerA.energy >= target.energy) {
                         if (this.towerUIMap[cor.x][cor.y] !== undefined) {
-                            if (this.towerUIMap[cor.x][cor.y].cardID !== this.listCard[this.cardTouchSlot - 1].cardID) {
-                                Utils.addToastToRunningScene('Không thể nâng cấp loại trụ khác!');
-                                this.resetCardTouchState();
-                            }
-                            else if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
+                            // fixme khác loại trụ?
+                            if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
                                 Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
                                 this.resetCardTouchState();
                             } else {
