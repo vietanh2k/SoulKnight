@@ -167,7 +167,7 @@ var CardsUI = cc.Layer.extend({
             });
             this.addChild(this.arrows[i]);
             let j = i;
-            this.arrows[j].runAction(cc.sequence(cc.DelayTime(1/2 * (2 - j)), cc.callFunc(() => {
+            this.arrows[j].runAction(cc.sequence(cc.DelayTime(1 / 2 * (2 - j)), cc.callFunc(() => {
                 this.arrows[j].runAction(cc.sequence(cc.FadeIn(0.6), cc.FadeOut(0.6), cc.DelayTime(0.8)).repeatForever());
             })));
         }
@@ -326,9 +326,17 @@ var CardsUI = cc.Layer.extend({
     },
 
     scrollToTop: function () {
-        let distance = - this.currentScroll;
+        let distance = -this.currentScroll;
         this.currentScroll += distance;
         this.getChildren().forEach(child => child.y += distance);
+    },
+
+    resetCardsUIState: function () {
+        if (this.isShowingAddCardToDeck) {
+            this.swapInCardSlot.removeFromParent(true);
+            this.quitAddCardToDeck();
+        }
+        this.scrollToTop();
     },
 
     addVerticalScrollByTouchListener: function () {
@@ -340,18 +348,28 @@ var CardsUI = cc.Layer.extend({
                 this.scrollTouching = true;
                 return true;
             },
-            onTouchMoved: (event) => {
+            onTouchMoved: (touch) => {
                 if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck) || !this.scrollTouching) return;
-                let delta = event.getDelta();
+                let delta = touch.getDelta();
                 this.currentScroll += delta.y;
                 this.getChildren().forEach(child => child.y += delta.y);
                 if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.DISTANCE_SCROLL_ACCEPT) {
                     this.isScrolling = true;
                 }
+                this.finalDeltaY = delta.y;
                 return true;
             },
-            onTouchEnded: () => {
+            onTouchEnded: (touch) => {
+                if (this.isVisible() && this.isShowingAddCardToDeck && !this.isScrolling) {
+                    if (touch.getLocation().y >= this.deckPanel.y - this.deckPanel.height * this.deckPanel.scale) {
+                        return false;
+                    }
+                    this.resetCardsUIState();
+                    return true;
+                }
                 if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
+                cc.log("Final delta y: " + this.finalDeltaY);
+                // todo chuyển động chậm dần đều?
                 this.scrollTouching = false;
                 if (this.currentScroll < this.lowerbound) {
                     this.getChildren().forEach(child => {

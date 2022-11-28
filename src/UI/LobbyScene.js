@@ -100,7 +100,11 @@ var LobbyScene = cc.Scene.extend({
             newTab.addClickEventListener(() => {
                 if (this.allBtnIsActive) {
                     this.changeToTab(j);
-                } else {
+                } else if (this.activeTab === cf.LOBBY_TAB_CARDS && this.tabUIs[cf.LOBBY_TAB_CARDS].isShowingAddCardToDeck) {
+                    this.changeToTab(j);
+                    this.allBtnIsActive = true;
+                }
+                else {
                     cc.log('allBtnIsActive is false');
                 }
             });
@@ -126,6 +130,9 @@ var LobbyScene = cc.Scene.extend({
         this.activeTab = newTab;
         this.resizeTabs();
         this.updateTabUIsVisibility();
+        if (this.activeTab === cf.LOBBY_TAB_CARDS) {
+            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+        }
     },
 
     resizeTabs: function () {
