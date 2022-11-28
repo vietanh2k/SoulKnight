@@ -16,7 +16,7 @@ var Bullet = cc.Sprite.extend({
         return this.radius;
     },
     getTargetPosition: function () {
-        if(this.target==undefined || this.target.isDestroy){
+        if(this.target==undefined || this.target.isDestroy||this.target==null){
             return this._lastLoc;
         }
         if (this.target.hasOwnProperty("position")) {
