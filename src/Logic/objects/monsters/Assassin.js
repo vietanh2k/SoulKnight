@@ -1,11 +1,7 @@
 const Assassin = Monster.extend({
-    initConfig: function () {
+    initConfig: function (playerState) {
         const config = cf.MONSTER.monster[MONSTER_ID.ASSASSIN]
-        this.speed = config.speed * MAP_CONFIG.CELL_WIDTH
-        this.health = config.hp
-        this.MaxHealth = config.hp
-        this.energyFromDestroy = config.gainEnergy
-        this.energyWhileImpactMainTower = config.energy
+        this.initFromConfig(playerState, config)
     },
 
     initAnimation: function () {

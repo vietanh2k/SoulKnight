@@ -106,7 +106,8 @@ var Bullet = cc.Sprite.extend({
         let objectList = map.getObjectInRange(pos, this.getRadius());
         for (let object of objectList) {
             if (this.canAttack(object)) {
-                object.health -= this.getDamage();
+                //object.health -= this.getDamage();
+                object.takeDamage(this.getDamage())
                 object.hurtUI()
             }
         }

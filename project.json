@@ -108,12 +108,19 @@
         "src/Logic/utils/Number.js",
         "src/Logic/utils/Convert.js",
         "src/Logic/utils/Shape.js",
+        "src/Logic/utils/Route.js",
+
 
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
         "src/Logic/objects/monsters/Monster.js",
         "src/Logic/objects/monsters/Swordsman.js",
         "src/Logic/objects/monsters/Assassin.js",
+        "src/Logic/objects/monsters/Giant.js",
+        "src/Logic/objects/monsters/Bat.js",
+        "src/Logic/objects/monsters/Ninja.js",
+        "src/Logic/objects/monsters/bosses/DarkGiant.js",
+
 
         "src/Logic/utils/Vec2.js",
 

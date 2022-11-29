@@ -91,8 +91,15 @@ var res = {
     darkgiant_png : 'res/darkG.png',
     highlightPath: 'res/battle/UI/ui_transparent_square.png',
     iconArrow: 'res/battle/UI/ui_icon_arrow.png',
+
+
     Swordman_plist:'res/swordsman.plist',
     assassin_plist:'res/assassin.plist',
+    giant_plist:'res/giant.plist',
+    bat_plist:'res/bat.plist',
+    ninja_plist:'res/ninja.plist',
+
+    dark_giant_plist:'res/dark_giant.plist',
 
 
     explosion2_plist:'res/game/animation/explosion/monster_die_fx.plist',
