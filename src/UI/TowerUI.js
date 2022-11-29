@@ -44,6 +44,8 @@ var TowerUI = cc.Sprite.extend({
 
         this._super(this.initTextures[0]);
 
+        this.mapId = -1
+
         this.part = [];
         for (let i = 1; i <= this.evolution + 1; i++) {
             this.part[i] = new cc.Sprite(this.initTextures[i]);

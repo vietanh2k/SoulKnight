@@ -2,18 +2,18 @@
  * Đối tượng Map trong thiết kế
  * */
 
+const OFFSET_CIRCLE_TO_RECT_X = [1,1,-1,-1]
+const OFFSET_CIRCLE_TO_RECT_Y = [1,-1,1,-1]
+
 const SERVER_CELL_WIDTH_CONFIG = SERVER_CELL_WIDTH_CONFIG || 50;
 var MapView = cc.Class.extend({
-
-
-
     ctor:function (playerState, intArray, rule) {
         this._playerState = playerState
         this.rule = rule
         this._mapController = new MapController(intArray,this.rule)
-        this.monsters = []
-        this.towers = []
-        this.bullets = []
+        this.monsters = new UnorderedList() //[]
+        this.towers =  new UnorderedList() //[]
+        this.bullets =  new UnorderedList() //[]
         this.init();
 
         this.cells = []
@@ -32,8 +32,17 @@ var MapView = cc.Class.extend({
         this.gateCell = new Cell();
         this.gateCell.setLocation(1, -1)
 
+        this.nextGateCell = new Cell()
+        this.nextGateCell.setLocation(0, -1)
+
+        this.gateCell.nextCell = this.nextGateCell
+        this.nextGateCell.nextCell = this.cells[0][0]
+        this.gateCell.updateEdgePositionWithNextCell()
+        this.nextGateCell.updateEdgePositionWithNextCell()
+
         this.mainTowerCell = new Cell();
         this.mainTowerCell.setLocation(MAP_CONFIG.MAP_WIDTH, MAP_CONFIG.MAP_HEIGHT - 1);
+        this.cells[MAP_CONFIG.MAP_WIDTH - 1][MAP_CONFIG.MAP_HEIGHT - 1].nextCell = this.mainTowerCell;
 
         this.parents = []
         for (let x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
@@ -63,6 +72,39 @@ var MapView = cc.Class.extend({
 
 
         return true;
+    },
+
+    // per frame call
+    constructWorld: function () {
+        const self = this
+
+        for (let x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
+            for (let y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
+                const cell = this.cells[x][y]
+                cell.clearMonsterOnCell()
+            }
+        }
+
+        const cells = [undefined,undefined,undefined,undefined]
+
+        this.monsters.forEach((monster, id, list) => {
+            cells.length = 0
+
+            const pos = monster.position
+            const r = monster.hitRadius
+
+            for (let i = 0; i < 4; i++) {
+                const x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * r
+                const y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * r
+
+                const cell = self.getCellAtPosition(x, y)
+
+                if (cell && cells.indexOf(cell) === -1) {
+                    cells.push(cell)
+                    cell.addMonsterToCell(monster)
+                }
+            }
+        })
     },
 
     updatePathForCells: function() {
@@ -113,7 +155,7 @@ var MapView = cc.Class.extend({
         }
 
         //this.cells[0][0].prevCell = this.gateCell;
-        this.cells[MAP_CONFIG.MAP_WIDTH - 1][MAP_CONFIG.MAP_HEIGHT - 1].nextCell = this.mainTowerCell;
+        //this.cells[MAP_CONFIG.MAP_WIDTH - 1][MAP_CONFIG.MAP_HEIGHT - 1].nextCell = this.mainTowerCell;
 
         if (this.cells[0][0].state === 1) {
             cc.log("===========================================ERROR================================================")
@@ -137,14 +179,36 @@ var MapView = cc.Class.extend({
 
     updateMonster:function (dt) {
         try {
-            const len = this.monsters.length
+            /*const len = this.monsters.length
             for (let i = len - 1; i !== -1; i--) {
                 const monster = this.monsters[i]
                 monster.logicUpdate(this._playerState, dt)
                 if(monster.isDestroy){
                     this.monsters.splice(i, 1)
                 }
-            }
+            }*/
+
+            const self = this
+
+            this.monsters.forEach((monster, id, list) => {
+                if (!monster.active) return
+
+                const monsters = self.queryEnemiesCircle(monster.position, monster.hitRadius)
+                for (let i = 0; i < monsters.length; i++) {
+                    monster.onImpact(monsters[i])
+                }
+            })
+
+            this.monsters.forEach((monster, id, list) => {
+                if (!monster.active) return
+
+                monster.logicUpdate(this._playerState, dt)
+
+                if(monster.isDestroy){
+                    list.remove(id)
+                }
+            })
+
         } catch (e) {
             cc.log(e)
             cc.log(e.stack)
@@ -153,14 +217,22 @@ var MapView = cc.Class.extend({
 
     updateTower:function (dt) {
         try {
-            var temp = []
+            /*var temp = []
             this.towers.map(tower=>{
                 tower.logicUpdate(this._playerState, dt)
                 if(!tower.isDestroy){
                     temp.push(tower)
                 }
             })
-            this.towers = temp
+            this.towers = temp*/
+
+            this.towers.forEach((tower, id, list) => {
+                tower.logicUpdate(this._playerState, dt)
+
+                if(tower.isDestroy){
+                    list.remove(id)
+                }
+            })
         } catch (e) {
             cc.log(e)
             cc.log(e.stack)
@@ -168,14 +240,22 @@ var MapView = cc.Class.extend({
     },
     updateBullet:function (dt) {
         try {
-            var temp = []
+            /*var temp = []
             this.bullets.map(bullet=>{
                 bullet.logicUpdate(this._playerState, dt)
                 if(!bullet.isDestroy){
                     temp.push(bullet)
                 }
             })
-            this.bullets = temp
+            this.bullets = temp*/
+
+            this.bullets.forEach((bullet, id, list) => {
+                bullet.logicUpdate(this._playerState, dt)
+
+                if(bullet.isDestroy){
+                    list.remove(id)
+                }
+            })
         } catch (e) {
             cc.log(e)
             cc.log(e.stack)
@@ -183,27 +263,55 @@ var MapView = cc.Class.extend({
     },
 
     renderMonster: function (rule) {
-        for (i in this.monsters){
+        /*for (i in this.monsters){
             if(this.rule == 1) {
                 this.monsters[i].setLocalZOrder(this.monsters[i].position.y)
             }else{
                 this.monsters[i].setLocalZOrder(winSize.height- this.monsters[i].position.y)
             }
             this.monsters[i].render(this._playerState)
-        }
+        }*/
+
+        const self = this
+
+        this.monsters.forEach((monster, id, list) => {
+            if (self.rule === 1) {
+                monster.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + monster.position.y)
+            }else{
+                monster.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height - monster.position.y)
+            }
+            monster.render(self._playerState)
+        })
     },
     renderTower: function () {
-        for (i in this.towers){
+        /*for (i in this.towers){
             this.towers[i].render(this._playerState)
-        }
+        }*/
+
+        const self = this
+
+        this.towers.forEach((tower, id, list) => {
+            if (self.rule === 1) {
+                tower.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + tower.position.y)
+            }else{
+                tower.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height - tower.position.y)
+            }
+            tower.render(this._playerState)
+        })
     },
     renderBullet: function () {
-        for (i in this.bullets){
+        /*for (i in this.bullets){
             this.bullets[i].render(this._playerState)
-        }
+        }*/
+
+        this.bullets.forEach((bullet, id, list) => {
+            bullet.render(this._playerState)
+        })
     },
 
-    update:function (dt){
+    update:function (dt) {
+        this.constructWorld()
+
         this.updateBullet(dt)
         this.updateTower(dt)
         this.updateMonster(dt)
@@ -224,11 +332,16 @@ var MapView = cc.Class.extend({
         this.renderBullet(0)
     },
 
-    addMonster:function (){
+    /*addMonster:function (){
         var monster = new Monster(1, this._playerState)
         this.monsters.push(monster)
         return monster
+    },*/
+
+    addMonster: function (monster) {
+        monster.mapId = this.monsters.add(monster)
     },
+
     deployTower: function (card, position){
         cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
         cc.log("TW size:" + this.towers.length)
@@ -255,7 +368,10 @@ var MapView = cc.Class.extend({
                 tower = new TCanon(card, this._playerState, position, this);
         }
 
-        this.towers.push(tower)
+        //this.towers.push(tower)
+
+        tower.mapId = this.towers.add(tower)
+
         GameUI.instance.addChild(tower);
         cell.setObjectOn(tower)
         // if(cell.objectOn==undefined || cell.objectOn==null ){
@@ -273,6 +389,15 @@ var MapView = cc.Class.extend({
         if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH) {
             return this.cells[x][y];
         }
+
+        if (y === -1) {
+            if (x === 1) return this.gateCell
+            if (x === 0) return this.nextGateCell
+        }
+
+        //if (y === -1) {
+        //    return this.mainTowerCell
+        //}
 
         return null;
     },
@@ -305,13 +430,74 @@ var MapView = cc.Class.extend({
      * Thêm 1 bullet vào map
      * @param {Bullet} bullet*/
     addNewBullet: function (bullet){
-        if(this.bullets==undefined){
-            this.bullets = [bullet]
-        } else {
-            this.bullets.push(bullet)
-        }
-        GameUI.instance.addChild(bullet);
-    }
+        //if(this.bullets==undefined){
+        //    //this.bullets = [bullet]
+        //} else {
+        //    //this.bullets.push(bullet)
+        //}
 
+        bullet.mapId = this.bullets.add(bullet)
+
+        GameUI.instance.addChild(bullet);
+    },
+
+    getStartCell: function () {
+        return this.gateCell
+    },
+
+    // return all monsters that hitBox overlap the circle
+    queryEnemiesCircle: function (pos, radius) {
+        const self = this
+        const monsters = []
+
+        for (let i = 0; i < 4; i++) {
+            const x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
+            const y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
+
+            const cell = self.getCellAtPosition(x, y)
+
+            if (!cell) {
+                continue
+            }
+
+            cell.monsters.forEach((monster, id, list) => {
+                monster.isChosen = false
+                monsters.push(monster)
+            })
+        }
+
+        const ret = []
+        monsters.forEach((monster, id, list) => {
+            if (monster.isChosen === false
+                && Circle.isCirclesOverlapped(monster.position, monster.hitRadius, pos, radius)) {
+                ret.push(monster)
+            }
+        })
+
+        return ret
+    },
+
+    // return all trees, stones that it's cell on overlap the circle
+    queryTreesStonesCircle: function (pos, radius) {
+        const self = this
+        const treeStones = []
+
+        for (let i = 0; i < 4; i++) {
+            const x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
+            const y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
+
+            const cell = self.getCellAtPosition(x, y)
+
+            if (!cell) {
+                continue
+            }
+
+            const treeStone = cell.getObjectOn()
+            treeStone.isChosen = false
+            treeStone.push(treeStone)
+        }
+
+        return treeStones
+    },
 
 });

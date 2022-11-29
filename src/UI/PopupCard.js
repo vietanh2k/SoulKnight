@@ -14,6 +14,8 @@ var PopupCard = cc.Node.extend({
         let cardInfor = sharePlayerInfo.collection.find(element => element.type === cardID);
         var popup = ccs.load(res.popupCard, "").node
         // popup.getChildByName('cBackground').setTexture(item.getChildByName('background').getTexture())
+        popup.getChildByName('nameCard').setString(cardInfor.name)
+        cc.log('============='+cardInfor.name)
         popup.getChildByName('cAvatar').setTexture(cardInfor.texture)
         popup.getChildByName('numCardGet').setString('x'+numCard)
         popup.getChildByName('numCost').setString(numGold)

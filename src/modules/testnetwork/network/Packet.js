@@ -391,7 +391,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         chestList.forEach(chest => chest.updateClientTime());
 
         sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
-        cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo));
+        cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo.collection));
     },
 
     readCardData: function () {

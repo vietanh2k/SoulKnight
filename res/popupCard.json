@@ -110,6 +110,7 @@
             "ctype": "ImageViewObjectData"
           },
           {
+            "IsCustomSize": true,
             "FontSize": 34,
             "LabelText": "Pháo Cú",
             "FontResource": {
@@ -117,6 +118,7 @@
               "Path": "font/SVN-Supercell Magic.ttf",
               "Plist": ""
             },
+            "HorizontalAlignmentType": "HT_Center",
             "OutlineColor": {
               "R": 0,
               "G": 0,
@@ -153,14 +155,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -98.0,
-            "RightMargin": -98.0,
+            "LeftMargin": -200.0,
+            "RightMargin": -200.0,
             "TopMargin": -132.4099,
             "BottomMargin": 84.4099,
             "Tag": 198,
             "ActionTag": -1493214351,
             "Size": {
-              "X": 196.0,
+              "X": 400.0,
               "Y": 48.0
             },
             "Name": "nameCard",

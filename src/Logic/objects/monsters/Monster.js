@@ -8,26 +8,36 @@ const Monster = AnimatedSprite.extend({
         this.active = true
         this.visible = true
 
+        this.mapId = -1
+        this.isChosen = false
+
         this.renderRule = this._playerState.rule
 
-        this.position = new Vec2(MAP_CONFIG.CELL_WIDTH / 2.0, MAP_CONFIG.CELL_HEIGHT / 2.0)
+        const startCell = playerState.getMap().getStartCell()
+        this.position = new Vec2(startCell.getEdgePositionWithNextCell().x, startCell.getEdgePositionWithNextCell().y)
         this.prevPosition = new Vec2(0,0)
 
         this.concept="monster"
         this.healthUI = null
 
-        this.initConfig()
+        this.initConfig(playerState)
         this.addHealthUI()
 
         return true;
     },
 
-    initConfig: function () {
-        this.speed = 30.0
-        this.health = 30;
-        this.MaxHealth = 30;
-        this.energyFromDestroy = 6
-        this.energyWhileImpactMainTower = 1
+    initFromConfig: function (playerState, config) {
+        this.speed = config.speed * MAP_CONFIG.CELL_WIDTH
+        this.health = config.hp
+        this.MaxHealth = config.hp
+        this.energyFromDestroy = config.gainEnergy
+        this.energyWhileImpactMainTower = config.energy
+        this.weight = config.weight
+        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH
+    },
+
+    initConfig: function (playerState) {
+        this.initFromConfig(null)
     },
 
     initAnimation: function (){
@@ -89,21 +99,24 @@ const Monster = AnimatedSprite.extend({
 
         const map = playerState.getMap()
         const distance = this.speed * dt
-        this.route(map, distance, null)
+        if (this.route(map, distance, null)) {
+            //this.destroy()
+            this.debug(map)
+        }
 
-        this.debug(map)
+        //this.debug(map)
     },
 
     route: function (map, distance, prevCell) {
         let currentCell = map.getCellAtPosition(this.position);
 
-        if (currentCell == null) return;
+        if (currentCell == null) return true;
 
         if (currentCell === prevCell) {
             currentCell = currentCell.getNextCell()
         }
 
-        if (currentCell == null) return;
+        if (currentCell == null) return true;
 
         let targetPosition = currentCell.getEdgePositionWithNextCell();
 
@@ -129,7 +142,7 @@ const Monster = AnimatedSprite.extend({
         }
 
 
-        if (targetPosition == null) return;
+        if (targetPosition == null) return true;
 
         const direction = targetPosition.sub(this.position);
         const length = direction.length();
@@ -139,12 +152,13 @@ const Monster = AnimatedSprite.extend({
         if (length < distance) {
             const remain = distance - length;
             this.position.set(targetPosition.x, targetPosition.y, currentCell);
-            this.route(map, remain, currentCell);
-            return;
+            return this.route(map, remain, currentCell);
         }
 
         const lastPos = this.position.add(direction.mul(distance));
         this.position.set(lastPos.x, lastPos.y);
+
+        return true
     },
 
     render: function (playerState) {
@@ -177,6 +191,10 @@ const Monster = AnimatedSprite.extend({
             this.setPosition(width - x, height + y)
         }
 
+        if (this.healthUI.opacity !== 0) {
+            this.healthUI.setPosition(this.width / 2.0, this.height * 1.0)
+        }
+
         if (dir) {
             const v = this.animationIds[dir.y +1]
             if (v) this.play(v[dir.x +1])
@@ -186,8 +204,8 @@ const Monster = AnimatedSprite.extend({
     addHealthUI: function () {
         this.healthUI = ccs.load(res.healthMonster, "").node;
         this.healthUI.opacity = 0
+
         this.healthUI.setScale(0.3)
-        this.healthUI.setPosition(CELLWIDTH*0.73,CELLWIDTH*1.25)
         this.addChild(this.healthUI)
     },
     hurtUI: function () {
@@ -214,6 +232,14 @@ const Monster = AnimatedSprite.extend({
         // this.addChild(ex, 5000)
         this.removeFromParent(true)
         this.animationCleanup()
+    },
+
+    takeDamage: function (many) {
+        this.health -= many
+    },
+
+    onImpact: function (playerState, anotherMonster) {
+
     },
 
 });
