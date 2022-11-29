@@ -15,7 +15,8 @@ var LobbyScene = cc.Scene.extend({
 
     allBtnIsActive: true,
 
-    DISTANCE_SCROLL_ACCEPT: 5,
+    SCROLL_X_ACCEPT: 10,
+    SCROLL_Y_ACCEPT: 10,
 
     ctor: function () {
         this._super();
@@ -203,12 +204,13 @@ var LobbyScene = cc.Scene.extend({
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: false,
-            onTouchBegan: () => {
+            onTouchBegan: (touch) => {
                 if (!this.allBtnIsActive) {
                     return false;
                 }
-                this.isScrolling = false;
                 this.scrollTouching = true;
+                this.startLoc = touch.getLocation();
+                this.acceptHorizontalScroll = false;
                 return true;
             },
             onTouchMoved: (touch) => {
@@ -218,42 +220,53 @@ var LobbyScene = cc.Scene.extend({
                 let delta = touch.getDelta();
                 this.currentScroll += delta.x;
                 this.tabUIs.forEach(tab => tab.x += delta.x);
-                if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.DISTANCE_SCROLL_ACCEPT) {
-                    this.isScrolling = true;
+
+                let currLoc = touch.getLocation();
+                if (!this.acceptHorizontalScroll && Math.abs(currLoc.x - this.startLoc.x) > this.SCROLL_X_ACCEPT) {
+                    if (Math.abs(currLoc.y - this.startLoc.y) > this.SCROLL_Y_ACCEPT) {
+                        this.endHorizontalScroll();
+                    } else {
+                        this.acceptHorizontalScroll = true;
+                    }
                 }
+
                 return true;
             },
             onTouchEnded: () => {
-                if (!this.allBtnIsActive || !this.scrollTouching) {
+                if ((!this.allBtnIsActive && this.getChildByTag(cf.TAG_CARDINFOUI) === undefined) || !this.scrollTouching) {
                     return false;
                 }
-                this.scrollTouching = false;
-                let sequence = cc.sequence(
-                    cc.callFunc(() => {
-                        let record = cf.WIDTH * 10;
-                        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
-                            if (this.tabUIs[i] !== undefined && Math.abs(this.tabUIs[i].x) < record) {
-                                record = Math.abs(this.tabUIs[i].x);
-                                this.activeTab = i;
-                            }
-                        }
-                        if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
-                            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
-                        }
-                        this.resizeTabs();
-                        let distance = this.tabUIs[this.activeTab].x;
-                        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
-                            if (this.tabUIs[i] !== undefined) {
-                                this.tabUIs[i].runAction(new cc.moveBy(0.25, cc.p(-distance, 0)));
-                            }
-                        }
-                    }),
-                    cc.DelayTime(0.25)
-                );
-                this.runAction(sequence);
+                this.endHorizontalScroll();
                 return true;
             },
         }, this);
+    },
+
+    endHorizontalScroll: function () {
+        this.scrollTouching = false;
+        let sequence = cc.sequence(
+            cc.callFunc(() => {
+                let record = cf.WIDTH * 10;
+                for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+                    if (this.tabUIs[i] !== undefined && Math.abs(this.tabUIs[i].x) < record) {
+                        record = Math.abs(this.tabUIs[i].x);
+                        this.activeTab = i;
+                    }
+                }
+                if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
+                    this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+                }
+                this.resizeTabs();
+                let distance = this.tabUIs[this.activeTab].x;
+                for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+                    if (this.tabUIs[i] !== undefined) {
+                        this.tabUIs[i].runAction(new cc.moveBy(0.25, cc.p(-distance, 0)));
+                    }
+                }
+            }),
+            cc.DelayTime(0.25)
+        );
+        this.runAction(sequence);
     },
 
     requestOffer: function () {
