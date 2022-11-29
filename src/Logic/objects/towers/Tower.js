@@ -1,6 +1,4 @@
 var _TOWER_CONFIG;
-const TOWER_SCALE = 1.2;
-
 /**
  * Abstract class*/
 var Tower = TowerUI.extend({

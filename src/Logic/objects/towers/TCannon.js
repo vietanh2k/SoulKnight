@@ -30,7 +30,7 @@ var TCannon = Tower.extend({
         this.level = 1
         this.map = map
         this._is_set_pos = false
-        this.setScale(1.1)
+        this.setScale(1)
         this.resetPending();
 
         return true;
