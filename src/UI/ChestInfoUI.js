@@ -220,6 +220,9 @@ var ChestInfoUI = cc.Layer.extend({
         });
         panelBackground.addChild(openByGemBtn, 0);
 
+
+        this.addTouchListener(panelBackground, panelBackground);
+
         Utils.addScaleAnimation(this);
     },
 
@@ -227,6 +230,29 @@ var ChestInfoUI = cc.Layer.extend({
         this.visible = false;
         this.parent.allBtnIsActive = true;
         this.removeFromParent();
+    },
+
+    addTouchListener: function (top, bot) {
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: true,
+            onTouchBegan: (event) => {
+                let locationY = event.getLocation().y;
+                if (locationY > top.y + top.height / 2 * top.scale ||
+                    locationY < bot.y - bot.height / 2 * bot.scale) {
+                    this.readyToDestroy = true;
+                    return true;
+                }
+                return false;
+            },
+            onTouchEnded: () => {
+                if (this.readyToDestroy) {
+                    this.destroy(false);
+                    return true;
+                }
+                return false;
+            },
+        }, this);
     },
 
     readableGoldRange: function (golds) {

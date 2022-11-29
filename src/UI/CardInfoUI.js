@@ -46,6 +46,7 @@ var CardInfoUI = cc.Layer.extend({
 
         // top panel
         let topPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 0, 453, 196.5));
+        this.topPanelBackground = topPanelBackground;
         topPanelBackground.attr({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.4 + this.midPanelBackground.height * this.midPanelBackground.scale,
@@ -191,6 +192,7 @@ var CardInfoUI = cc.Layer.extend({
 
         // bottom panel
         let botPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 294.75, 453, 98.25));
+        this.botPanelBackground = botPanelBackground;
         botPanelBackground.attr({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.4 - this.midPanelBackground.height * this.midPanelBackground.scale * 0.75,
@@ -314,6 +316,7 @@ var CardInfoUI = cc.Layer.extend({
                 if (!this.skillInfoUIIsActive) {
                     let skillInfoUI = new SkillInfoUI(card);
                     this.addChild(skillInfoUI);
+                    this.addTouchListener(topPanelBackground, skillInfoUI.botPanelBackground);
                     this.skillInfoUIIsActive = true;
                 }
             });
@@ -328,7 +331,6 @@ var CardInfoUI = cc.Layer.extend({
             showSkillBtn.addChild(lb);
         }
 
-        // fixme sửa lại hàm dưới khi có Node mới có y lớn hơn topPanelBackground
         this.addTouchListener(topPanelBackground, botPanelBackground);
 
         Utils.addScaleAnimation(this);
