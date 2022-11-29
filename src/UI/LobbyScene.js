@@ -255,6 +255,12 @@ var LobbyScene = cc.Scene.extend({
                         this.activeTab = i;
                     }
                 }
+                if(this.activeTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
+                    // fr.view(ShopUI);
+                    this.requestOffer()
+                }else{
+                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
+                }
                 if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
                     this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
                 }
