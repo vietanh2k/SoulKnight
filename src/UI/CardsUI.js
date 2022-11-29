@@ -343,13 +343,18 @@ var CardsUI = cc.Layer.extend({
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: () => {
-                if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
+                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
                 this.isScrolling = false;
                 this.scrollTouching = true;
                 return true;
             },
             onTouchMoved: (touch) => {
-                if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck) || !this.scrollTouching) return;
+                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck) || !this.scrollTouching) return;
+
+                if (this.parent.acceptHorizontalScroll) {
+                    this.endVerticalScroll();
+                }
+
                 let delta = touch.getDelta();
                 this.currentScroll += delta.y;
                 this.getChildren().forEach(child => child.y += delta.y);
@@ -367,23 +372,27 @@ var CardsUI = cc.Layer.extend({
                     this.resetCardsUIState();
                     return true;
                 }
-                if (!this.visible || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
-                cc.log("Final delta y: " + this.finalDeltaY);
-                // todo chuyển động chậm dần đều?
-                this.scrollTouching = false;
-                if (this.currentScroll < this.lowerbound) {
-                    this.getChildren().forEach(child => {
-                        child.runAction(new cc.MoveBy(0.5, cc.p(0, this.lowerbound - this.currentScroll)));
-                    });
-                    this.currentScroll = this.lowerbound;
-                } else if (this.currentScroll > this.upperbound) {
-                    this.getChildren().forEach(child => {
-                        child.runAction(new cc.MoveBy(0.5, cc.p(0, this.upperbound - this.currentScroll)));
-                    });
-                    this.currentScroll = this.upperbound;
-                }
-                return true;
+                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
+                this.endVerticalScroll();
             },
         }, this);
+    },
+
+    endVerticalScroll: function () {
+        cc.log("Final delta y: " + this.finalDeltaY);
+        // todo chuyển động chậm dần đều?
+        this.scrollTouching = false;
+        if (this.currentScroll < this.lowerbound) {
+            this.getChildren().forEach(child => {
+                child.runAction(new cc.MoveBy(0.5, cc.p(0, this.lowerbound - this.currentScroll)));
+            });
+            this.currentScroll = this.lowerbound;
+        } else if (this.currentScroll > this.upperbound) {
+            this.getChildren().forEach(child => {
+                child.runAction(new cc.MoveBy(0.5, cc.p(0, this.upperbound - this.currentScroll)));
+            });
+            this.currentScroll = this.upperbound;
+        }
+        return true;
     },
 });
