@@ -90,11 +90,6 @@ MW.CONTAINER = {
     BACKTILEMAPS: []
 };
 
-//bullet speed
-MW.BULLET_SPEED = {
-    ENEMY: -200,
-    SHIP: 900
-};
 // the counter of active enemies
 MW.ACTIVE_ENEMIES = 0;
 
@@ -136,6 +131,8 @@ cf.COST_GEMS_PER_HOUR = 6;
 cf.MAX_EVOLUTION = 2;
 
 cf.DROP_TOWER_DELAY = 1;
+
+cf.BULLET_SPEED_MULTIPLIER = 3;
 
 // Treasure.json
 cf.CHEST_REWARD = [

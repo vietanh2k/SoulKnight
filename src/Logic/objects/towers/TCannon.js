@@ -1,5 +1,5 @@
 // var _TOWER_CONFIG;
-var TCanon = Tower.extend({
+var TCannon = Tower.extend({
     /**
      * Khởi tạo
      * @param {MCard} card:
@@ -7,7 +7,6 @@ var TCanon = Tower.extend({
      * @param {Vec2} position: vị trí deploy
      * @param {MapView} map: map add */
     ctor: function (card, playerState, position, map) {
-        cc.log('init canon')
         this._super(card, 0);
         // cc.log("Create new Tower: Type=" + type + "player state" + playerState + "position" + position)
 

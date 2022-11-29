@@ -642,9 +642,9 @@ var GameUI = cc.Layer.extend({
 
     generatePreviewObject: function (target) {
         if (target.cardID == 2) {
-            let towerPreview = (new TowerUI(target, 1)).generatePreviewTowerUI();
+            // let towerPreview = (new TowerUI(target, 1)).generatePreviewTowerUI();
 
-            // let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
+            let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
             towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
             let card = new Card(16, 1, 0);

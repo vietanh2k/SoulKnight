@@ -365,7 +365,7 @@ var MapView = cc.Class.extend({
                 tower = new TWizard(card, this._playerState, position, this);
                 break;
             default:
-                tower = new TCanon(card, this._playerState, position, this);
+                tower = new TCannon(card, this._playerState, position, this);
         }
 
         //this.towers.push(tower)

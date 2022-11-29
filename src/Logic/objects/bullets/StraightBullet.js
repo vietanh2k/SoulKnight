@@ -28,11 +28,11 @@ var TWizardBullet = Bullet.extend({
     explose: function (playerState, pos) {
         const map = playerState.getMap();
 
-        let objectList = map.getObjectInRange(pos, this.getRadius());
+        let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
             if (this.canAttack(object)) {
-                //object.health -= this.getDamage();
-                object.takeDamage(this.getDamage())
+                //object.health -= this.damage;
+                object.takeDamage(this.damage)
                 object.hurtUI()
             }
         }

@@ -1,6 +1,6 @@
 var Bullet = cc.Sprite.extend({
-    fx:null,
-    concept:"bullet",
+    fx: null,
+    concept: "bullet",
     ctor: function (res, target, speed, damage, radius, position) {
         this._super(res);
 
@@ -9,17 +9,9 @@ var Bullet = cc.Sprite.extend({
         this.reset(target, speed, damage, radius, position);
 
     },
-    getSpeed: function () {
-        return this.speed
-    },
-    getDamage: function () {
-        return this.damage;
-    },
-    getRadius: function () {
-        return this.radius;
-    },
+
     getTargetPosition: function () {
-        if(this.target==undefined || this.target.isDestroy||this.target==null){
+        if (this.target == undefined || this.target.isDestroy || this.target == null) {
             return this._lastLoc;
         }
         if (this.target.hasOwnProperty("position")) {
@@ -32,21 +24,23 @@ var Bullet = cc.Sprite.extend({
         }
     },
 
-    reset: function (target, speed, damage, radius, position){
-        this.target = target
-        this.speed = speed
-        this.damage = damage
-        this.radius = radius
+    reset: function (target, speed, damage, radius, position) {
+        this.target = target;
+        this.speed = speed;
+        this.damage = damage;
+        this.radius = radius;
         this.isDestroy = false;
         this.position = position
-        this.active = true
-        this._lastLoc = new Vec2(position.x, position.y)
-        this.activate=true
+        this.active = true;
+        this._lastLoc = new Vec2(position.x, position.y);
+        this.activate = true;
 
-        if (this.target && this.target.retain) this.target.retain()
+        if (this.target && this.target.retain) {
+            this.target.retain();
+        }
     },
     canAttack: function (object) {
-        if(object.concept=='monster'){
+        if (object.concept == 'monster') {
             return true;
         }
         return false;
@@ -76,39 +70,34 @@ var Bullet = cc.Sprite.extend({
             this.setPosition(width - x, height + y)
         }
     },
+
     logicUpdate: function (playerState, dt) {
         if (this.active) {
-
-            var pos = this.getTargetPosition()
-
+            let pos = this.getTargetPosition();
             if (!pos) {
-                // target disappear!
+                // target disappear
                 this.explose(playerState, this._lastLoc);
                 return;
             }
-
-            if (euclid_distance(this.position, pos) > this.getSpeed() * dt) {
-                // cc.log('bullet í moving')
+            if (euclid_distance(this.position, pos) > this.speed * dt) {
                 let direction = pos.sub(this.position).l2norm();
-                this.position.x += direction.x * this.getSpeed() * dt;
-                this.position.y += direction.y * this.getSpeed() * dt;
+                this.position.x += direction.x * this.speed * cf.BULLET_SPEED_MULTIPLIER * dt;
+                this.position.y += direction.y * this.speed * cf.BULLET_SPEED_MULTIPLIER * dt;
             } else {
-                //cc.log('bullet explose')
                 this.explose(playerState, pos);
             }
         }
-
     },
 
     explose: function (playerState, pos) {
         const map = playerState.getMap();
 
-        let objectList = map.getObjectInRange(pos, this.getRadius());
+        let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
             if (this.canAttack(object)) {
-                //object.health -= this.getDamage();
-                object.takeDamage(this.getDamage())
-                object.hurtUI()
+                //object.health -= this.damage;
+                object.takeDamage(this.damage);
+                object.hurtUI();
             }
         }
         this.isDestroy = true;
@@ -116,6 +105,6 @@ var Bullet = cc.Sprite.extend({
         this.visible = false;
 
         GameUI.instance.removeChild(this);
-        if (this.target && this.target.release) this.target.release()
+        if (this.target && this.target.release) this.target.release();
     }
 })

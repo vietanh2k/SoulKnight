@@ -140,8 +140,6 @@
         "src/Logic/objects/bullets/StraightBullet.js",
         "src/Logic/objects/towers/Tower.js",
         "src/Logic/objects/towers/TWizard.js",
-        "src/Logic/objects/towers/TCanon.js"
-
-
+        "src/Logic/objects/towers/TCannon.js"
     ]
 }
