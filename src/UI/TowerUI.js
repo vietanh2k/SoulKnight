@@ -11,7 +11,7 @@ var TowerUI = cc.Sprite.extend({
     idleActions: null,
     attackActions: null,
     dir: null,
-    fire_fx:null,
+    fire_fx: null,
     DIR: {
         COINCIDE: -1,
         S: 0,
@@ -35,6 +35,7 @@ var TowerUI = cc.Sprite.extend({
     /**
      * Khởi tạo dựa trên Card
      * @param {MCard} card
+     * @param {int} evolution
      * */
     ctor: function (card, evolution) {
         this.card = card;
@@ -175,9 +176,11 @@ var TowerUI = cc.Sprite.extend({
                         this.part[i].runAction(action2run[i][dir]);
                     }
                 }
-                if(this.fire_fx!=null){
-                    var  seq = cc.sequence(
-                        cc.callFunc(() => {this.fire_fx.visible = true;}),
+                if (this.fire_fx != null) {
+                    var seq = cc.sequence(
+                        cc.callFunc(() => {
+                            this.fire_fx.visible = true;
+                        }),
                         cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_1', false)),
                         cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_2', false)),
                         cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_3', false)),

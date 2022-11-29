@@ -2,6 +2,7 @@
 var UpgradeCardAnimationUI = cc.Layer.extend({
     statSlots: [],
     skipBtnIsUsed: false,
+    TIME_PROGRESS_ANIMATION: 1,
 
     ctor: function (oldCard, newCard) {
         this._super();
@@ -27,15 +28,33 @@ var UpgradeCardAnimationUI = cc.Layer.extend({
         });
         this.addChild(lbName);
 
+        let oldCardSlot = new CardSlot(oldCard, false);
+        oldCardSlot.addClickEventListener(() => {
+        });
+        oldCardSlot.progressPanel.visible = false;
+        oldCardSlot.attr({
+            x: cf.WIDTH / 2,
+            y: cf.HEIGHT * 0.68,
+            scale: cf.HEIGHT * 0.2 / oldCardSlot.height,
+            opacity: 255,
+        });
+        oldCardSlot.getChildren().forEach(child => {
+            child.opacity = 255;
+            child.getChildren().forEach(grantchild => {
+                grantchild.opacity = 255;
+            });
+        });
+        this.addChild(oldCardSlot);
+
         let cardSlot = new CardSlot(newCard, false);
         cardSlot.addClickEventListener(() => {
         });
-        cardSlot.progressPanel.y = cardSlot.height * 1.2;
+        cardSlot.progressPanel.visible = false;
         cardSlot.attr({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.68,
             scale: cf.HEIGHT * 0.2 / cardSlot.height,
-            visible: false,
+            opacity: 0,
         });
         this.addChild(cardSlot);
 
@@ -46,11 +65,51 @@ var UpgradeCardAnimationUI = cc.Layer.extend({
             scale: cardSlot.width / glossy.width,
         });
         cardSlot.addChild(glossy);
-        glossy.runAction(cc.sequence(cc.FadeOut(1), cc.FadeIn(1)).repeatForever());
+        cardSlot.getChildren().forEach(child => {
+            child.opacity = 0;
+            child.getChildren().forEach(grantchild => {
+                grantchild.opacity = 0;
+            });
+        });
+
+        let progressPanel = new cc.Sprite(asset.progressBackground_png);
+        progressPanel.attr({
+            x: cf.WIDTH / 2,
+            y: cardSlot.y + cardSlot.height * 0.7 * cardSlot.scale,
+            scale: cardSlot.width * cardSlot.scale / progressPanel.width,
+        });
+        this.addChild(progressPanel);
+
+        let progressTexture;
+        if (newCard.fragment >= newCard.reqFrag) {
+            progressTexture = asset.progressMax_png;
+        } else {
+            progressTexture = asset.progress_png;
+        }
+        let progress = cc.ProgressTimer.create(cc.Sprite.create(progressTexture));
+        progress.setType(cc.ProgressTimer.TYPE_BAR);
+        progress.setBarChangeRate(cc.p(1, 0));
+        progress.setMidpoint(cc.p(0, 1));
+        progress.setPercentage(100);
+        progress.attr({
+            x: progressPanel.width / 2,
+            y: progressPanel.height / 2,
+            scaleX: progressPanel.width * 0.95 / progress.width,
+            scaleY: progressPanel.height * 0.8 / progress.height,
+        });
+        progressPanel.addChild(progress);
 
         for (let i = 0; i < oldCard.statTypes.length; i++) {
             this.addStatSlotToPanel(oldCard, i);
         }
+
+        this.lbFragment = ccui.Text(oldCard.fragment, asset.svnSupercellMagic_ttf, 16);
+        this.lbFragment.attr({
+            x: progressPanel.width / 2,
+            y: progressPanel.height / 2 * 1.1,
+        });
+        this.lbFragment.enableShadow();
+        progressPanel.addChild(this.lbFragment);
 
         let sequence = cc.sequence(
             cc.DelayTime(0.5),
@@ -59,9 +118,33 @@ var UpgradeCardAnimationUI = cc.Layer.extend({
                 lbName.runAction(new cc.moveBy(0.25, cc.p(0, cf.HEIGHT * 0.05)));
             }),
             cc.DelayTime(0.5),
-            cc.CallFunc(() => cardSlot.visible = true),
-            cc.DelayTime(0.5),
-            cc.CallFunc(() => this.showAllStatSlots()),
+            cc.CallFunc(() => {
+                let newRatioPercent = newCard.fragment / newCard.reqFrag * 100;
+                progress.runAction(cc.progressTo(this.TIME_PROGRESS_ANIMATION, newRatioPercent));
+                this.startTime = Date.now();
+                oldCardSlot.runAction(cc.FadeOut(this.TIME_PROGRESS_ANIMATION / 2));
+                oldCardSlot.getChildren().forEach(child => {
+                    child.runAction(cc.FadeOut(this.TIME_PROGRESS_ANIMATION / 2));
+                    child.getChildren().forEach(grantchild => {
+                        grantchild.runAction(cc.FadeOut(this.TIME_PROGRESS_ANIMATION / 2));
+                    });
+                });
+            }),
+            cc.DelayTime(this.TIME_PROGRESS_ANIMATION / 2),
+            cc.CallFunc(() => {
+                cardSlot.runAction(cc.FadeIn(this.TIME_PROGRESS_ANIMATION / 2));
+                cardSlot.getChildren().forEach(child => {
+                    child.runAction(cc.FadeIn(this.TIME_PROGRESS_ANIMATION / 2));
+                    child.getChildren().forEach(grantchild => {
+                        grantchild.runAction(cc.FadeIn(this.TIME_PROGRESS_ANIMATION / 2));
+                    });
+                });
+            }),
+            cc.DelayTime(this.TIME_PROGRESS_ANIMATION / 2 + 0.5),
+            cc.CallFunc(() => {
+                glossy.runAction(cc.sequence(cc.FadeOut(1), cc.FadeIn(1)).repeatForever());
+                this.showAllStatSlots();
+            }),
             cc.DelayTime(0.5),
             cc.CallFunc(() => this.addExitBtn())
         );
@@ -81,9 +164,38 @@ var UpgradeCardAnimationUI = cc.Layer.extend({
                     this.statSlots[i].y = cf.HEIGHT * (0.5 - 0.08 * i);
                     this.statSlots[i].visible = true;
                 }
+
+                progress.stopAllActions();
+                progress.setPercentage(newCard.fragment / newCard.reqFrag * 100);
+                this.lbFragment.setString(this.newCard.fragment);
+
+                oldCardSlot.visible = false;
+                cardSlot.opacity = 255;
+                cardSlot.getChildren().forEach(child => {
+                    child.opacity = 255;
+                    child.getChildren().forEach(grantchild => {
+                        grantchild.opacity = 255;
+                    });
+                });
+                glossy.runAction(cc.sequence(cc.FadeOut(1), cc.FadeIn(1)).repeatForever());
+
                 this.addExitBtn();
             }
         });
+
+        this.scheduleUpdate();
+    },
+
+    update: function () {
+        if (this.startTime !== undefined) {
+            let ratio = (Date.now() - this.startTime) / this.TIME_PROGRESS_ANIMATION / 1000;
+            if (ratio > 1) ratio = 1;
+            let currFragment = Math.round(this.oldCard.fragment + ratio * (this.newCard.fragment - this.oldCard.fragment));
+            this.lbFragment.setString(currFragment);
+            if (currFragment === this.newCard.fragment) {
+                this.startTime = undefined;
+            }
+        }
     },
 
     showAllStatSlots: function () {

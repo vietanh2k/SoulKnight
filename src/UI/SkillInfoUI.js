@@ -79,6 +79,7 @@ var SkillInfoUI = cc.Layer.extend({
         });
         backBtn.addClickEventListener(() => {
             this.parent.skillInfoUIIsActive = false;
+            this.parent.addTouchListener(this.parent.topPanelBackground, this.parent.botPanelBackground);
             this.removeFromParent(true);
         });
         topPanelBackground.addChild(backBtn);
@@ -119,6 +120,7 @@ var SkillInfoUI = cc.Layer.extend({
 
         // bottom panel
         let botPanelBackground = new cc.Sprite(asset.panelBackground_png, cc.rect(0, 196.5, 453, 196.5));
+        this.botPanelBackground = botPanelBackground;
         botPanelBackground.attr({
             x: cf.WIDTH / 2,
             y: cf.HEIGHT * 0.4 - midPanelBackground.height * midPanelBackground.scale * 0.75,

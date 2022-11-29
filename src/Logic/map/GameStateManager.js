@@ -168,4 +168,8 @@ var GameStateManager = cc.Class.extend({
         }
     },
 
+    getCurWave: function () {
+        return this.curWave;
+    },
+
 });

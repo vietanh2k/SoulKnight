@@ -15,6 +15,9 @@ var LobbyScene = cc.Scene.extend({
 
     allBtnIsActive: true,
 
+    SCROLL_X_ACCEPT: 10,
+    SCROLL_Y_ACCEPT: 10,
+
     ctor: function () {
         this._super();
         LobbyInstant = this
@@ -28,6 +31,7 @@ var LobbyScene = cc.Scene.extend({
         cc.log('initTabs')
         this.initTabUIs(1);
         cc.log('initTabUIs')
+        this.addHorizontalScrollByTouchListener();
     },
 
     initBackGround: function (localZOrder) {
@@ -100,7 +104,11 @@ var LobbyScene = cc.Scene.extend({
             newTab.addClickEventListener(() => {
                 if (this.allBtnIsActive) {
                     this.changeToTab(j);
-                } else {
+                } else if (this.activeTab === cf.LOBBY_TAB_CARDS && this.tabUIs[cf.LOBBY_TAB_CARDS].isShowingAddCardToDeck) {
+                    this.changeToTab(j);
+                    this.allBtnIsActive = true;
+                }
+                else {
                     cc.log('allBtnIsActive is false');
                 }
             });
@@ -114,7 +122,7 @@ var LobbyScene = cc.Scene.extend({
     },
 
     changeToTab: function (newTab) {
-        if(newTab == cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess == false) {
+        if(newTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
             // fr.view(ShopUI);
             this.requestOffer()
         }else{
@@ -126,6 +134,9 @@ var LobbyScene = cc.Scene.extend({
         this.activeTab = newTab;
         this.resizeTabs();
         this.updateTabUIsVisibility();
+        if (this.activeTab === cf.LOBBY_TAB_CARDS) {
+            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+        }
     },
 
     resizeTabs: function () {
@@ -166,8 +177,11 @@ var LobbyScene = cc.Scene.extend({
     updateTabUIsVisibility: function () {
         for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
             if (this.tabUIs[i] !== undefined) {
-                this.tabUIs[i].visible = i === this.activeTab;
+                this.tabUIs[i].x = cf.WIDTH * (i - this.activeTab);
             }
+        }
+        if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
+            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
         }
     },
 
@@ -187,6 +201,82 @@ var LobbyScene = cc.Scene.extend({
             setTimeout(() => this.allBtnIsActive = true, 0.01);
         }
     },
+
+    addHorizontalScrollByTouchListener: function () {
+        cc.eventManager.addListener({
+            event: cc.EventListener.TOUCH_ONE_BY_ONE,
+            swallowTouches: false,
+            onTouchBegan: (touch) => {
+                if (!this.allBtnIsActive) {
+                    return false;
+                }
+                this.scrollTouching = true;
+                this.startLoc = touch.getLocation();
+                this.acceptHorizontalScroll = false;
+                return true;
+            },
+            onTouchMoved: (touch) => {
+                if (!this.allBtnIsActive || !this.scrollTouching) {
+                    return false;
+                }
+                let delta = touch.getDelta();
+                this.currentScroll += delta.x;
+                this.tabUIs.forEach(tab => tab.x += delta.x);
+
+                let currLoc = touch.getLocation();
+                if (!this.acceptHorizontalScroll && Math.abs(currLoc.x - this.startLoc.x) > this.SCROLL_X_ACCEPT) {
+                    if (Math.abs(currLoc.y - this.startLoc.y) > this.SCROLL_Y_ACCEPT) {
+                        this.endHorizontalScroll();
+                    } else {
+                        this.acceptHorizontalScroll = true;
+                    }
+                }
+
+                return true;
+            },
+            onTouchEnded: () => {
+                if ((!this.allBtnIsActive && this.getChildByTag(cf.TAG_CARDINFOUI) === undefined) || !this.scrollTouching) {
+                    return false;
+                }
+                this.endHorizontalScroll();
+                return true;
+            },
+        }, this);
+    },
+
+    endHorizontalScroll: function () {
+        this.scrollTouching = false;
+        let sequence = cc.sequence(
+            cc.callFunc(() => {
+                let record = cf.WIDTH * 10;
+                for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+                    if (this.tabUIs[i] !== undefined && Math.abs(this.tabUIs[i].x) < record) {
+                        record = Math.abs(this.tabUIs[i].x);
+                        this.activeTab = i;
+                    }
+                }
+                if(this.activeTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
+                    // fr.view(ShopUI);
+                    this.requestOffer()
+                }else{
+                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
+                }
+                if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
+                    this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+                }
+                this.resizeTabs();
+                let distance = this.tabUIs[this.activeTab].x;
+                for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+                    if (this.tabUIs[i] !== undefined) {
+                        this.tabUIs[i].runAction(new cc.moveBy(0.25, cc.p(-distance, 0)));
+                    }
+                }
+            }),
+            cc.DelayTime(0.25)
+        );
+        this.runAction(sequence);
+    },
+
     requestOffer: function () {
         cc.log("sendRequestOffer");
         try{

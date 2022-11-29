@@ -435,6 +435,7 @@
             "ctype": "ButtonObjectData"
           },
           {
+            "IsCustomSize": true,
             "FontSize": 36,
             "LabelText": "1000",
             "FontResource": {
@@ -442,6 +443,7 @@
               "Path": "font/SVN-Supercell Magic.ttf",
               "Plist": ""
             },
+            "HorizontalAlignmentType": "HT_Center",
             "OutlineColor": {
               "R": 26,
               "G": 26,
@@ -482,14 +484,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -65.5414,
-            "RightMargin": -59.4586,
+            "LeftMargin": -91.0414,
+            "RightMargin": -84.9586,
             "TopMargin": -50.7054,
             "BottomMargin": -0.2946,
             "Tag": 82,
             "ActionTag": 1128738777,
             "Size": {
-              "X": 125.0,
+              "X": 176.0,
               "Y": 51.0
             },
             "Name": "numGold",
