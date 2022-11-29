@@ -430,4 +430,23 @@ var MapView = cc.Class.extend({
 
         return ret
     },
+
+    // return all trees, stones that it's cell on overlap the circle
+    queryTreesStonesCircle: function (pos, radius) {
+        const treeStones = []
+
+        for (let i = 0; i < 4; i++) {
+            const x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
+            const y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
+
+            const cell = self.getCellAtPosition(x, y)
+
+            const treeStone = cell.getObjectOn()
+            treeStone.isChosen = false
+            treeStone.push(treeStone)
+        }
+
+        return treeStones
+    },
+
 });
