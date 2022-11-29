@@ -6,6 +6,8 @@ const Cell = cc.Class.extend({
         this.nextCell = null
         this.nextPos = null
         this.outPos = null
+
+        this.monsters = []
     },
 
     setState: function(state) {
@@ -57,5 +59,17 @@ const Cell = cc.Class.extend({
     getCornerCellOutPos: function () {
         return this.outPos;
     },
+
+    clearMonsterOnCell: function () {
+        for (let i = 0; i < this.monsters.length; i++) {
+            this.monsters[i].release()
+        }
+        this.monsters.length = 0
+    },
+
+    addMonsterToCell: function (monster) {
+        monster.retain()
+        this.monsters.push(monster)
+    }
 
 })
