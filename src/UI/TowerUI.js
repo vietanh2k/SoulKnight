@@ -247,4 +247,8 @@ var TowerUI = cc.Sprite.extend({
         }
         return frames;
     },
+
+    generatePreviewTowerUI: function () {
+        this.updateDirection(0);
+    },
 });
