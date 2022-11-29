@@ -528,7 +528,7 @@ var GameUI = cc.Layer.extend({
 
             onTouchMoved: (touch, event) => {
 
-                if(this.cardTouchSlot == -1) {
+                if(this.cardTouchSlot === -1) {
                     let target = event.getCurrentTarget();
                     let rule = getRule(target);
                     if (this.previewObject === undefined) {
@@ -641,11 +641,11 @@ var GameUI = cc.Layer.extend({
     },
 
     generatePreviewObject: function (target) {
-        if (target.cardID == 2) {
-            // let towerPreview = (new TowerUI(target, 1)).generatePreviewTowerUI();
+        if (target.cardID === 2) {
+            let towerPreview = new TowerUI(target, 1);
 
-            let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
-            towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
+            // let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
+            // towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
             let card = new Card(16, 1, 0);
             let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;

@@ -40,11 +40,9 @@ var TowerUI = cc.Sprite.extend({
     ctor: function (card, evolution) {
         this.card = card;
         this.evolution = evolution;
+
         this.AnimationSetUp(card);
-
         this._super(this.initTextures[0]);
-
-        this.mapId = -1
 
         this.part = [];
         for (let i = 1; i <= this.evolution + 1; i++) {
@@ -63,16 +61,12 @@ var TowerUI = cc.Sprite.extend({
 
         this.currentActions = [];
         this.loadAllActions();
-        // this.addTimerUI();
-        try {
-            this.runAction(this.idleActions[0][0])
-        } catch (e) {
-            cc.log('this.runAction(this.idleActions[0][0])' + e)
-        }
+
         this.visible = true;
     },
+
     AnimationSetUp: function (card) {
-        if (card.id === 2) {
+        if (card.cardID === 2) {
             this.initTextures = [];
             this.idlePrefixNames = [];
             this.attackPrefixNames = [];
@@ -248,9 +242,5 @@ var TowerUI = cc.Sprite.extend({
             frames.push(frame);
         }
         return frames;
-    },
-
-    generatePreviewTowerUI: function () {
-        this.updateDirection(0);
     },
 });
