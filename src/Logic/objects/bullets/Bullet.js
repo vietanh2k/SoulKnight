@@ -26,7 +26,7 @@ var Bullet = cc.Sprite.extend({
 
     reset: function (target, speed, damage, radius, position) {
         this.target = target;
-        this.speed = speed;
+        this.speed = speed * cf.BULLET_SPEED_MULTIPLIER;
         this.damage = damage;
         this.radius = radius;
         this.isDestroy = false;
@@ -40,11 +40,7 @@ var Bullet = cc.Sprite.extend({
         }
     },
     canAttack: function (object) {
-        if (object.concept == 'monster') {
-            return true;
-        }
-        return false;
-
+        return object.concept === 'monster';
     },
     render: function (playerState) {
         this.renderRule = playerState.rule
@@ -74,15 +70,15 @@ var Bullet = cc.Sprite.extend({
     logicUpdate: function (playerState, dt) {
         if (this.active) {
             let pos = this.getTargetPosition();
-            if (!pos) {
+            if (!pos || this.target.isDestroy) {
                 // target disappear
                 this.explose(playerState, this.lastLoc);
                 return;
             }
             if (euclid_distance(this.position, pos) > this.speed * dt) {
                 let direction = pos.sub(this.position).l2norm();
-                this.position.x += direction.x * this.speed * cf.BULLET_SPEED_MULTIPLIER * dt;
-                this.position.y += direction.y * this.speed * cf.BULLET_SPEED_MULTIPLIER * dt;
+                this.position.x += direction.x * this.speed * dt;
+                this.position.y += direction.y * this.speed * dt;
             } else {
                 this.explose(playerState, pos);
             }
