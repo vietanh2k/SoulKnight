@@ -102,13 +102,24 @@ var CardsUI = cc.Layer.extend({
             });
             this.sortByEnergyBtn.addClickEventListener(() => {
                 if (this.sortByEnergyAsc == null) {
-                    this.sortByEnergyAsc = true;
+                    this.sortByEnergyAsc = false;
+                    this.sortArrow.visible = true;
                 } else {
                     this.sortByEnergyAsc = !this.sortByEnergyAsc;
+                    this.sortArrow.flippedY = this.sortByEnergyAsc;
                 }
                 this.sortCollectionSlotsByEnergy();
             });
             this.collectionPanel.addChild(this.sortByEnergyBtn);
+
+            this.sortArrow = new cc.Sprite(asset.cardSwitchArrow_png);
+            this.sortArrow.attr({
+                x: this.collectionPanel.width * 0.82,
+                y: this.collectionPanel.height / 2,
+                scale: 1,
+            });
+            this.sortArrow.visible = false;
+            this.collectionPanel.addChild(this.sortArrow);
         }
 
         this.collectionSlots = [];

@@ -61,7 +61,6 @@ var TCannon = Tower.extend({
 
         let newBullet = new TCannonBullet(object, speed, damage, radius, position);
         // todo bắn đạn từ nòng
-        // todo tăng zOrder đạn cao hơn trụ
         // let pos = new Vec2(object.x, object.y);
         // let direction = pos.sub(newBullet.position).l2norm();
         // newBullet.position.x += direction.x * newBullet.speed * cf.BULLET_SPEED_MULTIPLIER * 0.01;

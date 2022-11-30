@@ -1,7 +1,6 @@
-
 var SignInScreen = cc.Layer.extend({
-    sprite:null,
-    ctor:function () {
+    sprite: null,
+    ctor: function () {
         this._super();
 
         var mainscene = ccs.load(res.LoginScene_json, "").node;
@@ -16,7 +15,7 @@ var SignInScreen = cc.Layer.extend({
         });
         this.login_button.addChild(lbLogIn);
 
-        this.textField  = mainscene.getChildByName("IdField");
+        this.textField = mainscene.getChildByName("IdField");
         this.notification = mainscene.getChildByName("Notification");
         // this.notification.visible = false;
         this.notification.setOpacity(0);
@@ -33,42 +32,17 @@ var SignInScreen = cc.Layer.extend({
         cc.log("current test is :" + this.textField.getString())
         cc.log("sendLoginRequest");
 
-        try {
-            gv.gameClient._userId = parseInt(this.textField.getString());
-            if (!isNaN(gv.gameClient._userId)) {
-                gv.gameClient.connect();
-            } else {
-                this.OnError("User_ID_must_be_number!");
-            }
-
-        } catch (e) {
-            this.OnError("User_ID_must_be_number!");
+        gv.gameClient._userId = parseInt(this.textField.getString());
+        if (this.textField.getString() === '') {
+            Utils.addToastToRunningScene('ID không được bỏ trống!');
+        } else if (!isNaN(gv.gameClient._userId)) {
+            gv.gameClient.connect();
+        } else {
+            Utils.addToastToRunningScene('ID chỉ bao gồm chữ số!');
         }
-
     },
-    onSelectMatch:function(sender)
-    {
-        cc.log("current test is2 :" + this.textField.getString())
-        cc.log("sendLoginRequest");
-        try{
-            gv.gameClient._userId = parseInt(this.textField.getString());
-            if(!isNaN(gv.gameClient._userId)){
 
-                gv.gameClient.connect();
-                fr.view(MatchingUI)
-                // var scene = new cc.Scene();
-                // scene.addChild(new MatchingUI());
-                // cc.director.runScene(new cc.TransitionFade(1.2, scene));
-            } else {
-                this.OnError("User_ID_must_be_number!");
-            }
-
-        } catch (e){
-            this.OnError("User_ID_must_be_number!");
-        }
-
-    },
-    onConnectSuccess: function (){
+    onConnectSuccess: function () {
 
     },
     /**
@@ -87,20 +61,10 @@ var SignInScreen = cc.Layer.extend({
     onFinishLogin: function () {
 
     },
-    /**
-     * Thông báo lỗi lên màn hình bằng 1 dòng animation kéo dài 3 giây
-     * @param {string}  error: nội dung thông báo
-     * */
-    OnError: function (error) {
-        this.notification.setOpacity(255);
-        this.notification.setString(error);
-        this.notification.runAction(cc.FadeOut.create(3.0));
-        cc.log("Notification: " + error)
-    },
 });
 
 var SignInScene = cc.Scene.extend({
-    onEnter:function () {
+    onEnter: function () {
         this._super();
         var layer = new SignInScreen();
         this.addChild(layer);
