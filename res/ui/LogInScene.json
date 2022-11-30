@@ -163,17 +163,17 @@
             "ctype": "TextFieldObjectData"
           },
           {
-            "FontSize": 36,
-            "ButtonText": "Đăng nhập",
+            "FontSize": 32,
+            "ButtonText": "",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Supercell Magic.ttf",
               "Plist": ""
             },
             "TextColor": {
-              "R": 0,
-              "G": 0,
-              "B": 0
+              "R": 152,
+              "G": 58,
+              "B": 12
             },
             "DisabledFileData": {
               "Type": "Normal",
@@ -213,11 +213,11 @@
             },
             "Position": {
               "X": 307.968,
-              "Y": 423.0464
+              "Y": 403.0464
             },
             "Scale": {
               "ScaleX": 0.725,
-              "ScaleY": 0.5968
+              "ScaleY": 0.725
             },
             "CColor": {},
             "IconVisible": false,
@@ -307,17 +307,17 @@
             "ctype": "TextObjectData"
           },
           {
-            "FontSize": 36,
-            "ButtonText": "Tìm trận đấu",
+            "FontSize": 32,
+            "ButtonText": "",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Supercell Magic.ttf",
               "Plist": ""
             },
             "TextColor": {
-              "R": 0,
-              "G": 0,
-              "B": 0
+              "R": 152,
+              "G": 58,
+              "B": 12
             },
             "DisabledFileData": {
               "Type": "Normal",
@@ -357,11 +357,11 @@
             },
             "Position": {
               "X": 306.6479,
-              "Y": 280.4296
+              "Y": 230.4296
             },
             "Scale": {
               "ScaleX": 0.725,
-              "ScaleY": 0.5968
+              "ScaleY": 0.725
             },
             "CColor": {},
             "IconVisible": false,

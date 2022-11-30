@@ -20,17 +20,12 @@ var LobbyScene = cc.Scene.extend({
 
     ctor: function () {
         this._super();
-        LobbyInstant = this
+        LobbyInstant = this;
         this.initBackGround(0);
-        cc.log('initBackGround')
         this.initCurrencyPanel(2);
-        cc.log('initCurrencyPanel')
         this.calcTabBtnSize();
-        cc.log('calcTabBtnSize')
         this.initTabs(2);
-        cc.log('initTabs')
         this.initTabUIs(1);
-        cc.log('initTabUIs')
         this.addHorizontalScrollByTouchListener();
     },
 
