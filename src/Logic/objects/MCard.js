@@ -3,20 +3,20 @@
 var MCard = cc.Sprite.extend({
 
 
-    ctor:function (cardType, ) {
+    ctor:function (type) {
         // this.cardID = cardID
-        this.energy = -1;
-        this.cardType = cardType;
+        this.energy = 1;
+        this.type = type;
         this.rarity = null;
         this._super('res/card/card_background_4.png');
-        this.initCardUI(cardType);
+        this.initCardUI(type);
         this.onTouch = false;
         this.numSlot = -1;
         return true;
     },
     
-    initCardUI:function (cardType){
-        let cardInfor = sharePlayerInfo.collection.find(element => element.type === cardType);
+    initCardUI:function (type){
+        let cardInfor = sharePlayerInfo.collection.find(element => element.type === type);
         let levelConfig = cf.CARD_LEVEL.find(element => element.level === cardInfor.level);
         if (levelConfig === undefined) {
             cc.log('WARNING: levelConfig is undefined');
@@ -31,8 +31,8 @@ var MCard = cc.Sprite.extend({
         var energy = new cc.Sprite(res.energyIcon)
         var whiteColor = new cc.Color(255, 255, 255, 255);
         var blackColor = new cc.Color(0, 0, 0, 255);
-        this.energy = CardConfig[cardID].numEnergy
-        var lbNumEnergy = new ccui.Text(CardConfig[cardID].numEnergy, res.font_magic, 40)
+        // this.energy = cardInfor.energy
+        var lbNumEnergy = new ccui.Text(this.energy, res.font_magic, 40)
         lbNumEnergy.setPosition(energy.getContentSize().width * 0.5, energy.getContentSize().height / 2)
         lbNumEnergy.enableShadow()
         lbNumEnergy.setTextColor(whiteColor)
@@ -43,15 +43,13 @@ var MCard = cc.Sprite.extend({
 
         this.addChild(cardBorder,0,'cardBorder')
         this.addChild(cardAvatar,0,'cardAvatar')
-        if(CardConfig[cardID].numEnergy >= 0){
             // var btnRemoveCard = ccui.Button('res/battle/battle_btn_destroy.png');
             // btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 2.2)
             // btnRemoveCard.setPosition(this.getContentSize().width * 0.5, -CELLWIDTH*0.6)
             // btnRemoveCard.addClickEventListener(()=>this.touchRemoveCard);
             // this.addChild(btnRemoveCard, 0 , 'btnRemoveCard');
             // btnRemoveCard.visible = false
-            this.addChild(energy,0,'energy')
-        }
+        this.addChild(energy,0,'energy')
 
 
     },
@@ -70,13 +68,20 @@ var MCard = cc.Sprite.extend({
         }
     },
 
-    updateNewCard:function (cardID){
-        this.cardID = cardID
-        this.energy = CardConfig[cardID].numEnergy
-        this.setTexture(CardConfig[cardID].resCardBackGround)
-        this.getChildByName('cardBorder').setTexture(CardConfig[cardID].resCardBorder)
-        this.getChildByName('cardAvatar').setTexture(CardConfig[cardID].resCardAvatar)
-        this.getChildByName('energy').getChildByName('numEnergy').setString(CardConfig[cardID].numEnergy)
+    updateNewCard:function (type){
+        this.type = type
+        let cardInfor = sharePlayerInfo.collection.find(element => element.type === type);
+        let levelConfig = cf.CARD_LEVEL.find(element => element.level === cardInfor.level);
+        // this.energy = cardInfor.energy
+        if (levelConfig === undefined) {
+            cc.log('WARNING: levelConfig is undefined');
+        } else {
+            this.rarity = levelConfig.rarity;
+        }
+        this.setTexture('res/card/card_background_'+(this.rarity+1)+'.png')
+        this.getChildByName('cardBorder').setTexture('res/card/card_border_'+(this.rarity+1)+'.png')
+        this.getChildByName('cardAvatar').setTexture(cardInfor.texture)
+        this.getChildByName('energy').getChildByName('numEnergy').setString(this.energy)
     },
 
     updateSpeedVec:function (){

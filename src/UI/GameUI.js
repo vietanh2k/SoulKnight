@@ -19,8 +19,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [0, 2, 0, 2]
-        this.cardPlayable = [2, 0, 2, 0]
+        this.cardInQueue = [16, 17, 16, 17]
+        this.cardPlayable = [16, 17, 16, 17]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -183,11 +183,11 @@ var GameUI = cc.Layer.extend({
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
-                if (this.listCard[this.cardTouchSlot - 1].cardID == 0) {
+                if (this.listCard[this.cardTouchSlot - 1].type == 17) {
                     testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
-                if (this.listCard[this.cardTouchSlot - 1].cardID == 2) {
+                if (this.listCard[this.cardTouchSlot - 1].type == 16) {
                     testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
@@ -637,11 +637,12 @@ var GameUI = cc.Layer.extend({
         var card5 = new MCard(this.cardInQueue[0])
         card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.8)
         card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.55, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+        card5.getChildByName('energy').visible = true
         this.addChild(card5,0,'cardBackGroundd')
     },
 
     generatePreviewObject: function (target) {
-        if (target.cardID == 2) {
+        if (target.type == 16) {
             let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
             towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
 
@@ -688,11 +689,11 @@ var GameUI = cc.Layer.extend({
     updateCardSlot: function (numEnergy) {
         if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= numEnergy) {
             this._gameStateManager.playerA.energy -= numEnergy
-            this.cardInQueue.push(this.listCard[this.cardTouchSlot - 1].cardID)
+            this.cardInQueue.push(this.listCard[this.cardTouchSlot - 1].type)
             this.listCard[this.cardTouchSlot - 1].updateNewCard(this.cardInQueue[0])
             this.cardInQueue.shift()
             this.getChildByName('cardBackGroundd').updateNewCard(this.cardInQueue[0])
-            this.cardPlayable[this.cardTouchSlot - 1] = this.listCard[this.cardTouchSlot - 1].cardID
+            this.cardPlayable[this.cardTouchSlot - 1] = this.listCard[this.cardTouchSlot - 1].type
 
         }
         this.resetCardTouchState()
