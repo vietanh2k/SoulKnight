@@ -19,8 +19,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [0, 2, 0, 2]
-        this.cardPlayable = [2, 0, 2, 0]
+        this.cardInQueue = [16, 17, 16, 17]
+        this.cardPlayable = [16, 17, 16, 17]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -29,11 +29,15 @@ var GameUI = cc.Layer.extend({
 
         this.towerUIMap = Utils.create2dArr(MAP_WIDTH, MAP_HEIGHT + 1, undefined);
         for (let i = 0; i <= 3; i++) {
-            cc.spriteFrameCache.addSpriteFrames('res/tower/frame/cannon/tower_cannon_idle_' + i + '.plist');
-            cc.spriteFrameCache.addSpriteFrames('res/tower/frame/cannon/tower_cannon_attack_' + i + '.plist');
+            for (let j = 0; j < cf.TYPE_TO_NAME.length; j++) {
+                if (cf.TYPE_TO_NAME[j] !== undefined) {
+                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TYPE_TO_NAME[j] + '/tower_' + cf.TYPE_TO_NAME[j] + '_idle_' + i + '.plist');
+                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TYPE_TO_NAME[j] + '/tower_' + cf.TYPE_TO_NAME[j] + '_attack_' + i + '.plist');
+                }
+            }
         }
 
-        GameUI.instance = this
+        GameUI.instance = this;
 
     },
     init: function () {
@@ -96,7 +100,7 @@ var GameUI = cc.Layer.extend({
                         if(this._gameStateManager.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy){
                             this.createObjectByTouch = true
                         } else {
-                            Utils.addToastToRunningScene('Không đủ mana!');
+                            Utils.addToastToRunningScene('Không đủ năng lượng!');
                             this.resetCardTouchState()
                         }
                     }
@@ -183,11 +187,11 @@ var GameUI = cc.Layer.extend({
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
-                if (this.listCard[this.cardTouchSlot - 1].cardID == 0) {
+                if (this.listCard[this.cardTouchSlot - 1].type == 17) {
                     testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
-                if (this.listCard[this.cardTouchSlot - 1].cardID == 2) {
+                if (this.listCard[this.cardTouchSlot - 1].type == 16) {
                     testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
@@ -527,8 +531,7 @@ var GameUI = cc.Layer.extend({
             },
 
             onTouchMoved: (touch, event) => {
-
-                if(this.cardTouchSlot == -1) {
+                if(this.cardTouchSlot === -1) {
                     let target = event.getCurrentTarget();
                     let rule = getRule(target);
                     if (this.previewObject === undefined) {
@@ -574,7 +577,7 @@ var GameUI = cc.Layer.extend({
                             return;
                         }
                     }else{
-                        Utils.addToastToRunningScene('Không đủ mana!');
+                        Utils.addToastToRunningScene('Không đủ năng lượng!');
                         this.resetCardTouchState()
                     }
 
@@ -637,41 +640,24 @@ var GameUI = cc.Layer.extend({
         var card5 = new MCard(this.cardInQueue[0])
         card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.8)
         card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.55, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
+        card5.getChildByName('energy').visible = false
         this.addChild(card5,0,'cardBackGroundd')
     },
 
     generatePreviewObject: function (target) {
-        if (target.cardID == 2) {
-            let towerPreview = cc.Sprite(asset.cardTowerCannon_png); // fixme
-            towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
+        let towerPreview = new TowerUI(target, 0);
+        let card = new Card(target.type, 1, 0);
+        towerPreview.setScale(cf.TOWER_SCALE[card.id - 100]);
+        let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
+        let rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
+        rangePreview.attr({
+            x: towerPreview.width / 2,
+            y: towerPreview.height / 2,
+            scale: range * CELLWIDTH * 2 / rangePreview.height / towerPreview.scale,
+        });
+        towerPreview.addChild(rangePreview);
 
-            let card = new Card(16, 1, 0);
-            let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
-            let rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
-            rangePreview.attr({
-                x: towerPreview.width / 2,
-                y: towerPreview.height / 2,
-                scale: range * CELLWIDTH * 2 / rangePreview.height / towerPreview.scale,
-            });
-            towerPreview.addChild(rangePreview);
-
-            return towerPreview;
-        } else {
-            let towerPreview = cc.Sprite(asset.cardTowerWizard_png); // fixme
-            towerPreview.setScale(0.85 * CELLWIDTH / towerPreview.height);
-
-            let card = new Card(17, 1, 0);
-            let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
-            let rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
-            rangePreview.attr({
-                x: towerPreview.width / 2,
-                y: towerPreview.height / 2,
-                scale: range * CELLWIDTH * 2 / rangePreview.height / towerPreview.scale,
-            });
-            towerPreview.addChild(rangePreview);
-
-            return towerPreview;
-        }
+        return towerPreview;
     },
 
     generateTowerUI: function (type, evolution, corX, corY) {
@@ -688,11 +674,11 @@ var GameUI = cc.Layer.extend({
     updateCardSlot: function (numEnergy) {
         if (this.cardTouchSlot >= 0 && this._gameStateManager.playerA.energy >= numEnergy) {
             this._gameStateManager.playerA.energy -= numEnergy
-            this.cardInQueue.push(this.listCard[this.cardTouchSlot - 1].cardID)
+            this.cardInQueue.push(this.listCard[this.cardTouchSlot - 1].type)
             this.listCard[this.cardTouchSlot - 1].updateNewCard(this.cardInQueue[0])
             this.cardInQueue.shift()
             this.getChildByName('cardBackGroundd').updateNewCard(this.cardInQueue[0])
-            this.cardPlayable[this.cardTouchSlot - 1] = this.listCard[this.cardTouchSlot - 1].cardID
+            this.cardPlayable[this.cardTouchSlot - 1] = this.listCard[this.cardTouchSlot - 1].type
 
         }
         this.resetCardTouchState()
@@ -855,6 +841,7 @@ var GameUI = cc.Layer.extend({
         var seq3 = cc.CallFunc(() => this.removeChild(energy), this)
         var seq = cc.sequence(seq1, cc.delayTime(0.7), seq2, seq3)
         energy.runAction(seq)
+        energy.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height)
         this.addChild(energy)
 
     },

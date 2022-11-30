@@ -1,6 +1,4 @@
 var _TOWER_CONFIG;
-const TOWER_SCALE = 1.2;
-
 /**
  * Abstract class*/
 var Tower = TowerUI.extend({
@@ -131,7 +129,7 @@ var Tower = TowerUI.extend({
         // cc.log("changDirectionHandle is not overwritten!")
     },
     getNewBullet: function (object) {
-        var speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
+        let speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
             damage = this.getConfig()['stat'][this.getLevel()]['damage'],
             radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
             position = new Vec2(this.position.x, this.position.y);
@@ -190,7 +188,7 @@ var Tower = TowerUI.extend({
         return this.getConfig()['stat'][this.getLevel()]['range']
     },
     getConfig: function () {
-        if (_TOWER_CONFIG == undefined || _TOWER_CONFIG == null) {
+        if (_TOWER_CONFIG === undefined || _TOWER_CONFIG == null) {
             _TOWER_CONFIG = cc.loader.getRes("config/Tower.json");
         }
         _TOWER_CONFIG["tower"][this.instance]["buildingTime"] = _TOWER_CONFIG.buildingTime

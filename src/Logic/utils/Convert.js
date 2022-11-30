@@ -40,9 +40,9 @@ const getMiddleOfCell = function (loc, rule) {
 };
 
 const getRule = function (target) {
-    switch (target.cardID) {
-        case 0:
-        case 1:
+    switch (target.type) {
+        case 16:
+        case 17:
         case 2:
         case 5:
         case 7:

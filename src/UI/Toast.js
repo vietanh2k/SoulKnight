@@ -37,10 +37,10 @@ let Toast = cc.Layer.extend({
         });
         this.addChild(this.rightNotiBox);
 
-        this.schedule(this.destroy, timeout/1000)
+        this.schedule(this.destroy, timeout / 1000);
     },
 
     destroy: function () {
-        this.removeFromParent(true)
+        this.removeFromParent(true);
     },
 });
