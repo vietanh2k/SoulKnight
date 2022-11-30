@@ -11,15 +11,15 @@ var Bullet = cc.Sprite.extend({
     },
 
     getTargetPosition: function () {
-        if (this.target == undefined || this.target.isDestroy || this.target == null) {
-            return this._lastLoc;
+        if (this.target == null || this.target.isDestroy) {
+            return this.lastLoc;
         }
         if (this.target.hasOwnProperty("position")) {
-            this._lastLoc = new Vec2(this.target.position.x, this.target.position.y)
+            this.lastLoc = new Vec2(this.target.position.x, this.target.position.y)
             return this.target.position
 
         } else {
-            this._lastLoc = new Vec2(this.target.x, this.target.y)
+            this.lastLoc = new Vec2(this.target.x, this.target.y)
             return this.target
         }
     },
@@ -32,7 +32,7 @@ var Bullet = cc.Sprite.extend({
         this.isDestroy = false;
         this.position = position
         this.active = true;
-        this._lastLoc = new Vec2(position.x, position.y);
+        this.lastLoc = new Vec2(position.x, position.y);
         this.activate = true;
 
         if (this.target && this.target.retain) {
@@ -76,7 +76,7 @@ var Bullet = cc.Sprite.extend({
             let pos = this.getTargetPosition();
             if (!pos) {
                 // target disappear
-                this.explose(playerState, this._lastLoc);
+                this.explose(playerState, this.lastLoc);
                 return;
             }
             if (euclid_distance(this.position, pos) > this.speed * dt) {
