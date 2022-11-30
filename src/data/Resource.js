@@ -87,6 +87,8 @@ var res = {
     tree3: 'res/map/map_decoration_tree_0003.png',
     ninja_plist : 'res/ninja.plist',
     ninja_png : 'res/ninja.png',
+    ninja_fx_digging_atlas : 'res/monster/fx/fx_digging.atlas',
+    ninja_fx_digging_json : 'res/monster/fx/fx_digging.json',
     darkgiant_plist : 'res/darkG.plist',
     darkgiant_png : 'res/darkG.png',
     highlightPath: 'res/battle/UI/ui_transparent_square.png',
