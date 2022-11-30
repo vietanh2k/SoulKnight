@@ -87,7 +87,7 @@
       "category": "normal",
       "class": "land",
       "hp": 30,
-      "speed": 0.4,
+      "speed": 0.5,
       "hitRadius": 0.2,
       "weight": 30,
       "ability": 0,
