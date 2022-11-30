@@ -36,10 +36,13 @@ var PopupCard = cc.Node.extend({
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
         this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy(cardID, numCard, numGold))
         if(sharePlayerInfo.gold < parseInt(popup.getChildByName('numCost').getString())){
-            popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
+            // popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
+            popup.getChildByName('button').loadTextureNormal('res/common/common_btn_gray.png');
             popup.getChildByName('button').setTouchEnabled(false)
             popup.getChildByName('numCost').setTextColor(new cc.Color(191, 26, 64, 255))
         }
+        var tmp = popup.getChildByName('numCost').getChildByName('icon')
+        popup.getChildByName('numCost').setPositionX(tmp.width/2*tmp.scale);
         popup.setOpacity(20)
         popup.setScale(0.2)
 

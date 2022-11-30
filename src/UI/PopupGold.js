@@ -22,9 +22,13 @@ var PopupGold = cc.Node.extend({
         this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
         this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
         if(sharePlayerInfo.gem < parseInt(popup.getChildByName('numCost').getString())){
-            popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
+            popup.getChildByName('button').loadTextureNormal('res/common/common_btn_gray.png');
             popup.getChildByName('button').setTouchEnabled(false)
         }
+        var icon = popup.getChildByName('numCost').getChildByName('icon')
+        var num = popup.getChildByName('numCost')
+        num.setPositionX(icon.width/2*icon.scale)
+        icon.setPositionX(-num.getContentSize().width/2*num.scale *1.2)
 
 
         popup.setOpacity(20)
@@ -34,12 +38,6 @@ var PopupGold = cc.Node.extend({
         popup.runAction(cc.sequence(cc.scaleBy(0.15, 5), cc.scaleBy(0.10,0.94),cc.scaleBy(0.08,1.06), cc.scaleBy(0.07,0.96),cc.scaleBy(0.05,1.04)))
         return true;
 
-    },
-
-    updateInfor:function (item){
-        this.getChildByTag(100).getChildByName('item').setTexture(item.getChildByName('item').getTexture())
-        this.getChildByTag(100).getChildByName('numGold').setString(item.getChildByName('numGold').getString())
-        this.getChildByTag(100).getChildByName('numCost').setString(item.getChildByName('numCost').getString())
     },
 
     hide:function (){

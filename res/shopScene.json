@@ -15,51 +15,6 @@
         "Tag": 35,
         "Children": [
           {
-            "FileData": {
-              "Type": "Normal",
-              "Path": "lobby/lobby_background.png",
-              "Plist": ""
-            },
-            "Scale9OriginX": 281,
-            "Scale9OriginY": 435,
-            "Scale9Width": 290,
-            "Scale9Height": 451,
-            "AnchorPoint": {
-              "ScaleX": 0.5,
-              "ScaleY": 0.5
-            },
-            "Position": {
-              "X": 317.8506,
-              "Y": 567.9998
-            },
-            "Scale": {
-              "ScaleX": 1.0,
-              "ScaleY": 1.0
-            },
-            "CColor": {},
-            "IconVisible": false,
-            "PrePosition": {
-              "X": 0.4966,
-              "Y": 0.5
-            },
-            "PreSize": {
-              "X": 1.0,
-              "Y": 1.0
-            },
-            "LeftMargin": -2.1494,
-            "RightMargin": 2.1494,
-            "TopMargin": 0.0002,
-            "BottomMargin": -0.0002,
-            "Tag": 38,
-            "ActionTag": -82423681,
-            "Size": {
-              "X": 640.0,
-              "Y": 1136.0
-            },
-            "Name": "Image_1",
-            "ctype": "ImageViewObjectData"
-          },
-          {
             "AnchorPoint": {},
             "Position": {
               "X": 333.6404,
@@ -705,7 +660,7 @@
                 },
                 "Position": {
                   "X": 86.9273,
-                  "Y": 113.4205
+                  "Y": 113.42
                 },
                 "Scale": {
                   "ScaleX": 1.09,
@@ -723,8 +678,8 @@
                 },
                 "LeftMargin": 8.4273,
                 "RightMargin": -165.4273,
-                "TopMargin": -214.4205,
-                "BottomMargin": 12.4205,
+                "TopMargin": -214.42,
+                "BottomMargin": 12.42,
                 "Tag": 101,
                 "ActionTag": -56658471,
                 "Size": {
@@ -825,67 +780,6 @@
                 "ctype": "SpriteObjectData"
               },
               {
-                "FontSize": 36,
-                "LabelText": "1000",
-                "FontResource": {
-                  "Type": "Normal",
-                  "Path": "font/SVN-Supercell Magic.ttf",
-                  "Plist": ""
-                },
-                "OutlineColor": {
-                  "R": 26,
-                  "G": 26,
-                  "B": 26
-                },
-                "OutlineEnabled": true,
-                "ShadowColor": {
-                  "R": 26,
-                  "G": 26,
-                  "B": 26
-                },
-                "ShadowOffsetX": 1.0,
-                "ShadowOffsetY": -3.0,
-                "ShadowEnabled": true,
-                "AnchorPoint": {
-                  "ScaleX": 0.5,
-                  "ScaleY": 0.5
-                },
-                "Position": {
-                  "X": 84.7868,
-                  "Y": 199.0294
-                },
-                "Scale": {
-                  "ScaleX": 0.78,
-                  "ScaleY": 0.78
-                },
-                "CColor": {
-                  "R": 244,
-                  "G": 195,
-                  "B": 74
-                },
-                "IconVisible": false,
-                "PrePosition": {
-                  "X": 0.0,
-                  "Y": 0.0
-                },
-                "PreSize": {
-                  "X": 0.0,
-                  "Y": 0.0
-                },
-                "LeftMargin": 22.2868,
-                "RightMargin": -147.2868,
-                "TopMargin": -224.5294,
-                "BottomMargin": 173.5294,
-                "Tag": 103,
-                "ActionTag": 1446534530,
-                "Size": {
-                  "X": 125.0,
-                  "Y": 51.0
-                },
-                "Name": "numGold",
-                "ctype": "TextObjectData"
-              },
-              {
                 "FontSize": 48,
                 "ButtonText": "",
                 "FontResource": {
@@ -956,6 +850,67 @@
                 "ctype": "ButtonObjectData"
               },
               {
+                "FontSize": 36,
+                "LabelText": "1000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/SVN-Supercell Magic.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "ShadowOffsetX": 1.0,
+                "ShadowOffsetY": -3.0,
+                "ShadowEnabled": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 84.7868,
+                  "Y": 199.0294
+                },
+                "Scale": {
+                  "ScaleX": 0.78,
+                  "ScaleY": 0.78
+                },
+                "CColor": {
+                  "R": 244,
+                  "G": 195,
+                  "B": 74
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 22.2868,
+                "RightMargin": -147.2868,
+                "TopMargin": -224.5294,
+                "BottomMargin": 173.5294,
+                "Tag": 103,
+                "ActionTag": 1446534530,
+                "Size": {
+                  "X": 125.0,
+                  "Y": 51.0
+                },
+                "Name": "numGold",
+                "ctype": "TextObjectData"
+              },
+              {
                 "FontSize": 22,
                 "LabelText": "50",
                 "FontResource": {
@@ -982,8 +937,8 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": 101.4,
-                  "Y": 34.41
+                  "X": 96.4,
+                  "Y": 35.41
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -999,10 +954,10 @@
                   "X": 0.0,
                   "Y": 0.0
                 },
-                "LeftMargin": 80.4,
-                "RightMargin": -122.4,
-                "TopMargin": -51.41,
-                "BottomMargin": 17.41,
+                "LeftMargin": 75.4,
+                "RightMargin": -117.4,
+                "TopMargin": -52.41,
+                "BottomMargin": 18.41,
                 "Tag": 105,
                 "Children": [
                   {
@@ -1047,7 +1002,7 @@
                       "X": 55.0,
                       "Y": 63.0
                     },
-                    "Name": "Image_2",
+                    "Name": "icon",
                     "ctype": "ImageViewObjectData"
                   }
                 ],
@@ -1058,6 +1013,82 @@
                 },
                 "Name": "numCost",
                 "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 14,
+                "ButtonText": "",
+                "TextColor": {
+                  "R": 65,
+                  "G": 65,
+                  "B": 70
+                },
+                "DisabledFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Disable.png",
+                  "Plist": ""
+                },
+                "PressedFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "NormalFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 15,
+                "Scale9OriginY": 11,
+                "Scale9Width": 127,
+                "Scale9Height": 180,
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 86.93,
+                  "Y": 113.42
+                },
+                "Scale": {
+                  "ScaleX": 1.1,
+                  "ScaleY": 1.1
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 8.43,
+                "RightMargin": -165.43,
+                "TopMargin": -214.42,
+                "BottomMargin": 12.42,
+                "Tag": 68,
+                "ActionTag": -1716522468,
+                "Size": {
+                  "X": 157.0,
+                  "Y": 202.0
+                },
+                "Alpha": 0,
+                "Name": "touchLayer",
+                "ctype": "ButtonObjectData"
               }
             ],
             "ActionTag": -1668381899,
@@ -1110,7 +1141,7 @@
                 },
                 "Position": {
                   "X": 86.9273,
-                  "Y": 113.4205
+                  "Y": 113.42
                 },
                 "Scale": {
                   "ScaleX": 1.09,
@@ -1128,8 +1159,8 @@
                 },
                 "LeftMargin": 8.4273,
                 "RightMargin": -165.4273,
-                "TopMargin": -214.4205,
-                "BottomMargin": 12.4205,
+                "TopMargin": -214.42,
+                "BottomMargin": 12.42,
                 "Tag": 108,
                 "ActionTag": 2076260257,
                 "Size": {
@@ -1230,67 +1261,6 @@
                 "ctype": "SpriteObjectData"
               },
               {
-                "FontSize": 36,
-                "LabelText": "2000",
-                "FontResource": {
-                  "Type": "Normal",
-                  "Path": "font/SVN-Supercell Magic.ttf",
-                  "Plist": ""
-                },
-                "OutlineColor": {
-                  "R": 26,
-                  "G": 26,
-                  "B": 26
-                },
-                "OutlineEnabled": true,
-                "ShadowColor": {
-                  "R": 26,
-                  "G": 26,
-                  "B": 26
-                },
-                "ShadowOffsetX": 1.0,
-                "ShadowOffsetY": -3.0,
-                "ShadowEnabled": true,
-                "AnchorPoint": {
-                  "ScaleX": 0.5,
-                  "ScaleY": 0.5
-                },
-                "Position": {
-                  "X": 89.514,
-                  "Y": 199.48
-                },
-                "Scale": {
-                  "ScaleX": 0.78,
-                  "ScaleY": 0.78
-                },
-                "CColor": {
-                  "R": 244,
-                  "G": 195,
-                  "B": 74
-                },
-                "IconVisible": false,
-                "PrePosition": {
-                  "X": 0.0,
-                  "Y": 0.0
-                },
-                "PreSize": {
-                  "X": 0.0,
-                  "Y": 0.0
-                },
-                "LeftMargin": 22.014,
-                "RightMargin": -157.014,
-                "TopMargin": -224.98,
-                "BottomMargin": 173.98,
-                "Tag": 130,
-                "ActionTag": -733901539,
-                "Size": {
-                  "X": 135.0,
-                  "Y": 51.0
-                },
-                "Name": "numGold",
-                "ctype": "TextObjectData"
-              },
-              {
                 "FontSize": 48,
                 "ButtonText": "",
                 "FontResource": {
@@ -1361,6 +1331,67 @@
                 "ctype": "ButtonObjectData"
               },
               {
+                "FontSize": 36,
+                "LabelText": "2000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/SVN-Supercell Magic.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "ShadowOffsetX": 1.0,
+                "ShadowOffsetY": -3.0,
+                "ShadowEnabled": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 89.514,
+                  "Y": 199.48
+                },
+                "Scale": {
+                  "ScaleX": 0.78,
+                  "ScaleY": 0.78
+                },
+                "CColor": {
+                  "R": 244,
+                  "G": 195,
+                  "B": 74
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 22.014,
+                "RightMargin": -157.014,
+                "TopMargin": -224.98,
+                "BottomMargin": 173.98,
+                "Tag": 130,
+                "ActionTag": -733901539,
+                "Size": {
+                  "X": 135.0,
+                  "Y": 51.0
+                },
+                "Name": "numGold",
+                "ctype": "TextObjectData"
+              },
+              {
                 "FontSize": 22,
                 "LabelText": "95",
                 "FontResource": {
@@ -1387,8 +1418,8 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": 103.0,
-                  "Y": 34.4092
+                  "X": 99.0,
+                  "Y": 35.41
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1404,10 +1435,10 @@
                   "X": 0.0,
                   "Y": 0.0
                 },
-                "LeftMargin": 82.5,
-                "RightMargin": -123.5,
-                "TopMargin": -51.4092,
-                "BottomMargin": 17.4092,
+                "LeftMargin": 78.5,
+                "RightMargin": -119.5,
+                "TopMargin": -52.41,
+                "BottomMargin": 18.41,
                 "Tag": 112,
                 "Children": [
                   {
@@ -1452,7 +1483,7 @@
                       "X": 55.0,
                       "Y": 63.0
                     },
-                    "Name": "Image_2",
+                    "Name": "icon",
                     "ctype": "ImageViewObjectData"
                   }
                 ],
@@ -1463,6 +1494,82 @@
                 },
                 "Name": "numCost",
                 "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 14,
+                "ButtonText": "",
+                "TextColor": {
+                  "R": 65,
+                  "G": 65,
+                  "B": 70
+                },
+                "DisabledFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Disable.png",
+                  "Plist": ""
+                },
+                "PressedFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "NormalFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 15,
+                "Scale9OriginY": 11,
+                "Scale9Width": 127,
+                "Scale9Height": 180,
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 86.93,
+                  "Y": 113.42
+                },
+                "Scale": {
+                  "ScaleX": 1.1,
+                  "ScaleY": 1.1
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 8.43,
+                "RightMargin": -165.43,
+                "TopMargin": -214.42,
+                "BottomMargin": 12.42,
+                "Tag": 69,
+                "ActionTag": -1249133760,
+                "Size": {
+                  "X": 157.0,
+                  "Y": 202.0
+                },
+                "Alpha": 0,
+                "Name": "touchLayer",
+                "ctype": "ButtonObjectData"
               }
             ],
             "ActionTag": -2047150150,
@@ -1635,67 +1742,6 @@
                 "ctype": "SpriteObjectData"
               },
               {
-                "FontSize": 36,
-                "LabelText": "10000",
-                "FontResource": {
-                  "Type": "Normal",
-                  "Path": "font/SVN-Supercell Magic.ttf",
-                  "Plist": ""
-                },
-                "OutlineColor": {
-                  "R": 26,
-                  "G": 26,
-                  "B": 26
-                },
-                "OutlineEnabled": true,
-                "ShadowColor": {
-                  "R": 26,
-                  "G": 26,
-                  "B": 26
-                },
-                "ShadowOffsetX": 1.0,
-                "ShadowOffsetY": -3.0,
-                "ShadowEnabled": true,
-                "AnchorPoint": {
-                  "ScaleX": 0.5,
-                  "ScaleY": 0.5
-                },
-                "Position": {
-                  "X": 87.31,
-                  "Y": 199.48
-                },
-                "Scale": {
-                  "ScaleX": 0.78,
-                  "ScaleY": 0.78
-                },
-                "CColor": {
-                  "R": 244,
-                  "G": 195,
-                  "B": 74
-                },
-                "IconVisible": false,
-                "PrePosition": {
-                  "X": 0.0,
-                  "Y": 0.0
-                },
-                "PreSize": {
-                  "X": 0.0,
-                  "Y": 0.0
-                },
-                "LeftMargin": 7.31,
-                "RightMargin": -167.31,
-                "TopMargin": -224.98,
-                "BottomMargin": 173.98,
-                "Tag": 131,
-                "ActionTag": -1317479956,
-                "Size": {
-                  "X": 160.0,
-                  "Y": 51.0
-                },
-                "Name": "numGold",
-                "ctype": "TextObjectData"
-              },
-              {
                 "FontSize": 48,
                 "ButtonText": "",
                 "FontResource": {
@@ -1766,6 +1812,67 @@
                 "ctype": "ButtonObjectData"
               },
               {
+                "FontSize": 36,
+                "LabelText": "10000",
+                "FontResource": {
+                  "Type": "Normal",
+                  "Path": "font/SVN-Supercell Magic.ttf",
+                  "Plist": ""
+                },
+                "OutlineColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "OutlineEnabled": true,
+                "ShadowColor": {
+                  "R": 26,
+                  "G": 26,
+                  "B": 26
+                },
+                "ShadowOffsetX": 1.0,
+                "ShadowOffsetY": -3.0,
+                "ShadowEnabled": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 87.31,
+                  "Y": 199.48
+                },
+                "Scale": {
+                  "ScaleX": 0.78,
+                  "ScaleY": 0.78
+                },
+                "CColor": {
+                  "R": 244,
+                  "G": 195,
+                  "B": 74
+                },
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 7.31,
+                "RightMargin": -167.31,
+                "TopMargin": -224.98,
+                "BottomMargin": 173.98,
+                "Tag": 131,
+                "ActionTag": -1317479956,
+                "Size": {
+                  "X": 160.0,
+                  "Y": 51.0
+                },
+                "Name": "numGold",
+                "ctype": "TextObjectData"
+              },
+              {
                 "FontSize": 22,
                 "LabelText": "475",
                 "FontResource": {
@@ -1773,6 +1880,7 @@
                   "Path": "font/SVN-Supercell Magic.ttf",
                   "Plist": ""
                 },
+                "HorizontalAlignmentType": "HT_Center",
                 "OutlineSize": 2,
                 "OutlineColor": {
                   "R": 26,
@@ -1792,8 +1900,8 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": 102.31,
-                  "Y": 34.3556
+                  "X": 95.88,
+                  "Y": 35.36
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -1809,10 +1917,10 @@
                   "X": 0.0,
                   "Y": 0.0
                 },
-                "LeftMargin": 72.81,
-                "RightMargin": -131.81,
-                "TopMargin": -51.3556,
-                "BottomMargin": 17.3556,
+                "LeftMargin": 66.38,
+                "RightMargin": -125.38,
+                "TopMargin": -52.36,
+                "BottomMargin": 18.36,
                 "Tag": 119,
                 "Children": [
                   {
@@ -1857,7 +1965,7 @@
                       "X": 55.0,
                       "Y": 63.0
                     },
-                    "Name": "Image_2",
+                    "Name": "icon",
                     "ctype": "ImageViewObjectData"
                   }
                 ],
@@ -1868,6 +1976,82 @@
                 },
                 "Name": "numCost",
                 "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 14,
+                "ButtonText": "",
+                "TextColor": {
+                  "R": 65,
+                  "G": 65,
+                  "B": 70
+                },
+                "DisabledFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Disable.png",
+                  "Plist": ""
+                },
+                "PressedFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "NormalFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 15,
+                "Scale9OriginY": 11,
+                "Scale9Width": 127,
+                "Scale9Height": 180,
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 86.93,
+                  "Y": 113.42
+                },
+                "Scale": {
+                  "ScaleX": 1.1,
+                  "ScaleY": 1.1
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 8.43,
+                "RightMargin": -165.43,
+                "TopMargin": -214.42,
+                "BottomMargin": 12.42,
+                "Tag": 70,
+                "ActionTag": 23506685,
+                "Size": {
+                  "X": 157.0,
+                  "Y": 202.0
+                },
+                "Alpha": 0,
+                "Name": "touchLayer",
+                "ctype": "ButtonObjectData"
               }
             ],
             "ActionTag": 1895674835,
@@ -2020,7 +2204,6 @@
         "font/SVN-Supercell Magic.ttf",
         "lobby/fx/fx_particle_shop_gold.plist",
         "lobby/fx/fx_particle_shop_gold.png",
-        "lobby/lobby_background.png",
         "lobby/lobby_shop_banner.png",
         "lobby/lobby_shop_category.png",
         "lobby/lobby_shop_category_daily.png",

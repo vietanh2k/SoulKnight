@@ -126,7 +126,6 @@
 
         "src/config/GameConfig.js",
 
-        "src/config/CardConfig.js",
 
 
         "src/Logic/GAME_CONFIG.js",

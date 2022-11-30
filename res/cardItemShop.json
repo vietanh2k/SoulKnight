@@ -375,7 +375,7 @@
                 },
                 "Position": {
                   "X": 104.94,
-                  "Y": 35.3931
+                  "Y": 36.39
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -393,8 +393,8 @@
                 },
                 "LeftMargin": 71.94,
                 "RightMargin": -137.94,
-                "TopMargin": -52.3931,
-                "BottomMargin": 18.3931,
+                "TopMargin": -53.39,
+                "BottomMargin": 19.39,
                 "Tag": 133,
                 "Children": [
                   {
@@ -412,34 +412,34 @@
                       "ScaleY": 0.5
                     },
                     "Position": {
-                      "X": -17.9451,
-                      "Y": 17.7506
+                      "X": -17.95,
+                      "Y": 16.75
                     },
                     "Scale": {
-                      "ScaleX": 0.47,
-                      "ScaleY": 0.47
+                      "ScaleX": 0.45,
+                      "ScaleY": 0.45
                     },
                     "CColor": {},
                     "IconVisible": false,
                     "PrePosition": {
-                      "X": -0.2719,
-                      "Y": 0.5221
+                      "X": -0.272,
+                      "Y": 0.4926
                     },
                     "PreSize": {
                       "X": 0.9091,
                       "Y": 1.8824
                     },
-                    "LeftMargin": -47.9451,
-                    "RightMargin": 53.9451,
-                    "TopMargin": -15.7506,
-                    "BottomMargin": -14.2494,
+                    "LeftMargin": -47.95,
+                    "RightMargin": 53.95,
+                    "TopMargin": -14.75,
+                    "BottomMargin": -15.25,
                     "Tag": 134,
                     "ActionTag": 910514109,
                     "Size": {
                       "X": 60.0,
                       "Y": 64.0
                     },
-                    "Name": "Image_2",
+                    "Name": "icon",
                     "ctype": "ImageViewObjectData"
                   }
                 ],
@@ -450,6 +450,82 @@
                 },
                 "Name": "numCost",
                 "ctype": "TextObjectData"
+              },
+              {
+                "FontSize": 14,
+                "ButtonText": "Button",
+                "TextColor": {
+                  "R": 65,
+                  "G": 65,
+                  "B": 70
+                },
+                "DisabledFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Disable.png",
+                  "Plist": ""
+                },
+                "PressedFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "NormalFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 15,
+                "Scale9OriginY": 11,
+                "Scale9Width": 127,
+                "Scale9Height": 180,
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
+                "Position": {
+                  "X": 86.93,
+                  "Y": 113.42
+                },
+                "Scale": {
+                  "ScaleX": 1.1,
+                  "ScaleY": 1.1
+                },
+                "CColor": {},
+                "IconVisible": false,
+                "PrePosition": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "PreSize": {
+                  "X": 0.0,
+                  "Y": 0.0
+                },
+                "LeftMargin": 8.43,
+                "RightMargin": -165.43,
+                "TopMargin": -214.42,
+                "BottomMargin": 12.42,
+                "Tag": 83,
+                "ActionTag": -1605837692,
+                "Size": {
+                  "X": 157.0,
+                  "Y": 202.0
+                },
+                "Alpha": 0,
+                "Name": "touchLayer",
+                "ctype": "ButtonObjectData"
               }
             ],
             "ActionTag": 222967691,

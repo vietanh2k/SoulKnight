@@ -100,7 +100,7 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": 86.9273,
+                  "X": 86.93,
                   "Y": 113.4205
                 },
                 "Scale": {
@@ -117,8 +117,8 @@
                   "X": 0.0,
                   "Y": 0.0
                 },
-                "LeftMargin": 8.4273,
-                "RightMargin": -165.4273,
+                "LeftMargin": 8.43,
+                "RightMargin": -165.43,
                 "TopMargin": -214.4205,
                 "BottomMargin": 12.4205,
                 "Tag": 124,
@@ -330,7 +330,7 @@
                 },
                 "Position": {
                   "X": 104.25,
-                  "Y": 35.1031
+                  "Y": 37.1
                 },
                 "Scale": {
                   "ScaleX": 1.0,
@@ -348,8 +348,8 @@
                 },
                 "LeftMargin": 71.25,
                 "RightMargin": -137.25,
-                "TopMargin": -52.1031,
-                "BottomMargin": 18.1031,
+                "TopMargin": -54.1,
+                "BottomMargin": 20.1,
                 "Tag": 128,
                 "Children": [
                   {
@@ -367,34 +367,34 @@
                       "ScaleY": 0.5
                     },
                     "Position": {
-                      "X": -17.9794,
-                      "Y": 17.8105
+                      "X": -17.98,
+                      "Y": 15.81
                     },
                     "Scale": {
-                      "ScaleX": 0.47,
-                      "ScaleY": 0.47
+                      "ScaleX": 0.45,
+                      "ScaleY": 0.45
                     },
                     "CColor": {},
                     "IconVisible": false,
                     "PrePosition": {
                       "X": -0.2724,
-                      "Y": 0.5238
+                      "Y": 0.465
                     },
                     "PreSize": {
                       "X": 0.9091,
                       "Y": 1.8824
                     },
-                    "LeftMargin": -47.9794,
-                    "RightMargin": 53.9794,
-                    "TopMargin": -15.8105,
-                    "BottomMargin": -14.1895,
+                    "LeftMargin": -47.98,
+                    "RightMargin": 53.98,
+                    "TopMargin": -13.81,
+                    "BottomMargin": -16.19,
                     "Tag": 129,
                     "ActionTag": 1073852271,
                     "Size": {
                       "X": 60.0,
                       "Y": 64.0
                     },
-                    "Name": "Image_2",
+                    "Name": "icon",
                     "ctype": "ImageViewObjectData"
                   }
                 ],
@@ -407,26 +407,59 @@
                 "ctype": "TextObjectData"
               },
               {
-                "FileData": {
-                  "Type": "Normal",
-                  "Path": "lobby/fx/miniature_rarity_particle_4.plist",
+                "FontSize": 14,
+                "ButtonText": "Button",
+                "TextColor": {
+                  "R": 65,
+                  "G": 65,
+                  "B": 70
+                },
+                "DisabledFileData": {
+                  "Type": "Default",
+                  "Path": "Default/Button_Disable.png",
                   "Plist": ""
                 },
-                "BlendFunc": {
-                  "Src": 770,
-                  "Dst": 1
+                "PressedFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
                 },
-                "AnchorPoint": {},
+                "NormalFileData": {
+                  "Type": "Normal",
+                  "Path": "lobby/lobby_shop_item_background.png",
+                  "Plist": ""
+                },
+                "Scale9Enable": true,
+                "Scale9OriginX": 15,
+                "Scale9OriginY": 11,
+                "Scale9Width": 127,
+                "Scale9Height": 180,
+                "OutlineColor": {
+                  "G": 0,
+                  "B": 0
+                },
+                "ShadowColor": {
+                  "R": 110,
+                  "G": 110,
+                  "B": 110
+                },
+                "ShadowOffsetX": 2.0,
+                "ShadowOffsetY": -2.0,
+                "TouchEnable": true,
+                "AnchorPoint": {
+                  "ScaleX": 0.5,
+                  "ScaleY": 0.5
+                },
                 "Position": {
-                  "X": 69.5322,
-                  "Y": 138.3244
+                  "X": 86.93,
+                  "Y": 113.42
                 },
                 "Scale": {
-                  "ScaleX": 0.49,
-                  "ScaleY": 0.49
+                  "ScaleX": 1.1,
+                  "ScaleY": 1.1
                 },
                 "CColor": {},
-                "IconVisible": true,
+                "IconVisible": false,
                 "PrePosition": {
                   "X": 0.0,
                   "Y": 0.0
@@ -435,18 +468,19 @@
                   "X": 0.0,
                   "Y": 0.0
                 },
-                "LeftMargin": 69.5322,
-                "RightMargin": -69.5322,
-                "TopMargin": -138.3244,
-                "BottomMargin": 138.3244,
-                "Tag": 143,
-                "ActionTag": 1963533116,
+                "LeftMargin": 8.43,
+                "RightMargin": -165.43,
+                "TopMargin": -214.42,
+                "BottomMargin": 12.42,
+                "Tag": 119,
+                "ActionTag": 1624850997,
                 "Size": {
-                  "X": 0.0,
-                  "Y": 0.0
+                  "X": 157.0,
+                  "Y": 202.0
                 },
-                "Name": "Particle_1",
-                "ctype": "ParticleObjectData"
+                "Alpha": 0,
+                "Name": "touchLayer",
+                "ctype": "ButtonObjectData"
               }
             ],
             "ActionTag": 896546862,
@@ -471,8 +505,6 @@
         "common/common_treasure.png",
         "Default/Button_Disable.png",
         "font/SVN-Supercell Magic.ttf",
-        "lobby/fx/miniature_rarity_particle_4.plist",
-        "lobby/fx/miniature_rarity_particle_4.png",
         "lobby/lobby_card_panel_miniature_glow_epic.png",
         "lobby/lobby_shop_item_background.png"
       ],
