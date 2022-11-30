@@ -17,6 +17,7 @@ var MCard = cc.Sprite.extend({
         cc.log("cardID "+ cardID);
         this.setTexture(CardConfig[cardID].resCardBackGround)
         this.cardID = CardConfig[cardID].cardID
+        this.type = CardConfig[cardID].type;
         var cardBorder = new cc.Sprite(CardConfig[cardID].resCardBorder)
         var cardAvatar = new cc.Sprite(CardConfig[cardID].resCardAvatar)
         cardBorder.setPosition(this.getContentSize().width * 0.5, this.getContentSize().height / 2)

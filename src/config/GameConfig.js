@@ -134,6 +134,8 @@ cf.DROP_TOWER_DELAY = 1;
 
 cf.BULLET_SPEED_MULTIPLIER = 3;
 
+cf.TOWER_SCALE = [1, 1.4, 1, 1, 1, 1];
+
 // Treasure.json
 cf.CHEST_REWARD = [
     {
@@ -216,6 +218,10 @@ cf.CARD_LEVEL = [
         rarity: 3,
     },
 ];
+
+cf.TYPE_TO_NAME = [];
+cf.TYPE_TO_NAME[16] = 'cannon';
+cf.TYPE_TO_NAME[17] = 'wizard';
 
 // id - 1xx: tower, 2xx: monster, 3xx: spell
 cf.CARD = [
