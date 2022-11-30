@@ -40,11 +40,9 @@ var TowerUI = cc.Sprite.extend({
     ctor: function (card, evolution) {
         this.card = card;
         this.evolution = evolution;
+
         this.AnimationSetUp(card);
-
         this._super(this.initTextures[0]);
-
-        this.mapId = -1
 
         this.part = [];
         for (let i = 1; i <= this.evolution + 1; i++) {
@@ -63,30 +61,24 @@ var TowerUI = cc.Sprite.extend({
 
         this.currentActions = [];
         this.loadAllActions();
-        // this.addTimerUI();
-        try {
-            this.runAction(this.idleActions[0][0])
-        } catch (e) {
-            cc.log('this.runAction(this.idleActions[0][0])' + e)
-        }
+
         this.visible = true;
     },
+
     AnimationSetUp: function (card) {
-        if (card.id === 2) {
-            this.initTextures = [];
-            this.idlePrefixNames = [];
-            this.attackPrefixNames = [];
-            for (let i = 0; i < 3; i++) {
-                this.initTextures[i] = 'res/tower/frame/cannon_1_2/tower_cannon_idle_' + i + '_0000.png';
-                this.idlePrefixNames[i] = 'tower_cannon_idle_' + i + '_';
-                this.attackPrefixNames[i] = 'tower_cannon_attack_' + i + '_';
-            }
-            this.initTextures[3] = 'res/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
-            this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
-            this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
-            this.idleIDP = 15;
-            this.attackIDP = 9;
+        this.initTextures = [];
+        this.idlePrefixNames = [];
+        this.attackPrefixNames = [];
+        for (let i = 0; i < 3; i++) {
+            this.initTextures[i] = 'res/tower/frame/' + cf.TYPE_TO_NAME[card.type] + '_1_2/tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_' + i + '_0000.png';
+            this.idlePrefixNames[i] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_' + i + '_';
+            this.attackPrefixNames[i] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_attack_' + i + '_';
         }
+        this.initTextures[3] = 'res/tower/frame/' + cf.TYPE_TO_NAME[card.type] + '_3/tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_3_0000.png';
+        this.idlePrefixNames[3] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_3_';
+        this.attackPrefixNames[3] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_attack_3_';
+        this.idleIDP = 15;
+        this.attackIDP = 9;
     },
 
     evolute: function () {

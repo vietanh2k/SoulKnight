@@ -8,7 +8,24 @@ var SignInScreen = cc.Layer.extend({
         this.addChild(mainscene);
         this.login_button = mainscene.getChildByName("LogIn");
 
+        let lbLogIn = ccui.Text('ĐĂNG NHẬP', asset.svnSupercellMagic_ttf, 32);
+        lbLogIn.attr({
+            x: this.login_button.width / 2,
+            y: this.login_button.height * 0.63,
+            color: cc.color(152, 58, 12),
+        });
+        this.login_button.addChild(lbLogIn);
+
         this.findmatch_button = mainscene.getChildByName('StartMatch');
+
+        let lbFindMatch = ccui.Text('TÌM TRẬN', asset.svnSupercellMagic_ttf, 32);
+        lbFindMatch.attr({
+            x: this.findmatch_button.width / 2,
+            y: this.findmatch_button.height * 0.63,
+            color: cc.color(152, 58, 12),
+        });
+        this.findmatch_button.addChild(lbFindMatch);
+
         this.textField  = mainscene.getChildByName("IdField");
         this.notification = mainscene.getChildByName("Notification");
         // this.notification.visible = false;

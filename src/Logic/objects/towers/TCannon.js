@@ -1,5 +1,5 @@
 // var _TOWER_CONFIG;
-var TCanon = Tower.extend({
+var TCannon = Tower.extend({
     /**
      * Khởi tạo
      * @param {MCard} card:
@@ -7,7 +7,6 @@ var TCanon = Tower.extend({
      * @param {Vec2} position: vị trí deploy
      * @param {MapView} map: map add */
     ctor: function (card, playerState, position, map) {
-        cc.log('init canon')
         this._super(card, 0);
         // cc.log("Create new Tower: Type=" + type + "player state" + playerState + "position" + position)
 
@@ -31,7 +30,7 @@ var TCanon = Tower.extend({
         this.level = 1
         this.map = map
         this._is_set_pos = false
-        this.setScale(1.1)
+        this.setScale(1)
         this.resetPending();
 
         return true;
@@ -55,11 +54,19 @@ var TCanon = Tower.extend({
         this.fire_fx.visible = false;
     },
     getNewBullet: function (object) {
-        var speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
+        let speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
             damage = this.getConfig()['stat'][this.getLevel()]['damage'],
             radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
             position = new Vec2(this.position.x, this.position.y);
-        return new TCannonBullet(object, speed, damage, radius, position);
-    },
 
+        let newBullet = new TCannonBullet(object, speed, damage, radius, position);
+        // todo bắn đạn từ nòng
+        // todo tăng zOrder đạn cao hơn trụ
+        // let pos = new Vec2(object.x, object.y);
+        // let direction = pos.sub(newBullet.position).l2norm();
+        // newBullet.position.x += direction.x * newBullet.speed * cf.BULLET_SPEED_MULTIPLIER * 0.01;
+        // newBullet.position.y += direction.y * newBullet.speed * cf.BULLET_SPEED_MULTIPLIER * 0.01;
+
+        return newBullet;
+    },
 })
