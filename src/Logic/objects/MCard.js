@@ -5,7 +5,7 @@ var MCard = cc.Sprite.extend({
 
     ctor:function (type) {
         // this.cardID = cardID
-        this.energy = 1;
+        this.energy = -1;
         this.type = type;
         this.rarity = null;
         this._super('res/card/card_background_4.png');
@@ -31,7 +31,8 @@ var MCard = cc.Sprite.extend({
         var energy = new cc.Sprite(res.energyIcon)
         var whiteColor = new cc.Color(255, 255, 255, 255);
         var blackColor = new cc.Color(0, 0, 0, 255);
-        // this.energy = cardInfor.energy
+        this.energy = cardInfor.energy
+        this.energy = Math.floor(cardInfor.energy/3)
         var lbNumEnergy = new ccui.Text(this.energy, res.font_magic, 40)
         lbNumEnergy.setPosition(energy.getContentSize().width * 0.5, energy.getContentSize().height / 2)
         lbNumEnergy.enableShadow()
@@ -72,7 +73,8 @@ var MCard = cc.Sprite.extend({
         this.type = type
         let cardInfor = sharePlayerInfo.collection.find(element => element.type === type);
         let levelConfig = cf.CARD_LEVEL.find(element => element.level === cardInfor.level);
-        // this.energy = cardInfor.energy
+        this.energy = cardInfor.energy
+        this.energy = Math.floor(cardInfor.energy/3)
         if (levelConfig === undefined) {
             cc.log('WARNING: levelConfig is undefined');
         } else {

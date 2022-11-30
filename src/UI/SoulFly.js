@@ -4,7 +4,7 @@ var SoulFly = cc.Sprite.extend({
         this.initSoul()
         this.setPosition(pos.x, pos.y+CELLWIDTH/2)
         this.setScale(CELLWIDTH/this.getContentSize().width*1.5)
-        var seq = cc.sequence(cc.delayTime(0.85),cc.fadeOut(0.2), cc.callFunc(()=> this.destroy()))
+        var seq = cc.sequence(cc.delayTime(1.2),cc.fadeOut(0.2), cc.callFunc(()=> this.destroy()))
         this.runAction(seq)
         return true;
     },
@@ -22,7 +22,7 @@ var SoulFly = cc.Sprite.extend({
             }
             framelist.push(frame);
         }
-        var animation = new cc.Animation(framelist, 0.03);
+        var animation = new cc.Animation(framelist, 0.04);
         var animate = cc.animate(animation);
         this.runAction(animate);
     },

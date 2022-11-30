@@ -640,7 +640,7 @@ var GameUI = cc.Layer.extend({
         var card5 = new MCard(this.cardInQueue[0])
         card5.setScale(CELLWIDTH / card5.getContentSize().width * 0.8)
         card5.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.55, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*0.9)
-        card5.getChildByName('energy').visible = true
+        card5.getChildByName('energy').visible = false
         this.addChild(card5,0,'cardBackGroundd')
     },
 
@@ -841,6 +841,7 @@ var GameUI = cc.Layer.extend({
         var seq3 = cc.CallFunc(() => this.removeChild(energy), this)
         var seq = cc.sequence(seq1, cc.delayTime(0.7), seq2, seq3)
         energy.runAction(seq)
+        energy.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height)
         this.addChild(energy)
 
     },
