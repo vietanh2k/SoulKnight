@@ -3,22 +3,29 @@
 var MCard = cc.Sprite.extend({
 
 
-    ctor:function (cardID) {
-        this.cardID = cardID
-        this.energy = -1
+    ctor:function (cardType, ) {
+        // this.cardID = cardID
+        this.energy = -1;
+        this.cardType = cardType;
+        this.rarity = null;
         this._super('res/card/card_background_4.png');
-        this.initCardUI(cardID)
-        this.onTouch = false
-        this.numSlot = -1
+        this.initCardUI(cardType);
+        this.onTouch = false;
+        this.numSlot = -1;
         return true;
     },
     
-    initCardUI:function (cardID){
-        cc.log("cardID "+ cardID);
-        this.setTexture(CardConfig[cardID].resCardBackGround)
-        this.cardID = CardConfig[cardID].cardID
-        var cardBorder = new cc.Sprite(CardConfig[cardID].resCardBorder)
-        var cardAvatar = new cc.Sprite(CardConfig[cardID].resCardAvatar)
+    initCardUI:function (cardType){
+        let cardInfor = sharePlayerInfo.collection.find(element => element.type === cardType);
+        let levelConfig = cf.CARD_LEVEL.find(element => element.level === cardInfor.level);
+        if (levelConfig === undefined) {
+            cc.log('WARNING: levelConfig is undefined');
+        } else {
+            this.rarity = levelConfig.rarity;
+        }
+        this.setTexture('res/card/card_background_'+(this.rarity+1)+'.png');
+        var cardBorder = new cc.Sprite('res/card/card_border_'+(this.rarity+1)+'.png');
+        var cardAvatar = new cc.Sprite(cardInfor.texture)
         cardBorder.setPosition(this.getContentSize().width * 0.5, this.getContentSize().height / 2)
         cardAvatar.setPosition(this.getContentSize().width * 0.5, this.getContentSize().height / 2)
         var energy = new cc.Sprite(res.energyIcon)
