@@ -680,6 +680,8 @@ var GameUI = cc.Layer.extend({
             this.getChildByName('cardBackGroundd').updateNewCard(this.cardInQueue[0])
             this.cardPlayable[this.cardTouchSlot - 1] = this.listCard[this.cardTouchSlot - 1].type
 
+        }else{
+            Utils.addToastToRunningScene('Không đủ năng lượng!');
         }
         this.resetCardTouchState()
 

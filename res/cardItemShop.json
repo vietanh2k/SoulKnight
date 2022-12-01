@@ -348,13 +348,15 @@
                 "ctype": "TextObjectData"
               },
               {
+                "IsCustomSize": true,
                 "FontSize": 22,
-                "LabelText": "600",
+                "LabelText": "500",
                 "FontResource": {
                   "Type": "Normal",
                   "Path": "font/SVN-Supercell Magic.ttf",
                   "Plist": ""
                 },
+                "HorizontalAlignmentType": "HT_Center",
                 "OutlineSize": 2,
                 "OutlineColor": {
                   "R": 26,
@@ -374,7 +376,7 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": 104.94,
+                  "X": 99.94,
                   "Y": 36.39
                 },
                 "Scale": {
@@ -391,8 +393,8 @@
                   "X": 0.0,
                   "Y": 0.0
                 },
-                "LeftMargin": 71.94,
-                "RightMargin": -137.94,
+                "LeftMargin": 57.94,
+                "RightMargin": -141.94,
                 "TopMargin": -53.39,
                 "BottomMargin": 19.39,
                 "Tag": 133,
@@ -412,27 +414,27 @@
                       "ScaleY": 0.5
                     },
                     "Position": {
-                      "X": -17.95,
-                      "Y": 16.75
+                      "X": -6.95,
+                      "Y": 15.75
                     },
                     "Scale": {
-                      "ScaleX": 0.45,
-                      "ScaleY": 0.45
+                      "ScaleX": 0.5,
+                      "ScaleY": 0.5
                     },
                     "CColor": {},
                     "IconVisible": false,
                     "PrePosition": {
-                      "X": -0.272,
-                      "Y": 0.4926
+                      "X": -0.0827,
+                      "Y": 0.4632
                     },
                     "PreSize": {
-                      "X": 0.9091,
+                      "X": 0.7143,
                       "Y": 1.8824
                     },
-                    "LeftMargin": -47.95,
-                    "RightMargin": 53.95,
-                    "TopMargin": -14.75,
-                    "BottomMargin": -15.25,
+                    "LeftMargin": -36.95,
+                    "RightMargin": 60.95,
+                    "TopMargin": -13.75,
+                    "BottomMargin": -16.25,
                     "Tag": 134,
                     "ActionTag": 910514109,
                     "Size": {
@@ -445,7 +447,7 @@
                 ],
                 "ActionTag": -91893605,
                 "Size": {
-                  "X": 66.0,
+                  "X": 84.0,
                   "Y": 34.0
                 },
                 "Name": "numCost",

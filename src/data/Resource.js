@@ -35,6 +35,7 @@ var res = {
     energyBar : "energyBar.json",
     cantLoadShop : "cantLoadShop.json",
     healthMonster : "healthMonster.json",
+    tooltipGold : "tooltipGold.json",
     
     font_magic : 'res/font/SVN-Supercell Magic.ttf',
     font_normal : 'res/font/SVN-Avo bold.ttf',

@@ -15,6 +15,12 @@ Utils.toStringWithDots = function (number) {
     return res;
 };
 
+Utils.fromStringDotToNum = function (str) {
+    str = str.replace('.', '')
+    let num = parseInt(str)
+    return num;
+};
+
 Utils.create2dArr = (x, y, defaultValue) => {
     let res = [];
     for (let i = 0; i < x; i++) {

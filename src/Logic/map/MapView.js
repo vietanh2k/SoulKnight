@@ -14,6 +14,7 @@ var MapView = cc.Class.extend({
         this.monsters = new UnorderedList() //[]
         this.towers =  new UnorderedList() //[]
         this.bullets =  new UnorderedList() //[]
+        this.spells =  new UnorderedList() //[]
         this.init();
 
         this.cells = []
@@ -262,6 +263,18 @@ var MapView = cc.Class.extend({
         }
     },
 
+    updateSpell:function (dt) {
+        try {
+
+            this.spells.forEach((spell, id, list) => {
+                spell.logicUpdate(this._playerState, dt)
+            })
+        } catch (e) {
+            cc.log(e)
+            cc.log(e.stack)
+        }
+    },
+
     renderMonster: function (rule) {
         /*for (i in this.monsters){
             if(this.rule == 1) {
@@ -308,13 +321,21 @@ var MapView = cc.Class.extend({
             bullet.render(this._playerState)
         })
     },
+    renderSpell: function () {
 
+        const self = this
+
+        this.spells.forEach((spell, id, list) => {
+            spell.render(this._playerState)
+        })
+    },
     update:function (dt) {
         this.constructWorld()
 
         this.updateBullet(dt)
         this.updateTower(dt)
         this.updateMonster(dt)
+        this.updateSpell(dt)
 
         // cc.log('____________update___________________')
         // this.towers.forEach(tw=>{
@@ -330,6 +351,7 @@ var MapView = cc.Class.extend({
         this.renderTower()
         this.renderMonster()
         this.renderBullet(0)
+        this.renderSpell()
     },
 
     /*addMonster:function (){
@@ -371,8 +393,10 @@ var MapView = cc.Class.extend({
         //this.towers.push(tower)
 
         tower.mapId = this.towers.add(tower)
-
         GameUI.instance.addChild(tower);
+        var a = new FireBall(this._playerState, position)
+        a.mapId = this.spells.add(a)
+        GameUI.instance.addChild(a)
         cell.setObjectOn(tower)
         // if(cell.objectOn==undefined || cell.objectOn==null ){
         //     cell.objectOn = tower;

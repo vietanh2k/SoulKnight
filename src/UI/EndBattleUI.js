@@ -32,9 +32,9 @@ let EndBattleUI = cc.Layer.extend({
         let resultAnimation = new sp.SkeletonAnimation("res/battle_result/fx/fx_result_" + resultString + ".json",
             "res/battle_result/fx/fx_result_" + resultString + ".atlas")
         resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
-        resultAnimation.setPosition(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2+CELLWIDTH*3)
+        resultAnimation.setPosition(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2)
         resultAnimation.setAnimation(0, "fx_result_" + resultString + "_init", false)
-        resultAnimation.setOpacity(0)
+        // resultAnimation.setOpacity(0)
         let seq = cc.sequence(cc.delayTime(0.5), cc.MoveTo(0.2,cc.p(winSize.width / 2, winSize.height / 2 + CELLWIDTH * 0.2)))
         let seq2 = cc.sequence(cc.delayTime(0.3), cc.fadeIn(0.55))
         let initSequence = cc.sequence(
@@ -46,8 +46,8 @@ let EndBattleUI = cc.Layer.extend({
             cc.delayTime(1.75)
         );
         this.runAction(initSequence)
-        resultAnimation.runAction(seq)
-        resultAnimation.runAction(seq2)
+        // resultAnimation.runAction(seq)
+        // resultAnimation.runAction(seq2)
         this.addChild(resultAnimation, 4001)
     },
     addInforEndBattle: function (resultString) {

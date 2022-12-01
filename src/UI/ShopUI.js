@@ -194,8 +194,6 @@ var ShopUI = cc.Layer.extend({
 
             chest.getChildByName('touchLayer').addClickEventListener(() => this.showPopupChest(chest, chestID, 1))
             chest.getChildByName('numCost').setString(pkg.chestOffers[0][1])
-            var tmp = chest.getChildByName('numCost').getChildByName('icon')
-            chest.getChildByName('numCost').setPositionX(tmp.width/2*tmp.scale + chest.getChildByName('button').x);
 
         }else{
             this.updateBuySlot(1)
@@ -217,8 +215,6 @@ var ShopUI = cc.Layer.extend({
             card1.getChildByName('numCost').setString(pkg.cardOffers[0][2])
             card1.getChildByName('touchLayer').addClickEventListener(() => this.showPopupCard(cardID1, pkg.cardOffers[0][2],pkg.cardOffers[0][1], 2))
             card1.getChildByName('numCard').setString('x'+ pkg.cardOffers[0][1])
-            var tmp = card1.getChildByName('numCost').getChildByName('icon')
-            card1.getChildByName('numCost').setPositionX(tmp.width/2*tmp.scale + card1.getChildByName('button').x);
 
         }else{
             var card1 = this.getChildByName('scene').getChildByName('nodeItem2').getChildByTag(2)
@@ -236,8 +232,6 @@ var ShopUI = cc.Layer.extend({
             card2.getChildByName('numCost').setString(pkg.cardOffers[1][2])
             card2.getChildByName('touchLayer').addClickEventListener(() => this.showPopupCard(cardID2, pkg.cardOffers[1][2],pkg.cardOffers[1][1], 3))
             card2.getChildByName('numCard').setString('x'+ pkg.cardOffers[1][1])
-            var tmp = card2.getChildByName('numCost').getChildByName('icon');
-            card2.getChildByName('numCost').setPositionX(tmp.width/2*tmp.scale + card2.getChildByName('button').x);
         }else{
             var card2 = this.getChildByName('scene').getChildByName('nodeItem3').getChildByTag(3)
             card2.getChildByName('numCard').setString('x30')

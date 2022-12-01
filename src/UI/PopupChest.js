@@ -35,8 +35,6 @@ var PopupChest= cc.Node.extend({
             cc.log(i)
             // popup.getChildByName('cType'+(i+1)).setTexture( 'res/lobby/treasure/common_icon_card_multiple_' +chest.rarities[i]+'.png')
         }
-        var tmp = popup.getChildByName('numCost').getChildByName('icon')
-        popup.getChildByName('numCost').setPositionX(tmp.width/2*tmp.scale);
         popup.getChildByName('btnBack').addClickEventListener(()=>this.hide())
         popup.getChildByName('button').addClickEventListener(()=>this.requestBuy(chestID))
         if(sharePlayerInfo.gold < parseInt(item.getChildByName('numCost').getString())){

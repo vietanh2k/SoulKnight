@@ -5,7 +5,7 @@ var PopupGold = cc.Node.extend({
         this._super();
         this.setPosition(winSize.width/2,winSize.height*5/9)
         this.init(item)
-        this.da= 312
+        this.tooltip = false
 
     },
     init:function (item) {
@@ -19,16 +19,17 @@ var PopupGold = cc.Node.extend({
         popup.getChildByName('numCost').setTextColor(item.getChildByName('numCost').getTextColor())
         this.addChild(popup,0,100)
         this.addBlockLayer()
-        this.getChildByTag(100).getChildByName('btnBack').addClickEventListener(()=>this.hide())
-        this.getChildByTag(100).getChildByName('button').addClickEventListener(()=>this.requestBuy())
+        popup.getChildByName('btnBack').addClickEventListener(()=>this.hide())
+        popup.getChildByName('button').addClickEventListener(()=>this.requestBuy())
+        popup.getChildByName('touchLayer').addClickEventListener(()=>this.tapTooltip())
         if(sharePlayerInfo.gem < parseInt(popup.getChildByName('numCost').getString())){
             popup.getChildByName('button').loadTextureNormal('res/common/common_btn_gray.png');
             popup.getChildByName('button').setTouchEnabled(false)
         }
-        var icon = popup.getChildByName('numCost').getChildByName('icon')
-        var num = popup.getChildByName('numCost')
-        num.setPositionX(icon.width/2*icon.scale)
-        icon.setPositionX(-num.getContentSize().width/2*num.scale *1.2)
+        var tooltipGold = ccs.load(res.tooltipGold, "").node
+        tooltipGold.setPosition(0, winSize.height*0.11)
+        tooltipGold.visible = false
+        this.addChild(tooltipGold,0, 'tooltip')
 
 
         popup.setOpacity(20)
@@ -53,12 +54,18 @@ var PopupGold = cc.Node.extend({
         // this.visible = false
     },
 
+    tapTooltip:function (){
+        this.tooltip = !this.tooltip
+        this.getChildByName('tooltip').visible = this.tooltip
+    },
+
+
 
 
     requestBuy:function (){
-
+        var numGold = Utils.fromStringDotToNum(this.getChildByTag(100).getChildByName('numGold').getString())
         try{
-            testnetwork.connector.sendBuyGemOrGold(1,parseInt(this.getChildByTag(100).getChildByName('numGold').getString()));
+            testnetwork.connector.sendBuyGemOrGold(1,numGold);
             cc.log(this.getChildByTag(100).getChildByName('numGold').getString())
 
 

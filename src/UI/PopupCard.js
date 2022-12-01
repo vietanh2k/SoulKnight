@@ -41,8 +41,6 @@ var PopupCard = cc.Node.extend({
             popup.getChildByName('button').setTouchEnabled(false)
             popup.getChildByName('numCost').setTextColor(new cc.Color(191, 26, 64, 255))
         }
-        var tmp = popup.getChildByName('numCost').getChildByName('icon')
-        popup.getChildByName('numCost').setPositionX(tmp.width/2*tmp.scale);
         popup.setOpacity(20)
         popup.setScale(0.2)
 

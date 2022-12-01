@@ -216,7 +216,7 @@
             },
             "Position": {
               "X": -0.77,
-              "Y": -35.238
+              "Y": -35.24
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -238,8 +238,8 @@
             },
             "LeftMargin": -72.27,
             "RightMargin": -70.73,
-            "TopMargin": -56.762,
-            "BottomMargin": -127.238,
+            "TopMargin": -56.76,
+            "BottomMargin": -127.24,
             "Tag": 76,
             "ActionTag": -1591466317,
             "Size": {
@@ -437,7 +437,7 @@
           {
             "IsCustomSize": true,
             "FontSize": 36,
-            "LabelText": "1000",
+            "LabelText": "1.000",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Supercell Magic.ttf",
@@ -467,8 +467,8 @@
               "Y": 31.7063
             },
             "Scale": {
-              "ScaleX": 0.78,
-              "ScaleY": 0.78
+              "ScaleX": 0.7,
+              "ScaleY": 0.7
             },
             "CColor": {
               "R": 244,
@@ -498,6 +498,7 @@
             "ctype": "TextObjectData"
           },
           {
+            "IsCustomSize": true,
             "FontSize": 22,
             "LabelText": "95",
             "FontResource": {
@@ -525,8 +526,8 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 15.0,
-              "Y": -198.7191
+              "X": 14.0,
+              "Y": -198.6356
             },
             "Scale": {
               "ScaleX": 1.0,
@@ -542,10 +543,10 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -5.5,
-            "RightMargin": -35.5,
-            "TopMargin": 181.7191,
-            "BottomMargin": -215.7191,
+            "LeftMargin": -23.5,
+            "RightMargin": -51.5,
+            "TopMargin": 181.6356,
+            "BottomMargin": -215.6356,
             "Tag": 80,
             "Children": [
               {
@@ -563,8 +564,8 @@
                   "ScaleY": 0.5
                 },
                 "Position": {
-                  "X": -18.6393,
-                  "Y": 17.0647
+                  "X": -12.31,
+                  "Y": 16.2316
                 },
                 "Scale": {
                   "ScaleX": 0.58,
@@ -573,17 +574,17 @@
                 "CColor": {},
                 "IconVisible": false,
                 "PrePosition": {
-                  "X": -0.4546,
-                  "Y": 0.5019
+                  "X": -0.1641,
+                  "Y": 0.4774
                 },
                 "PreSize": {
-                  "X": 1.3415,
+                  "X": 0.7333,
                   "Y": 1.8529
                 },
-                "LeftMargin": -46.1393,
-                "RightMargin": 32.1393,
-                "TopMargin": -14.5647,
-                "BottomMargin": -14.4353,
+                "LeftMargin": -39.81,
+                "RightMargin": 59.81,
+                "TopMargin": -13.7316,
+                "BottomMargin": -15.2684,
                 "Tag": 81,
                 "ActionTag": 1295234387,
                 "Size": {
@@ -596,7 +597,7 @@
             ],
             "ActionTag": 1088096528,
             "Size": {
-              "X": 41.0,
+              "X": 75.0,
               "Y": 34.0
             },
             "Name": "numCost",
@@ -643,6 +644,77 @@
             },
             "Name": "Particle_1",
             "ctype": "ParticleObjectData"
+          },
+          {
+            "FontSize": 14,
+            "ButtonText": "",
+            "TextColor": {
+              "R": 65,
+              "G": 65,
+              "B": 70
+            },
+            "DisabledFileData": {
+              "Type": "Default",
+              "Path": "Default/Button_Disable.png",
+              "Plist": ""
+            },
+            "NormalFileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_home_treasure_finished.png",
+              "Plist": ""
+            },
+            "Scale9Enable": true,
+            "Scale9OriginX": 15,
+            "Scale9OriginY": 11,
+            "Scale9Width": 113,
+            "Scale9Height": 162,
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "TouchEnable": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -0.77,
+              "Y": -35.24
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -72.27,
+            "RightMargin": -70.73,
+            "TopMargin": -56.76,
+            "BottomMargin": -127.24,
+            "Tag": 151,
+            "ActionTag": 2084321479,
+            "Size": {
+              "X": 143.0,
+              "Y": 184.0
+            },
+            "Alpha": 0,
+            "Name": "touchLayer",
+            "ctype": "ButtonObjectData"
           }
         ],
         "Size": {
