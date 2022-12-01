@@ -125,8 +125,18 @@ var CardsUI = cc.Layer.extend({
         this.collectionSlots = [];
         for (let i = 0; i < sharePlayerInfo.collection.length; i++) {
             let card = sharePlayerInfo.collection[i];
-            this.addCardSlotToCollection(card, i);
+            if (!card.isInDeck()) {
+                this.addCardSlotToCollection(card, this.findEmptySlotInCollectionSlots());
+            }
         }
+    },
+
+    findEmptySlotInCollectionSlots: function () {
+        let i = 0;
+        while (this.collectionSlots[i] !== undefined) {
+            i++;
+        }
+        return i;
     },
 
     addCardSlotToCollection: function (card, index) {
@@ -150,12 +160,17 @@ var CardsUI = cc.Layer.extend({
     },
 
     sortCollectionSlotsByEnergy: function () {
-        this.collectionSlots.forEach(collectionSlot => this.removeChild(collectionSlot));
+        for (let i = 0; i < this.collectionSlots.length; i++) {
+            this.collectionSlots[i].removeFromParent(true);
+            this.collectionSlots[i] = undefined;
+        }
         sharePlayerInfo.sortCollectionByEnergy(this.sortByEnergyAsc);
 
         for (let i = 0; i < sharePlayerInfo.collection.length; i++) {
             let card = sharePlayerInfo.collection[i];
-            this.addCardSlotToCollection(card, i);
+            if (!card.isInDeck()) {
+                this.addCardSlotToCollection(card, this.findEmptySlotInCollectionSlots());
+            }
         }
     },
 
@@ -266,6 +281,10 @@ var CardsUI = cc.Layer.extend({
         this.deckPanel.removeChild(this.deckSlots[slot]);
 
         let sequence = cc.sequence(
+            cc.callFunc(() => {
+                this.exitBtn.visible = false;
+                this.isShowingAddCardToDeck = false;
+            }),
             cc.moveTo(0.25, cc.p(destination.x, destination.y)),
             cc.callFunc(() => {
                 let row = Math.floor(slot / 4);
@@ -286,14 +305,18 @@ var CardsUI = cc.Layer.extend({
                 this.deckSlots[slot] = this.swapInCardSlot;
                 this.swapInCardSlot.inDeck = true;
                 this.swapInCardSlot.updateClickEventListener();
+                this.updateAllCardSlots();
+                this.quitAddCardToDeck();
             })
         );
         this.swapInCardSlot.runAction(sequence);
-        this.quitAddCardToDeck();
     },
 
     updateAllCardSlots: function () {
-        this.collectionSlots.forEach(collectionSlot => this.removeChild(collectionSlot));
+        for (let i = 0; i < this.collectionSlots.length; i++) {
+            this.collectionSlots[i].removeFromParent(true);
+            this.collectionSlots[i] = undefined;
+        }
         this.initCollection();
         this.deckSlots.forEach(deckSlot => this.deckPanel.removeChild(deckSlot));
         for (let i = 0; i < sharePlayerInfo.deck.length; i++) {
@@ -320,9 +343,10 @@ var CardsUI = cc.Layer.extend({
                 // update gold
                 sharePlayerInfo.gold -= this.collectionSlots[i].card.reqGold;
                 this.parent.currencyPanel.updateLabels();
-
-                this.collectionSlots[i].removeFromParent(true);
-                this.addCardSlotToCollection(card, i);
+                if (!card.isInDeck()) {
+                    this.collectionSlots[i].removeFromParent(true);
+                    this.addCardSlotToCollection(card, this.findEmptySlotInCollectionSlots());
+                }
                 break;
             }
         }
