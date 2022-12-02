@@ -464,8 +464,10 @@ var MapView = cc.Class.extend({
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
         
+        cc.log(x1 + ' --- ' + x2 + ' --- ' + y1 + ' --- ' + y2)
+        
         for (let x = x1; x <= x2; x++) {
-            for (let y = y1; x <= y2; y++) {
+            for (let y = y1; y <= y2; y++) {
                 tempPos.x = x
                 tempPos.y = y
                 
