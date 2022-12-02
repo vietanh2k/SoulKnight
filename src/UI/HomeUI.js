@@ -54,13 +54,16 @@ var HomeUI = cc.Layer.extend({
         // resultAnimation.setAnimation(0, "animation_fireball", true)
 
         let initSequence = cc.sequence(
-            cc.callFunc(() => resultAnimation.setAnimation(0, "animation_ice_ball", true)),
+            // cc.callFunc(() => resultAnimation.setAnimation(0, "animation_ice_ball", true)),
             cc.delayTime(2),
             cc.callFunc(() => {
-                resultAnimation.setAnimation(0, "animation_full", false);
+                resultAnimation.setAnimation(0, "animation_full", true);
             }),
-            cc.delayTime(2.5)
-        ).repeatForever();
+            cc.delayTime(3),
+            cc.callFunc(() => {
+                resultAnimation.removeFromParent(true);
+            })
+        );
         this.runAction(initSequence)
         // resultAnimation.runAction(seq)
         // resultAnimation.runAction(seq2)

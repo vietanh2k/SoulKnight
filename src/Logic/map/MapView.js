@@ -394,9 +394,12 @@ var MapView = cc.Class.extend({
 
         tower.mapId = this.towers.add(tower)
         GameUI.instance.addChild(tower);
-        var a = new FireBall(this._playerState, position)
+        var a = new Heal(this._playerState, position)
         a.mapId = this.spells.add(a)
         GameUI.instance.addChild(a)
+        // var b = new FireBall(this._playerState, position)
+        // b.mapId = this.spells.add(b)
+        // GameUI.instance.addChild(b)
         cell.setObjectOn(tower)
         // if(cell.objectOn==undefined || cell.objectOn==null ){
         //     cell.objectOn = tower;
