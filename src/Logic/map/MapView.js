@@ -88,6 +88,8 @@ var MapView = cc.Class.extend({
 
         const cells = [undefined,undefined,undefined,undefined]
 
+        const tempPos = new Vec2(0,0)
+
         this.monsters.forEach((monster, id, list) => {
             cells.length = 0
 
@@ -95,10 +97,10 @@ var MapView = cc.Class.extend({
             const r = monster.hitRadius
 
             for (let i = 0; i < 4; i++) {
-                const x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * r
-                const y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * r
+                tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * r
+                tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * r
 
-                const cell = self.getCellAtPosition(x, y)
+                const cell = self.getCellAtPosition(tempPos)
 
                 if (cell && cells.indexOf(cell) === -1) {
                     cells.push(cell)
@@ -196,7 +198,11 @@ var MapView = cc.Class.extend({
 
                 const monsters = self.queryEnemiesCircle(monster.position, monster.hitRadius)
                 for (let i = 0; i < monsters.length; i++) {
-                    monster.onImpact(monsters[i])
+                    const m = monsters[i]
+
+                    if (m !== monster) {
+                        monster.onImpact(this._playerState, m)
+                    }
                 }
             })
 
@@ -480,11 +486,13 @@ var MapView = cc.Class.extend({
         const self = this
         const monsters = []
 
-        for (let i = 0; i < 4; i++) {
-            const x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
-            const y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
+        const tempPos = new Vec2(0,0)
 
-            const cell = self.getCellAtPosition(x, y)
+        for (let i = 0; i < 4; i++) {
+            tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
+            tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
+
+            const cell = self.getCellAtPosition(tempPos)
 
             if (!cell) {
                 continue
@@ -512,11 +520,13 @@ var MapView = cc.Class.extend({
         const self = this
         const treeStones = []
 
-        for (let i = 0; i < 4; i++) {
-            const x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
-            const y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
+        const tempPos = new Vec2(0,0)
 
-            const cell = self.getCellAtPosition(x, y)
+        for (let i = 0; i < 4; i++) {
+            tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
+            tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
+
+            const cell = self.getCellAtPosition(tempPos)
 
             if (!cell) {
                 continue
