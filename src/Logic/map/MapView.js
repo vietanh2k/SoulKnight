@@ -437,6 +437,24 @@ var MapView = cc.Class.extend({
 
         return null;
     },
+    
+    getCell: function (x, y) {
+        if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH) {
+            return this.cells[x][y];
+        }
+
+        if (y === -1) {
+            if (x === 1) return this.gateCell
+            if (x === 0) return this.nextGateCell
+        }
+
+        //if (y === -1) {
+        //    return this.mainTowerCell
+        //}
+
+        return null;
+    },
+    
     /**Lấy danh sách đối tượng trong 1 range
      * todo: update logic
      * @param {Vec2} objectA: vị trí trên map
@@ -486,22 +504,15 @@ var MapView = cc.Class.extend({
         const self = this
         const monsters = []
 
-        const tempPos = new Vec2(0,0)
-        
         const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
         const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
         
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
-        
-        cc.log(x1 + ' --- ' + x2 + ' --- ' + y1 + ' --- ' + y2)
-        
+
         for (let x = x1; x <= x2; x++) {
             for (let y = y1; y <= y2; y++) {
-                tempPos.x = x
-                tempPos.y = y
-                
-                const cell = self.getCellAtPosition(tempPos)
+                const cell = self.getCell(x, y)
 
                 if (!cell) {
                     continue
@@ -531,21 +542,16 @@ var MapView = cc.Class.extend({
         const self = this
         const treeStones = []
 
-        const tempPos = new Vec2(0,0)
-        
         const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
-        const x2 = Math.floor((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
         
-        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_WIDTH)
-        const y2 = Math.floor((pos.y + radius) / MAP_CONFIG.CELL_WIDTH)
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
+        const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
         
         for (let x = x1; x < x1; x++) {
-            for (let y = y1; x < y2; y++) {
-                tempPos.x = x
-                tempPos.y = y
+            for (let y = y1; y < y2; y++) {
+                const cell = self.getCell(x, y)
                 
-                const cell = self.getCellAtPosition(tempPos)
-
                 if (!cell) {
                     continue
                 }
