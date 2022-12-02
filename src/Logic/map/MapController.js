@@ -178,12 +178,12 @@ var MapController = cc.Class.extend({
         }
 
         this.listPath = listPath
-        for(var i=0;i<=MAP_WIDTH;i++){
-            for(j=0; j<= MAP_HEIGHT; j++){
-                if(listPath[i][j] != undefined)
-                cc.log(i+'_'+j+'=='+listPath[i][j].x+'_'+listPath[i][j].y)
-            }
-        }
+        // for(var i=0;i<=MAP_WIDTH;i++){
+        //     for(j=0; j<= MAP_HEIGHT; j++){
+        //         if(listPath[i][j] != undefined)
+        //         cc.log(i+'_'+j+'=='+listPath[i][j].x+'_'+listPath[i][j].y)
+        //     }
+        // }
     },
 
     getParents: function () {

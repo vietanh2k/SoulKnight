@@ -10,6 +10,8 @@ const Monster = AnimatedSprite.extend({
 
         this.mapId = -1
         this.isChosen = false
+        this.timeHealBuff = 0
+        this.numHealBuff = 0
 
         this.renderRule = this._playerState.rule
 
@@ -122,11 +124,27 @@ const Monster = AnimatedSprite.extend({
         return false;
     },
 
+    updateBuffDuration:function (dt){
+        this.timeHealBuff -= dt
+        if(this.timeHealBuff < 0){
+            this.timeHealBuff = 0
+        }
+    },
+
+    healHP:function (dt){
+        if(this.timeHealBuff > 0){
+            this.takeDamage(-this.numHealBuff)
+            this.hurtUI()
+        }
+    },
+
     logicUpdate: function (playerState, dt){
         if(this.health<=0){
             this.destroy();
             return;
         }
+        this.updateBuffDuration(dt)
+        this.healHP(dt)
 
         /*if (this.impactedMonster) {
             if (this.impactedMonster.isDestroy) {
@@ -327,6 +345,9 @@ const Monster = AnimatedSprite.extend({
 
     takeDamage: function (many) {
         this.health -= many
+        if(this.health > this.MaxHealth){
+            this.health = this.MaxHealth
+        }
     },
 
     onImpact: function (playerState, anotherMonster) {

@@ -19,8 +19,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 16, 17]
-        this.cardPlayable = [16, 17, 16, 17]
+        this.cardInQueue = [16, 17, 0, 2]
+        this.cardPlayable = [2, 0, 2, 0]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -160,6 +160,7 @@ var GameUI = cc.Layer.extend({
                 this._gameStateManager.playerB._map.updatePathForCells()
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
                 this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+            this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
                 var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 0)
                 // this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
@@ -186,19 +187,35 @@ var GameUI = cc.Layer.extend({
             //var rand = Math.floor(Math.random() * 2) + 1;
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
+            if(this.listCard[this.cardTouchSlot - 1].type == 0){
+                var lll = convertPosUIToPosLogic(pos)
+                var ppp = this.screenLoc2Position(lll)
+                this._gameStateManager.playerA._map.deploySpell(1, ppp)
+                cc.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+            }
+            if(this.listCard[this.cardTouchSlot - 1].type == 2){
+                var lll = convertPosUIToPosLogic(pos)
+                var ppp = this.screenLoc2Position(lll)
+                this._gameStateManager.playerA._map.deploySpell(2, ppp)
+                cc.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+            }
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
                 if (this.listCard[this.cardTouchSlot - 1].type == 17) {
                     testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                         gv.gameClient._userId)]);
-                }
+                }else
                 if (this.listCard[this.cardTouchSlot - 1].type == 16) {
                     testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
+                // else{
+                //
+                // }
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             } else {
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = tmp
             }
+
 
             this.resetCardTouchState()
         }
@@ -531,8 +548,8 @@ var GameUI = cc.Layer.extend({
             },
 
             onTouchMoved: (touch, event) => {
-                if(this.cardTouchSlot === -1) {
-                    let target = event.getCurrentTarget();
+                let target = event.getCurrentTarget();
+                if(this.cardTouchSlot === -1 && target.type>15) {
                     let rule = getRule(target);
                     if (this.previewObject === undefined) {
                         this.previewObject = this.generatePreviewObject(target);
@@ -555,7 +572,6 @@ var GameUI = cc.Layer.extend({
                     this.previewObject = undefined;
                     let pos = touch.getLocation();
                     let cor = convertPosToIndex(pos, rule);
-                    cc.log('there is ' + cor.x + ', ' + cor.y)
                     if(GameStateManagerInstance.playerA.energy >= target.energy){
                         if (this.towerUIMap[cor.x] !== undefined && this.towerUIMap[cor.x][cor.y] !== undefined) {
                             // fixme khác loại trụ?
@@ -573,7 +589,6 @@ var GameUI = cc.Layer.extend({
 
                         } else {
                             this.resetCardTouchState()
-                            cc.log('out of map! rule: ' + rule);
                             return;
                         }
                     }else{

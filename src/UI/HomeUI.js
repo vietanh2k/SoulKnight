@@ -20,8 +20,8 @@ var HomeUI = cc.Layer.extend({
         this.initLobbyHomePlayer();
         this.initLobbyArena();
         this.initChestSlots();
-        this.addAtlasEndBattle()
-        this.addAtlasEndBattle2()
+        // this.addAtlasEndBattle()
+        // this.addAtlasEndBattle2()
 
         this.schedule(this.updateChestTimers, 1);
     },

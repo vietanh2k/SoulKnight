@@ -57,19 +57,15 @@ var GameStateManager = cc.Class.extend({
 
     readFrom:function (pkg){
         var userId1 = pkg.getInt()
-        cc.log('id11111111111'+userId1)
         if(userId1 == gv.gameClient._userId){
             this.playerA.readFrom(pkg)
             var userId2 = pkg.getInt()
-            cc.log('id222222222222'+userId2)
             this.playerB.readFrom(pkg)
         }else{
             this.playerB.readFrom(pkg)
             var userId2 = pkg.getInt()
-            cc.log('id22222222222'+userId2)
             this.playerA.readFrom(pkg)
         }
-        cc.log('iddddddddd'+gv.gameClient._userId)
     },
     isClearWave:function (){
         /*if(this.playerA._map.monsters.length == 0){

@@ -10,6 +10,7 @@ const Spell = cc.Node.extend({
         this.initAnimation(spellString, aniString)
         this.concept="spell"
         this.isDestroy = false
+        this.isCast = false
         // this.initConfig(playerState)
 
         return true;
@@ -45,45 +46,15 @@ const Spell = cc.Node.extend({
         this.initFromConfig(null)
     },
 
-    // logicUpdate: function (playerState, dt){
-    //     const distance = this.speed2 * dt
-    //     if(this.isDestroy == false) {
-    //         this.fall(distance)
-    //     }
-    //
-    //     //this.debug(map)
-    // },
-    //
-    // fall: function (distance){
-    //     try{
-    //         cc.log(this.width)
-    //     } catch (e){
-    //         cc.log('abcd')
-    //     }
-    //     this.position.y += distance
-    //     if(this.renderRule == 1) {
-    //         if (this.position.y >= this.castPosition.y) {
-    //             this.cast()
-    //         }
-    //     }else{
-    //         if(this.position.y <= this.castPosition.y){
-    //             this.cast()
-    //         }
-    //     }
-    //
-    //
-    //
-    //     //this.debug(map)
-    // },
-
     cast: function (time){
-        if(this.isDestroy == false) {
-            this.isDestroy = true;
+        if(this.isCast == false) {
+            this.isCast = true;
             this.anim.setAnimation(0, "animation_full", true);
             cc.log('bbbbbbbbbbbbbbbbbbbbbbbbbbbb');
         }
         this.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(()=>{
             this.removeFromParent(true);
+            this.isDestroy = true;
         })))
     },
 

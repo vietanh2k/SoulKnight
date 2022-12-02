@@ -10,7 +10,7 @@ var PlayerState = cc.Class.extend({
 
     ctor:function (rule) {
         this.rule = rule
-        this.health = 1
+        this.health = 999
         this.energy = 20
         this.intArray =  Array.from(
             {length:MAP_WIDTH},
@@ -70,8 +70,6 @@ var PlayerState = cc.Class.extend({
                 if(tmp == 6) this.intArray[x][y] = -1
                 if(tmp == 7) this.intArray[x][y] = -2
                 if(tmp == 8) this.intArray[x][y] = -3
-
-                cc.log(y+'-'+x+'====='+tmp)
             }
         }
         this._map = new MapView(this, this.intArray, this.rule)

@@ -143,7 +143,6 @@ var MapView = cc.Class.extend({
                 cell.state = 0
 
                 if (parent.y >= MAP_HEIGHT || parent.x >= MAP_WIDTH) {
-                    cc.log("Hahahahahahaha")
                     continue;
                 }
 
@@ -151,7 +150,6 @@ var MapView = cc.Class.extend({
                 //this.cells[parent.x][parent.y].prevCell = cell;
 
                 if (!cell.nextCell) {
-                    cc.log( "parent: " + parent + "\tcell.nextCell: " + this.cells[parent.x][parent.y])
                 }
 
             }
@@ -374,8 +372,6 @@ var MapView = cc.Class.extend({
     },
 
     deployTower: function (card, position){
-        cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
-        cc.log("TW size:" + this.towers.length)
         var tower, is_update= false;
         var cell = this.getCellAtPosition(position);
         if(!cell.getObjectOn()){
@@ -406,16 +402,30 @@ var MapView = cc.Class.extend({
         // var a = new Heal(this._playerState, position)
         // a.mapId = this.spells.add(a)
         // GameUI.instance.addChild(a)
-        var b = new FireBall(this._playerState, position)
-        b.mapId = this.spells.add(b)
-        GameUI.instance.addChild(b)
+        // var b = new FireBall(this._playerState, position)
+        // b.mapId = this.spells.add(b)
+        // GameUI.instance.addChild(b)
         cell.setObjectOn(tower)
         // if(cell.objectOn==undefined || cell.objectOn==null ){
         //     cell.objectOn = tower;
         // }
-        cc.log("Deploy success")
 
         return tower
+    },
+
+    deploySpell: function (card, position){
+        if(card == 2) {
+            var b = new Heal(this._playerState, position)
+            b.mapId = this.spells.add(b)
+            GameUI.instance.addChild(b)
+        }
+        if(card == 1){
+            var b = new FireBall(this._playerState, position)
+            b.mapId = this.spells.add(b)
+            GameUI.instance.addChild(b)
+        }
+
+        return b
     },
 
     getCellAtPosition: function (position) {
