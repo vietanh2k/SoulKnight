@@ -265,9 +265,12 @@ var MapView = cc.Class.extend({
 
     updateSpell:function (dt) {
         try {
-
             this.spells.forEach((spell, id, list) => {
-                spell.logicUpdate(this._playerState, dt)
+                spell.logicUpdate(this._playerState, dt);
+
+                if(spell.isDestroy){
+                    list.remove(id)
+                }
             })
         } catch (e) {
             cc.log(e)
@@ -394,12 +397,12 @@ var MapView = cc.Class.extend({
 
         tower.mapId = this.towers.add(tower)
         GameUI.instance.addChild(tower);
-        var a = new Heal(this._playerState, position)
-        a.mapId = this.spells.add(a)
-        GameUI.instance.addChild(a)
-        // var b = new FireBall(this._playerState, position)
-        // b.mapId = this.spells.add(b)
-        // GameUI.instance.addChild(b)
+        // var a = new Heal(this._playerState, position)
+        // a.mapId = this.spells.add(a)
+        // GameUI.instance.addChild(a)
+        var b = new FireBall(this._playerState, position)
+        b.mapId = this.spells.add(b)
+        GameUI.instance.addChild(b)
         cell.setObjectOn(tower)
         // if(cell.objectOn==undefined || cell.objectOn==null ){
         //     cell.objectOn = tower;

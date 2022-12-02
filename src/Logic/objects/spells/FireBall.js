@@ -36,10 +36,12 @@ const FireBall = Spell.extend({
         if(this.renderRule == 1) {
             if (this.position.y >= this.castPosition.y) {
                 this.cast(5)
+                this.explose(this._playerState, null)
             }
         }else{
             if(this.position.y <= this.castPosition.y){
                 this.cast(5)
+                this.explose(this._playerState, null)
             }
         }
 
@@ -48,4 +50,20 @@ const FireBall = Spell.extend({
         //this.debug(map)
     },
 
+    explose: function (playerState, pos) {
+        const map = playerState.getMap();
+        cc.log('66666666666666666666666666')
+        const monsters = map.queryEnemiesCircle(this.castPosition, 100*MAP_CONFIG.CELL_WIDTH)
+        cc.log('==============31231='+monsters.length)
+        for (let i = 0; i < monsters.length; i++) {
+            monster.takeDamage(50)
+            monster.hurtUI()
+            cc.log('66666666666666666666666666')
+        }
+        // for (let monster of monsters) {
+        //     cc.log('66666666666666666666666666')
+        //     monster.takeDamage(50)
+        //     monster.hurtUI()
+        // }
+    }
 });
