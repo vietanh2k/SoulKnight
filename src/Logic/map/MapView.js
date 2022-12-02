@@ -489,13 +489,13 @@ var MapView = cc.Class.extend({
         const tempPos = new Vec2(0,0)
         
         const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
-        const x2 = Math.floor((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
         
-        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_WIDTH)
-        const y2 = Math.floor((pos.y + radius) / MAP_CONFIG.CELL_WIDTH)
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
+        const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
         
-        for (let x = x1; x < x1; x++) {
-            for (let y = y1; x < y2; y++) {
+        for (let x = x1; x <= x2; x++) {
+            for (let y = y1; x <= y2; y++) {
                 tempPos.x = x
                 tempPos.y = y
                 
