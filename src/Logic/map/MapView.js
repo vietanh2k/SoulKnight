@@ -457,21 +457,29 @@ var MapView = cc.Class.extend({
         const monsters = []
 
         const tempPos = new Vec2(0,0)
+        
+        const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.floor((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+        
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_WIDTH)
+        const y2 = Math.floor((pos.y + radius) / MAP_CONFIG.CELL_WIDTH)
+        
+        for (let x = x1; x < x1; x++) {
+            for (let y = y1; x < y2; y++) {
+                tempPos.x = x
+                tempPos.y = y
+                
+                const cell = self.getCellAtPosition(tempPos)
 
-        for (let i = 0; i < 4; i++) {
-            tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
-            tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
-
-            const cell = self.getCellAtPosition(tempPos)
-
-            if (!cell) {
-                continue
+                if (!cell) {
+                    continue
+                }
+                
+                cell.monsters.forEach((monster, id, list) => {
+                    monster.isChosen = false
+                    monsters.push(monster)
+                })
             }
-
-            cell.monsters.forEach((monster, id, list) => {
-                monster.isChosen = false
-                monsters.push(monster)
-            })
         }
 
         const ret = []
@@ -479,6 +487,7 @@ var MapView = cc.Class.extend({
             if (monster.isChosen === false
                 && Circle.isCirclesOverlapped(monster.position, monster.hitRadius, pos, radius)) {
                 ret.push(monster)
+                monster.isChosen = true
             }
         })
 
@@ -491,20 +500,28 @@ var MapView = cc.Class.extend({
         const treeStones = []
 
         const tempPos = new Vec2(0,0)
+        
+        const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.floor((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+        
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_WIDTH)
+        const y2 = Math.floor((pos.y + radius) / MAP_CONFIG.CELL_WIDTH)
+        
+        for (let x = x1; x < x1; x++) {
+            for (let y = y1; x < y2; y++) {
+                tempPos.x = x
+                tempPos.y = y
+                
+                const cell = self.getCellAtPosition(tempPos)
 
-        for (let i = 0; i < 4; i++) {
-            tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * radius
-            tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * radius
-
-            const cell = self.getCellAtPosition(tempPos)
-
-            if (!cell) {
-                continue
+                if (!cell) {
+                    continue
+                }
+                
+                const treeStone = cell.getObjectOn()
+                treeStone.isChosen = false
+                treeStone.push(treeStone)
             }
-
-            const treeStone = cell.getObjectOn()
-            treeStone.isChosen = false
-            treeStone.push(treeStone)
         }
 
         return treeStones
