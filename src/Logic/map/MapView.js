@@ -438,7 +438,7 @@ var MapView = cc.Class.extend({
 
         bullet.mapId = this.bullets.add(bullet)
 
-        GameUI.instance.addChild(bullet);
+        GameUI.instance.addChild(bullet, 1000000000);
     },
 
     getStartCell: function () {
