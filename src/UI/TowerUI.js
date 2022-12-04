@@ -70,15 +70,15 @@ var TowerUI = cc.Sprite.extend({
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
         for (let i = 0; i < 3; i++) {
-            this.initTextures[i] = 'res/tower/frame/' + cf.TYPE_TO_NAME[card.type] + '_1_2/tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_' + i + '_0000.png';
-            this.idlePrefixNames[i] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_' + i + '_';
-            this.attackPrefixNames[i] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_attack_' + i + '_';
+            this.initTextures[i] = 'res/tower/frame/' + cf.TOWER_UI[card.type].name + '_1_2/tower_' + cf.TOWER_UI[card.type].name + '_idle_' + i + '_0000.png';
+            this.idlePrefixNames[i] = 'tower_' + cf.TOWER_UI[card.type].name + '_idle_' + i + '_';
+            this.attackPrefixNames[i] = 'tower_' + cf.TOWER_UI[card.type].name + '_attack_' + i + '_';
         }
-        this.initTextures[3] = 'res/tower/frame/' + cf.TYPE_TO_NAME[card.type] + '_3/tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_3_0000.png';
-        this.idlePrefixNames[3] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_idle_3_';
-        this.attackPrefixNames[3] = 'tower_' + cf.TYPE_TO_NAME[card.type] + '_attack_3_';
-        this.idleIDP = 15;
-        this.attackIDP = 9;
+        this.initTextures[3] = 'res/tower/frame/' + cf.TOWER_UI[card.type].name + '_3/tower_' + cf.TOWER_UI[card.type].name + '_idle_3_0000.png';
+        this.idlePrefixNames[3] = 'tower_' + cf.TOWER_UI[card.type].name + '_idle_3_';
+        this.attackPrefixNames[3] = 'tower_' + cf.TOWER_UI[card.type].name + '_attack_3_';
+        this.idleIDP = cf.TOWER_UI[card.type].idleIDP;
+        this.attackIDP = cf.TOWER_UI[card.type].attackIDP;
     },
 
     evolute: function () {

@@ -19,18 +19,18 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 16, 17]
-        this.cardPlayable = [16, 17, 16, 17]
+        this.cardInQueue = [16, 17, 18, 16]
+        this.cardPlayable = [18, 17, 18, 17]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
         this.scheduleUpdate();
 
         for (let i = 0; i <= 3; i++) {
-            for (let j = 0; j < cf.TYPE_TO_NAME.length; j++) {
-                if (cf.TYPE_TO_NAME[j] !== undefined) {
-                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TYPE_TO_NAME[j] + '/tower_' + cf.TYPE_TO_NAME[j] + '_idle_' + i + '.plist');
-                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TYPE_TO_NAME[j] + '/tower_' + cf.TYPE_TO_NAME[j] + '_attack_' + i + '.plist');
+            for (let j = 0; j < cf.TOWER_UI.length; j++) {
+                if (cf.TOWER_UI[j] !== undefined) {
+                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TOWER_UI[j].name + '/tower_' + cf.TOWER_UI[j].name + '_idle_' + i + '.plist');
+                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TOWER_UI[j].name + '/tower_' + cf.TOWER_UI[j].name + '_attack_' + i + '.plist');
                 }
             }
         }
@@ -185,12 +185,16 @@ var GameUI = cc.Layer.extend({
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
+                if (this.listCard[this.cardTouchSlot - 1].type === 16) {
+                    testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
+                        gv.gameClient._userId)]);
+                }
                 if (this.listCard[this.cardTouchSlot - 1].type === 17) {
                     testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
-                if (this.listCard[this.cardTouchSlot - 1].type === 16) {
-                    testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
+                if (this.listCard[this.cardTouchSlot - 1].type === 18) {
+                    testnetwork.connector.sendActions([new ActivateCardAction(18, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
                 this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
