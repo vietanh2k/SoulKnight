@@ -26,8 +26,6 @@ var GameUI = cc.Layer.extend({
         this.init();
         this.scheduleUpdate();
 
-
-        this.towerUIMap = Utils.create2dArr(MAP_WIDTH, MAP_HEIGHT + 1, undefined);
         for (let i = 0; i <= 3; i++) {
             for (let j = 0; j < cf.TYPE_TO_NAME.length; j++) {
                 if (cf.TYPE_TO_NAME[j] !== undefined) {
@@ -144,8 +142,7 @@ var GameUI = cc.Layer.extend({
                 this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
                 this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
-                var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
-                this.towerUIMap[loc.x][loc.y] = tower;
+                var tower = this._gameStateManager.playerA._map.deployOrUpgradeTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 1)
                 // this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             //} else {
@@ -160,7 +157,8 @@ var GameUI = cc.Layer.extend({
                 this._gameStateManager.playerB._map.updatePathForCells()
                 // this.listCard[this.cardTouchSlot - 1].actualType = card_type
                 this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-                var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
+            this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
+                var tower = this._gameStateManager.playerB._map.deployOrUpgradeTower(card_type, position);
                 var pos = convertIndexToPos(loc.x, loc.y, 0)
                 // this.updateCardSlot(this.listCard[this.cardTouchSlot - 1].energy)
             //} else {
@@ -187,11 +185,11 @@ var GameUI = cc.Layer.extend({
             var tmp = this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y]
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             if (!this.isNodehasMonsterAbove(loc) && this._gameStateManager.playerA._map._mapController.isExistPath()) {
-                if (this.listCard[this.cardTouchSlot - 1].type == 17) {
+                if (this.listCard[this.cardTouchSlot - 1].type === 17) {
                     testnetwork.connector.sendActions([new ActivateCardAction(17, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
-                if (this.listCard[this.cardTouchSlot - 1].type == 16) {
+                if (this.listCard[this.cardTouchSlot - 1].type === 16) {
                     testnetwork.connector.sendActions([new ActivateCardAction(16, position.x, position.y,
                         gv.gameClient._userId)]);
                 }
@@ -546,7 +544,7 @@ var GameUI = cc.Layer.extend({
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
                 MW.DELAY_TOUCH = true;
-                this.runAction(cc.sequence(cc.delayTime(0.25),cc.callFunc(()=> this.readyTouch(), this)));
+                this.runAction(cc.sequence(cc.delayTime(0.25), cc.callFunc(() => this.readyTouch(), this)));
                 if (this.previewObject !== undefined) {
                     let target = event.getCurrentTarget();
                     this.cardTouchSlot = target.numSlot
@@ -556,30 +554,19 @@ var GameUI = cc.Layer.extend({
                     let pos = touch.getLocation();
                     let cor = convertPosToIndex(pos, rule);
                     cc.log('there is ' + cor.x + ', ' + cor.y)
-                    if(GameStateManagerInstance.playerA.energy >= target.energy){
-                        if (this.towerUIMap[cor.x] !== undefined && this.towerUIMap[cor.x][cor.y] !== undefined) {
-                            // fixme khác loại trụ?
-                            if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
-                                Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                                this.resetCardTouchState()
-                            } else {
-                                this.towerUIMap[cor.x][cor.y].evolute();
-                                this.updateCardSlot(target.energy)
-                            }
-                        }
-                        else if (isPosInMap(pos, rule) && GameStateManagerInstance.playerA.getMap()._mapController.intArray[cor.x][cor.y] <= 0) {
-                            MW.MOUSE = pos;
-                            this.createObjectByTouch = true;
-
-                        } else {
-                            this.resetCardTouchState()
-                            cc.log('out of map! rule: ' + rule);
-                            return;
-                        }
-                    }else{
+                    if (GameStateManagerInstance.playerA.energy < target.energy) {
                         Utils.addToastToRunningScene('Không đủ năng lượng!');
-                        this.resetCardTouchState()
+                        this.resetCardTouchState();
+                    } else if (isPosInMap(pos, rule)) {
+                        MW.MOUSE = pos;
+                        this.createObjectByTouch = true;
+                        // fixme không cho nâng cấp nhưng vẫn tốn năng lượng
+                    } else {
+                        this.resetCardTouchState();
+                        cc.log('out of map! rule: ' + rule);
+                        return;
                     }
+
 
                 }else if (target.getParent() != null) {
 
@@ -917,7 +904,7 @@ var GameUI = cc.Layer.extend({
         let timerBackground = new cc.Sprite(res.timer1);
         timerBackground.setPosition(pos);
         timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
-        this.addChild(timerBackground, 0, 'timerBackground');
+        this.addChild(timerBackground, 999999, 'timerBackground');
 
         let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
         timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
@@ -926,7 +913,7 @@ var GameUI = cc.Layer.extend({
         timerTower.setPercentage(100);
         timerTower.setPosition(pos);
         timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
-        this.addChild(timerTower, 0, 'timerTower');
+        this.addChild(timerTower, 999999, 'timerTower');
 
         timerTower.runAction(
             cc.sequence(

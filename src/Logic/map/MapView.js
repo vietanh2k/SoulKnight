@@ -342,44 +342,39 @@ var MapView = cc.Class.extend({
         monster.mapId = this.monsters.add(monster)
     },
 
-    deployTower: function (card, position){
-        cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
-        cc.log("TW size:" + this.towers.length)
-        var tower, is_update= false;
-        var cell = this.getCellAtPosition(position);
-        if(!cell.getObjectOn()){
-            is_update = false;
-        } else {
-            if((cell.getObjectOn().instance=="0" && card==16) || (cell.getObjectOn().instance=="1" && card==17)){
-                is_update = true;
+    deployOrUpgradeTower: function (cardType, position) {
+        cc.log("Deploy or upgrade tower with card type " + JSON.stringify(cardType) + " at position " + JSON.stringify(position));
+        let cell = this.getCellAtPosition(position);
+
+        if (cell.getObjectOn()) {
+            if (cf.CARD_TYPE[cardType] === undefined) {
+                Utils.addToastToRunningScene('Cannot find card type ' + cardType);
+                return;
+            } else if (cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
+                if (this.rule === 1) {
+                    Utils.addToastToRunningScene('Không thể xây đè lên trụ cũ!');
+                }
+                return;
             } else {
+                cell.getObjectOn().upgrade(cardType);
                 return;
             }
         }
-        if(is_update){
-            cell.getObjectOn().upgrade(card);
-            return;
-        }
-        switch (card){
+
+        let tower;
+        switch (cardType) {
             case 17:
-                tower = new TWizard(card, this._playerState, position, this);
+                tower = new TWizard(cardType, this._playerState, position, this);
                 break;
             default:
-                tower = new TCannon(card, this._playerState, position, this);
+                tower = new TCannon(cardType, this._playerState, position, this);
+                break;
         }
-
-        //this.towers.push(tower)
-
-        tower.mapId = this.towers.add(tower)
-
+        tower.mapId = this.towers.add(tower);
         GameUI.instance.addChild(tower);
-        cell.setObjectOn(tower)
-        // if(cell.objectOn==undefined || cell.objectOn==null ){
-        //     cell.objectOn = tower;
-        // }
-        cc.log("Deploy success")
-
-        return tower
+        cell.setObjectOn(tower);
+        cc.log("Deploy success");
+        return tower;
     },
 
     getCellAtPosition: function (position) {

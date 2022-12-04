@@ -204,13 +204,14 @@ var Tower = TowerUI.extend({
     },
     upgrade: function (card) {
         this.evolute();
+        // this.level is 1, 2, or 3
         if (this.level < 3) {
             this.level += 1;
+        } else if (this.renderRule === 1) {
+            Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
         }
-    }
-
-}
-)
+    },
+});
 
 Tower.TOWER_FACTORY = {}
 
