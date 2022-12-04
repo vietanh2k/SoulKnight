@@ -1,3 +1,5 @@
+HEAL_WIDTH = 250
+
 const Heal = Spell.extend({
     ctor: function (playerState, position) {
         this._super(playerState, position, 'effect_buff_heal', 'animation_top');
@@ -6,6 +8,8 @@ const Heal = Spell.extend({
         this.initFromConfig(playerState, config)
         this.render(playerState);
         this.timeCast = 0
+        this.radius = 0.8
+        this.setScale(2*CELLWIDTH/HEAL_WIDTH*this.radius)
         return true;
     },
 
@@ -27,11 +31,10 @@ const Heal = Spell.extend({
 
     setBuffOnMonster: function (playerState,dt) {
         const map = playerState.getMap();
-        const monsters = map.queryEnemiesCircle(this.castPosition,2* MAP_CONFIG.CELL_WIDTH)
+        const monsters = map.queryEnemiesCircle(this.castPosition,this.radius* MAP_CONFIG.CELL_WIDTH)
         for (let i = 0; i < monsters.length; i++) {
             monsters[i].timeHealBuff = 3
             monsters[i].numHealBuff = 2*dt
-            cc.log(monsters[i].timeHealBuff)
         }
     }
 

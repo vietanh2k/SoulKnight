@@ -1,9 +1,13 @@
+FIREBALL_WIDTH = 180
+
 const FireBall = Spell.extend({
     ctor: function (playerState, position) {
         this._super(playerState, position, 'effect_atk_fire', 'animation_fireball');
         const config = cf.POTION.potion[SPELL_ID.FIREBALL]
         this.initOpponentUI(position)
         this.initFromConfig(playerState, config)
+        this.radius = 0.8
+        this.setScale(2*CELLWIDTH/FIREBALL_WIDTH*this.radius)
         cc.log(this.energyCost)
         return true;
     },
@@ -53,8 +57,7 @@ const FireBall = Spell.extend({
 
     explose: function (playerState, pos) {
         const map = playerState.getMap();
-        const monsters = map.queryEnemiesCircle(this.castPosition,2* MAP_CONFIG.CELL_WIDTH)
-        cc.log('==============31231='+monsters.length)
+        const monsters = map.queryEnemiesCircle(this.castPosition,MAP_CONFIG.CELL_WIDTH*this.radius)
         for (let i = 0; i < monsters.length; i++) {
             monsters[i].takeDamage(50)
             monsters[i].hurtUI()

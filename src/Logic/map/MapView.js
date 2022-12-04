@@ -413,19 +413,22 @@ var MapView = cc.Class.extend({
         return tower
     },
 
-    deploySpell: function (card, position){
-        if(card == 2) {
-            var b = new Heal(this._playerState, position)
-            b.mapId = this.spells.add(b)
-            GameUI.instance.addChild(b)
+    deploySpell: function (cardType, position){
+        var spell;
+        switch (cardType){
+            case 0:
+                spell = new FireBall(this._playerState, position);
+                break;
+            case 2:
+                spell = new Heal(this._playerState, position);
+                break;
+            default:
+                spell = new FireBall(this._playerState, position);
         }
-        if(card == 1){
-            var b = new FireBall(this._playerState, position)
-            b.mapId = this.spells.add(b)
-            GameUI.instance.addChild(b)
-        }
+        spell.mapId = this.spells.add(spell);
+        GameUI.instance.addChild(spell);
 
-        return b
+        return spell;
     },
 
     getCellAtPosition: function (position) {

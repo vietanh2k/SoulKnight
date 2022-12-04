@@ -285,6 +285,7 @@ CmdBuyChest = fr.OutPacket.extend(
             this.putInt(cost)
 
             this.updateSize();
+            cc.log('send buy chest:'+ JSON.stringify(buyList[0][0]))
         }
     }
 )
@@ -437,7 +438,7 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
             }
             cc.log('New cards: ' + JSON.stringify(newCards));
             goldReceived = this.getInt();
-
+            cc.log('goldReceived: ' + JSON.stringify(goldReceived));
             serverNow = this.getLong();
             Utils.updateTimeDiff(serverNow);
             if(chestID != -1) {

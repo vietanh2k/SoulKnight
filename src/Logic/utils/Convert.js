@@ -64,9 +64,7 @@ const convertLogicalPosToIndex = function (pos, rule) {
 
 };
 
-const convertPosUIToPosLogic = function (pos, rule) {
-    // x = winSize.width / 2 - WIDTHSIZE / 2 + (corX + 1) * CELLWIDTH
-    // y = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_HEIGHT - corY + 3.5) * CELLWIDTH
+const convertPosUIToLocLogic = function (pos, rule) {
     var corX = (pos.x-winSize.width / 2+WIDTHSIZE / 2)/CELLWIDTH -1
     var corY = MAP_HEIGHT+ 3.5 - (pos.y - winSize.height / 2 + HEIGHTSIZE / 2)/CELLWIDTH
     var p = new Vec2(corX,corY)
