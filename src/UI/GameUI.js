@@ -85,23 +85,23 @@ var GameUI = cc.Layer.extend({
     * deploy tower cho 2 client
     * */
     activateCard: function (card_type, position, uid) {
-        this.activateCardTower(card_type, position, uid);
-        // var card = sharePlayerInfo.collection.find(element => element.type === card_type);
-        // // 999: cell with position
-        // switch (card.concept) {
-        //     case 'tower':
-        //         this.activateCardTower(card_type, position, uid);
-        //         break;
-        //     case 'monster':
-        //         // this.touchMoveMonster(target);
-        //         break;
-        //     case 'potion':
-        //         this.activateCardPotion(card_type, position, uid);
-        //         break;
-        //     default:
-        //         cc.log('Card concept \"' + target.concept + '\" not found in config.');
-        //         break;
-        // }
+        // this.activateCardTower(card_type, position, uid);
+        var card = sharePlayerInfo.collection.find(element => element.type === card_type);
+        // 999: cell with position
+        switch (card.concept) {
+            case 'tower':
+                this.activateCardTower(card_type, position, uid);
+                break;
+            case 'monster':
+                // this.touchMoveMonster(target);
+                break;
+            case 'potion':
+                this.activateCardPotion(card_type, position, uid);
+                break;
+            default:
+                cc.log('Card concept \"' + target.concept + '\" not found in config.');
+                break;
+        }
     },
 
     activateCardTower: function (card_type, position, uid) {
@@ -638,7 +638,7 @@ var GameUI = cc.Layer.extend({
             this.previewObject = this.generatePreviewObject(target);
             this.addChild(this.previewObject);
         }
-        this.previewObject.setPosition(posUI);
+        this.previewObject.setPosition(getMiddleOfCell(posUI, rule));
         this.previewObject.visible = isPosInMap(this.previewObject, rule);
     },
 
@@ -722,10 +722,10 @@ var GameUI = cc.Layer.extend({
         if(isPosInMap(posUI, 1) || isPosInMap(posUI, 2) ) {
             var indexFloat = convertPosUIToLocLogic(posUI)
             var posLogic = this.screenLoc2Position(indexFloat)
-            this._gameStateManager.playerA._map.deploySpell(target.type, posLogic)
+            // this._gameStateManager.playerA._map.deploySpell(target.type, posLogic)
 
-            // testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-            //     gv.gameClient._userId)]);
+            testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
+                gv.gameClient._userId)]);
             this.updateCardSlot(target.numSlot, target.energy);
         }
     },
