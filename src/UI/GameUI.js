@@ -1032,8 +1032,6 @@ var GameUI = cc.Layer.extend({
             )
         );
     },
-
-
 });
 
 GameUI.scene = function () {
