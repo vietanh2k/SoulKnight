@@ -19,8 +19,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 18, 16]
-        this.cardPlayable = [18, 17, 18, 17]
+        this.cardInQueue = [16, 18, 17, 18]
+        this.cardPlayable = [16, 18, 17, 18]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
