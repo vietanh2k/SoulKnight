@@ -5,7 +5,7 @@ let Toast = cc.Layer.extend({
     leftNotiBox: null,
     rightNotiBox: null,
 
-    ctor: function (message, timeout = 3000) {
+    ctor: function (message, timeout = 2000) {
         this._super();
         this.zOrder = TOAST_Z_ORDER;
         this.x = cf.WIDTH / 2;

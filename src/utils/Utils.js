@@ -70,7 +70,7 @@ Utils.updateTimeDiff = function (serverNow) {
 };
 
 Utils.addToastToRunningScene = function (message) {
-    if (fr.getCurrentScreen() != null || undefined) {
+    if (fr.getCurrentScreen() != null || fr.getCurrentScreen() !== undefined) {
         fr.getCurrentScreen().addChild(new Toast(message), cf.TOAST_Z_ORDER);
     }
 };
@@ -170,7 +170,7 @@ Utils.generateCardAttributes = function (card, index) {
         case 'bulletType':
             textAttribute = 'Loại bắn: ';
             texture = asset.statIcons_png['bulletRadius'];
-            textStat = card.towerInfo.bulletType;
+            textStat = cf.BULLET_TYPES_LOCALIZE[card.towerInfo.bulletType];
             break;
         case 'bulletTargetBuffType': {
             let targetBuffConfig = cf.TARGET_BUFF.targetBuff[card.towerInfo.bulletTargetBuffType];
