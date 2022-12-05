@@ -85,14 +85,33 @@ var GameUI = cc.Layer.extend({
     * deploy tower cho 2 client
     * */
     activateCard: function (card_type, position, uid) {
-        // 999: cell with position
+        this.activateCardTower(card_type, position, uid);
+        // var card = sharePlayerInfo.collection.find(element => element.type === card_type);
+        // // 999: cell with position
+        // switch (card.concept) {
+        //     case 'tower':
+        //         this.activateCardTower(card_type, position, uid);
+        //         break;
+        //     case 'monster':
+        //         // this.touchMoveMonster(target);
+        //         break;
+        //     case 'potion':
+        //         this.activateCardPotion(card_type, position, uid);
+        //         break;
+        //     default:
+        //         cc.log('Card concept \"' + target.concept + '\" not found in config.');
+        //         break;
+        // }
+    },
+
+    activateCardTower: function (card_type, position, uid) {
         if (uid == gv.gameClient._userId ) {
             this.createObjectByTouch = false
             var loc = convertLogicalPosToIndex(position, 1)
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-                // this.listCard[this.cardTouchSlot - 1].actualType = card_type
+            // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
             var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
             this.towerUIMap[loc.x][loc.y] = tower;
@@ -101,11 +120,20 @@ var GameUI = cc.Layer.extend({
             var loc = convertLogicalPosToIndex(position, 2)
             this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = 999
             this._gameStateManager.playerB._map.updatePathForCells()
-                // this.listCard[this.cardTouchSlot - 1].actualType = card_type
+            // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
             this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
             var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
             var pos = convertIndexToPos(loc.x, loc.y, 0)
+        }
+    },
+
+    activateCardPotion: function (card_type, position, uid) {
+        if (uid == gv.gameClient._userId ) {
+            this._gameStateManager.playerA._map.deploySpell(card_type, position)
+
+        } else {
+            this._gameStateManager.playerB._map.deploySpell(card_type, position)
         }
     },
 
@@ -695,7 +723,10 @@ var GameUI = cc.Layer.extend({
             var indexFloat = convertPosUIToLocLogic(posUI)
             var posLogic = this.screenLoc2Position(indexFloat)
             this._gameStateManager.playerA._map.deploySpell(target.type, posLogic)
-            this.updateCardSlot(target.numSlot, target.energy)
+
+            // testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
+            //     gv.gameClient._userId)]);
+            this.updateCardSlot(target.numSlot, target.energy);
         }
     },
 
