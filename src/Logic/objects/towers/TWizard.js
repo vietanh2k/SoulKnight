@@ -8,7 +8,6 @@ var TWizard = Tower.extend({
      * @param {MapView} map: map add */
     ctor: function (card, playerState, position, map) {
         this._super(card, 0);
-        // cc.log("Create new Tower: Type=" + type + "player state" + playerState + "position" + position)
 
         this._playerState = playerState
         this.active = true
@@ -30,7 +29,7 @@ var TWizard = Tower.extend({
         this.level = 1
         this.map = map
         this._is_set_pos = false
-        this.setScale(1.4)
+        this.setScale(cf.TOWER_SCALE[1])
         this.resetPending();
 
         return true;

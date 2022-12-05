@@ -208,7 +208,7 @@ var TowerUI = cc.Sprite.extend({
             this.idleActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
                 let frame = this.loadAnimation(Math.min(i, 16 - i) * this.idleIDP, this.idleIDP, this.idlePrefixNames[j]);
-                this.idleActions[j].push(cc.animate(new cc.Animation(frame, 1 / this.idleIDP)).repeatForever());
+                this.idleActions[j].push(cc.animate(new cc.Animation(frame, 0.5 / this.idleIDP)).repeatForever());
                 this.idleActions[j][i].retain();
             }
         }
@@ -220,7 +220,7 @@ var TowerUI = cc.Sprite.extend({
             this.attackActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
                 let frame = this.loadAnimation(Math.min(i, 16 - i) * this.attackIDP, this.attackIDP, this.attackPrefixNames[j]);
-                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 1 / this.attackIDP)));
+                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 0.5 / this.attackIDP)));
                 this.attackActions[j][i].retain();
             }
         }

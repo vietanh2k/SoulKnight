@@ -1,5 +1,4 @@
-// var _TOWER_CONFIG;
-var TCannon = Tower.extend({
+var TBoomerang = Tower.extend({
     /**
      * Khởi tạo
      * @param {MCard} card:
@@ -14,7 +13,7 @@ var TCannon = Tower.extend({
         this.visible = false
 
         this.attackCoolDown = 0;
-        this.instance = "0";
+        this.instance = "2";
         this.target = [];
         this.position = position;
         this.health = 100
@@ -29,7 +28,7 @@ var TCannon = Tower.extend({
         this.level = 1
         this.map = map
         this._is_set_pos = false
-        this.setScale(cf.TOWER_SCALE[0])
+        this.setScale(cf.TOWER_SCALE[2])
         this.resetPending();
 
         return true;
@@ -40,18 +39,18 @@ var TCannon = Tower.extend({
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
         for (let i = 0; i < 3; i++) {
-            this.initTextures[i] = 'res/tower/frame/cannon_1_2/tower_cannon_idle_' + i + '_0000.png';
-            this.idlePrefixNames[i] = 'tower_cannon_idle_' + i + '_';
-            this.attackPrefixNames[i] = 'tower_cannon_attack_' + i + '_';
+            this.initTextures[i] = 'res/tower/frame/boomerang_1_2/tower_boomerang_idle_' + i + '_0000.png';
+            this.idlePrefixNames[i] = 'tower_boomerang_idle_' + i + '_';
+            this.attackPrefixNames[i] = 'tower_boomerang_attack_' + i + '_';
         }
-        this.initTextures[3] = 'res/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
-        this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
-        this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
-        this.idleIDP = 15;
-        this.attackIDP = 9;
-        this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
-        GameUI.instance.addChild(this.fire_fx, 900);
-        this.fire_fx.visible = false;
+        this.initTextures[3] = 'res/tower/frame/boomerang_3/tower_boomerang_idle_3_0000.png';
+        this.idlePrefixNames[3] = 'tower_boomerang_idle_3_';
+        this.attackPrefixNames[3] = 'tower_boomerang_attack_3_';
+        this.idleIDP = 14;
+        this.attackIDP = 11;
+        // this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
+        // GameUI.instance.addChild(this.fire_fx, 900);
+        // this.fire_fx.visible = false;
     },
 
     getNewBullet: function (object) {

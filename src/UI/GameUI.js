@@ -18,8 +18,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 0, 2]
-        this.cardPlayable = [0, 2, 16, 17]
+        this.cardInQueue = [17, 18, 0, 2]
+        this.cardPlayable = [0, 2, 16, 18]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -102,26 +102,24 @@ var GameUI = cc.Layer.extend({
         }
     },
 
-    activateCardTower: function (card_type, position, uid) {
-        if (uid == gv.gameClient._userId ) {
+    activateCardTower: function (cardType, position, uid) {
+        if (uid === gv.gameClient._userId ) {
             this.createObjectByTouch = false
-            var loc = convertLogicalPosToIndex(position, 1)
+            let loc = convertLogicalPosToIndex(position, 1)
             this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
-            var tower = this._gameStateManager.playerA._map.deployOrUpgradeTower(card_type, position);
-            var pos = convertIndexToPos(loc.x, loc.y, 1)
+            this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
-            var loc = convertLogicalPosToIndex(position, 2)
+            let loc = convertLogicalPosToIndex(position, 2)
             this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = 999
             this._gameStateManager.playerB._map.updatePathForCells()
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
             this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
-            var tower = this._gameStateManager.playerB._map.deployOrUpgradeTower(card_type, position);
-            var pos = convertIndexToPos(loc.x, loc.y, 0)
+            this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
         }
     },
 
@@ -479,7 +477,7 @@ var GameUI = cc.Layer.extend({
                     this.previewObject = undefined
                     if(GameStateManagerInstance.playerA.energy >= target.energy){
                         this.activeCard(target, touch.getLocation())
-                    }else {
+                    } else {
                         Utils.addToastToRunningScene('Không đủ năng lượng!');
                         this.resetCardTouchState()
                     }
@@ -655,8 +653,10 @@ var GameUI = cc.Layer.extend({
 
 
     /** thả 1 card khi đã check có đủ NL rồi
-     * @param MCard, posUI
-     * @return */
+     * @param target
+     * @param posUI
+     * @return
+     */
     activeCard: function (target, posUI) {
         cc.log(target.concept)
         switch (target.concept) {
@@ -676,34 +676,34 @@ var GameUI = cc.Layer.extend({
     },
 
     /** check đường đi,... xem có đặt trụ được không
-     * @param MCard, posUI
+     * @param target
+     * @param posUI
      * @return */
     activeCardTower: function (target, posUI) {
-        let canPutTower= true;
-        if(isPosInMap(posUI, 1)){
+        let canPutTower = true;
+        if (isPosInMap(posUI, 1)) {
             var intIndex = convertPosToIndex(posUI, 1)
             if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] <= 0 ||
-                GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] ==999) {
+                GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] === 999) {
                 let tmp = GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y];
                 GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = 999;
-                if(!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()){
+                if (!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
                     var posLogic = this.screenLoc2Position(intIndex);
-                    if(GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
+                    if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
                         testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
                             gv.gameClient._userId)]);
                         this.updateCardSlot(target.numSlot, target.energy);
                     } else {
                         canPutTower = false;
                     }
-                }else{
+                } else {
                     GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = tmp;
                     canPutTower = false;
                 }
-
-            }else {
+            } else {
                 canPutTower = false;
             }
-            if(!canPutTower){
+            if (!canPutTower) {
                 Utils.addToastToRunningScene('Không đặt được chỗ này!');
             }
         }

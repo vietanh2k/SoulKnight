@@ -185,7 +185,7 @@ var Tower = TowerUI.extend({
         return this.level;
     },
     getRange: function () {
-        return this.getConfig()['stat'][this.getLevel()]['range']
+        return this.getConfig()['stat'][this.getLevel() - 1]['range']
     },
     getConfig: function () {
         if (_TOWER_CONFIG === undefined || _TOWER_CONFIG == null) {

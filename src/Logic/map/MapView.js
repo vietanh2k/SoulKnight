@@ -397,11 +397,18 @@ var MapView = cc.Class.extend({
 
         let tower;
         switch (cardType) {
+            case 16:
+                tower = new TCannon(cardType, this._playerState, position, this);
+                break;
             case 17:
                 tower = new TWizard(cardType, this._playerState, position, this);
                 break;
+            case 18:
+                tower = new TBoomerang(cardType, this._playerState, position, this);
+                break;
             default:
                 tower = new TCannon(cardType, this._playerState, position, this);
+                cc.log('Default case of switch cardType to create tower!');
                 break;
         }
         tower.mapId = this.towers.add(tower);

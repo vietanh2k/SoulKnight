@@ -138,8 +138,9 @@
         "src/Logic/objects/bullets/LockBullet.js",
         "src/Logic/objects/bullets/StraightBullet.js",
         "src/Logic/objects/towers/Tower.js",
-        "src/Logic/objects/towers/TWizard.js",
         "src/Logic/objects/towers/TCannon.js",
+        "src/Logic/objects/towers/TWizard.js",
+        "src/Logic/objects/towers/TBoomerang.js",
 
         "src/Logic/objects/spells/Spell.js",
         "src/Logic/objects/spells/FireBall.js",
