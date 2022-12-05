@@ -43,6 +43,7 @@ const getRule = function (target) {
     switch (target.type) {
         case 16:
         case 17:
+        case 18:
         case 2:
         case 5:
         case 7:

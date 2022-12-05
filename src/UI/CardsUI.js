@@ -154,7 +154,7 @@ var CardsUI = cc.Layer.extend({
         });
         this.addChild(newCardSlot);
         this.collectionSlots[index] = newCardSlot;
-        if (index === sharePlayerInfo.collection.length - 1) {
+        if (index === this.collectionSlots.length - 1) {
             this.setUpperboundBasedOnTheLowestItem(cardSlotY);
         }
     },
@@ -345,6 +345,7 @@ var CardsUI = cc.Layer.extend({
                 this.parent.currencyPanel.updateLabels();
                 if (!card.isInDeck()) {
                     this.collectionSlots[i].removeFromParent(true);
+                    this.collectionSlots[i] = undefined;
                     this.addCardSlotToCollection(card, this.findEmptySlotInCollectionSlots());
                 }
                 break;

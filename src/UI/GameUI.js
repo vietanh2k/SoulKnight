@@ -25,13 +25,11 @@ var GameUI = cc.Layer.extend({
         this.init();
         this.scheduleUpdate();
 
-
-        this.towerUIMap = Utils.create2dArr(MAP_WIDTH, MAP_HEIGHT + 1, undefined);
         for (let i = 0; i <= 3; i++) {
-            for (let j = 0; j < cf.TYPE_TO_NAME.length; j++) {
-                if (cf.TYPE_TO_NAME[j] !== undefined) {
-                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TYPE_TO_NAME[j] + '/tower_' + cf.TYPE_TO_NAME[j] + '_idle_' + i + '.plist');
-                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TYPE_TO_NAME[j] + '/tower_' + cf.TYPE_TO_NAME[j] + '_attack_' + i + '.plist');
+            for (let j = 0; j < cf.TOWER_UI.length; j++) {
+                if (cf.TOWER_UI[j] !== undefined) {
+                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TOWER_UI[j].name + '/tower_' + cf.TOWER_UI[j].name + '_idle_' + i + '.plist');
+                    cc.spriteFrameCache.addSpriteFrames('res/tower/frame/' + cf.TOWER_UI[j].name + '/tower_' + cf.TOWER_UI[j].name + '_attack_' + i + '.plist');
                 }
             }
         }
@@ -1011,7 +1009,7 @@ var GameUI = cc.Layer.extend({
         let timerBackground = new cc.Sprite(res.timer1);
         timerBackground.setPosition(pos);
         timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
-        this.addChild(timerBackground, 0, 'timerBackground');
+        this.addChild(timerBackground, 999999, 'timerBackground');
 
         let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
         timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
@@ -1020,7 +1018,7 @@ var GameUI = cc.Layer.extend({
         timerTower.setPercentage(100);
         timerTower.setPosition(pos);
         timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
-        this.addChild(timerTower, 0, 'timerTower');
+        this.addChild(timerTower, 999999, 'timerTower');
 
         timerTower.runAction(
             cc.sequence(

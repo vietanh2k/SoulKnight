@@ -54,18 +54,21 @@ var TCannon = Tower.extend({
         this.fire_fx.visible = false;
     },
     getNewBullet: function (object) {
-        let speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
-            damage = this.getConfig()['stat'][this.getLevel()]['damage'],
-            radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
-            position = new Vec2(this.position.x, this.position.y);
+        let speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'];
+        let damage = this.getConfig()['stat'][this.getLevel()]['damage'];
+        let radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'];
+        let position = new Vec2(this.position.x, this.position.y);
 
         let newBullet = new TCannonBullet(object, speed, damage, radius, position);
-        // todo bắn đạn từ nòng
-        // let pos = new Vec2(object.x, object.y);
-        // let direction = pos.sub(newBullet.position).l2norm();
-        // newBullet.position.x += direction.x * newBullet.speed * cf.BULLET_SPEED_MULTIPLIER * 0.01;
-        // newBullet.position.y += direction.y * newBullet.speed * cf.BULLET_SPEED_MULTIPLIER * 0.01;
+
+        let enemyPosition = new Vec2(object.position.x, object.position.y);
+        let direction = enemyPosition.sub(newBullet.position).l2norm();
+
+        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * (-0.3));
+
+        newBullet.position.x += gunCenterFromCellCenter.x + direction.x * MAP_CONFIG.CELL_WIDTH * 0.2;
+        newBullet.position.y += gunCenterFromCellCenter.y + direction.y * MAP_CONFIG.CELL_HEIGHT * 0.2;
 
         return newBullet;
     },
-})
+});

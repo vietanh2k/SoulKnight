@@ -274,3 +274,9 @@ Utils.generateCardAttributes = function (card, index) {
 
     return [texture, textAttribute, textStat, textUpgradeStat];
 };
+
+// Utils.convertPosUIToLocLogic = function (pos, rule) {
+//     let corX = (pos.x - cf.WIDTH / 2 + WIDTHSIZE / 2) / CELLWIDTH - 1;
+//     let corY = MAP_HEIGHT + 3.5 - (pos.y - cf.HEIGHT / 2 + HEIGHTSIZE / 2) / CELLWIDTH;
+//     return new Vec2(corX, corY);
+// };
