@@ -373,6 +373,12 @@ var MapView = cc.Class.extend({
         monster.mapId = this.monsters.add(monster)
     },
 
+    checkUpgradableTower: function (cardType, position) {
+        let cell = this.getCellAtPosition(position);
+        return !(cell.getObjectOn() && cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance);
+
+    },
+
     deployOrUpgradeTower: function (cardType, position) {
         cc.log("Deploy or upgrade tower with card type " + JSON.stringify(cardType) + " at position " + JSON.stringify(position));
         let cell = this.getCellAtPosition(position);
@@ -382,9 +388,6 @@ var MapView = cc.Class.extend({
                 Utils.addToastToRunningScene('Cannot find card type ' + cardType);
                 return;
             } else if (cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
-                if (this.rule === 1) {
-                    Utils.addToastToRunningScene('Không thể xây đè lên trụ cũ!');
-                }
                 return;
             } else {
                 cell.getObjectOn().upgrade(cardType);

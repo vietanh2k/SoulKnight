@@ -111,8 +111,7 @@ var GameUI = cc.Layer.extend({
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
-            var tower = this._gameStateManager.playerA._map.deployTower(card_type, position);
-            this.towerUIMap[loc.x][loc.y] = tower;
+            var tower = this._gameStateManager.playerA._map.deployOrUpgradeTower(card_type, position);
             var pos = convertIndexToPos(loc.x, loc.y, 1)
         } else {
             var loc = convertLogicalPosToIndex(position, 2)
@@ -121,7 +120,7 @@ var GameUI = cc.Layer.extend({
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
             this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
-            var tower = this._gameStateManager.playerB._map.deployTower(card_type, position);
+            var tower = this._gameStateManager.playerB._map.deployOrUpgradeTower(card_type, position);
             var pos = convertIndexToPos(loc.x, loc.y, 0)
         }
     },
@@ -689,9 +688,13 @@ var GameUI = cc.Layer.extend({
                 GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = 999;
                 if(!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()){
                     var posLogic = this.screenLoc2Position(intIndex);
-                    testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                        gv.gameClient._userId)]);
-                    this.updateCardSlot(target.numSlot,target.energy)
+                    if(GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
+                        testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
+                            gv.gameClient._userId)]);
+                        this.updateCardSlot(target.numSlot, target.energy);
+                    } else {
+                        canPutTower = false;
+                    }
                 }else{
                     GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = tmp;
                     canPutTower = false;
