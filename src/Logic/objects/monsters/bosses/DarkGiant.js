@@ -1,15 +1,11 @@
 const DarkGiant = Monster.extend({
-    initConfig: function () {
+    initConfig: function (playerState) {
         const config = cf.MONSTER.monster[MONSTER_ID.DARK_GIANT]
-        this.speed = config.speed * MAP_CONFIG.CELL_WIDTH
-        this.health = config.hp
-        this.MaxHealth = config.hp
-        this.energyFromDestroy = config.gainEnergy
-        this.energyWhileImpactMainTower = config.energy
+        this.initFromConfig(playerState, config)
     },
 
-    initAnimation: function () {
-        const duration = 1
+    initAnimation: function (playerState) {
+        const duration = 1.2
         const moveDownAnimId = this.load(res.dark_giant_plist, 'monster_dark_giant_run_%04d.png', 0, 13, duration)
         const moveDownRightAnimId = this.load(res.dark_giant_plist, 'monster_dark_giant_run_%04d.png', 14, 27, duration)
         const moveRightAnimId = this.load(res.dark_giant_plist, 'monster_dark_giant_run_%04d.png', 28, 41, duration)

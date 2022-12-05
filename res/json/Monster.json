@@ -100,7 +100,7 @@
       "category": "boss",
       "class": "land",
       "hp": 800,
-      "speed": 0.125,
+      "speed": 0.25,
       "hitRadius": 0.65,
       "weight": 500,
       "ability": -1,
