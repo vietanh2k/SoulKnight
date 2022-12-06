@@ -680,7 +680,8 @@ var GameUI = cc.Layer.extend({
     /** check đường đi,... xem có đặt trụ được không
      * @param target
      * @param posUI
-     * @return */
+     * @return {void}
+     */
     activeCardTower: function (target, posUI) {
         let canPutTower = true;
         if (isPosInMap(posUI, 1)) {
@@ -695,8 +696,6 @@ var GameUI = cc.Layer.extend({
                         testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
                             gv.gameClient._userId)]);
                         this.updateCardSlot(target.numSlot, target.energy);
-                    } else {
-                        canPutTower = false;
                     }
                 } else {
                     GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = tmp;

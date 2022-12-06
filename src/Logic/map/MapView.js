@@ -373,10 +373,23 @@ var MapView = cc.Class.extend({
         monster.mapId = this.monsters.add(monster)
     },
 
+    /**
+     * Kiểm tra thẻ trụ có dùng được trên ô hay không
+     * @param cardType
+     * @param position
+     * @returns {boolean} true nếu dùng được và ngược lại
+     */
     checkUpgradableTower: function (cardType, position) {
         let cell = this.getCellAtPosition(position);
-        return !(cell.getObjectOn() && cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance);
-
+        if (cell.getObjectOn() && cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
+            Utils.addToastToRunningScene('Không thể nâng cấp bằng trụ khác loại!');
+            return false;
+        }
+        if (cell.getObjectOn() && cell.getObjectOn().level === 3) {
+            Utils.addToastToRunningScene('Trụ đã tiến hóa tối đa!');
+            return false;
+        }
+        return true;
     },
 
     deployOrUpgradeTower: function (cardType, position) {
