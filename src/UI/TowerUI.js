@@ -110,7 +110,7 @@ var TowerUI = cc.Sprite.extend({
         try {
             this.stopAllActions();
             this.part.forEach(part => part.stopAllActions());
-            this.currentActions.forEach(ani => ani.retain());
+            this.currentActions.forEach(anim => anim.retain());
         } catch (e) {
             cc.log('No running action!')
         }

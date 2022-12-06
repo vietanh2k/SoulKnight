@@ -18,8 +18,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [17, 18, 0, 2]
-        this.cardPlayable = [0, 2, 16, 18]
+        this.cardInQueue = [17, 16, 0, 2]
+        this.cardPlayable = [0, 2, 16, 17]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -110,16 +110,18 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
-            this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
-            this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
+            if (this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position)) {
+                this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
+            }
         } else {
             let loc = convertLogicalPosToIndex(position, 2)
             this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = 999
             this._gameStateManager.playerB._map.updatePathForCells()
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-            this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
-            this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
+            if (this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position)) {
+                this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
+            }
         }
     },
 

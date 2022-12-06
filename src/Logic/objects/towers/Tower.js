@@ -179,13 +179,13 @@ var Tower = TowerUI.extend({
 
     },
     checkIsTarget: function (another) {
-        return (another.concept == "monster" || another.concept == "tree");
+        return (another.concept === "monster" || another.concept === "tree");
     },
     getLevel: function () {
         return this.level;
     },
     getRange: function () {
-        return this.getConfig()['stat'][this.getLevel() - 1]['range']
+        return this.getConfig()['stat'][this.getLevel()]['range'];
     },
     getConfig: function () {
         if (_TOWER_CONFIG === undefined || _TOWER_CONFIG == null) {
@@ -203,26 +203,16 @@ var Tower = TowerUI.extend({
         this.active = false;
     },
     upgrade: function (card) {
-        // this.evolute();
-        // // this.level is 1, 2, or 3
-        // if (this.level < 3) {
-        //     this.level += 1;
-        // } else if (this.renderRule === 1) {
-        //     Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-        // }
-
-        if (this.renderRule === 1 && this.level === 3) {
-            Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-            return;
+        if (this.level === 3) {
+            if (this.renderRule === 1) {
+                Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+            }
+            return false;
         }
-        let sequence = cc.sequence(
-            cc.DelayTime(1),
-            cc.CallFunc(() => {
-                this.evolute();
-                this.level += 1;
-            })
-        );
-        this.runAction(sequence);
+
+        this.level += 1;
+        setTimeout(() => {this.evolute()}, 1000);
+        return true;
     },
 });
 

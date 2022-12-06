@@ -386,12 +386,11 @@ var MapView = cc.Class.extend({
         if (cell.getObjectOn()) {
             if (cf.CARD_TYPE[cardType] === undefined) {
                 Utils.addToastToRunningScene('Cannot find card type ' + cardType);
-                return;
+                return false;
             } else if (cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
-                return;
+                return false;
             } else {
-                cell.getObjectOn().upgrade(cardType);
-                return;
+                return cell.getObjectOn().upgrade(cardType);
             }
         }
 
@@ -415,7 +414,7 @@ var MapView = cc.Class.extend({
         GameUI.instance.addChild(tower);
         cell.setObjectOn(tower);
         cc.log("Deploy success");
-        return tower;
+        return true;
     },
 
     deploySpell: function (cardType, position){
