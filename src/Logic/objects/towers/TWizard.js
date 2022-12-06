@@ -54,8 +54,8 @@ var TWizard = Tower.extend({
         this.attackIDP = 9;
         this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
         this.bullet_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
-        GameUI.instance.addChild(this.fire_fx, 900);
-        GameUI.instance.addChild(this.bullet_fx, 900);
+        GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        GameUI.instance.addChild(this.bullet_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
         this.fire_fx.visible = false;
         this.bullet_fx.visible = false;
     },
@@ -68,13 +68,14 @@ var TWizard = Tower.extend({
 
         let newBullet = new TWizardBullet(object, speed, damage, radius, position, this.bullet_fx);
 
+        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
+        newBullet.position.x += gunCenterFromCellCenter.x;
+        newBullet.position.y += gunCenterFromCellCenter.y;
+
         let enemyPosition = new Vec2(object.position.x, object.position.y);
         let direction = enemyPosition.sub(newBullet.position).l2norm();
-
-        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * (-0.3));
-
-        newBullet.position.x += gunCenterFromCellCenter.x + direction.x * MAP_CONFIG.CELL_WIDTH * 0.25;
-        newBullet.position.y += gunCenterFromCellCenter.y + direction.y * MAP_CONFIG.CELL_HEIGHT * 0.25;
+        newBullet.position.x += direction.x * MAP_CONFIG.CELL_WIDTH * 0.25;
+        newBullet.position.y += direction.y * MAP_CONFIG.CELL_HEIGHT * 0.25;
 
         return newBullet;
     },

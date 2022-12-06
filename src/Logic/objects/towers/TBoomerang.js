@@ -49,7 +49,7 @@ var TBoomerang = Tower.extend({
         this.idleIDP = 14;
         this.attackIDP = 11;
         // this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
-        // GameUI.instance.addChild(this.fire_fx, 900);
+        // GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
         // this.fire_fx.visible = false;
     },
 
@@ -61,13 +61,14 @@ var TBoomerang = Tower.extend({
 
         let newBullet = new TCannonBullet(object, speed, damage, radius, position);
 
+        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
+        newBullet.position.x += gunCenterFromCellCenter.x;
+        newBullet.position.y += gunCenterFromCellCenter.y;
+
         let enemyPosition = new Vec2(object.position.x, object.position.y);
         let direction = enemyPosition.sub(newBullet.position).l2norm();
-
-        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * (-0.3));
-
-        newBullet.position.x += gunCenterFromCellCenter.x + direction.x * MAP_CONFIG.CELL_WIDTH * 0.2;
-        newBullet.position.y += gunCenterFromCellCenter.y + direction.y * MAP_CONFIG.CELL_HEIGHT * 0.2;
+        newBullet.position.x += direction.x * MAP_CONFIG.CELL_WIDTH * 0.3;
+        newBullet.position.y += direction.y * MAP_CONFIG.CELL_HEIGHT * 0.3;
 
         return newBullet;
     },

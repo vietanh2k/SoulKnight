@@ -1013,7 +1013,7 @@ var GameUI = cc.Layer.extend({
         let timerBackground = new cc.Sprite(res.timer1);
         timerBackground.setPosition(pos);
         timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
-        this.addChild(timerBackground, 999999, 'timerBackground');
+        this.addChild(timerBackground, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerBackground');
 
         let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
         timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
@@ -1022,7 +1022,7 @@ var GameUI = cc.Layer.extend({
         timerTower.setPercentage(100);
         timerTower.setPosition(pos);
         timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
-        this.addChild(timerTower, 999999, 'timerTower');
+        this.addChild(timerTower, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerTower');
 
         timerTower.runAction(
             cc.sequence(
