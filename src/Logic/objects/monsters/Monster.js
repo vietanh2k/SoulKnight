@@ -248,9 +248,14 @@ const Monster = AnimatedSprite.extend({
 
     route: function (map, distance, prevCell) {
         let currentCell = map.getCellAtPosition(this.position);
+
+        if (!currentCell) return true;
+
         if (currentCell === prevCell) {
             currentCell = currentCell.getNextCell()
         }
+
+        if (!currentCell) return true;
 
         let targetPosition = null
         if (this.targetPosition) {

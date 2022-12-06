@@ -51,8 +51,6 @@ const DarkGiant = Monster.extend({
     },
 
     logicUpdate: function (playerState, dt) {
-        this._super(playerState, dt)
-
         const self = this
 
         this.towers.forEach((tower, i, list) => {
@@ -70,15 +68,19 @@ const DarkGiant = Monster.extend({
             tower.findTargets = darkGiantFakeFindTargets
         })
 
+        this._super(playerState, dt)
     },
 
     destroy: function () {
+        const self = this
+
         this.towers.forEach((tower, i, list) => {
             tower.findTargets = self.towersFindTargets[i]
             tower.release()
         })
         this.towers.length = 0
         this.towersFindTargets.length = 0
+
         this._super()
     },
 })
