@@ -108,7 +108,9 @@ var cf = cf || {};
 // cf.WIDTH = WIDTHSIZE;
 // cf.HEIGHT = HEIGHTSIZE;
 
-cf.TOAST_Z_ORDER = 1000;
+cf.TOAST_Z_ORDER = 1000000000;
+cf.BULLET_LOCAL_Z_ORDER = 10;
+cf.TIMER_LOCAL_Z_ORDER = 1000;
 
 cf.AMOUNT_BTN_GOLD = 500;
 cf.AMOUNT_BTN_GEM = 100;
@@ -225,9 +227,22 @@ cf.CARD_LEVEL = [
     },
 ];
 
-cf.TYPE_TO_NAME = [];
-cf.TYPE_TO_NAME[16] = 'cannon';
-cf.TYPE_TO_NAME[17] = 'wizard';
+cf.TOWER_UI = [];
+cf.TOWER_UI[16] = {
+    name: 'cannon',
+    idleIDP: 15,
+    attackIDP: 9,
+};
+cf.TOWER_UI[17] = {
+    name: 'wizard',
+    idleIDP: 15,
+    attackIDP: 9,
+};
+cf.TOWER_UI[18] = {
+    name: 'boomerang',
+    idleIDP: 14,
+    attackIDP: 11,
+};
 
 // id - 1xx: tower, 2xx: monster, 3xx: spell
 cf.CARD = [

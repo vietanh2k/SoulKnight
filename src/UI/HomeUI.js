@@ -20,8 +20,54 @@ var HomeUI = cc.Layer.extend({
         this.initLobbyHomePlayer();
         this.initLobbyArena();
         this.initChestSlots();
+        // this.addAtlasEndBattle()
+        // this.addAtlasEndBattle2()
 
         this.schedule(this.updateChestTimers, 1);
+    },
+    addAtlasEndBattle: function (resultString) {
+
+        let resultAnimation = new sp.SkeletonAnimation("res/potion/effect_atk_fire.json",
+            "res/potion/effect_atk_fire.atlas")
+        resultAnimation.setPosition(winSize.width / 3*2, winSize.height / 2 + CELLWIDTH * 0.2)
+        // resultAnimation.setAnimation(0, "animation_fireball", true)
+
+        let initSequence = cc.sequence(
+            cc.callFunc(() => resultAnimation.setAnimation(0, "animation_fireball", true)),
+            cc.delayTime(2),
+            cc.callFunc(() => {
+                resultAnimation.setAnimation(0, "animation_full", false);
+            }),
+            cc.delayTime(2.5)
+        ).repeatForever();
+        this.runAction(initSequence)
+        // resultAnimation.runAction(seq)
+        // resultAnimation.runAction(seq2)
+        this.addChild(resultAnimation, 4001)
+    },
+
+    addAtlasEndBattle2: function (resultString) {
+
+        let resultAnimation = new sp.SkeletonAnimation("res/potion/effect_atk_ice.json",
+            "res/potion/effect_atk_ice.atlas")
+        resultAnimation.setPosition(winSize.width / 3, winSize.height / 2 + CELLWIDTH * 0.2)
+        // resultAnimation.setAnimation(0, "animation_fireball", true)
+
+        let initSequence = cc.sequence(
+            // cc.callFunc(() => resultAnimation.setAnimation(0, "animation_ice_ball", true)),
+            cc.delayTime(2),
+            cc.callFunc(() => {
+                resultAnimation.setAnimation(0, "animation_full", true);
+            }),
+            cc.delayTime(3),
+            cc.callFunc(() => {
+                resultAnimation.removeFromParent(true);
+            })
+        );
+        this.runAction(initSequence)
+        // resultAnimation.runAction(seq)
+        // resultAnimation.runAction(seq2)
+        this.addChild(resultAnimation, 4001)
     },
 
     initLobbyHomePlayer: function () {

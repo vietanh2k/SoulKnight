@@ -14,6 +14,7 @@ var MapView = cc.Class.extend({
         this.monsters = new UnorderedList() //[]
         this.towers =  new UnorderedList() //[]
         this.bullets =  new UnorderedList() //[]
+        this.spells =  new UnorderedList() //[]
         this.init();
 
         this.cells = []
@@ -268,6 +269,21 @@ var MapView = cc.Class.extend({
         }
     },
 
+    updateSpell:function (dt) {
+        try {
+            this.spells.forEach((spell, id, list) => {
+                spell.logicUpdate(this._playerState, dt);
+
+                if(spell.isDestroy){
+                    list.remove(id)
+                }
+            })
+        } catch (e) {
+            cc.log(e)
+            cc.log(e.stack)
+        }
+    },
+
     renderMonster: function (rule) {
         /*for (i in this.monsters){
             if(this.rule == 1) {
@@ -314,13 +330,21 @@ var MapView = cc.Class.extend({
             bullet.render(this._playerState)
         })
     },
+    renderSpell: function () {
 
+        const self = this
+
+        this.spells.forEach((spell, id, list) => {
+            spell.render(this._playerState)
+        })
+    },
     update:function (dt) {
         this.constructWorld()
 
         this.updateBullet(dt)
         this.updateTower(dt)
         this.updateMonster(dt)
+        this.updateSpell(dt)
 
         // cc.log('____________update___________________')
         // this.towers.forEach(tw=>{
@@ -336,6 +360,7 @@ var MapView = cc.Class.extend({
         this.renderTower()
         this.renderMonster()
         this.renderBullet(0)
+        this.renderSpell()
     },
 
     /*addMonster:function (){
@@ -349,44 +374,79 @@ var MapView = cc.Class.extend({
         monster.visible = true
     },
 
-    deployTower: function (card, position){
-        cc.log("Deploy tower with " + JSON.stringify(card) + " at location: " + JSON.stringify(position))
-        cc.log("TW size:" + this.towers.length)
-        var tower, is_update= false;
-        var cell = this.getCellAtPosition(position);
-        if(!cell.getObjectOn()){
-            is_update = false;
-        } else {
-            if((cell.getObjectOn().instance=="0" && card==16) || (cell.getObjectOn().instance=="1" && card==17)){
-                is_update = true;
+    /**
+     * Kiểm tra thẻ trụ có dùng được trên ô hay không
+     * @param cardType
+     * @param position
+     * @returns {boolean} true nếu dùng được và ngược lại
+     */
+    checkUpgradableTower: function (cardType, position) {
+        let cell = this.getCellAtPosition(position);
+        if (cell.getObjectOn() && cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
+            Utils.addToastToRunningScene('Không thể nâng cấp bằng trụ khác loại!');
+            return false;
+        }
+        if (cell.getObjectOn() && cell.getObjectOn().level === 3) {
+            Utils.addToastToRunningScene('Trụ đã tiến hóa tối đa!');
+            return false;
+        }
+        return true;
+    },
+
+    deployOrUpgradeTower: function (cardType, position) {
+        cc.log("Deploy or upgrade tower with card type " + JSON.stringify(cardType) + " at position " + JSON.stringify(position));
+        let cell = this.getCellAtPosition(position);
+
+        if (cell.getObjectOn()) {
+            if (cf.CARD_TYPE[cardType] === undefined) {
+                Utils.addToastToRunningScene('Cannot find card type ' + cardType);
+                return false;
+            } else if (cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
+                return false;
             } else {
-                return;
+                return cell.getObjectOn().upgrade(cardType);
             }
         }
-        if(is_update){
-            cell.getObjectOn().upgrade(card);
-            return;
-        }
-        switch (card){
+
+        let tower;
+        switch (cardType) {
+            case 16:
+                tower = new TCannon(cardType, this._playerState, position, this);
+                break;
             case 17:
-                tower = new TWizard(card, this._playerState, position, this);
+                tower = new TWizard(cardType, this._playerState, position, this);
+                break;
+            case 18:
+                tower = new TBoomerang(cardType, this._playerState, position, this);
                 break;
             default:
-                tower = new TCannon(card, this._playerState, position, this);
+                tower = new TCannon(cardType, this._playerState, position, this);
+                cc.log('Default case of switch cardType to create tower!');
+                break;
         }
-
-        //this.towers.push(tower)
-
-        tower.mapId = this.towers.add(tower)
-
+        tower.mapId = this.towers.add(tower);
         GameUI.instance.addChild(tower);
-        cell.setObjectOn(tower)
-        // if(cell.objectOn==undefined || cell.objectOn==null ){
-        //     cell.objectOn = tower;
-        // }
-        cc.log("Deploy success")
+        cell.setObjectOn(tower);
+        cc.log("Deploy success");
+        return true;
+    },
 
-        return tower
+    deploySpell: function (cardType, position){
+        var spell;
+        switch (cardType){
+            case 0:
+                spell = new FireBall(this._playerState, position);
+                break;
+            case 2:
+                spell = new Heal(this._playerState, position);
+                break;
+            default:
+                spell = new FireBall(this._playerState, position);
+        }
+        spell.mapId = this.spells.add(spell);
+        GameUI.instance.addChild(spell);
+
+        return spell;
     },
 
     getCellAtPosition: function (position) {
@@ -408,7 +468,7 @@ var MapView = cc.Class.extend({
 
         return null;
     },
-    
+
     getCell: function (x, y) {
         if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH) {
             return this.cells[x][y];
@@ -425,7 +485,7 @@ var MapView = cc.Class.extend({
 
         return null;
     },
-    
+
     /**Lấy danh sách đối tượng trong 1 range
      * todo: update logic
      * @param {Vec2} objectA: vị trí trên map
@@ -463,7 +523,7 @@ var MapView = cc.Class.extend({
 
         bullet.mapId = this.bullets.add(bullet)
 
-        GameUI.instance.addChild(bullet);
+        GameUI.instance.addChild(bullet, 1000000000);
     },
 
     getStartCell: function () {
@@ -477,7 +537,7 @@ var MapView = cc.Class.extend({
 
         const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
         const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
-        
+
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
 
@@ -488,7 +548,7 @@ var MapView = cc.Class.extend({
                 if (!cell) {
                     continue
                 }
-                
+
                 cell.monsters.forEach((monster, id, list) => {
                     monster.isChosen = false
                     monsters.push(monster)
@@ -515,18 +575,18 @@ var MapView = cc.Class.extend({
 
         const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
         const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
-        
+
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
-        
+
         for (let x = x1; x < x1; x++) {
             for (let y = y1; y < y2; y++) {
                 const cell = self.getCell(x, y)
-                
+
                 if (!cell) {
                     continue
                 }
-                
+
                 const treeStone = cell.getObjectOn()
                 treeStone.isChosen = false
                 treeStone.push(treeStone)

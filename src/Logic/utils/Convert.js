@@ -43,6 +43,7 @@ const getRule = function (target) {
     switch (target.type) {
         case 16:
         case 17:
+        case 18:
         case 2:
         case 5:
         case 7:
@@ -64,3 +65,9 @@ const convertLogicalPosToIndex = function (pos, rule) {
 
 };
 
+const convertPosUIToLocLogic = function (pos, rule) {
+    var corX = (pos.x-winSize.width / 2+WIDTHSIZE / 2)/CELLWIDTH -1
+    var corY = MAP_HEIGHT+ 3.5 - (pos.y - winSize.height / 2 + HEIGHTSIZE / 2)/CELLWIDTH
+    var p = new Vec2(corX,corY)
+    return p
+};

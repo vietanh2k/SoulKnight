@@ -188,13 +188,13 @@ var Tower = TowerUI.extend({
 
     },
     checkIsTarget: function (another) {
-        return (another.concept == "monster" || another.concept == "tree");
+        return (another.concept === "monster" || another.concept === "tree");
     },
     getLevel: function () {
         return this.level;
     },
     getRange: function () {
-        return this.getConfig()['stat'][this.getLevel()]['range']
+        return this.getConfig()['stat'][this.getLevel()]['range'];
     },
     getConfig: function () {
         if (_TOWER_CONFIG === undefined || _TOWER_CONFIG == null) {
@@ -212,14 +212,18 @@ var Tower = TowerUI.extend({
         this.active = false;
     },
     upgrade: function (card) {
-        this.evolute();
-        if (this.level < 3) {
-            this.level += 1;
+        if (this.level === 3) {
+            if (this.renderRule === 1) {
+                Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+            }
+            return false;
         }
-    }
 
-}
-)
+        this.level += 1;
+        setTimeout(() => {this.evolute()}, 1000);
+        return true;
+    },
+});
 
 Tower.TOWER_FACTORY = {}
 

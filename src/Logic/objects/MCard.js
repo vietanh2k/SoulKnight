@@ -9,9 +9,11 @@ var MCard = cc.Sprite.extend({
         this.type = type;
         this.rarity = null;
         this._super('res/card/card_background_4.png');
+        this.concept = null
         this.initCardUI(type);
         this.onTouch = false;
         this.numSlot = -1;
+
         return true;
     },
     
@@ -23,6 +25,7 @@ var MCard = cc.Sprite.extend({
         } else {
             this.rarity = levelConfig.rarity;
         }
+        this.concept = cardInfor.concept
         this.setTexture('res/card/card_background_'+(this.rarity+1)+'.png');
         var cardBorder = new cc.Sprite('res/card/card_border_'+(this.rarity+1)+'.png');
         var cardAvatar = new cc.Sprite(cardInfor.texture)
@@ -73,6 +76,7 @@ var MCard = cc.Sprite.extend({
         this.type = type
         let cardInfor = sharePlayerInfo.collection.find(element => element.type === type);
         let levelConfig = cf.CARD_LEVEL.find(element => element.level === cardInfor.level);
+        this.concept = cardInfor.concept
         this.energy = cardInfor.energy
         this.energy = Math.floor(cardInfor.energy/3)
         if (levelConfig === undefined) {
@@ -86,10 +90,6 @@ var MCard = cc.Sprite.extend({
         this.getChildByName('energy').getChildByName('numEnergy').setString(this.energy)
     },
 
-    updateSpeedVec:function (){
-      
-
-    },
 
 
 

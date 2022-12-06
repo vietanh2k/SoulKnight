@@ -1,0 +1,195 @@
+{
+  "ID": "e20ca469-3e99-49d9-aa24-747bede2ef1b",
+  "Version": "3.10.0.0",
+  "Name": "tooltipGold",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 145,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "common/to.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 46,
+            "Scale9OriginY": 43,
+            "Scale9Width": 48,
+            "Scale9Height": 45,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -70.0,
+            "RightMargin": -70.0,
+            "TopMargin": -65.5,
+            "BottomMargin": -65.5,
+            "Tag": 146,
+            "ActionTag": 2077736164,
+            "Size": {
+              "X": 140.0,
+              "Y": 131.0
+            },
+            "Name": "Image_1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 16,
+            "LabelText": "Vàng",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 2.2806,
+              "Y": 41.9264
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -26.7194,
+            "RightMargin": -31.2806,
+            "TopMargin": -52.9264,
+            "BottomMargin": 30.9264,
+            "Tag": 147,
+            "ActionTag": -1790917394,
+            "Size": {
+              "X": 58.0,
+              "Y": 22.0
+            },
+            "Name": "text1",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 10,
+            "LabelText": "Dùng để nâng\ncấp thẻ và mua\nvật phẩm trong\ncửa hàng",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -1.0417,
+              "Y": 0.2123
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -58.5417,
+            "RightMargin": -56.4583,
+            "TopMargin": -28.2123,
+            "BottomMargin": -27.7877,
+            "Tag": 148,
+            "ActionTag": 923049359,
+            "Size": {
+              "X": 115.0,
+              "Y": 56.0
+            },
+            "Name": "text2",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "common/to.png",
+        "font/SVN-Supercell Magic.ttf"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}

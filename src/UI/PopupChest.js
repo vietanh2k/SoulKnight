@@ -38,7 +38,7 @@ var PopupChest= cc.Node.extend({
         popup.getChildByName('btnBack').addClickEventListener(()=>this.hide())
         popup.getChildByName('button').addClickEventListener(()=>this.requestBuy(chestID))
         if(sharePlayerInfo.gold < parseInt(item.getChildByName('numCost').getString())){
-            popup.getChildByName('button').setColor(new cc.Color(132,117,84,255))
+            popup.getChildByName('button').loadTextureNormal('res/common/common_btn_gray.png');
             popup.getChildByName('button').setTouchEnabled(false)
         }
         popup.setOpacity(20)
@@ -73,6 +73,7 @@ var PopupChest= cc.Node.extend({
         // this.runAction(cc.fadeOut(2))
         // this.visible = false
     },
+
 
 
 
