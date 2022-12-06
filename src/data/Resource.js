@@ -89,8 +89,8 @@ var res = {
     ninja_png : 'res/ninja.png',
     ninja_fx_digging_atlas : 'res/monster/fx/fx_digging.atlas',
     ninja_fx_digging_json : 'res/monster/fx/fx_digging.json',
-    darkgiant_plist : 'res/darkG.plist',
-    darkgiant_png : 'res/darkG.png',
+    //darkgiant_plist : 'res/darkG.plist',
+    //darkgiant_png : 'res/darkG.png',
     highlightPath: 'res/battle/UI/ui_transparent_square.png',
     iconArrow: 'res/battle/UI/ui_icon_arrow.png',
 
@@ -99,9 +99,19 @@ var res = {
     assassin_plist:'res/assassin.plist',
     giant_plist:'res/giant.plist',
     bat_plist:'res/bat.plist',
-    ninja_plist:'res/ninja.plist',
+    //ninja_plist:'res/ninja.plist',
 
     dark_giant_plist:'res/dark_giant.plist',
+    satyr_plist:'res/satyr.plist',
+    satyr_fx_atlas : 'res/monster/fx/fx_boss_demon_tree.atlas',
+    satyr_fx_json : 'res/monster/fx/fx_boss_demon_tree.json',
+
+    desert_king_plist:'res/desert_king.plist',
+    desert_king_fx_atlas : 'res/monster/fx/fx_boss_sand_king.atlas',
+    desert_king_fx_json : 'res/monster/fx/fx_boss_sand_king.json',
+
+    heal_fx_json: 'res/potion/fx_heal.json',
+    heal_fx_atlas: 'res/potion/fx_heal.atlas',
 
 
     explosion2_plist:'res/game/animation/explosion/monster_die_fx.plist',

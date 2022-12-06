@@ -1,7 +1,33 @@
+const darkGiantFakeFindTargets = function (playerState) {
+    const darkGiant = []
+    this.target = [];
+    const self = this;
+    const map = playerState.getMap()
+
+    const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)
+    enemies.forEach((monster, id, list) => {
+        if (monster.constructor === DarkGiant) {
+            darkGiant.push(monster)
+            //cc.log("=================================DARK_GIANT===================================================")
+        }
+
+        self.target.push(monster)
+        //cc.log("=================================MONSTERS===================================================")
+    })
+
+    if (darkGiant.length !== 0) {
+        this.target.length = 0
+        this.target = [...darkGiant]
+    }
+}
+
 const DarkGiant = Monster.extend({
     initConfig: function (playerState) {
         const config = cf.MONSTER.monster[MONSTER_ID.DARK_GIANT]
         this.initFromConfig(playerState, config)
+
+        this.towers = []
+        this.towersFindTargets = []
     },
 
     initAnimation: function (playerState) {
@@ -22,7 +48,39 @@ const DarkGiant = Monster.extend({
             [ moveDownLeftAnimId,         moveUpAnimId,            moveUpRightAnimId   ],
         ]
         this.play(0)
-    }
+    },
+
+    logicUpdate: function (playerState, dt) {
+        this._super(playerState, dt)
+
+        const self = this
+
+        this.towers.forEach((tower, i, list) => {
+            tower.findTargets = self.towersFindTargets[i]
+            tower.release()
+        })
+        this.towers.length = 0
+        this.towersFindTargets.length = 0
+
+        const allTowers = playerState.getMap().towers
+        allTowers.forEach((tower, i, list) => {
+            tower.retain()
+            self.towers.push(tower)
+            self.towersFindTargets.push(tower.findTargets)
+            tower.findTargets = darkGiantFakeFindTargets
+        })
+
+    },
+
+    destroy: function () {
+        this.towers.forEach((tower, i, list) => {
+            tower.findTargets = self.towersFindTargets[i]
+            tower.release()
+        })
+        this.towers.length = 0
+        this.towersFindTargets.length = 0
+        this._super()
+    },
 })
 
 MonsterFactory.prototype.addMonsterInitializer(MONSTER_ID.DARK_GIANT, "darkGiant", false, function (playerState) {

@@ -4,6 +4,9 @@ const NINJA_DIGGING_FADE_IN_TIME = 2
 const NINJA_PERCENT_AXIS_OFFSET = 0.5
 const NINJA_FX_SCALE = 1.3
 
+const NINJA_DIGGING_DOWN_TIME = 1;
+const NINJA_DIGGING_UP_TIME = 1;
+
 const Ninja = Monster.extend({
     initConfig: function (playerState) {
         const config = cf.MONSTER.monster[MONSTER_ID.NINJA]
@@ -13,6 +16,9 @@ const Ninja = Monster.extend({
         this.abilityDistance = this.defaultAbilityDistance
 
         this.isStopedMoving = false
+
+        this.diggingDownTime = 0;
+        this.diggingUpTime = 0;
     },
 
     initAnimation: function () {
@@ -48,7 +54,32 @@ const Ninja = Monster.extend({
     logicUpdate: function (playerState, dt) {
         const self = this
 
-        if (this.isStopedMoving) return
+        if (this.isStopedMoving) {
+            if (this.diggingDownTime > 0) {
+                if ((this.diggingDownTime -= dt) <= 0) {
+                    self.diggingfx.setAnimation(0, 'fx_digging', true)
+                    self.diggingfx.setScale(1.0)
+
+                    //self.opacity = 0
+                    self.diggingfx.visible = true
+
+                    this.isStopedMoving = false
+                }
+            }
+
+            if (this.diggingUpTime > 0) {
+                if ((this.diggingUpTime -= dt) <= 0) {
+                    self.diggingfx.setScale(1.0)
+
+                    self.diggingfx.visible = false
+                    self.concept = "monster"
+
+                    this.isStopedMoving = false
+                }
+            }
+
+            return
+        }
 
         this._super(playerState, dt)
 
@@ -59,7 +90,8 @@ const Ninja = Monster.extend({
 
             //this.runAction(new cc.FadeIn(NINJA_DIGGING_FADE_OUT_TIME))
             this.diggingfx.setAnimation(0, 'fx_dig_up', false)
-            this.diggingfx.setCompleteListener((evt) => {
+            this.diggingUpTime = NINJA_DIGGING_UP_TIME
+            /*this.diggingfx.setCompleteListener((evt) => {
                 //
                 // evt == 0 => animation start
                 // evt == 2 => animation end
@@ -75,7 +107,7 @@ const Ninja = Monster.extend({
                 self.concept = "monster"
 
                 self.isStopedMoving = false
-            })
+            })*/
             this.runAction(new cc.FadeIn(NINJA_DIGGING_FADE_IN_TIME))
             this.diggingfx.setScale(NINJA_FX_SCALE)
         }
@@ -111,6 +143,7 @@ const Ninja = Monster.extend({
             this.concept = null
             this.abilityDistance = this.defaultAbilityDistance
             this.isStopedMoving = true
+            this.diggingDownTime = NINJA_DIGGING_DOWN_TIME;
 
             //this.opacity = 0
 
@@ -138,7 +171,7 @@ const Ninja = Monster.extend({
 
             this.diggingfx.setAnimation(0, 'fx_dig_down', false)
 
-            this.diggingfx.setCompleteListener((evt) => {
+            /*this.diggingfx.setCompleteListener((evt) => {
                 //cc.log("++++++++++++++++++++++++++++++++++++++++++++++++  " + evt)
                 //if (evt !== 2) return
 
@@ -151,7 +184,7 @@ const Ninja = Monster.extend({
 
                 self.opacity = 0
                 self.diggingfx.visible = true
-            })
+            })*/
 
             this.runAction(new cc.FadeOut(NINJA_DIGGING_FADE_OUT_TIME))
 

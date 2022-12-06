@@ -157,10 +157,12 @@ var GameStateManager = cc.Class.extend({
         for (let i = 0; i < monstersId.length; i++) {
             const m1 = this.monsterFactory.getMonster(this.playerA, monstersId[i])
             this.playerA.addMonster(m1)
+            m1.visible = false
             ui.addChild(m1)
 
             const m2 = this.monsterFactory.getMonster(this.playerB, monstersId[i])
             this.playerB.addMonster(m2)
+            m2.visible = false
             ui.addChild(m2)
         }
         if(this.curWave >= MAX_WAVE){

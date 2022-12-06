@@ -346,6 +346,7 @@ var MapView = cc.Class.extend({
 
     addMonster: function (monster) {
         monster.mapId = this.monsters.add(monster)
+        monster.visible = true
     },
 
     deployTower: function (card, position){

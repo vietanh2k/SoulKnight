@@ -135,12 +135,26 @@ var Tower = TowerUI.extend({
             position = new Vec2(this.position.x, this.position.y);
         return new Bullet(object, speed, damage, radius, position);
     },
+
+    findTargets: function (playerState) {
+        this.target = [];
+        const self = this;
+        const map = playerState.getMap()
+        map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
+            if (self.checkIsTarget(obj)) {
+                self.target.push(obj);
+            }
+        })
+    },
+
     /**
      * Update logic (tướng ứng với update trong thiết kế)
      * @param {PlayerState} playerState
      * @param {Number} dt
      * */
     logicUpdate: function (playerState, dt) {
+        const self = this;
+
         if (this.health <= 0) {
             this.active = false;
         }
@@ -155,14 +169,9 @@ var Tower = TowerUI.extend({
 
             } else {
                 this.visible = true;
-                this.target = [];
-                var self = this;
-                const map = playerState.getMap()
-                map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
-                    if (self.checkIsTarget(obj)) {
-                        self.target.push(obj);
-                    }
-                })
+
+                this.findTargets(playerState)
+
                 if (this.attackCoolDown <= 0) {
                     if (this.target.length > 0) {
                         this.status = 'attack'
