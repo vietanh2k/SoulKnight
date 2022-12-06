@@ -50,8 +50,8 @@ var TWizard = Tower.extend({
         this.initTextures[3] = 'res/tower/frame/wizard_3/tower_wizard_idle_3_0000.png';
         this.idlePrefixNames[3] = 'wizard/tower_wizard_idle_3_';
         this.attackPrefixNames[3] = 'wizard/tower_wizard_attack_3_';
-        this.idleIDP = 15;
-        this.attackIDP = 9;
+        this.idleIDP = cf.TOWER_UI[this.card].idleIDP;
+        this.attackIDP = cf.TOWER_UI[this.card].attackIDP;
         this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
         this.bullet_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
         GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
