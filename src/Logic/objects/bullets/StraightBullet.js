@@ -1,47 +1,44 @@
-var _TW_BULLET = _TW_BULLET||[]
 var TWizardBullet = Bullet.extend({
-    name:'wizard',
-    concept:"bullet",
-    ctor: function (target, speed, damage, radius, position, explosion_fx) {
+    name: 'wizard',
+    concept: "bullet",
 
+    ctor: function (target, speed, damage, radius, position, explosionFx) {
         this._super(res.Wizard_Bullet, target, speed, damage, radius, position);
-        this.fx = explosion_fx;
-
-
+        this.fx = explosionFx;
     },
 
-    playExplosionFx: function (){
-        cc.log('playExplosionFx')
-        if(this.fx !=null && this.fx!=undefined){
-            cc.log('this.fx')
+    playExplosionFx: function () {
+        if (this.fx != null) {
             this.fx.setPosition(this.x, this.y);
-            var seq = cc.sequence(
-                cc.callFunc(() => {this.fx.visible = true;}),
-                cc.callFunc(() => this.fx.setAnimation(0, 'hit_target_eff', false))
-                // cc.callFunc(() => GameUI.instance.removeChild(this))
-            );
-            this.runAction(seq);
+            this.fx.visible = true;
+            this.fx.setAnimation(0, 'hit_target_eff', false);
         }
     },
 
-
     explose: function (playerState, pos) {
         const map = playerState.getMap();
-
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
             if (this.canAttack(object)) {
-                //object.health -= this.damage;
-                object.takeDamage(this.damage)
-                object.hurtUI()
+                object.takeDamage(this.damage);
+                object.hurtUI();
             }
         }
         this.isDestroy = true;
         this.active = false;
         this.visible = false;
         this.playExplosionFx();
-        if (this.target && this.target.release) this.target.release()
+        if (this.target && this.target.release) {
+            this.target.release();
+        }
     }
-})
+});
 
+let TBoomerangBullet = Bullet.extend({
+    name: 'boomerang',
+    concept: 'bullet',
 
+    ctor: function (target, speed, damage, radius, position) {
+        this._super(asset.iconGold_png, target, speed, damage, radius, position);
+    },
+});

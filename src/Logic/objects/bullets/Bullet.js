@@ -14,7 +14,7 @@ var Bullet = cc.Sprite.extend({
         this.damage = damage;
         this.radius = radius;
         this.isDestroy = false;
-        this.position = position
+        this.position = position;
         this.active = true;
         this.lastLoc = new Vec2(position.x, position.y);
         this.activate = true;
@@ -31,7 +31,6 @@ var Bullet = cc.Sprite.extend({
         if (this.target.hasOwnProperty("position")) {
             this.lastLoc = new Vec2(this.target.position.x, this.target.position.y);
             return this.target.position;
-
         } else {
             this.lastLoc = new Vec2(this.target.x, this.target.y);
             return this.target;
