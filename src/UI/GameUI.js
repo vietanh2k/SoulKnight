@@ -282,9 +282,9 @@ var GameUI = cc.Layer.extend({
     },
 
     addTimerUI: function () {
-        this.addObjectBackground(res.timer1, 0.9 / 8, 0, 0, 1 / 15)
+        this.addObjectBackground(res.timerBackground_png, 0.9 / 8, 0, 0, 1 / 15)
         // this.addObjectBackground(res.timer2,0.8/8,0,0,1/15)
-        var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer_png));
         timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
         timeBar.setBarChangeRate(cc.p(1, 0));
         timeBar.setMidpoint(cc.p(0.5, 0.5))
@@ -299,9 +299,9 @@ var GameUI = cc.Layer.extend({
         numTime.setTextColor(whiteColor)
         numTime.enableShadow()
         this.addChild(numTime, 0, 'time')
-        var time3 = this.addObjectBackground(res.timer3, 0.9 / 8, 0, 0, 1 / 15)
+        var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
         time3.visible = false
-        var touchLayer = new ccui.Button(res.timer3)
+        var touchLayer = new ccui.Button(res.timerBorder_png)
         touchLayer.setScale(WIDTHSIZE / touchLayer.getContentSize().width * 0.9/8);
         touchLayer.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
         touchLayer.opacity = 0
@@ -831,7 +831,7 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager._timer.resetTime(TIME_WAVE)
         }
         if (this._gameStateManager.canTouchNewWave) {
-            this.getChildByName(res.timer3).visible = true
+            this.getChildByName(res.timerBorder_png).visible = true
         }
     },
 
@@ -839,7 +839,7 @@ var GameUI = cc.Layer.extend({
         * reset trạng thái wave mới
         * */
     getNewWave: function () {
-        this.getChildByName(res.timer3).visible = false
+        this.getChildByName(res.timerBorder_png).visible = false
         this._gameStateManager.updateStateNewWave()
         var strNumWave = this._gameStateManager.curWave + '/' + MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)
@@ -1010,25 +1010,31 @@ var GameUI = cc.Layer.extend({
 
     },
     addTimerBeforeCreateTower: function (pos) {
-        let timerBackground = new cc.Sprite(res.timer1);
+        let timerBackground = new cc.Sprite(res.timerBackground_png);
         timerBackground.setPosition(pos);
         timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
-        this.addChild(timerBackground, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerBackground');
+        this.addChild(timerBackground, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER);
 
-        let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        let timerBorder = new cc.Sprite(res.timerBorder_png);
+        timerBorder.setPosition(pos);
+        timerBorder.setScale(timerBackground.scale);
+        this.addChild(timerBorder, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER);
+
+        let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer_png));
         timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
         timerTower.setBarChangeRate(cc.p(1, 0));
         timerTower.setMidpoint(cc.p(0.5, 0.5));
         timerTower.setPercentage(100);
         timerTower.setPosition(pos);
         timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
-        this.addChild(timerTower, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerTower');
+        this.addChild(timerTower, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER);
 
         timerTower.runAction(
             cc.sequence(
                 cc.progressTo(cf.DROP_TOWER_DELAY, 0),
                 cc.callFunc(() => {
                     timerBackground.removeFromParent(true);
+                    timerBorder.removeFromParent(true);
                 }),
                 cc.removeSelf()
             )

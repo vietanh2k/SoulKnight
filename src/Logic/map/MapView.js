@@ -28,8 +28,6 @@ var MapView = cc.Class.extend({
             this.cells.push(column)
         }
 
-        this.preloadConfig()
-
         this.gateCell = new Cell();
         this.gateCell.setLocation(1, -1)
 
@@ -57,20 +55,9 @@ var MapView = cc.Class.extend({
         this.updatePathForCells()
 
     },
-    preloadConfig: function (){
-        if (_TOWER_CONFIG == undefined || _TOWER_CONFIG == null) {
-            _TOWER_CONFIG = cc.loader.getRes("config/Tower.json");
-        }
-    },
+
     init:function () {
-
         winSize = cc.director.getWinSize();
-
-        // var monster = new Monster(1, this._playerState)
-        // this.monsters.push(monster)
-
-
-
 
         return true;
     },

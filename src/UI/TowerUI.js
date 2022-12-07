@@ -32,16 +32,11 @@ var TowerUI = cc.Sprite.extend({
         SSW: 15,
     },
 
-    /**
-     * Khởi tạo dựa trên Card
-     * @param {MCard} card
-     * @param {int} evolution
-     * */
-    ctor: function (card, evolution) {
-        this.card = card;
+    ctor: function (mcard, evolution) {
+        this.card = mcard;
         this.evolution = evolution;
 
-        this.AnimationSetUp(card);
+        this.AnimationSetUp(mcard);
         this._super(this.initTextures[0]);
 
         this.part = [];
@@ -77,6 +72,7 @@ var TowerUI = cc.Sprite.extend({
         this.initTextures[3] = 'res/tower/frame/' + cf.TOWER_UI[card.type].name + '_3/tower_' + cf.TOWER_UI[card.type].name + '_idle_3_0000.png';
         this.idlePrefixNames[3] = 'tower_' + cf.TOWER_UI[card.type].name + '_idle_3_';
         this.attackPrefixNames[3] = 'tower_' + cf.TOWER_UI[card.type].name + '_attack_3_';
+
         this.idleIDP = cf.TOWER_UI[card.type].idleIDP;
         this.attackIDP = cf.TOWER_UI[card.type].attackIDP;
     },
@@ -98,14 +94,6 @@ var TowerUI = cc.Sprite.extend({
         this.updateDirection(this.dir, true);
     },
 
-    update: function (dt) {
-        // testing scenario: idle, spin around, anti-clockwise, 1.25𝜋 rad/s
-        if (this.dir == null) {
-            this.dir = 0;
-        }
-        let dir = Math.floor(Date.now() / 1000) % 16;
-        this.updateDirection(dir);
-    },
     stopActions: function () {
         try {
             this.stopAllActions();
@@ -115,17 +103,19 @@ var TowerUI = cc.Sprite.extend({
             cc.log('No running action!')
         }
     },
+
     /**
-     * Update Idle animation by direction
+     * Update idle animation by direction
+     *
      * @param {number} dir: direction index
-     * @param {boolean} force: force to change*/
+     * @param {boolean} force: force to change
+     */
     updateDirection: function (dir, force = false) {
         if (this.dir === dir && !force) {
             return;
         }
-        // stop all current action
-        this.stopActions()
-        const action2run = this.idleActions
+        this.stopActions();
+        const action2run = this.idleActions;
         try {
             if (action2run[0] !== null && action2run[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
@@ -144,19 +134,17 @@ var TowerUI = cc.Sprite.extend({
                 this.dir = dir;
             }
         } catch (e) {
-            // cc.log(e)
-            // cc.log('Can not change dir!')
+            Utils.addToastToRunningScene('Error: cannot change dir!');
         }
     },
+
     playAttack: function (dir) {
-        // stop all current action
         this.stopActions();
         let sequence, self = this;
         const action2run = this.attackActions;
         try {
             if (action2run[0] !== null && action2run[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
-                    // this.currentActions[0] = action2run[0][dir];
                     sequence = cc.sequence(
                         action2run[0][dir],
                         cc.callFunc(() => {
@@ -164,12 +152,11 @@ var TowerUI = cc.Sprite.extend({
                         }));
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
-                        // this.currentActions[i] = action2run[i][dir];
                         this.part[i].runAction(action2run[i][dir]);
                     }
                 }
                 if (this.fire_fx != null) {
-                    var seq = cc.sequence(
+                    let seq = cc.sequence(
                         cc.callFunc(() => {
                             this.fire_fx.visible = true;
                         }),
@@ -183,7 +170,7 @@ var TowerUI = cc.Sprite.extend({
                         cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_8', false)),
                         cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_9', false))
                     );
-                    this.runAction(seq)
+                    this.runAction(seq);
                 }
                 let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;
                 this.flippedX = isFlippedX;
@@ -192,8 +179,7 @@ var TowerUI = cc.Sprite.extend({
                 }
             }
         } catch (e) {
-            cc.log(e)
-            cc.log('Can not change dir!')
+            Utils.addToastToRunningScene('Error: cannot change dir!');
         }
 
     },
