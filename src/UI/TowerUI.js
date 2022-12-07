@@ -115,14 +115,14 @@ var TowerUI = cc.Sprite.extend({
             return;
         }
         this.stopActions();
-        const action2run = this.idleActions;
+        const actionToRun = this.idleActions;
         try {
-            if (action2run[0] !== null && action2run[0].length > 0) {
+            if (actionToRun[0] !== null && actionToRun[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
-                    this.currentActions[0] = action2run[0][dir];
+                    this.currentActions[0] = actionToRun[0][dir];
                     this.runAction(this.currentActions[0]);
                     for (let i = 1; i <= this.evolution + 1; i++) {
-                        this.currentActions[i] = action2run[i][dir];
+                        this.currentActions[i] = actionToRun[i][dir];
                         this.part[i].runAction(this.currentActions[i]);
                     }
                 }
@@ -141,36 +141,27 @@ var TowerUI = cc.Sprite.extend({
     playAttack: function (dir) {
         this.stopActions();
         let sequence, self = this;
-        const action2run = this.attackActions;
+        const actionToRun = this.attackActions;
         try {
-            if (action2run[0] !== null && action2run[0].length > 0) {
+            if (actionToRun[0] !== null && actionToRun[0].length > 0) {
                 if (dir !== this.DIR.COINCIDE) {
                     sequence = cc.sequence(
-                        action2run[0][dir],
+                        actionToRun[0][dir],
                         cc.callFunc(() => {
                             self.updateDirection(dir, true)
                         }));
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
-                        this.part[i].runAction(action2run[i][dir]);
+                        this.part[i].runAction(actionToRun[i][dir]);
                     }
                 }
                 if (this.fireFx != null) {
-                    let seq = cc.sequence(
-                        cc.callFunc(() => {
-                            this.fireFx.visible = true;
-                        }),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_1', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_2', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_3', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_4', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_5', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_6', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_7', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_8', false)),
-                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_9', false))
-                    );
-                    this.runAction(seq);
+                    this.fireFx.visible = true;
+                    let animationName = 'attack_' + (Math.min(dir, 16 - dir) + 1);
+                    this.fireFx.setAnimation(0, animationName, false);
+                    if ([this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1) {
+                        this.fireFx.scaleX = -1;
+                    }
                 }
                 let isFlippedX = [this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1;
                 this.flippedX = isFlippedX;
