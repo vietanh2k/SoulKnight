@@ -308,7 +308,9 @@ var GameUI = cc.Layer.extend({
         touchLayer.addClickEventListener(()=>{
             if (GameStateManagerInstance.canTouchNewWave) {
                 testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);
+                cc.log('touch1111111111111111111111')
             }
+
         })
         this.addChild(touchLayer)
     },
@@ -828,6 +830,7 @@ var GameUI = cc.Layer.extend({
         if (time == 0) {
             testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]); //this.addMonsterToBoth()
             this._gameStateManager._timer.resetTime(TIME_WAVE)
+            cc.log('touch2222222222222222222222')
         }
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timer3).visible = true

@@ -2,6 +2,7 @@ MAX_WAVE = 25;
 MAX_ENERGY = 30;
 MAX_VALUE = 99999
 let GameStateManagerInstance = null
+let ActionListInstance = []
 
 var GameStateManager = cc.Class.extend({
     playerA: null,
@@ -31,7 +32,7 @@ var GameStateManager = cc.Class.extend({
         this.curWave = 0
         this.winner = null
         this.isLastWave= false
-
+        this.dem = 0
         this.sumDt = 0;
         this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME
         this.frameCount = 0
@@ -118,6 +119,12 @@ var GameStateManager = cc.Class.extend({
         this.isClearWave()
         this.checkWinner()
         this.frameCount++
+        if(this.dem < ActionListInstance.length) {
+            if (this.frameCount == ActionListInstance[this.dem][0]){
+                ACTION_DESERIALIZER[ActionListInstance[this.dem][1]](ActionListInstance[this.dem][2]).activate(GameStateManagerInstance)
+                this.dem++
+            }
+        }
     },
 
     update:function (ccDt){

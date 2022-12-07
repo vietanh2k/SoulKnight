@@ -168,7 +168,7 @@ CmdBattleActions = fr.OutPacket.extend(
             this.packHeader();
 
             this.putInt(actions.length)
-
+            this.putInt(GameStateManagerInstance.frameCount)
             for (let i = 0; i < actions.length; i++) {
                 this.putInt(actions[i].getActionDataSize())
                 this.putInt(actions[i].getActionCode())
@@ -539,11 +539,14 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
 
         readData: function(){
             const num = this.getInt()
+            const frame = this.getInt()
             cc.log('Activate ' + num + ' action(s) at frame ' + GameStateManagerInstance.frameCount);
             for (let i = 0; i < num; i++) {
                 const size = this.getInt()
                 const actionCode = this.getInt()
-                ACTION_DESERIALIZER[actionCode](this).activate(GameStateManagerInstance)
+                var tmp = [frame,actionCode, this]
+                ActionListInstance.push(tmp)
+                // ACTION_DESERIALIZER[actionCode](this).activate(GameStateManagerInstance)
             }
             GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NORMAL
         }
