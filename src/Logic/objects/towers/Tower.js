@@ -23,8 +23,8 @@ var Tower = TowerUI.extend({
                 this.y = height + y;
             }
             this.isSetPosition = true;
-            if (this.fire_fx != null) {
-                this.fire_fx.setPosition(this.x, this.y);
+            if (this.fireFx != null) {
+                this.fireFx.setPosition(this.x, this.y);
             }
         }
 

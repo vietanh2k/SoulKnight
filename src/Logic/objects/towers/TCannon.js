@@ -18,6 +18,7 @@ var TCannon = Tower.extend({
         this.direction = 0;
 
         this.status = 'idle';
+        this.newDir = 0;
         this.level = 1;
         this.map = map;
         this.isSetPosition = false;
@@ -42,9 +43,9 @@ var TCannon = Tower.extend({
         this.idleIDP = cf.TOWER_UI[this.card].idleIDP;
         this.attackIDP = cf.TOWER_UI[this.card].attackIDP;
 
-        this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
-        GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
-        this.fire_fx.visible = false;
+        this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
+        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        this.fireFx.visible = false;
     },
 
     getNewBullet: function (object) {

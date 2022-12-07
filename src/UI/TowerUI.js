@@ -11,7 +11,7 @@ var TowerUI = cc.Sprite.extend({
     idleActions: null,
     attackActions: null,
     dir: null,
-    fire_fx: null,
+    fireFx: null,
     DIR: {
         COINCIDE: -1,
         S: 0,
@@ -134,7 +134,7 @@ var TowerUI = cc.Sprite.extend({
                 this.dir = dir;
             }
         } catch (e) {
-            Utils.addToastToRunningScene('Error: cannot change dir!');
+            Utils.addToastToRunningScene('Error: cannot update direction!');
         }
     },
 
@@ -155,20 +155,20 @@ var TowerUI = cc.Sprite.extend({
                         this.part[i].runAction(action2run[i][dir]);
                     }
                 }
-                if (this.fire_fx != null) {
+                if (this.fireFx != null) {
                     let seq = cc.sequence(
                         cc.callFunc(() => {
-                            this.fire_fx.visible = true;
+                            this.fireFx.visible = true;
                         }),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_1', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_2', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_3', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_4', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_5', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_6', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_7', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_8', false)),
-                        cc.callFunc(() => this.fire_fx.setAnimation(0, 'attack_9', false))
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_1', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_2', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_3', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_4', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_5', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_6', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_7', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_8', false)),
+                        cc.callFunc(() => this.fireFx.setAnimation(0, 'attack_9', false))
                     );
                     this.runAction(seq);
                 }
@@ -179,7 +179,7 @@ var TowerUI = cc.Sprite.extend({
                 }
             }
         } catch (e) {
-            Utils.addToastToRunningScene('Error: cannot change dir!');
+            Utils.addToastToRunningScene('Error: cannot play attack!');
         }
 
     },

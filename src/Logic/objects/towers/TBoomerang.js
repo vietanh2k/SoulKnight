@@ -18,6 +18,7 @@ var TBoomerang = Tower.extend({
         this.direction = 0;
 
         this.status = 'idle';
+        this.newDir = 0;
         this.level = 1;
         this.map = map;
         this.isSetPosition = false;

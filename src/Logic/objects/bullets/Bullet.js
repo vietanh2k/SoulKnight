@@ -4,24 +4,8 @@ var Bullet = cc.Sprite.extend({
     ctor: function (res, target, speed, damage, radius, position) {
         this._super(res);
 
-        this.mapId = -1
-
+        this.mapId = -1;
         this.reset(target, speed, damage, radius, position);
-
-    },
-
-    getTargetPosition: function () {
-        if (this.target == null || this.target.isDestroy) {
-            return this.lastLoc;
-        }
-        if (this.target.hasOwnProperty("position")) {
-            this.lastLoc = new Vec2(this.target.position.x, this.target.position.y)
-            return this.target.position
-
-        } else {
-            this.lastLoc = new Vec2(this.target.x, this.target.y)
-            return this.target
-        }
     },
 
     reset: function (target, speed, damage, radius, position) {
@@ -39,31 +23,44 @@ var Bullet = cc.Sprite.extend({
             this.target.retain();
         }
     },
+
+    getTargetPosition: function () {
+        if (this.target == null || this.target.isDestroy) {
+            return this.lastLoc;
+        }
+        if (this.target.hasOwnProperty("position")) {
+            this.lastLoc = new Vec2(this.target.position.x, this.target.position.y);
+            return this.target.position;
+
+        } else {
+            this.lastLoc = new Vec2(this.target.x, this.target.y);
+            return this.target;
+        }
+    },
+
     canAttack: function (object) {
         return object.concept === 'monster';
     },
+
     render: function (playerState) {
-        this.renderRule = playerState.rule
-
+        this.renderRule = playerState.rule;
         if (this.renderRule === 1) {
-            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
-            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
-            let height = dy + CELLWIDTH * 5
-            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
-            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
-
-            this.x = dx + x
-            this.y = height - y
+            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2;
+            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3;
+            let height = dy + CELLWIDTH * 5;
+            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH;
+            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH;
+            this.x = dx + x;
+            this.y = height - y;
         } else {
-            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
-            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
-            let height = dy + CELLWIDTH * 6
-            let width = dx + CELLWIDTH * 7
-
-            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
-            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
-
-            this.setPosition(width - x, height + y)
+            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2;
+            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3;
+            let height = dy + CELLWIDTH * 6;
+            let width = dx + CELLWIDTH * 7;
+            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH;
+            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH;
+            this.x = width - x;
+            this.y = height + y;
         }
     },
 
@@ -71,7 +68,6 @@ var Bullet = cc.Sprite.extend({
         if (this.active) {
             let pos = this.getTargetPosition();
             if (!pos || this.target.isDestroy) {
-                // target disappear
                 this.explose(playerState, this.lastLoc);
                 return;
             }
@@ -87,11 +83,9 @@ var Bullet = cc.Sprite.extend({
 
     explose: function (playerState, pos) {
         const map = playerState.getMap();
-
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
             if (this.canAttack(object)) {
-                //object.health -= this.damage;
                 object.takeDamage(this.damage);
                 object.hurtUI();
             }
@@ -101,6 +95,8 @@ var Bullet = cc.Sprite.extend({
         this.visible = false;
 
         GameUI.instance.removeChild(this);
-        if (this.target && this.target.release) this.target.release();
+        if (this.target && this.target.release) {
+            this.target.release();
+        }
     }
 })

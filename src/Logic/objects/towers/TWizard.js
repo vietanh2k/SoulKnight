@@ -18,6 +18,7 @@ var TWizard = Tower.extend({
         this.direction = 0;
 
         this.status = 'idle';
+        this.newDir = 0;
         this.level = 1;
         this.map = map;
         this.isSetPosition = false;
@@ -47,13 +48,13 @@ var TWizard = Tower.extend({
         this.idleIDP = cf.TOWER_UI[this.card].idleIDP;
         this.attackIDP = cf.TOWER_UI[this.card].attackIDP;
 
-        this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
-        GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
-        this.fire_fx.visible = false;
+        this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
+        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        this.fireFx.visible = false;
 
-        this.bullet_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
-        GameUI.instance.addChild(this.bullet_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
-        this.bullet_fx.visible = false;
+        this.bulletFx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
+        GameUI.instance.addChild(this.bulletFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        this.bulletFx.visible = false;
     },
 
     getNewBullet: function (object) {
@@ -62,7 +63,7 @@ var TWizard = Tower.extend({
         let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
         let position = new Vec2(this.position.x, this.position.y);
 
-        let newBullet = new TWizardBullet(object, speed, damage, radius, position, this.bullet_fx);
+        let newBullet = new TWizardBullet(object, speed, damage, radius, position, this.bulletFx);
 
         const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
         newBullet.position.x += gunCenterFromCellCenter.x;
