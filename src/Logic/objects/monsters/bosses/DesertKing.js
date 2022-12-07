@@ -1,3 +1,5 @@
+const DESERT_KING_FX_FATE_OUT_TIME = 1
+
 const DesertKing = Monster.extend({
     initConfig: function (playerState) {
         const config = cf.MONSTER.monster[MONSTER_ID.DESERT_KING]
@@ -23,13 +25,32 @@ const DesertKing = Monster.extend({
         ]
         this.play(0)
 
-        //this.fx = new sp.SkeletonAnimation(res.desert_king_fx_json, res.desert_king_fx_atlas)
-        //this.fx.setAnimation(0, 'fx_back', true)
-        //this.
-        //this.fx.visible = false
-        //this.addChild(this.fx)
+        const self = this
+        this.fx = new sp.SkeletonAnimation(res.desert_king_fx_json, res.desert_king_fx_atlas)
+        this.fx.visible = false
+        this.fx.setCompleteListener(() => {
+            self.fx.visible = false
+        })
+        this.addChild(this.fx, -1)
     },
 
+    takeDamage: function (many, from) {
+        if (Random.rangeInt(1, 2) % 2 === 0) {
+            this.fx.setAnimation(0, 'fx_back', false)
+            this.fx.visible = true
+            this.fx.opacity = 255
+            this.fx.runAction(new cc.FadeOut(DESERT_KING_FX_FATE_OUT_TIME))
+            return
+        }
+
+        this._super(many)
+    },
+
+    render: function (playerState) {
+        this._super(playerState)
+
+        if (this.fx.visible) this.fx.setPosition(this.width / 2.0, this.height / 2.0)
+    },
 
 })
 

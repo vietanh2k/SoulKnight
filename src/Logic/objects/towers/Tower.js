@@ -133,17 +133,22 @@ var Tower = TowerUI.extend({
             damage = this.getConfig()['stat'][this.getLevel()]['damage'],
             radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
             position = new Vec2(this.position.x, this.position.y);
-        return new Bullet(object, speed, damage, radius, position);
+        return new Bullet(object, speed, damage, radius, position, this);
     },
 
     findTargets: function (playerState) {
         this.target = [];
         const self = this;
         const map = playerState.getMap()
-        map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
+        /*map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
             if (self.checkIsTarget(obj)) {
                 self.target.push(obj);
             }
+        })*/
+
+        const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)
+        enemies.forEach((monster) => {
+            if (self.checkIsTarget(monster)) self.target.push(monster)
         })
     },
 

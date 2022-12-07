@@ -5,7 +5,7 @@ const NINJA_PERCENT_AXIS_OFFSET = 0.5
 const NINJA_FX_SCALE = 1.3
 
 const NINJA_DIGGING_DOWN_TIME = 1;
-const NINJA_DIGGING_UP_TIME = 1;
+const NINJA_DIGGING_UP_TIME = 1.5;
 
 const Ninja = Monster.extend({
     initConfig: function (playerState) {
@@ -133,7 +133,7 @@ const Ninja = Monster.extend({
         }*/
     },
 
-    takeDamage: function (many) {
+    takeDamage: function (many, from) {
         const self = this
 
         this.health -= many

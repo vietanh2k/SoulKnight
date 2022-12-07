@@ -126,6 +126,7 @@
         "src/Logic/objects/monsters/bosses/DarkGiant.js",
         "src/Logic/objects/monsters/bosses/Satyr.js",
         "src/Logic/objects/monsters/bosses/DesertKing.js",
+        "src/Logic/objects/monsters/bosses/Iceman.js",
 
 
         "src/config/GameConfig.js",

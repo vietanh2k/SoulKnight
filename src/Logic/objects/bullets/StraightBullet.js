@@ -2,9 +2,9 @@ var _TW_BULLET = _TW_BULLET||[]
 var TWizardBullet = Bullet.extend({
     name:'wizard',
     concept:"bullet",
-    ctor: function (target, speed, damage, radius, position, explosion_fx) {
+    ctor: function (target, speed, damage, radius, position, explosion_fx, fromTower) {
 
-        this._super(res.Wizard_Bullet, target, speed, damage, radius, position);
+        this._super(res.Wizard_Bullet, target, speed, damage, radius, position, fromTower);
         this.fx = explosion_fx;
 
 
@@ -32,7 +32,7 @@ var TWizardBullet = Bullet.extend({
         for (let object of objectList) {
             if (this.canAttack(object)) {
                 //object.health -= this.damage;
-                object.takeDamage(this.damage)
+                object.takeDamage(this.damage, this.fromTower)
                 object.hurtUI()
             }
         }

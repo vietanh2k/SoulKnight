@@ -8,4 +8,5 @@ const MONSTER_ID = {
     DARK_GIANT              : 5,
     SATYR                   : 6,
     DESERT_KING             : 7,
+    ICEMAN                  : 8,
 }

@@ -1,5 +1,6 @@
 const SATYR_HEALTH_EFFECT_NUM_CELLS = 2
 const SATYR_HEALTH_PERCENT = 0.03
+const SATYR_EFFECT_TIME_MAX = 1
 
 const Satyr = Monster.extend({
     initConfig: function (playerState) {
@@ -7,6 +8,8 @@ const Satyr = Monster.extend({
         this.initFromConfig(playerState, config)
 
         this.effectRadius = SATYR_HEALTH_EFFECT_NUM_CELLS * MAP_CONFIG.CELL_WIDTH
+
+        this.effectTime = SATYR_EFFECT_TIME_MAX;
     },
 
     initAnimation: function () {
@@ -43,13 +46,18 @@ const Satyr = Monster.extend({
     },
 
     logicUpdate: function (playerState, dt) {
-        const self = this
-        const map = playerState.getMap()
-        const enemies = map.queryEnemiesCircle(this.position, this.effectRadius)
+        if ((this.effectTime -= dt) <= 0) {
+            const self = this
+            const map = playerState.getMap()
+            const enemies = map.queryEnemiesCircle(this.position, this.effectRadius)
 
-        enemies.forEach((monster, id, list) => {
-            if (monster !== self) monster.recoverHp(monster.health * SATYR_HEALTH_PERCENT)
-        })
+            enemies.forEach((monster, id, list) => {
+                if (monster !== self) monster.recoverHp(monster.health * SATYR_HEALTH_PERCENT)
+            })
+
+            this.effectTime = SATYR_EFFECT_TIME_MAX
+        }
+
 
         this._super(playerState, dt)
     },

@@ -1,12 +1,12 @@
 var Bullet = cc.Sprite.extend({
     fx: null,
     concept: "bullet",
-    ctor: function (res, target, speed, damage, radius, position) {
+    ctor: function (res, target, speed, damage, radius, position, fromTower) {
         this._super(res);
 
         this.mapId = -1
 
-        this.reset(target, speed, damage, radius, position);
+        this.reset(target, speed, damage, radius, position, fromTower);
 
     },
 
@@ -24,7 +24,7 @@ var Bullet = cc.Sprite.extend({
         }
     },
 
-    reset: function (target, speed, damage, radius, position) {
+    reset: function (target, speed, damage, radius, position, fromTower) {
         this.target = target;
         this.speed = speed * cf.BULLET_SPEED_MULTIPLIER;
         this.damage = damage;
@@ -37,6 +37,15 @@ var Bullet = cc.Sprite.extend({
 
         if (this.target && this.target.retain) {
             this.target.retain();
+        }
+
+        if (!fromTower) {
+            throw '[ERROR]: Where is this bullet fire from ????';
+        }
+
+        this.fromTower = fromTower
+        if (this.fromTower && this.fromTower.retain) {
+            this.fromTower.retain();
         }
     },
     canAttack: function (object) {
@@ -92,7 +101,7 @@ var Bullet = cc.Sprite.extend({
         for (let object of objectList) {
             if (this.canAttack(object)) {
                 //object.health -= this.damage;
-                object.takeDamage(this.damage);
+                object.takeDamage(this.damage, this.fromTower);
                 object.hurtUI();
             }
         }
@@ -102,5 +111,9 @@ var Bullet = cc.Sprite.extend({
 
         GameUI.instance.removeChild(this);
         if (this.target && this.target.release) this.target.release();
+
+        if (this.fromTower && this.fromTower.release) {
+            this.fromTower.release();
+        }
     }
 })

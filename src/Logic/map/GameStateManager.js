@@ -66,6 +66,8 @@ var GameStateManager = cc.Class.extend({
             var userId2 = pkg.getInt()
             this.playerA.readFrom(pkg)
         }
+
+        Random.seed(pkg.getInt())
     },
     isClearWave:function (){
         /*if(this.playerA._map.monsters.length == 0){

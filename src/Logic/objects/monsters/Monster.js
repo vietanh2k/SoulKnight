@@ -31,6 +31,7 @@ const Monster = AnimatedSprite.extend({
 
         this.recoverHpFx = new sp.SkeletonAnimation(res.heal_fx_json, res.heal_fx_atlas)
         this.recoverHpFx.visible = false
+        this.recoverHpFx.opacity = 64
         this.addChild(this.recoverHpFx)
 
         return true;
@@ -362,7 +363,7 @@ const Monster = AnimatedSprite.extend({
         this.animationCleanup()
     },
 
-    takeDamage: function (many) {
+    takeDamage: function (many, from) {
         this.health -= many
         if(this.health > this.MaxHealth){
             this.health = this.MaxHealth

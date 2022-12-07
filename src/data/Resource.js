@@ -111,6 +111,8 @@ var res = {
     desert_king_fx_atlas : 'res/monster/fx/fx_boss_sand_king.atlas',
     desert_king_fx_json : 'res/monster/fx/fx_boss_sand_king.json',
 
+    iceman_plist:'res/iceman.plist',
+
     heal_fx_json: 'res/potion/fx_heal.json',
     heal_fx_atlas: 'res/potion/fx_heal.atlas',
 
