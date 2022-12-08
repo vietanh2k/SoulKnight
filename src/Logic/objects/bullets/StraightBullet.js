@@ -39,6 +39,15 @@ let TBoomerangBullet = Bullet.extend({
     concept: 'bullet',
 
     ctor: function (target, speed, damage, radius, position) {
-        this._super(asset.iconGold_png, target, speed, damage, radius, position);
+        this._super(res.TCannon_Bullet, target, speed, damage, radius, position);
+    },
+});
+
+let TOilGunBullet = Bullet.extend({
+    name: 'boomerang',
+    concept: 'bullet',
+
+    ctor: function (target, speed, damage, radius, position) {
+        this._super(res.TCannon_Bullet, target, speed, damage, radius, position);
     },
 });

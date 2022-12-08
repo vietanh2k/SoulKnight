@@ -44,6 +44,10 @@ const getRule = function (target) {
         case 16:
         case 17:
         case 18:
+        case 19:
+        case 20:
+        case 21:
+        case 22:
         case 2:
         case 5:
         case 7:

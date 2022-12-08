@@ -242,6 +242,13 @@ cf.TOWER_UI[18] = {
     name: 'boomerang',
     idleIDP: 14,
     attackIDP: 11,
+    bulletIDP: 10,
+};
+cf.TOWER_UI[19] = {
+    name: 'oil_gun',
+    idleIDP: 14,
+    attackIDP: 11,
+    bulletIDP: 7,
 };
 
 // id - 1xx: tower, 2xx: monster, 3xx: spell

@@ -406,6 +406,9 @@ var MapView = cc.Class.extend({
             case 18:
                 tower = new TBoomerang(cardType, this._playerState, position, this);
                 break;
+            case 19:
+                tower = new TOilGun(cardType, this._playerState, position, this);
+                break;
             default:
                 tower = new TCannon(cardType, this._playerState, position, this);
                 cc.log('Default case of switch cardType to create tower!');
