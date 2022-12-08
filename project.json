@@ -142,6 +142,8 @@
         "src/Logic/objects/towers/TWizard.js",
         "src/Logic/objects/towers/TBoomerang.js",
         "src/Logic/objects/towers/TOilGun.js",
+        "src/Logic/objects/towers/TIceGun.js",
+        "src/Logic/objects/towers/TDamage.js",
 
         "src/Logic/objects/spells/Spell.js",
         "src/Logic/objects/spells/FireBall.js",

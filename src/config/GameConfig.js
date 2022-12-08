@@ -250,6 +250,18 @@ cf.TOWER_UI[19] = {
     attackIDP: 11,
     bulletIDP: 7,
 };
+cf.TOWER_UI[20] = {
+    name: 'ice_gun',
+    idleIDP: 14,
+    attackIDP: 10,
+};
+cf.TOWER_UI[21] = {
+    name: 'damage',
+    idleIDP: 17,
+    attackIDP: 15,
+};
+
+cf.EMPTY_BULLET = -11;
 
 // id - 1xx: tower, 2xx: monster, 3xx: spell
 cf.CARD = [

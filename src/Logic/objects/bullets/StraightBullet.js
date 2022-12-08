@@ -1,4 +1,4 @@
-var TWizardBullet = Bullet.extend({
+let TWizardBullet = Bullet.extend({
     name: 'wizard',
     concept: "bullet",
 

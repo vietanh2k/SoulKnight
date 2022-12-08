@@ -172,8 +172,8 @@ var TowerUI = cc.Sprite.extend({
         } catch (e) {
             Utils.addToastToRunningScene('Error: cannot play attack!');
         }
-
     },
+
     loadAllActions: function () {
         this.loadIdleActions();
         this.loadAttackActions();
