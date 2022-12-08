@@ -175,9 +175,8 @@ var Tower = TowerUI.extend({
             } else {
                 this.visible = true;
 
-                this.findTargets(playerState)
-
                 if (this.attackCoolDown <= 0) {
+                    this.findTargets(playerState)
                     if (this.target.length > 0) {
                         this.status = 'attack'
                         this.fire();
