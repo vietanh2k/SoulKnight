@@ -99,7 +99,10 @@ testnetwork.Connector = cc.Class.extend({
                 // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
                 cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
-
+            case gv.CMD.BATTLE_SEND_CUR_FRAME:
+                // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
+                // cc.log("=========================send frame$$$$$$================================")
+                break
         }
     },
     sendGetUserInfo: function () {

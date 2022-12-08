@@ -31,6 +31,8 @@ gv.CMD.BATTLE_SYNC_START_CONFIRM = 5006;
 gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N = 5007;
 gv.CMD.BATTLE_SYNC_CLIENT_UPDATE_TO_FRAME_N_CONFIRM = 5008;
 
+gv.CMD.BATTLE_SEND_CUR_FRAME = 6002;
+
 testnetwork = testnetwork || {};
 testnetwork.packetMap = {};
 
@@ -169,11 +171,13 @@ CmdBattleActions = fr.OutPacket.extend(
 
             this.putInt(actions.length)
             this.putInt(GameStateManagerInstance.frameCount)
-            cc.log('&&&&& FRAME SEND='+ GameStateManagerInstance.frameCount)
+            this.putInt(GameStateManagerInstance.frameCount)
+            cc.log('&&&&& FRAME CLIENT GUI='+ GameStateManagerInstance.frameCount)
             for (let i = 0; i < actions.length; i++) {
-                this.putInt(actions[i].getActionDataSize())
-                this.putInt(actions[i].getActionCode())
-                actions[i].writeTo(this)
+                this.putInt(actions[i][0].getActionDataSize())
+                this.putInt(actions[i][0].getActionCode())
+                this.putInt(actions[i][1])
+                actions[i][0].writeTo(this)
             }
 
             this.updateSize();
@@ -539,23 +543,27 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
     },
 
         readData: function(){
-            const num = this.getInt()
-            const frame = this.getInt()
+            var num = this.getInt()
+            var frameTriggerAction = this.getInt()
+            FrameMaxForUpdate = this.getInt()
             var self = this
             var dst = new ArrayBuffer(this.byteLength);
             // new Uint8Array(dst).set(new Uint8Array(this));
             // dst.putInt(2);
             // cc.log('sa'+dst.getInt())
-            cc.log('&&&&& FRAME RECIEVE='+ frame)
-            cc.log('Activate ' + num + ' action(s) at frame ' + GameStateManagerInstance.frameCount);
+
             for (let i = 0; i < num; i++) {
                 const size = this.getInt()
                 const actionCode = this.getInt()
-
+                const aaa = this.getInt()
 
                 var arrayPkg = ACTION_DESERIALIZER[actionCode](this)
-                var tmp = [frame,actionCode, arrayPkg]
+                var tmp = [frameTriggerAction,actionCode, arrayPkg]
                 ActionListInstance.push(tmp)
+                cc.log('Activate ' + num + ' action(s)')
+                cc.log('&&&&& FRAME SERVER NHAN ACTION='+ FrameMaxForUpdate)
+                cc.log('&&&&& FRAME TRIGGER ACTION TAI SERVER='+ frameTriggerAction)
+                cc.log('FRAME HIEN TAI CLIENT' + GameStateManagerInstance.frameCount);
             }
             cc.log('222222222222222222222'+ typeof(this))
             cc.log(ActionListInstance.length)
@@ -787,3 +795,16 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
         return new Card(type, level, fragment);
     },
 });
+
+testnetwork.packetMap[gv.CMD.BATTLE_SEND_CUR_FRAME] = fr.InPacket.extend({
+        ctor: function () {
+            this._super();
+        },
+
+        readData: function () {
+
+            FrameMaxForUpdate = this.getInt();
+            // cc.log("============================frame=================="+FrameMaxForUpdate)
+        }
+    }
+);

@@ -3,6 +3,7 @@ MAP_HEIGHT = 5;
 MAP_RATIO = 15 / 8;
 NUM_CARD_PLAYABLE = 4
 ENERGY_DESTROY_CARD = 5
+TICK_FOR_DELAY_TOWER = 60
 
 var GameUI = cc.Layer.extend({
     mapWidth: null,
@@ -110,7 +111,7 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
-            this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
+            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
             var tower = this._gameStateManager.playerA._map.deployOrUpgradeTower(card_type, position);
             var pos = convertIndexToPos(loc.x, loc.y, 1)
         } else {
@@ -119,7 +120,7 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager.playerB._map.updatePathForCells()
             // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-            this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
+            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
             var tower = this._gameStateManager.playerB._map.deployOrUpgradeTower(card_type, position);
             var pos = convertIndexToPos(loc.x, loc.y, 0)
         }
@@ -307,7 +308,9 @@ var GameUI = cc.Layer.extend({
         touchLayer.opacity = 0
         touchLayer.addClickEventListener(()=>{
             if (GameStateManagerInstance.canTouchNewWave) {
-                testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]);
+                // GameStateManagerInstance._timer.resetTime(TIME_WAVE)
+                this.getNewWave()
+                testnetwork.connector.sendActions([[new NextWaveAction(this._gameStateManager.waveCount), 0]]);
                 cc.log('touch1111111111111111111111')
             }
 
@@ -691,8 +694,10 @@ var GameUI = cc.Layer.extend({
                 if(!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()){
                     var posLogic = this.screenLoc2Position(intIndex);
                     if(GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
-                        testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                            gv.gameClient._userId)]);
+                        var loc = convertLogicalPosToIndex(posLogic, 1)
+                        this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1))
+                        testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
+                            gv.gameClient._userId),TICK_FOR_DELAY_TOWER]]);
                         this.updateCardSlot(target.numSlot, target.energy);
                     } else {
                         canPutTower = false;
@@ -727,8 +732,8 @@ var GameUI = cc.Layer.extend({
             var posLogic = this.screenLoc2Position(indexFloat)
             // this._gameStateManager.playerA._map.deploySpell(target.type, posLogic)
 
-            testnetwork.connector.sendActions([new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                gv.gameClient._userId)]);
+            testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
+                gv.gameClient._userId),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
         }
     },
@@ -827,11 +832,6 @@ var GameUI = cc.Layer.extend({
         this.getChildByName('time').setString(time)
         var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
-        if (time == 0) {
-            testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]); //this.addMonsterToBoth()
-            // this._gameStateManager._timer.resetTime(TIME_WAVE)
-            cc.log('touch2222222222222222222222')
-        }
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timer3).visible = true
         }
@@ -842,10 +842,9 @@ var GameUI = cc.Layer.extend({
         * */
     getNewWave: function () {
         this.getChildByName(res.timer3).visible = false
-        this._gameStateManager.updateStateNewWave()
         var strNumWave = this._gameStateManager.curWave + '/' + MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)
-        this._gameStateManager._timer.resetTime(TIME_WAVE)
+        // this._gameStateManager._timer.resetTime(TIME_WAVE)
         //this.callMonster()
     },
 
@@ -865,6 +864,7 @@ var GameUI = cc.Layer.extend({
     },*/
 
     activateNextWave: function (monstersId) {
+        this._gameStateManager.updateStateNewWave()
         this.getNewWave()
         this._gameStateManager.activateNextWave(this, monstersId)
     },

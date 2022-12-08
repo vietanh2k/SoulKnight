@@ -74,7 +74,8 @@ var Tower = TowerUI.extend({
         return this.pendingSecond;
     },
     resetPending: function () {
-        this.pendingSecond = this.getConfig()["buildingTime"] / 1000;
+        // this.pendingSecond = this.getConfig()["buildingTime"] / 1000;
+        this.pendingSecond = 0
         this.max_pending = this.pendingSecond;
     },
     updatePending: function (dt) {
