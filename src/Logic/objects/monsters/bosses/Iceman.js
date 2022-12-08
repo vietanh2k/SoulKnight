@@ -4,6 +4,8 @@
 //    this.___originalLogicUpdate(playerState, dt)
 //}
 
+const ICEMAN_FREEZE_EFFECT_TIME = 3
+
 const Iceman = Monster.extend({
     initConfig: function (playerState) {
         const config = cf.MONSTER.monster[MONSTER_ID.ICEMAN]
@@ -30,19 +32,20 @@ const Iceman = Monster.extend({
         this.play(0)
     },
 
-    takeDamage: function (many, from) {
-        if (from) {
+    takeDamage: function (playerState, many, from) {
+        if (from && Random.rangeInt(1, 10) % 10 === 0) {
             //from.___originalLogicUpdate = from.logicUpdate
             //from.logicUpdate = icemanFakeTowerLogicUpdate
 
             if (from.___freezeEffect) {
                 from.___freezeEffect.reset()
             } else {
-                from.___freezeEffect = new FreezeEffect()
+                from.___freezeEffect = new FreezeEffect(ICEMAN_FREEZE_EFFECT_TIME, from)
+                playerState.getMap().addEffect(from.___freezeEffect)
             }
         }
 
-        this._super(many, from)
+        this._super(playerState, many, from)
     }
 })
 

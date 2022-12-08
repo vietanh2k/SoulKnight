@@ -12,9 +12,10 @@ var MapView = cc.Class.extend({
         this.rule = rule
         this._mapController = new MapController(intArray,this.rule)
         this.monsters = new UnorderedList() //[]
-        this.towers =  new UnorderedList() //[]
-        this.bullets =  new UnorderedList() //[]
-        this.spells =  new UnorderedList() //[]
+        this.towers   = new UnorderedList() //[]
+        this.bullets  = new UnorderedList() //[]
+        this.spells   = new UnorderedList() //[]
+        this.effects  = new UnorderedList()
         this.init();
 
         this.cells = []
@@ -234,6 +235,10 @@ var MapView = cc.Class.extend({
             this.towers = temp*/
 
             this.towers.forEach((tower, id, list) => {
+                if (tower.active === false) {
+                    return
+                }
+
                 tower.logicUpdate(this._playerState, dt)
 
                 if(tower.isDestroy){
@@ -275,6 +280,21 @@ var MapView = cc.Class.extend({
                 spell.logicUpdate(this._playerState, dt);
 
                 if(spell.isDestroy){
+                    list.remove(id)
+                }
+            })
+        } catch (e) {
+            cc.log(e)
+            cc.log(e.stack)
+        }
+    },
+
+    updateEffect: function (dt) {
+        try {
+            this.effects.forEach((effect, id, list) => {
+                effect.logicUpdate(this._playerState, dt);
+
+                if (effect.isDestroyed){
                     list.remove(id)
                 }
             })
@@ -341,6 +361,7 @@ var MapView = cc.Class.extend({
     update:function (dt) {
         this.constructWorld()
 
+        this.updateEffect(dt)
         this.updateBullet(dt)
         this.updateTower(dt)
         this.updateMonster(dt)
@@ -372,6 +393,10 @@ var MapView = cc.Class.extend({
     addMonster: function (monster) {
         monster.mapId = this.monsters.add(monster)
         monster.visible = true
+    },
+
+    addEffect: function (effect) {
+        effect.mapId = this.effects.add(effect)
     },
 
     /**
@@ -560,6 +585,44 @@ var MapView = cc.Class.extend({
         monsters.forEach((monster, id, list) => {
             if (monster.isChosen === false
                 && Circle.isCirclesOverlapped(monster.position, monster.hitRadius, pos, radius)) {
+                ret.push(monster)
+                monster.isChosen = true
+            }
+        })
+
+        return ret
+    },
+
+    // return all monsters that position in circle
+    queryEnemiesCircleWithoutOverlap: function (pos, radius) {
+        const self = this
+        const monsters = []
+
+        const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
+        const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
+
+        for (let x = x1; x <= x2; x++) {
+            for (let y = y1; y <= y2; y++) {
+                const cell = self.getCell(x, y)
+
+                if (!cell) {
+                    continue
+                }
+
+                cell.monsters.forEach((monster, id, list) => {
+                    monster.isChosen = false
+                    monsters.push(monster)
+                })
+            }
+        }
+
+        const ret = []
+        monsters.forEach((monster, id, list) => {
+            if (monster.isChosen === false
+                && monster.position.sub(pos).length() <= radius) {
                 ret.push(monster)
                 monster.isChosen = true
             }

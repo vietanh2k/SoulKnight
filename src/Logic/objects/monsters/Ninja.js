@@ -133,7 +133,7 @@ const Ninja = Monster.extend({
         }*/
     },
 
-    takeDamage: function (many, from) {
+    takeDamage: function (playerState, many, from) {
         const self = this
 
         this.health -= many

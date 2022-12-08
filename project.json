@@ -96,9 +96,9 @@
         "src/UI/GoldFly.js",
         "src/Logic/map/MapView.js",
         "src/Logic/map/MapController.js",
-        "src/Logic/map/GameStateManager.js",
-        "src/Logic/map/PlayerState.js",
-        "src/Logic/map/Timer.js",
+        "src/Logic/GameStateManager.js",
+        "src/Logic/PlayerState.js",
+        "src/Logic/Timer.js",
 
         "src/Logic/objects/MCard.js",
 
@@ -112,6 +112,11 @@
         "src/Logic/utils/Random.js",
         "src/Logic/utils/Mat3.js",
         "src/Logic/utils/Vec2.js",
+
+
+        "src/Logic/objects/effects/Effect.js",
+        "src/Logic/objects/effects/FreezeEffect.js",
+        "src/Logic/objects/effects/DesertKingEffect.js",
 
 
         "src/Logic/objects/monsters/MONSTER_ID.js",

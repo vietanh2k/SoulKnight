@@ -1,9 +1,19 @@
 const DESERT_KING_FX_FATE_OUT_TIME = 1
+const DESERT_KING_EFFECT_NUM_CELLS = 1.5
+
+const desertKingTakeDamageProxy = function (playerState, many, from) {
+    if (Random.rangeInt(1, 2) % 2 === 0) {
+        return
+    }
+    this.___originalTakeDamage(playerState, many, from)
+}
 
 const DesertKing = Monster.extend({
     initConfig: function (playerState) {
         const config = cf.MONSTER.monster[MONSTER_ID.DESERT_KING]
         this.initFromConfig(playerState, config)
+
+        this.effectRadius = DESERT_KING_EFFECT_NUM_CELLS * MAP_CONFIG.CELL_WIDTH
     },
 
     initAnimation: function () {
@@ -27,14 +37,40 @@ const DesertKing = Monster.extend({
 
         const self = this
         this.fx = new sp.SkeletonAnimation(res.desert_king_fx_json, res.desert_king_fx_atlas)
-        this.fx.visible = false
+        /*this.fx.visible = false
         this.fx.setCompleteListener(() => {
             self.fx.visible = false
-        })
+        })*/
+        this.fx.setAnimation(0, 'fx_back', true)
+        this.fx.opacity = 128
+        this.fx.setScale(1.2)
         this.addChild(this.fx, -1)
     },
 
-    takeDamage: function (many, from) {
+
+    fakeTakeDamageForMonsters: function (playerState, monsters) {
+        const self = this
+        monsters.forEach((monster, i) => {
+            if (monster !== self && monster.takeDamage !== desertKingTakeDamageProxy) {
+                monster.___originalTakeDamage = monster.takeDamage
+                monster.takeDamage = desertKingTakeDamageProxy
+                playerState.getMap().addEffect(new DesertKingEffect(monster, self))
+            }
+        })
+    },
+
+    logicUpdate: function (playerState, dt) {
+        //this.restoreTakeDamageForEffectedMonsters()
+
+        if (Random.rangeInt(1, 10) % 10 === 0) {
+            const monsters = playerState.getMap().queryEnemiesCircle(this.position, this.effectRadius)
+            this.fakeTakeDamageForMonsters(playerState, monsters)
+        }
+
+        this._super(playerState, dt)
+    },
+
+    /*takeDamage: function (many, from) {
         if (Random.rangeInt(1, 2) % 2 === 0) {
             this.fx.setAnimation(0, 'fx_back', false)
             this.fx.visible = true
@@ -44,7 +80,7 @@ const DesertKing = Monster.extend({
         }
 
         this._super(many)
-    },
+    },*/
 
     render: function (playerState) {
         this._super(playerState)

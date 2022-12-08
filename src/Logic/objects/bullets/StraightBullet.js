@@ -32,7 +32,7 @@ var TWizardBullet = Bullet.extend({
         for (let object of objectList) {
             if (this.canAttack(object)) {
                 //object.health -= this.damage;
-                object.takeDamage(this.damage, this.fromTower)
+                object.takeDamage(playerState, this.damage, this.fromTower)
                 object.hurtUI()
             }
         }

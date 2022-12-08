@@ -363,7 +363,7 @@ const Monster = AnimatedSprite.extend({
         this.animationCleanup()
     },
 
-    takeDamage: function (many, from) {
+    takeDamage: function (playerState, many, from) {
         this.health -= many
         if(this.health > this.MaxHealth){
             this.health = this.MaxHealth

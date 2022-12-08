@@ -1,4 +1,4 @@
-const SATYR_HEALTH_EFFECT_NUM_CELLS = 2
+const SATYR_HEALTH_EFFECT_NUM_CELLS = 1.5
 const SATYR_HEALTH_PERCENT = 0.03
 const SATYR_EFFECT_TIME_MAX = 1
 
@@ -34,6 +34,7 @@ const Satyr = Monster.extend({
         this.healthFx1 = new sp.SkeletonAnimation(res.satyr_fx_json, res.satyr_fx_atlas)
         this.healthFx1.setAnimation(0, 'fx_back', false)
         this.healthFx1.opacity = 64
+        this.healthFx1.setScale(1.2)
         this.addChild(this.healthFx1, -1)
 
         const self = this
@@ -49,7 +50,7 @@ const Satyr = Monster.extend({
         if ((this.effectTime -= dt) <= 0) {
             const self = this
             const map = playerState.getMap()
-            const enemies = map.queryEnemiesCircle(this.position, this.effectRadius)
+            const enemies = map.queryEnemiesCircleWithoutOverlap(this.position, this.effectRadius)
 
             enemies.forEach((monster, id, list) => {
                 if (monster !== self) monster.recoverHp(monster.health * SATYR_HEALTH_PERCENT)
