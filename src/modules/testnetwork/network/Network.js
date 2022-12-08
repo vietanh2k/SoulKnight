@@ -153,7 +153,7 @@ testnetwork.Connector = cc.Class.extend({
 
     sendSyncStartConfirm: function (syncN) {
         cc.log("sendSyncStartConfirm");
-        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        // GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
         const pk = this.gameClient.getOutPacket(CmdBattleSyncStartConfirm);
         pk.pack(syncN, GameStateManagerInstance.frameCount);
         this.gameClient.sendPacket(pk);
@@ -167,7 +167,7 @@ testnetwork.Connector = cc.Class.extend({
             GameStateManagerInstance.frameUpdate()
         }
 
-        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        // GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
         const pk = this.gameClient.getOutPacket(CmdBattleSyncClientUpdateToFrameNConfirm);
         pk.pack(syncN);
         this.gameClient.sendPacket(pk);
@@ -176,7 +176,7 @@ testnetwork.Connector = cc.Class.extend({
     sendActions: function (actions) {
         cc.log('send actions: ' + JSON.stringify(actions));
         // send actions: [{"card_type":16,"x":125,"y":175,"uid":2}]
-        GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
+        // GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NO_UPDATE
         const pk = this.gameClient.getOutPacket(CmdBattleActions);
         pk.pack(actions);
         this.gameClient.sendPacket(pk);

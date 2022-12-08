@@ -26,6 +26,7 @@ var GameStateManager = cc.Class.extend({
         this.playerA = new PlayerState(1)
         this.playerB = new PlayerState(2)
         this.monsterFactory = new MonsterFactory()
+        this.xid = null
         this.readFrom(pkg)
         this._timer = new Timer(this)
         this.canTouchNewWave = false
@@ -41,6 +42,7 @@ var GameStateManager = cc.Class.extend({
         this.updateToFrameN = 0
 
         this.waveCount = 0
+
 
     },
     init:function () {
@@ -59,10 +61,12 @@ var GameStateManager = cc.Class.extend({
     readFrom:function (pkg){
         var userId1 = pkg.getInt()
         if(userId1 == gv.gameClient._userId){
+            this.xid = 1
             this.playerA.readFrom(pkg)
             var userId2 = pkg.getInt()
             this.playerB.readFrom(pkg)
         }else{
+            this.xid = 2
             this.playerB.readFrom(pkg)
             var userId2 = pkg.getInt()
             this.playerA.readFrom(pkg)
@@ -114,23 +118,32 @@ var GameStateManager = cc.Class.extend({
     },
 
     frameUpdate: function () {
-        this.playerA.update(this.dt)
-        this.playerB.update(this.dt)
-        this.isClearWave()
-        this.checkWinner()
-        this.frameCount++
+        this.frameUpdateNormal()
         if(this.dem < ActionListInstance.length) {
+            if(this.frameCount < ActionListInstance[this.dem][0]-10){
+                for(var i= this.frameCount; i<ActionListInstance[this.dem][0]-6; i++){
+                    this.frameUpdateNormal()
+                }
+            }
             if (this.frameCount == ActionListInstance[this.dem][0]){
-                ACTION_DESERIALIZER[ActionListInstance[this.dem][1]](ActionListInstance[this.dem][2]).activate(GameStateManagerInstance)
+                ACTION_DESERIALIZER_FROM_ARR[ActionListInstance[this.dem][1]](ActionListInstance[this.dem][2]).activate(GameStateManagerInstance)
                 this.dem++
             }
         }
     },
+    frameUpdateNormal: function () {
+        this.playerA.update(this.dt)
+        this.playerB.update(this.dt)
+        this._timer.updateRealTime(this.dt)
+        this.isClearWave()
+        this.checkWinner()
+        this.frameCount++
+    },
 
     update:function (ccDt){
-        if (this.updateType == this.UPDATE_TYPE_NO_UPDATE) {
-            return
-        }
+        // if (this.updateType == this.UPDATE_TYPE_NO_UPDATE) {
+        //     return
+        // }
 
         /*if (this.updateType == this.UPDATE_TYPE_UPDATE_TO_FRAME_N) {
             let remainFrame = this.updateToFrameN - this.frameCount
@@ -140,13 +153,13 @@ var GameStateManager = cc.Class.extend({
             return
         }*/
 
-        if (this.updateType == this.UPDATE_TYPE_NORMAL) {
+        // if (this.updateType == this.UPDATE_TYPE_NORMAL) {
             this.sumDt += ccDt;
             while (this.sumDt > this.dt) {
                 this.frameUpdate()
                 this.sumDt -= this.dt
             }
-        }
+        // }
     },
 
     getNextWaveMonstersId: function () {

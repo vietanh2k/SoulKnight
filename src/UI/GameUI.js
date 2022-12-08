@@ -822,14 +822,14 @@ var GameUI = cc.Layer.extend({
     },
 
     updateTimer: function (dt) {
-        this._gameStateManager._timer.updateRealTime(dt)
+        // this._gameStateManager._timer.updateRealTime(dt)
         var time = Math.floor(this._gameStateManager._timer.curTime + 0.5)
         this.getChildByName('time').setString(time)
         var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (time == 0) {
             testnetwork.connector.sendActions([new NextWaveAction(this._gameStateManager.waveCount)]); //this.addMonsterToBoth()
-            this._gameStateManager._timer.resetTime(TIME_WAVE)
+            // this._gameStateManager._timer.resetTime(TIME_WAVE)
             cc.log('touch2222222222222222222222')
         }
         if (this._gameStateManager.canTouchNewWave) {

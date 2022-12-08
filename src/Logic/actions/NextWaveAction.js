@@ -34,14 +34,34 @@ const NextWaveAction = cc.Class.extend({
 })
 
 NextWaveAction.deserializer = function (pkg) {
+    let tmp = []
     const N = pkg.getInt()
     const num = pkg.getInt()
+    tmp.push(N)
+    tmp.push(num)
+    cc.log("======================= Wave monster count: " + num)
+
+    const monstersId = []
+    for (let i = 0; i < num; i++) {
+        var tmp2 = pkg.getInt()
+        // monstersId.push(tmp2)
+        tmp.push(tmp2)
+    }
+    // var dst = new ArrayBuffer(this.byteLength);
+
+
+    return tmp
+}
+
+NextWaveAction.deserializerArr = function (arrPkg) {
+    const N = arrPkg[0]
+    const num = arrPkg[1]
 
     cc.log("======================= Wave monster count: " + num)
 
     const monstersId = []
     for (let i = 0; i < num; i++) {
-        monstersId.push(pkg.getInt())
+        monstersId.push(arrPkg[2+i])
     }
 
     return new NextWaveAction(N, monstersId)

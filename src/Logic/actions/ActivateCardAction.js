@@ -28,6 +28,16 @@ const ActivateCardAction = cc.Class.extend({
 })
 
 ActivateCardAction.deserializer = function (pkg) {
+    let tmp = []
     const card_type = pkg.getByte(), x = pkg.getInt(), y = pkg.getInt(), uid = pkg.getInt();
+    tmp.push(card_type)
+    tmp.push(x)
+    tmp.push(y)
+    tmp.push(uid)
+    return tmp
+}
+
+ActivateCardAction.deserializerArr = function (pkgArr) {
+    const card_type = pkgArr[0], x = pkgArr[1], y = pkgArr[2], uid = pkgArr[3];
     return new ActivateCardAction(card_type, x, y, uid);
 }

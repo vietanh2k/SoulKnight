@@ -169,6 +169,7 @@ CmdBattleActions = fr.OutPacket.extend(
 
             this.putInt(actions.length)
             this.putInt(GameStateManagerInstance.frameCount)
+            cc.log('&&&&& FRAME SEND='+ GameStateManagerInstance.frameCount)
             for (let i = 0; i < actions.length; i++) {
                 this.putInt(actions[i].getActionDataSize())
                 this.putInt(actions[i].getActionCode())
@@ -540,14 +541,24 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
         readData: function(){
             const num = this.getInt()
             const frame = this.getInt()
+            var self = this
+            var dst = new ArrayBuffer(this.byteLength);
+            // new Uint8Array(dst).set(new Uint8Array(this));
+            // dst.putInt(2);
+            // cc.log('sa'+dst.getInt())
+            cc.log('&&&&& FRAME RECIEVE='+ frame)
             cc.log('Activate ' + num + ' action(s) at frame ' + GameStateManagerInstance.frameCount);
             for (let i = 0; i < num; i++) {
                 const size = this.getInt()
                 const actionCode = this.getInt()
-                var tmp = [frame,actionCode, this]
+
+
+                var arrayPkg = ACTION_DESERIALIZER[actionCode](this)
+                var tmp = [frame,actionCode, arrayPkg]
                 ActionListInstance.push(tmp)
-                // ACTION_DESERIALIZER[actionCode](this).activate(GameStateManagerInstance)
             }
+            cc.log('222222222222222222222'+ typeof(this))
+            cc.log(ActionListInstance.length)
             GameStateManagerInstance.updateType = GameStateManagerInstance.UPDATE_TYPE_NORMAL
         }
     }

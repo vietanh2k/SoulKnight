@@ -1,4 +1,4 @@
-TIME_WAVE= 20
+TIME_WAVE= 25
 var Timer = cc.Class.extend({
     curTime:0,
     cellWidth: null,
