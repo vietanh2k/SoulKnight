@@ -7,7 +7,7 @@ var TCannon = Tower.extend({
         this.active = true;
         this.visible = false;
 
-        this.attackCoolDown = 0;
+        this.attackCooldown = 0;
         this.instance = "0";
         this.target = [];
         this.position = position;
@@ -40,8 +40,8 @@ var TCannon = Tower.extend({
         this.initTextures[3] = 'res/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
         this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
         this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
-        this.idleIDP = cf.TOWER_UI[this.card].idleIDP;
-        this.attackIDP = cf.TOWER_UI[this.card].attackIDP;
+        this.idleIPD = cf.TOWER_UI[this.card].idleIPD;
+        this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
 
         this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
         GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);

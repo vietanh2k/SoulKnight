@@ -7,7 +7,7 @@ let TDamage = Tower.extend({
         this.active = true;
         this.visible = false;
 
-        this.attackCoolDown = 0;
+        this.attackCooldown = 0;
         this.instance = "5";
         this.target = [];
         this.position = position;
@@ -41,8 +41,8 @@ let TDamage = Tower.extend({
         this.idlePrefixNames[3] = 'tower_damage_idle_3_';
         this.attackPrefixNames[3] = 'tower_damage_attack_3_';
 
-        this.idleIDP = cf.TOWER_UI[this.card].idleIDP;
-        this.attackIDP = cf.TOWER_UI[this.card].attackIDP;
+        this.idleIPD = cf.TOWER_UI[this.card].idleIPD;
+        this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
     },
 
     loadIdleActions: function () {
@@ -50,8 +50,8 @@ let TDamage = Tower.extend({
         for (let j = 0; j < 4; j++) {
             this.idleActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(0, this.idleIDP, this.idlePrefixNames[j]);
-                this.idleActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.idleIDP)).repeatForever());
+                let frame = this.loadAnimation(0, this.idleIPD, this.idlePrefixNames[j]);
+                this.idleActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.idleIPD)).repeatForever());
                 this.idleActions[j][i].retain();
             }
         }
@@ -62,8 +62,8 @@ let TDamage = Tower.extend({
         for (let j = 0; j < 4; j++) {
             this.attackActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(0, this.attackIDP, this.attackPrefixNames[j]);
-                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.attackIDP)));
+                let frame = this.loadAnimation(0, this.attackIPD, this.attackPrefixNames[j]);
+                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.attackIPD)));
                 this.attackActions[j][i].retain();
             }
         }

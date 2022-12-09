@@ -6,8 +6,8 @@ var TowerUI = cc.Sprite.extend({
     actions: null,
     idlePrefixNames: null,
     attackPrefixNames: null,
-    idleIDP: null,
-    attackIDP: null,
+    idleIPD: null,
+    attackIPD: null,
     idleActions: null,
     attackActions: null,
     dir: null,
@@ -73,8 +73,8 @@ var TowerUI = cc.Sprite.extend({
         this.idlePrefixNames[3] = 'tower_' + cf.TOWER_UI[card.type].name + '_idle_3_';
         this.attackPrefixNames[3] = 'tower_' + cf.TOWER_UI[card.type].name + '_attack_3_';
 
-        this.idleIDP = cf.TOWER_UI[card.type].idleIDP;
-        this.attackIDP = cf.TOWER_UI[card.type].attackIDP;
+        this.idleIPD = cf.TOWER_UI[card.type].idleIPD;
+        this.attackIPD = cf.TOWER_UI[card.type].attackIPD;
     },
 
     evolute: function () {
@@ -184,8 +184,8 @@ var TowerUI = cc.Sprite.extend({
         for (let j = 0; j < 4; j++) {
             this.idleActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(Math.min(i, 16 - i) * this.idleIDP, this.idleIDP, this.idlePrefixNames[j]);
-                this.idleActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.idleIDP)).repeatForever());
+                let frame = this.loadAnimation(Math.min(i, 16 - i) * this.idleIPD, this.idleIPD, this.idlePrefixNames[j]);
+                this.idleActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.idleIPD)).repeatForever());
                 this.idleActions[j][i].retain();
             }
         }
@@ -196,8 +196,8 @@ var TowerUI = cc.Sprite.extend({
         for (let j = 0; j < 4; j++) {
             this.attackActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(Math.min(i, 16 - i) * this.attackIDP, this.attackIDP, this.attackPrefixNames[j]);
-                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.attackIDP)));
+                let frame = this.loadAnimation(Math.min(i, 16 - i) * this.attackIPD, this.attackIPD, this.attackPrefixNames[j]);
+                this.attackActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.attackIPD)));
                 this.attackActions[j][i].retain();
             }
         }

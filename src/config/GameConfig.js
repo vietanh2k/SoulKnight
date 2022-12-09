@@ -230,35 +230,35 @@ cf.CARD_LEVEL = [
 cf.TOWER_UI = [];
 cf.TOWER_UI[16] = {
     name: 'cannon',
-    idleIDP: 15,
-    attackIDP: 9,
+    idleIPD: 15,
+    attackIPD: 9,
 };
 cf.TOWER_UI[17] = {
     name: 'wizard',
-    idleIDP: 15,
-    attackIDP: 9,
+    idleIPD: 15,
+    attackIPD: 9,
 };
 cf.TOWER_UI[18] = {
     name: 'boomerang',
-    idleIDP: 14,
-    attackIDP: 11,
-    bulletIDP: 10,
+    idleIPD: 14,
+    attackIPD: 11,
+    bulletIPD: 10,
 };
 cf.TOWER_UI[19] = {
     name: 'oil_gun',
-    idleIDP: 14,
-    attackIDP: 11,
-    bulletIDP: 7,
+    idleIPD: 14,
+    attackIPD: 11,
+    bulletIPD: 7,
 };
 cf.TOWER_UI[20] = {
     name: 'ice_gun',
-    idleIDP: 14,
-    attackIDP: 10,
+    idleIPD: 14,
+    attackIPD: 10,
 };
 cf.TOWER_UI[21] = {
     name: 'damage',
-    idleIDP: 17,
-    attackIDP: 15,
+    idleIPD: 17,
+    attackIPD: 15,
 };
 
 cf.EMPTY_BULLET = -11;

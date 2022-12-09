@@ -128,14 +128,14 @@ var Tower = TowerUI.extend({
                         self.target.push(obj);
                     }
                 });
-                if (this.attackCoolDown <= 0) {
+                if (this.attackCooldown <= 0) {
                     if (this.target.length > 0) {
                         this.status = 'attack'
                         this.fire();
-                        this.attackCoolDown = self.getAttackSpeed();
+                        this.attackCooldown = self.getAttackSpeed();
                     }
                 } else {
-                    this.attackCoolDown -= dt;
+                    this.attackCooldown -= dt;
                 }
             }
         }

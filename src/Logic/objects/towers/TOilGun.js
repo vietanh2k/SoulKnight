@@ -7,7 +7,7 @@ var TOilGun = Tower.extend({
         this.active = true;
         this.visible = false;
 
-        this.attackCoolDown = 0;
+        this.attackCooldown = 0;
         this.instance = "3";
         this.target = [];
         this.position = position;
@@ -41,8 +41,8 @@ var TOilGun = Tower.extend({
         this.idlePrefixNames[3] = 'tower_oil_gun_idle_3_';
         this.attackPrefixNames[3] = 'tower_oil_gun_attack_3_';
 
-        this.idleIDP = cf.TOWER_UI[this.card].idleIDP;
-        this.attackIDP = cf.TOWER_UI[this.card].attackIDP;
+        this.idleIPD = cf.TOWER_UI[this.card].idleIPD;
+        this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
     },
 
     getNewBullet: function (object) {
