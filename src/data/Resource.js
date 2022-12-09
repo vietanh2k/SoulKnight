@@ -116,7 +116,7 @@ var res = {
     TWizard_plit: 'res/tower/frame/wizard/TWz.plist',
     Wizard_Bullet: 'res/tower/frame/wizard/tower_wizard_bullet_0000.png',
     TCannon_Bullet: 'res/tower/frame/cannon/tower_cannon_bullet_0000.png',
-
+    TIceGun_Bullet: 'res/tower/frame/ice_gun/tower_ice_gun_bullet_0000.png',
 };
 
 var g_resources = [

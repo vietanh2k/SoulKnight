@@ -108,6 +108,10 @@ Utils.loadCardConfig = function () {
     });
 };
 
+Utils.getAllObjectValues = function (object) {
+    return Object.keys(object).map(key => cf.TARGET_BUFF[key]);
+};
+
 Utils.generateCardAttributes = function (card, index) {
     let texture, textAttribute, textStat, diff, textUpgradeStat = undefined;
     switch (card.statTypes[index]) {

@@ -168,6 +168,11 @@ const Monster = AnimatedSprite.extend({
 
         this.prevPosition.set(this.position.x, this.position.y)
 
+        if (this.freezeDuration !== undefined && this.freezeDuration > 0) {
+            this.freezeDuration -= dt;
+            dt = Math.max(0, -this.freezeDuration);
+        }
+
         const map = playerState.getMap()
         const distance = this.speed * dt
         if (this.route(map, distance, null)) {
@@ -343,11 +348,15 @@ const Monster = AnimatedSprite.extend({
         this.animationCleanup()
     },
 
-    takeDamage: function (many) {
-        this.health -= many
-        if(this.health > this.MaxHealth){
-            this.health = this.MaxHealth
+    takeDamage: function (damage) {
+        this.health -= damage;
+        if (this.health > this.MaxHealth) {
+            this.health = this.MaxHealth;
         }
+    },
+
+    freeze: function (duration) {
+        this.freezeDuration = duration;
     },
 
     onImpact: function (playerState, anotherMonster) {

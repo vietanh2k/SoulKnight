@@ -27,11 +27,12 @@ let TWizardBullet = Bullet.extend({
         this.isDestroy = true;
         this.active = false;
         this.visible = false;
+
         this.playExplosionFx();
         if (this.target && this.target.release) {
             this.target.release();
         }
-    }
+    },
 });
 
 let TBoomerangBullet = Bullet.extend({
