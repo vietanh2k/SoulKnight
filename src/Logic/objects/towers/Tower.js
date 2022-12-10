@@ -166,9 +166,9 @@ var Tower = TowerUI.extend({
             return false;
         }
 
-        this.level += 1;
         setTimeout(() => {
-            this.evolute()
+            this.level += 1;
+            this.evolute();
         }, 1000);
         return true;
     },

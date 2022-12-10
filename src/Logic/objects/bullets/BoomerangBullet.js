@@ -16,7 +16,7 @@ let TBoomerangBullet = Bullet.extend({
         let frame = Utils.loadAnimation(0, cf.TOWER_UI[18].bulletIPD, 'tower_boomerang_bullet_' + this.level + '_');
         this.runAction(cc.animate(new cc.Animation(frame, 0.1 / cf.TOWER_UI[18].bulletIPD)).repeatForever());
     },
-    
+
     getTargetPosition: function () {
         if (this.boomerangPhase !== undefined) {
             if (this.boomerangPhase === 0) {
