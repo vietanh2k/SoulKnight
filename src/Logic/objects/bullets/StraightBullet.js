@@ -44,6 +44,14 @@ let TOilGunBullet = Bullet.extend({
     ctor: function (target, speed, damage, radius, position, explosionFx) {
         this._super(res.TOilGunBullet, target, speed, damage, radius, position);
         this.fx = explosionFx;
+
+        this.runBulletAnimation();
+    },
+
+    runBulletAnimation: function () {
+        cc.spriteFrameCache.addSpriteFrames('res/tower/frame/oil_gun/tower_oil_gun_bullet.plist');
+        let frame = Utils.loadAnimation(0, cf.TOWER_UI[19].bulletIPD, 'tower_oil_gun_bullet_');
+        this.runAction(cc.animate(new cc.Animation(frame, 0.6 / cf.TOWER_UI[19].bulletIPD)).repeatForever());
     },
 
     playExplosionFx: function () {

@@ -17,7 +17,7 @@ var TCannon = Tower.extend({
         this._playerState = playerState;
         this.direction = 0;
 
-        this.status = 'idle';
+        this.status = 'readyToFire';
         this.newDir = 0;
         this.level = 1;
         this.map = map;

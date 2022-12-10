@@ -30,11 +30,11 @@ var Tower = TowerUI.extend({
 
         if (this.renderRule === 1) {
             if (this.lastStatus === undefined || this.status !== this.lastStatus || (this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir)) {
-                if (this.status === 'idle') {
+                if (this.status === 'readyToFire') {
                     this.updateDirection(this.newDir);
                 } else {
                     this.playAttack(this.newDir);
-                    this.status = 'idle';
+                    this.status = 'readyToFire';
                 }
 
                 this.lastDir = this.newDir;
@@ -43,11 +43,11 @@ var Tower = TowerUI.extend({
         } else {
             if (this.lastStatus === undefined || this.status !== this.lastStatus || this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir) {
                 let dir = (this.newDir + 8) % 16;
-                if (this.status === 'idle') {
+                if (this.status === 'readyToFire') {
                     this.updateDirection(dir);
                 } else {
                     this.playAttack(dir);
-                    this.status = 'idle';
+                    this.status = 'readyToFire';
                 }
                 this.lastDir = this.newDir;
                 this.lastStatus = this.status;
@@ -114,7 +114,7 @@ var Tower = TowerUI.extend({
         if (this.health <= 0) {
             this.active = false;
         }
-        this.status = 'idle';
+        this.status = 'readyToFire';
         if (this.active) {
             if (this.getPending() > 0) {
                 this.updatePending(dt);
@@ -130,8 +130,8 @@ var Tower = TowerUI.extend({
                 });
                 if (this.attackCooldown <= 0) {
                     if (this.target.length > 0) {
-                        this.status = 'attack'
                         this.fire();
+                        this.status = 'cooldowning';
                         this.attackCooldown = self.getAttackSpeed();
                     }
                 } else {

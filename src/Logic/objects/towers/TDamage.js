@@ -17,7 +17,7 @@ let TDamage = Tower.extend({
         this._playerState = playerState;
         this.direction = 0;
 
-        this.status = 'idle';
+        this.status = 'readyToFire';
         this.newDir = 0;
         this.level = 1;
         this.map = map;
@@ -25,7 +25,15 @@ let TDamage = Tower.extend({
         this.setScale(cf.TOWER_SCALE[5]);
         this.resetPending();
 
+        this.runFireAnimationForever();
+
         return true;
+    },
+
+    runFireAnimationForever: function () {
+        this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_strength_fx.json', 'res/tower/fx/tower_strength_fx.atlas');
+        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        this.fireFx.setAnimation(0, 'attack_1', true);
     },
 
     AnimationSetUp: function (card) {
@@ -50,7 +58,7 @@ let TDamage = Tower.extend({
         for (let j = 0; j < 4; j++) {
             this.idleActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(0, this.idleIPD, this.idlePrefixNames[j]);
+                let frame = Utils.loadAnimation(0, this.idleIPD, this.idlePrefixNames[j]);
                 this.idleActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.idleIPD)).repeatForever());
                 this.idleActions[j][i].retain();
             }
@@ -62,7 +70,7 @@ let TDamage = Tower.extend({
         for (let j = 0; j < 4; j++) {
             this.attackActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(0, this.attackIPD, this.attackPrefixNames[j]);
+                let frame = Utils.loadAnimation(0, this.attackIPD, this.attackPrefixNames[j]);
                 this.attackActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.attackIPD)));
                 this.attackActions[j][i].retain();
             }

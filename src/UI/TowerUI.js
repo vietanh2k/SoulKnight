@@ -184,7 +184,7 @@ var TowerUI = cc.Sprite.extend({
         for (let j = 0; j < 4; j++) {
             this.idleActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(Math.min(i, 16 - i) * this.idleIPD, this.idleIPD, this.idlePrefixNames[j]);
+                let frame = Utils.loadAnimation(Math.min(i, 16 - i) * this.idleIPD, this.idleIPD, this.idlePrefixNames[j]);
                 this.idleActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.idleIPD)).repeatForever());
                 this.idleActions[j][i].retain();
             }
@@ -196,7 +196,7 @@ var TowerUI = cc.Sprite.extend({
         for (let j = 0; j < 4; j++) {
             this.attackActions[j] = [];
             for (let i = 0; i < 16 /* directions */; i++) {
-                let frame = this.loadAnimation(Math.min(i, 16 - i) * this.attackIPD, this.attackIPD, this.attackPrefixNames[j]);
+                let frame = Utils.loadAnimation(Math.min(i, 16 - i) * this.attackIPD, this.attackIPD, this.attackPrefixNames[j]);
                 this.attackActions[j].push(cc.animate(new cc.Animation(frame, 0.6 / this.attackIPD)));
                 this.attackActions[j][i].retain();
             }
