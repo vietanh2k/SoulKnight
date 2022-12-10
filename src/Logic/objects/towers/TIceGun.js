@@ -43,6 +43,10 @@ let TIceGun = Tower.extend({
 
         this.idleIPD = cf.TOWER_UI[this.card].idleIPD;
         this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
+
+        this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_ice_fx.json', 'res/tower/fx/tower_ice_fx.atlas');
+        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        this.fireFx.visible = false;
     },
 
     getNewBullet: function (object) {
@@ -53,7 +57,7 @@ let TIceGun = Tower.extend({
 
         let newBullet = new TIceGunBullet(object, speed, damage, radius, position, this.level);
 
-        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.1 * Math.pow(-1, this.renderRule));
+        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.7 * Math.pow(-1, this.renderRule));
         newBullet.position.x += gunCenterFromCellCenter.x;
         newBullet.position.y += gunCenterFromCellCenter.y;
 

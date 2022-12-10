@@ -117,6 +117,7 @@ var res = {
     Wizard_Bullet: 'res/tower/frame/wizard/tower_wizard_bullet_0000.png',
     TCannon_Bullet: 'res/tower/frame/cannon/tower_cannon_bullet_0000.png',
     TIceGun_Bullet: 'res/tower/frame/ice_gun/tower_ice_gun_bullet_0000.png',
+    TOilGunBullet: 'res/tower/frame/oil_gun_1_2/tower_oil_gun_bullet_0000.png',
 };
 
 var g_resources = [

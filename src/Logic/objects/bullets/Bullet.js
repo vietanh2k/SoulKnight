@@ -25,14 +25,20 @@ var Bullet = cc.Sprite.extend({
     },
 
     getTargetPosition: function () {
-        if (this.target == null || this.target.isDestroy) {
+        if (this.targetIsLocked || this.target == null || this.target.isDestroy) {
             return this.lastLoc;
         }
         if (this.target.hasOwnProperty("position")) {
             this.lastLoc = new Vec2(this.target.position.x, this.target.position.y);
+            if (this.type === 'straight') {
+                this.targetIsLocked = true;
+            }
             return this.target.position;
         } else {
             this.lastLoc = new Vec2(this.target.x, this.target.y);
+            if (this.type === 'straight') {
+                this.targetIsLocked = true;
+            }
             return this.target;
         }
     },
