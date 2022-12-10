@@ -8,6 +8,7 @@ let TBoomerangBullet = Bullet.extend({
         this.originalPosition = new Vec2(position.x, position.y);
         this.range = range;
         this.level = level;
+        this.bulletRadius = 0.4;
 
         this.runBulletAnimation();
     },
@@ -46,18 +47,50 @@ let TBoomerangBullet = Bullet.extend({
         if (this.active) {
             let pos = this.getTargetPosition();
             if (!pos) {
-                this.explose(playerState, this.originalPosition);
+                this.vanish();
                 return;
             }
-            if (euclid_distance(this.position, pos) > this.speed * dt) {
-                let direction = pos.sub(this.position).l2norm();
-                this.position.x += direction.x * this.speed * dt;
-                this.position.y += direction.y * this.speed * dt;
-            } else if (this.boomerangPhase === 0) {
-                this.boomerangPhase = 1;
-            } else if (this.boomerangPhase === 1) {
-                this.explose(playerState, pos);
+            if (euclid_distance(this.position, pos) <= this.speed * dt) {
+                if (this.boomerangPhase === 0) {
+                    this.boomerangPhase = 1;
+                } else if (this.boomerangPhase === 1) {
+                    this.vanish();
+                }
+                return;
             }
+            let direction = pos.sub(this.position).l2norm();
+            this.position.x += direction.x * this.speed * dt;
+            this.position.y += direction.y * this.speed * dt;
+            this.dealDamage(playerState, this.position);
+        }
+    },
+
+    dealDamage: function (playerState, pos) {
+        const map = playerState.getMap();
+        let objectList = map.queryEnemiesCircle(pos, this.bulletRadius * MAP_CONFIG.CELL_WIDTH);
+        for (let object of objectList) {
+            if (this.canAttack(object)) {
+                if (this.boomerangPhase === 0 && !object.isDamagedInPhaseZero) {
+                    object.isDamagedInPhaseZero = true;
+                    object.takeDamage(this.damage);
+                    object.hurtUI();
+                } else if (this.boomerangPhase === 1 && !object.isDamagedInPhaseOne) {
+                    object.isDamagedInPhaseOne = true;
+                    object.takeDamage(this.damage);
+                    object.hurtUI();
+                }
+            }
+        }
+    },
+
+    vanish: function () {
+        this.isDestroy = true;
+        this.active = false;
+        this.visible = false;
+
+        GameUI.instance.removeChild(this);
+        if (this.target && this.target.release) {
+            this.target.release();
         }
     },
 });
