@@ -3,9 +3,10 @@ let TBoomerangBullet = Bullet.extend({
     concept: 'bullet',
     type: 'boomerang',
 
-    ctor: function (target, speed, damage, radius, position, level) {
+    ctor: function (target, speed, damage, radius, position, level, range) {
         this._super(res.TBoomerangBullet, target, speed, damage, radius, position);
         this.originalPosition = new Vec2(position.x, position.y);
+        this.range = range;
         this.level = level;
 
         this.runBulletAnimation();
@@ -26,14 +27,17 @@ let TBoomerangBullet = Bullet.extend({
                 return this.originalPosition;
             }
         }
-        if (this.targetIsLocked || this.target == null || this.target.isDestroy) {
-            return this.lastLoc;
-        }
+        let aim;
         if (this.target.hasOwnProperty("position")) {
-            this.boomerangEnd = this.target.position;
+            aim = new Vec2(this.target.position.x, this.target.position.y);
         } else {
-            this.boomerangEnd = this.target;
+            aim = new Vec2(this.target.x, this.target.y);
         }
+        let ratio = this.range * MAP_CONFIG.CELL_WIDTH / euclid_distance(this.originalPosition, aim);
+        this.boomerangEnd = new Vec2(
+            ratio * (aim.x - this.originalPosition.x) + this.originalPosition.x,
+            ratio * (aim.y - this.originalPosition.y) + this.originalPosition.y
+        );
         this.boomerangPhase = 0;
         return this.boomerangEnd;
     },
