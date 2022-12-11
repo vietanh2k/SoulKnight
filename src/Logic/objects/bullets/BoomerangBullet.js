@@ -8,7 +8,9 @@ let TBoomerangBullet = Bullet.extend({
         this.originalPosition = new Vec2(position.x, position.y);
         this.range = range;
         this.level = level;
-        this.bulletRadius = 0.4;
+        this.bulletRadius = 0.5;
+
+        this.id = Math.random();
 
         this.runBulletAnimation();
     },
@@ -67,15 +69,21 @@ let TBoomerangBullet = Bullet.extend({
 
     dealDamage: function (playerState, pos) {
         const map = playerState.getMap();
-        let objectList = map.queryEnemiesCircle(pos, this.bulletRadius * MAP_CONFIG.CELL_WIDTH);
+        let objectList = map.getObjectInRange(pos, this.bulletRadius);
         for (let object of objectList) {
             if (this.canAttack(object)) {
-                if (this.boomerangPhase === 0 && !object.isDamagedInPhaseZero) {
-                    object.isDamagedInPhaseZero = true;
+                if (this.boomerangPhase === 0 && (object.isDamagedInPhaseZero === undefined || !object.isDamagedInPhaseZero[this.id])) {
+                    if (object.isDamagedInPhaseZero === undefined) {
+                        object.isDamagedInPhaseZero = [];
+                    }
+                    object.isDamagedInPhaseZero[this.id] = true;
                     object.takeDamage(this.damage);
                     object.hurtUI();
-                } else if (this.boomerangPhase === 1 && !object.isDamagedInPhaseOne) {
-                    object.isDamagedInPhaseOne = true;
+                } else if (this.boomerangPhase === 1 && (object.isDamagedInPhaseOne === undefined || !object.isDamagedInPhaseOne[this.id])) {
+                    if (object.isDamagedInPhaseOne === undefined) {
+                        object.isDamagedInPhaseOne = [];
+                    }
+                    object.isDamagedInPhaseOne[this.id] = true;
                     object.takeDamage(this.damage);
                     object.hurtUI();
                 }

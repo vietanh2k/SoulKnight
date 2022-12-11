@@ -132,7 +132,7 @@ var Tower = TowerUI.extend({
                 this.target = [];
                 let self = this;
                 const map = playerState.getMap();
-                map.queryEnemiesCircle(self.position, self.getRange() * MAP_CONFIG.CELL_WIDTH).map(function (object) {
+                map.getObjectInRange(self.position, self.getRange()).map(function (object) {
                     if (self.checkIsTarget(object) && (self.getTargetType() === 'all' || self.getTargetType() === object.class)) {
                         self.target.push(object);
                     }
