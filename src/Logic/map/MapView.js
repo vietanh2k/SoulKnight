@@ -508,6 +508,17 @@ var MapView = cc.Class.extend({
 
     },
 
+    getTowerAtPosition: function (position) {
+        let result = undefined;
+        this.towers.forEach(tower => {
+            if (tower.position.x === position.x && tower.position.y === position.y) {
+                cc.log('founded tower position: ' + JSON.stringify(tower.position))
+                result = tower;
+            }
+        });
+        return result;
+    },
+
     addNewBullet: function (bullet) {
         if (bullet === cf.EMPTY_BULLET) return;
         bullet.mapId = this.bullets.add(bullet);

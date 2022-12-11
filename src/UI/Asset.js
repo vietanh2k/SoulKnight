@@ -223,4 +223,11 @@ var asset = {
         'res/battle/battle_tower_pedestal_steel.png',
         'res/battle/battle_tower_pedestal_rock.png',
     ],
+
+    circleFrame_png: 'res/battle/UI/ui_circle_frame.png',
+    targetIcon_png: 'res/battle/UI/ui_target_icon.png',
+    targetFullHP_png: 'res/battle/UI/ui_target_full_HP.png',
+    targetLowHP_png: 'res/battle/UI/ui_target_low_HP.png',
+    targetFurthest_png: 'res/battle/UI/ui_target_furthest.png',
+    targetNearest_png: 'res/battle/UI/ui_target_nearest.png',
 };

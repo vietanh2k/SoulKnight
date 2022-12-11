@@ -52,31 +52,161 @@ var GameUI = cc.Layer.extend({
         return true;
     },
 
-    /*
-    * touch khi có 1 thẻ đang đc chọn
-    * active cái thẻ đấy khi có đủ NL
-    * */
+    /**
+     * Nếu có thẻ đang được chọn: sử dụng thẻ đó
+     * Nếu hiện tại không chọn thẻ nào: mở UI dùng kĩ năng trụ và đổi ưu tiên mục tiêu
+     */
     addTouchListener: function () {
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             // swallowTouches: true,
             onTouchBegan: (touch, event) => {
-                if (this.cardTouchSlot >= 0 ) {
-                    if(GameStateManagerInstance.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy){
+                if (this.cardTouchSlot >= 0) {
+                    if (GameStateManagerInstance.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy) {
                         this.activeCard(this.listCard[this.cardTouchSlot - 1], touch.getLocation());
                     } else {
                         Utils.addToastToRunningScene('Không đủ năng lượng!');
-                        this.resetCardTouchState()
+                        this.resetCardTouchState();
                     }
+                    this.removeCurrentTowerActionsUI();
+                    return true;
+                } else if (!this.isShowingTowerOptionsUI) {
+                    if (!isPosInMap(touch.getLocation(), 1)) {
+                        return false;
+                    }
+                    let position = convertIndexToMapPos(convertPosToIndex(touch.getLocation(), 1));
+                    let tower = GameStateManagerInstance.playerA.getMap().getTowerAtPosition(position);
+                    if (tower === undefined) {
+                        return false;
+                    }
+                    this.showTowerOptionsUI(tower);
                     return true;
                 }
-                return false;
+                this.removeCurrentTowerActionsUI();
+                return true;
             },
             onTouchEnded: (touch, event) => {
-                cc.log(this.cardTouchSlot+'enddddddddddddddd')
+                cc.log(this.cardTouchSlot + ' end touch!');
             },
-
         }, this);
+    },
+
+    showTowerOptionsUI: function (tower) {
+        this.isShowingTowerOptionsUI = true;
+
+        this.circleFrame = cc.Sprite(asset.circleFrame_png);
+        this.circleFrame.setPosition(tower.x, tower.y);
+        this.addChild(this.circleFrame);
+
+        let frameRadius = 0.9 * this.circleFrame.width / 2;
+
+        this.targetFullHPBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetFullHPBtn.setZoomScale(0);
+        this.targetFullHPBtn.attr({
+            x: tower.x - frameRadius,
+            y: tower.y,
+        });
+        this.targetFullHPBtn.addClickEventListener(() => {
+            tower.prioritizedTarget = 'fullHP';
+            this.removeCurrentTowerActionsUI();
+        });
+        this.addChild(this.targetFullHPBtn);
+
+        let targetFullHPIcon = new cc.Sprite(asset.targetFullHP_png);
+        targetFullHPIcon.attr({
+            x: this.targetFullHPBtn.width / 2,
+            y: this.targetFullHPBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetFullHPBtn.addChild(targetFullHPIcon);
+
+        this.targetLowHPBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetLowHPBtn.setZoomScale(0);
+        this.targetLowHPBtn.attr({
+            x: tower.x - frameRadius / 2,
+            y: tower.y + frameRadius * Math.sqrt(3) / 2,
+        });
+        this.targetLowHPBtn.addClickEventListener(() => {
+            tower.prioritizedTarget = 'lowHP';
+            this.removeCurrentTowerActionsUI();
+        });
+        this.addChild(this.targetLowHPBtn);
+
+        let targetLowHPIcon = new cc.Sprite(asset.targetLowHP_png);
+        targetLowHPIcon.attr({
+            x: this.targetLowHPBtn.width / 2,
+            y: this.targetLowHPBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetLowHPBtn.addChild(targetLowHPIcon);
+
+        this.targetFurthestBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetFurthestBtn.setZoomScale(0);
+        this.targetFurthestBtn.attr({
+            x: tower.x + frameRadius / 2,
+            y: tower.y + frameRadius * Math.sqrt(3) / 2,
+        });
+        this.targetFurthestBtn.addClickEventListener(() => {
+            tower.prioritizedTarget = 'furthest';
+            this.removeCurrentTowerActionsUI();
+        });
+        this.addChild(this.targetFurthestBtn);
+
+        let targetFurthestIcon = new cc.Sprite(asset.targetFurthest_png);
+        targetFurthestIcon.attr({
+            x: this.targetFurthestBtn.width / 2,
+            y: this.targetFurthestBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetFurthestBtn.addChild(targetFurthestIcon);
+
+        this.targetNearestBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetNearestBtn.setZoomScale(0);
+        this.targetNearestBtn.attr({
+            x: tower.x + frameRadius,
+            y: tower.y,
+        });
+        this.targetNearestBtn.addClickEventListener(() => {
+            tower.prioritizedTarget = 'nearest';
+            this.removeCurrentTowerActionsUI();
+        });
+        this.addChild(this.targetNearestBtn);
+
+        let targetNearestIcon = new cc.Sprite(asset.targetNearest_png);
+        targetNearestIcon.attr({
+            x: this.targetNearestBtn.width / 2,
+            y: this.targetNearestBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetNearestBtn.addChild(targetNearestIcon);
+
+        this.skillBtn = new ccui.Button(asset.targetIcon_png);
+        this.skillBtn.setZoomScale(0);
+        this.skillBtn.attr({
+            x: tower.x,
+            y: tower.y - frameRadius,
+        });
+        this.skillBtn.addClickEventListener(() => {});
+        this.addChild(this.skillBtn);
+
+        let skillIcon = new cc.Sprite(asset.iconSkillLocked_png);
+        skillIcon.attr({
+            x: this.skillBtn.width / 2,
+            y: this.skillBtn.height / 2,
+            scale: 0.8 * this.skillBtn.width / skillIcon.width,
+        });
+        this.skillBtn.addChild(skillIcon);
+    },
+
+    removeCurrentTowerActionsUI: function () {
+        this.isShowingTowerOptionsUI = false;
+
+        this.circleFrame.removeFromParent(true);
+        this.targetFullHPBtn.removeFromParent(true);
+        this.targetLowHPBtn.removeFromParent(true);
+        this.targetFurthestBtn.removeFromParent(true);
+        this.targetNearestBtn.removeFromParent(true);
+        this.skillBtn.removeFromParent(true);
     },
 
     /*
@@ -517,7 +647,6 @@ var GameUI = cc.Layer.extend({
                 //     let cor = convertPosToIndex(pos, rule);
                 //     if(GameStateManagerInstance.playerA.energy >= target.energy){
                 //         if (this.towerUIMap[cor.x] !== undefined && this.towerUIMap[cor.x][cor.y] !== undefined) {
-                //             // fixme khác loại trụ?
                 //             if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
                 //                 Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
                 //                 this.resetCardTouchState()
@@ -708,12 +837,7 @@ var GameUI = cc.Layer.extend({
                 Utils.addToastToRunningScene('Không đặt được chỗ này!');
             }
         }
-        this.resetCardTouchState()
-
-        cc.log(isPosInMap(posUI, 1))
-        // var intIndex = convertPosToIndex(posUI, 1)
-        //var rand = Math.floor(Math.random() * 2) + 1;
-
+        this.resetCardTouchState();
     },
 
     activeCardMonster: function (target, posUI) {

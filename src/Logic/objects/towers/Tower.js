@@ -88,7 +88,54 @@ var Tower = TowerUI.extend({
     },
 
     chooseTarget: function () {
-        return this.target[0];
+        if (this.prioritizedTarget === undefined) {
+            return this.target[0];
+        }
+        let record, index;
+        switch (this.prioritizedTarget) {
+            case 'fullHP':
+                record = -1;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].health > record) {
+                        record = this.target[i].health;
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            case 'lowHP':
+                record = 4000000000;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].health < record) {
+                        record = this.target[i].health;
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            case 'furthest':
+                record = -1;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].position.sub(this.position).length() > record) {
+                        record = this.target[i].position.sub(this.position).length();
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            case 'nearest':
+                record = 4000000000;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].position.sub(this.position).length() < record) {
+                        record = this.target[i].position.sub(this.position).length();
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            default:
+                return this.target[0];
+        }
     },
 
     changDirectionHandle: function (direction) {

@@ -25,6 +25,13 @@ const convertPosToIndex = function (pos, rule) {
     return new cc.p(x, y)
 };
 
+const convertIndexToMapPos = function (index) {
+    return new cc.p(
+        MAP_CONFIG.CELL_WIDTH / 2 + index.x * MAP_CONFIG.CELL_WIDTH,
+        -MAP_CONFIG.CELL_HEIGHT / 2 + index.y * MAP_CONFIG.CELL_HEIGHT
+    );
+};
+
 const isCorInMap = function (cor) {
     return cor.x >= 0 && cor.x <= MAP_WIDTH - 1 && cor.y >= 1 && cor.y <= MAP_HEIGHT;
 };
