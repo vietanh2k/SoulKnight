@@ -1,20 +1,21 @@
 var Bullet = cc.Sprite.extend({
     fx: null,
     concept: "bullet",
-    ctor: function (res, target, speed, damage, radius, position) {
+    ctor: function (res, target, speed, damage, radius, position, targetType) {
         this._super(res);
 
         this.mapId = -1;
-        this.reset(target, speed, damage, radius, position);
+        this.reset(target, speed, damage, radius, position, targetType);
     },
 
-    reset: function (target, speed, damage, radius, position) {
+    reset: function (target, speed, damage, radius, position, targetType) {
         this.target = target;
         this.speed = speed * cf.BULLET_SPEED_MULTIPLIER;
         this.damage = damage;
         this.radius = radius;
         this.isDestroy = false;
         this.position = position;
+        this.targetType = targetType;
         this.active = true;
         this.lastLoc = new Vec2(position.x, position.y);
         this.activate = true;
@@ -90,7 +91,7 @@ var Bullet = cc.Sprite.extend({
         const map = playerState.getMap();
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
-            if (this.canAttack(object)) {
+            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(this.damage);
                 object.hurtUI();
             }

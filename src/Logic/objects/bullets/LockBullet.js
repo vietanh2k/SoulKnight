@@ -3,8 +3,8 @@ let TCannonBullet = Bullet.extend({
     concept: "bullet",
     type: 'chasing',
 
-    ctor: function (target, speed, damage, radius, position) {
-        this._super(res.TCannon_Bullet, target, speed, damage, radius, position);
+    ctor: function (target, speed, damage, radius, position, targetType) {
+        this._super(res.TCannon_Bullet, target, speed, damage, radius, position, targetType);
     },
 });
 
@@ -13,8 +13,8 @@ let TIceGunBullet = Bullet.extend({
     concept: "bullet",
     type: 'chasing',
 
-    ctor: function (target, speed, damage, radius, position, level) {
-        this._super(res.TIceGun_Bullet, target, speed, damage, radius, position);
+    ctor: function (target, speed, damage, radius, position, targetType, level) {
+        this._super(res.TIceGun_Bullet, target, speed, damage, radius, position, targetType);
         this.level = level;
     },
 
@@ -22,7 +22,7 @@ let TIceGunBullet = Bullet.extend({
         const map = playerState.getMap();
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
-            if (this.canAttack(object)) {
+            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(this.damage);
                 object.freeze(this.getFreezeDuration());
                 object.hurtUI();

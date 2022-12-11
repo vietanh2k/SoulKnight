@@ -3,8 +3,8 @@ let TBoomerangBullet = Bullet.extend({
     concept: 'bullet',
     type: 'boomerang',
 
-    ctor: function (target, speed, damage, radius, position, level, range) {
-        this._super(res.TBoomerangBullet, target, speed, damage, radius, position);
+    ctor: function (target, speed, damage, radius, position, targetType, level, range) {
+        this._super(res.TBoomerangBullet, target, speed, damage, radius, position, targetType);
         this.originalPosition = new Vec2(position.x, position.y);
         this.range = range;
         this.level = level;

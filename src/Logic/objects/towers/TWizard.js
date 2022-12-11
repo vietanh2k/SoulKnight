@@ -63,7 +63,7 @@ var TWizard = Tower.extend({
         let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
         let position = new Vec2(this.position.x, this.position.y);
 
-        let newBullet = new TWizardBullet(object, speed, damage, radius, position, this.bulletFx);
+        let newBullet = new TWizardBullet(object, speed, damage, radius, position, this.getTargetType(), this.bulletFx);
 
         const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
         newBullet.position.x += gunCenterFromCellCenter.x;

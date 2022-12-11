@@ -3,8 +3,8 @@ let TWizardBullet = Bullet.extend({
     concept: "bullet",
     type: 'straight',
 
-    ctor: function (target, speed, damage, radius, position, explosionFx) {
-        this._super(res.Wizard_Bullet, target, speed, damage, radius, position);
+    ctor: function (target, speed, damage, radius, position, targetType, explosionFx) {
+        this._super(res.Wizard_Bullet, target, speed, damage, radius, position, targetType);
         this.fx = explosionFx;
     },
 
@@ -20,7 +20,7 @@ let TWizardBullet = Bullet.extend({
         const map = playerState.getMap();
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
-            if (this.canAttack(object)) {
+            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(this.damage);
                 object.hurtUI();
             }
@@ -41,8 +41,8 @@ let TOilGunBullet = Bullet.extend({
     concept: 'bullet',
     type: 'straight',
 
-    ctor: function (target, speed, damage, radius, position, explosionFx) {
-        this._super(res.TOilGunBullet, target, speed, damage, radius, position);
+    ctor: function (target, speed, damage, radius, position, targetType, explosionFx) {
+        this._super(res.TOilGunBullet, target, speed, damage, radius, position, targetType);
         this.fx = explosionFx;
 
         this.runBulletAnimation();
@@ -66,7 +66,7 @@ let TOilGunBullet = Bullet.extend({
         const map = playerState.getMap();
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
-            if (this.canAttack(object)) {
+            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(this.damage);
                 object.slow(this.getSpeedReduced(), this.getSlowDuration());
                 object.hurtUI();

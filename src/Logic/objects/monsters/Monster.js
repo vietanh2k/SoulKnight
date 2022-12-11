@@ -34,6 +34,7 @@ const Monster = AnimatedSprite.extend({
 
     initFromConfig: function (playerState, config) {
         this.speed = config.speed * MAP_CONFIG.CELL_WIDTH
+        this.class = config.class
         this.health = config.hp
         this.MaxHealth = config.hp
         this.energyFromDestroy = config.gainEnergy

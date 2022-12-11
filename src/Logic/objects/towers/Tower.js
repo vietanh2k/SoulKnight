@@ -59,6 +59,10 @@ var Tower = TowerUI.extend({
         return cf.TOWER.tower[this.instance].stat[this.level].attackSpeed / 1000;
     },
 
+    getTargetType: function () {
+        return cf.TOWER.tower[this.instance].targetType;
+    },
+
     getPending: function () {
         return this.pendingSecond;
     },
@@ -75,11 +79,16 @@ var Tower = TowerUI.extend({
 
     fire: function () {
         if (this.target.length > 0) {
-            let bullet = this.getNewBullet(this.target[0]);
+            let target = this.chooseTarget();
+            let bullet = this.getNewBullet(target);
             this.map.addNewBullet(bullet);
-            let direction = this.target[0].position.sub(this.position).normalize();
+            let direction = target.position.sub(this.position).normalize();
             this.newDir = this.changDirectionHandle(direction);
         }
+    },
+
+    chooseTarget: function () {
+        return this.target[0];
     },
 
     changDirectionHandle: function (direction) {
@@ -122,10 +131,10 @@ var Tower = TowerUI.extend({
                 this.visible = true;
                 this.target = [];
                 let self = this;
-                const map = playerState.getMap()
-                map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
-                    if (self.checkIsTarget(obj)) {
-                        self.target.push(obj);
+                const map = playerState.getMap();
+                map.queryEnemiesCircle(self.position, self.getRange() * MAP_CONFIG.CELL_WIDTH).map(function (object) {
+                    if (self.checkIsTarget(object) && (self.getTargetType() === 'all' || self.getTargetType() === object.class)) {
+                        self.target.push(object);
                     }
                 });
                 if (this.attackCooldown <= 0) {

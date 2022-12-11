@@ -2,6 +2,7 @@ const DarkGiant = Monster.extend({
     initConfig: function () {
         const config = cf.MONSTER.monster[MONSTER_ID.DARK_GIANT]
         this.speed = config.speed * MAP_CONFIG.CELL_WIDTH
+        this.class = config.class
         this.health = config.hp
         this.MaxHealth = config.hp
         this.energyFromDestroy = config.gainEnergy
