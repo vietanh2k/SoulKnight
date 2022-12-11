@@ -80,6 +80,9 @@ var MapView = cc.Class.extend({
     constructWorld: function () {
         const self = this
 
+        this.gateCell.clearMonsterOnCell()
+        this.nextGateCell.clearMonsterOnCell()
+        this.mainTowerCell.clearMonsterOnCell()
         for (let x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
             for (let y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
                 const cell = this.cells[x][y]
