@@ -3,8 +3,8 @@ let TWizardBullet = Bullet.extend({
     concept: "bullet",
     type: 'straight',
 
-    ctor: function (target, speed, damage, radius, position, targetType, explosionFx) {
-        this._super(res.Wizard_Bullet, target, speed, damage, radius, position, targetType);
+    ctor: function (target, speed, damage, radius, position, targetType, level, explosionFx) {
+        this._super(res.Wizard_Bullet, target, speed, damage, radius, position, targetType, level);
         this.fx = explosionFx;
     },
 
@@ -19,9 +19,13 @@ let TWizardBullet = Bullet.extend({
     explose: function (playerState, pos) {
         const map = playerState.getMap();
         let objectList = map.getObjectInRange(pos, this.radius);
+        let damage = this.damage;
+        if (this.level === 3 && objectList.length > 5) {
+            damage += 10;
+        }
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
-                object.takeDamage(this.damage);
+                object.takeDamage(damage);
                 object.hurtUI();
             }
         }
@@ -41,8 +45,8 @@ let TOilGunBullet = Bullet.extend({
     concept: 'bullet',
     type: 'straight',
 
-    ctor: function (target, speed, damage, radius, position, targetType, explosionFx) {
-        this._super(res.TOilGunBullet, target, speed, damage, radius, position, targetType);
+    ctor: function (target, speed, damage, radius, position, targetType, level, explosionFx) {
+        this._super(res.TOilGunBullet, target, speed, damage, radius, position, targetType, level);
         this.fx = explosionFx;
 
         this.runBulletAnimation();
@@ -69,6 +73,9 @@ let TOilGunBullet = Bullet.extend({
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(this.damage);
                 object.slow(this.getSpeedReduced(), this.getSlowDuration());
+                if (this.level === 3) {
+                    object.poisonByTOilGun(2, 3);
+                }
                 object.hurtUI();
             }
         }

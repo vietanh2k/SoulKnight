@@ -147,6 +147,13 @@ const Monster = AnimatedSprite.extend({
         this.updateBuffDuration(dt)
         this.healHP(dt)
 
+        if (this.poisonByTOilGunDuration !== undefined && this.poisonByTOilGunDuration > 0) {
+            let dtPoison = Math.min(dt, this.poisonByTOilGunDuration);
+            this.takeDamage(this.poisonByTOilGunDps * dtPoison);
+            this.hurtUI();
+            this.poisonByTOilGunDuration -= dtPoison;
+        }
+
         /*if (this.impactedMonster) {
             if (this.impactedMonster.isDestroy) {
                 this.targetPosition = null
@@ -170,14 +177,42 @@ const Monster = AnimatedSprite.extend({
         this.prevPosition.set(this.position.x, this.position.y)
 
         let distance = 0;
-        if (this.freezeDuration !== undefined && this.freezeDuration > 0) {
-            let dtFreeze = Math.min(dt, this.freezeDuration);
+        if (this.freezeByTIceGunDuration !== undefined && this.freezeByTIceGunDuration > 0) {
+            let dtFreeze = Math.min(dt, this.freezeByTIceGunDuration);
             dt -= dtFreeze;
-            this.freezeDuration -= dtFreeze;
+            this.freezeByTIceGunDuration -= dtFreeze;
+            if (this.freezeByTIceGunDuration <= 0) {
+                this.freezeByTIceGunDuration = 0;
+                this.isVulnerableByTIceGun = false;
+            }
             if (this.slowDuration !== undefined && this.slowDuration > 0) {
                 this.slowDuration -= dtFreeze;
                 if (this.slowDuration < 0) {
                     this.slowDuration = 0;
+                }
+            }
+            if (this.stunDuration !== undefined && this.stunDuration > 0) {
+                this.stunDuration -= dtFreeze;
+                if (this.stunDuration < 0) {
+                    this.stunDuration = 0;
+                }
+            }
+        }
+        if (this.stunDuration !== undefined && this.stunDuration > 0) {
+            let dtStun = Math.min(dt, this.stunDuration);
+            dt -= dtStun;
+            this.stunDuration -= dtStun;
+            if (this.slowDuration !== undefined && this.slowDuration > 0) {
+                this.slowDuration -= dtStun;
+                if (this.slowDuration < 0) {
+                    this.slowDuration = 0;
+                }
+            }
+            if (this.freezeByTIceGunDuration !== undefined && this.freezeByTIceGunDuration > 0) {
+                this.freezeByTIceGunDuration -= dtStun;
+                if (this.freezeByTIceGunDuration <= 0) {
+                    this.freezeByTIceGunDuration = 0;
+                    this.isVulnerableByTIceGun = false;
                 }
             }
         }
@@ -364,14 +399,30 @@ const Monster = AnimatedSprite.extend({
     },
 
     takeDamage: function (damage) {
-        this.health -= damage;
+        let multiplier = 1;
+        if (this.isVulnerableByTIceGun) {
+            multiplier *= 1.5;
+        }
+        this.health -= damage * multiplier;
         if (this.health > this.MaxHealth) {
             this.health = this.MaxHealth;
         }
     },
 
-    freeze: function (duration) {
-        this.freezeDuration = duration;
+    stun: function (duration) {
+        this.stunDuration = duration;
+    },
+
+    freezeByTIceGun: function (duration, bulletIsLevelThree) {
+        this.freezeByTIceGunDuration = duration;
+        if (bulletIsLevelThree) {
+            this.isVulnerableByTIceGun = true;
+        }
+    },
+
+    poisonByTOilGun: function (dps, duration) {
+        this.poisonByTOilGunDuration = duration;
+        this.poisonByTOilGunDps = dps;
     },
 
     slow: function (speedReduced, duration) {

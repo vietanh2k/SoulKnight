@@ -3,19 +3,8 @@ let TCannonBullet = Bullet.extend({
     concept: "bullet",
     type: 'chasing',
 
-    ctor: function (target, speed, damage, radius, position, targetType) {
-        this._super(res.TCannon_Bullet, target, speed, damage, radius, position, targetType);
-    },
-});
-
-let TIceGunBullet = Bullet.extend({
-    name: 'cannon',
-    concept: "bullet",
-    type: 'chasing',
-
     ctor: function (target, speed, damage, radius, position, targetType, level) {
-        this._super(res.TIceGun_Bullet, target, speed, damage, radius, position, targetType);
-        this.level = level;
+        this._super(res.TCannon_Bullet, target, speed, damage, radius, position, targetType, level);
     },
 
     explose: function (playerState, pos) {
@@ -24,7 +13,39 @@ let TIceGunBullet = Bullet.extend({
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(this.damage);
-                object.freeze(this.getFreezeDuration());
+                if (this.level === 3) {
+                    object.stun(0.2);
+                }
+                object.hurtUI();
+            }
+        }
+        this.isDestroy = true;
+        this.active = false;
+        this.visible = false;
+
+        GameUI.instance.removeChild(this);
+        if (this.target && this.target.release) {
+            this.target.release();
+        }
+    }
+});
+
+let TIceGunBullet = Bullet.extend({
+    name: 'cannon',
+    concept: "bullet",
+    type: 'chasing',
+
+    ctor: function (target, speed, damage, radius, position, targetType, level) {
+        this._super(res.TIceGun_Bullet, target, speed, damage, radius, position, targetType, level);
+    },
+
+    explose: function (playerState, pos) {
+        const map = playerState.getMap();
+        let objectList = map.getObjectInRange(pos, this.radius);
+        for (let object of objectList) {
+            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
+                object.takeDamage(this.damage);
+                object.freezeByTIceGun(this.getFreezeDuration(), this.level === 3);
                 object.hurtUI();
             }
         }

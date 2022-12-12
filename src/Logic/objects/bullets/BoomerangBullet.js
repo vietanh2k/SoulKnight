@@ -4,10 +4,9 @@ let TBoomerangBullet = Bullet.extend({
     type: 'boomerang',
 
     ctor: function (target, speed, damage, radius, position, targetType, level, range) {
-        this._super(res.TBoomerangBullet, target, speed, damage, radius, position, targetType);
+        this._super(res.TBoomerangBullet, target, speed, damage, radius, position, targetType, level);
         this.originalPosition = new Vec2(position.x, position.y);
         this.range = range;
-        this.level = level;
         this.bulletRadius = 0.5;
 
         this.id = Math.random();
@@ -84,7 +83,11 @@ let TBoomerangBullet = Bullet.extend({
                         object.isDamagedInPhaseOne = [];
                     }
                     object.isDamagedInPhaseOne[this.id] = true;
-                    object.takeDamage(this.damage);
+                    let damage = this.damage;
+                    if (this.level === 3) {
+                        damage *= 1.5;
+                    }
+                    object.takeDamage(damage);
                     object.hurtUI();
                 }
             }

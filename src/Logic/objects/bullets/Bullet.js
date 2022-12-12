@@ -1,14 +1,14 @@
 var Bullet = cc.Sprite.extend({
     fx: null,
     concept: "bullet",
-    ctor: function (res, target, speed, damage, radius, position, targetType) {
+    ctor: function (res, target, speed, damage, radius, position, targetType, level) {
         this._super(res);
 
         this.mapId = -1;
-        this.reset(target, speed, damage, radius, position, targetType);
+        this.reset(target, speed, damage, radius, position, targetType, level);
     },
 
-    reset: function (target, speed, damage, radius, position, targetType) {
+    reset: function (target, speed, damage, radius, position, targetType, level) {
         this.target = target;
         this.speed = speed * cf.BULLET_SPEED_MULTIPLIER;
         this.damage = damage;
@@ -16,6 +16,7 @@ var Bullet = cc.Sprite.extend({
         this.isDestroy = false;
         this.position = position;
         this.targetType = targetType;
+        this.level = level;
         this.active = true;
         this.lastLoc = new Vec2(position.x, position.y);
         this.activate = true;
@@ -104,5 +105,5 @@ var Bullet = cc.Sprite.extend({
         if (this.target && this.target.release) {
             this.target.release();
         }
-    }
+    },
 })
