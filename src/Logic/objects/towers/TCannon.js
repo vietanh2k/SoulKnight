@@ -1,35 +1,28 @@
-// var _TOWER_CONFIG;
 var TCannon = Tower.extend({
-    /**
-     * Khởi tạo
-     * @param {MCard} card:
-     * @param {PlayerState} playerState: trạng thái người chơi
-     * @param {Vec2} position: vị trí deploy
-     * @param {MapView} map: map add */
+
     ctor: function (card, playerState, position, map) {
         this._super(card, 0);
 
-        this._playerState = playerState
-        this.active = true
-        this.visible = false
+        this._playerState = playerState;
+        this.active = true;
+        this.visible = false;
 
-        this.attackCoolDown = 0;
+        this.attackCooldown = 0;
         this.instance = "0";
         this.target = [];
         this.position = position;
-        this.health = 100
-        this.physicbox = null;
-        this.isDestroy = false
-        this.renderRule = this._playerState.rule
-        this._playerState = playerState
-        this.new_direction = null
+        this.health = 100;
+        this.isDestroy = false;
+        this.renderRule = this._playerState.rule;
+        this._playerState = playerState;
         this.direction = 0;
 
-        this.status = 'idle'
-        this.level = 1
-        this.map = map
-        this._is_set_pos = false
-        this.setScale(cf.TOWER_SCALE[0])
+        this.status = 'readyToFire';
+        this.newDir = 0;
+        this.level = 1;
+        this.map = map;
+        this.isSetPosition = false;
+        this.setScale(cf.TOWER_SCALE[0]);
         this.resetPending();
 
         return true;
@@ -47,20 +40,21 @@ var TCannon = Tower.extend({
         this.initTextures[3] = 'res/tower/frame/cannon_3/tower_cannon_idle_3_0000.png';
         this.idlePrefixNames[3] = 'tower_cannon_idle_3_';
         this.attackPrefixNames[3] = 'tower_cannon_attack_3_';
-        this.idleIDP = 15;
-        this.attackIDP = 9;
-        this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
-        GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
-        this.fire_fx.visible = false;
+        this.idleIPD = cf.TOWER_UI[this.card].idleIPD;
+        this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
+
+        this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
+        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        this.fireFx.visible = false;
     },
 
     getNewBullet: function (object) {
-        let speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'];
-        let damage = this.getConfig()['stat'][this.getLevel()]['damage'];
-        let radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'];
+        let speed = cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
+        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
+        let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
         let position = new Vec2(this.position.x, this.position.y);
 
-        let newBullet = new TCannonBullet(object, speed, damage, radius, position, this);
+        let newBullet = new TCannonBullet(object, speed, damage, radius, position, this.getTargetType(), this.level);
 
         const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
         newBullet.position.x += gunCenterFromCellCenter.x;

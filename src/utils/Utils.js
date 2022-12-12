@@ -108,6 +108,26 @@ Utils.loadCardConfig = function () {
     });
 };
 
+Utils.getAllObjectValues = function (object) {
+    return Object.keys(object).map(key => cf.TARGET_BUFF[key]);
+};
+
+Utils.loadAnimation = function (from, length, prefixName) {
+    let frames = [];
+    for (let i = from; i < from + length; i++) {
+        let fullName;
+        if (i < 10000) {
+            fullName = prefixName + '0'.repeat(4 - i.toString().length) + i + '.png';
+        } else {
+            cc.log('too much frames');
+            return [];
+        }
+        let frame = cc.spriteFrameCache.getSpriteFrame(fullName);
+        frames.push(frame);
+    }
+    return frames;
+};
+
 Utils.generateCardAttributes = function (card, index) {
     let texture, textAttribute, textStat, diff, textUpgradeStat = undefined;
     switch (card.statTypes[index]) {

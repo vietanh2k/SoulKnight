@@ -1,36 +1,22 @@
 var Bullet = cc.Sprite.extend({
     fx: null,
     concept: "bullet",
-    ctor: function (res, target, speed, damage, radius, position, fromTower) {
+    ctor: function (res, target, speed, damage, radius, position, fromTower,targetType, level) {
         this._super(res);
 
-        this.mapId = -1
-
-        this.reset(target, speed, damage, radius, position, fromTower);
-
+        this.mapId = -1;
+        this.reset(target, speed, damage, radius, position, fromTower,targetType, level);
     },
-
-    getTargetPosition: function () {
-        if (this.target == null || this.target.isDestroy) {
-            return this.lastLoc;
-        }
-        if (this.target.hasOwnProperty("position")) {
-            this.lastLoc = new Vec2(this.target.position.x, this.target.position.y)
-            return this.target.position
-
-        } else {
-            this.lastLoc = new Vec2(this.target.x, this.target.y)
-            return this.target
-        }
-    },
-
-    reset: function (target, speed, damage, radius, position, fromTower) {
+    
+    reset: function (target, speed, damage, radius, position, fromTower,targetType, level) {
         this.target = target;
         this.speed = speed * cf.BULLET_SPEED_MULTIPLIER;
         this.damage = damage;
         this.radius = radius;
         this.isDestroy = false;
-        this.position = position
+        this.position = position;
+        this.targetType = targetType;
+        this.level = level;
         this.active = true;
         this.lastLoc = new Vec2(position.x, position.y);
         this.activate = true;
@@ -48,31 +34,49 @@ var Bullet = cc.Sprite.extend({
             this.fromTower.retain();
         }
     },
+
+    getTargetPosition: function () {
+        if (this.targetIsLocked || this.target == null || this.target.isDestroy) {
+            return this.lastLoc;
+        }
+        if (this.target.hasOwnProperty("position")) {
+            this.lastLoc = new Vec2(this.target.position.x, this.target.position.y);
+            if (this.type === 'straight') {
+                this.targetIsLocked = true;
+            }
+            return this.target.position;
+        } else {
+            this.lastLoc = new Vec2(this.target.x, this.target.y);
+            if (this.type === 'straight') {
+                this.targetIsLocked = true;
+            }
+            return this.target;
+        }
+    },
+
     canAttack: function (object) {
         return object.concept === 'monster';
     },
+
     render: function (playerState) {
-        this.renderRule = playerState.rule
-
+        this.renderRule = playerState.rule;
         if (this.renderRule === 1) {
-            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
-            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
-            let height = dy + CELLWIDTH * 5
-            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
-            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
-
-            this.x = dx + x
-            this.y = height - y
+            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2;
+            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3;
+            let height = dy + CELLWIDTH * 5;
+            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH;
+            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH;
+            this.x = dx + x;
+            this.y = height - y;
         } else {
-            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
-            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
-            let height = dy + CELLWIDTH * 6
-            let width = dx + CELLWIDTH * 7
-
-            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
-            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
-
-            this.setPosition(width - x, height + y)
+            let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2;
+            let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3;
+            let height = dy + CELLWIDTH * 6;
+            let width = dx + CELLWIDTH * 7;
+            let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH;
+            let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH;
+            this.x = width - x;
+            this.y = height + y;
         }
     },
 
@@ -80,7 +84,6 @@ var Bullet = cc.Sprite.extend({
         if (this.active) {
             let pos = this.getTargetPosition();
             if (!pos || this.target.isDestroy) {
-                // target disappear
                 this.explose(playerState, this.lastLoc);
                 return;
             }
@@ -99,8 +102,7 @@ var Bullet = cc.Sprite.extend({
 
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
-            if (this.canAttack(object)) {
-                //object.health -= this.damage;
+            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);
                 object.hurtUI();
             }
@@ -110,8 +112,9 @@ var Bullet = cc.Sprite.extend({
         this.visible = false;
 
         GameUI.instance.removeChild(this);
-        if (this.target && this.target.release) this.target.release();
-
+        if (this.target && this.target.release) {
+            this.target.release();
+        }
         if (this.fromTower && this.fromTower.release) {
             this.fromTower.release();
         }

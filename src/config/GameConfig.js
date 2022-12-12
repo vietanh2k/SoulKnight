@@ -134,9 +134,15 @@ cf.MAX_EVOLUTION = 2;
 
 cf.DROP_TOWER_DELAY = 1;
 
-cf.BULLET_SPEED_MULTIPLIER = 3;
+cf.BULLET_SPEED_MULTIPLIER = 4;
 
 cf.TOWER_SCALE = [1, 1.4, 1, 1, 1, 1];
+
+cf.PRIORITIZED_TARGET = {};
+cf.PRIORITIZED_TARGET.FULL_HP = 0;
+cf.PRIORITIZED_TARGET.LOW_HP = 1;
+cf.PRIORITIZED_TARGET.FURTHEST = 2;
+cf.PRIORITIZED_TARGET.NEAREST = 3;
 
 // Treasure.json
 cf.CHEST_REWARD = [
@@ -230,19 +236,38 @@ cf.CARD_LEVEL = [
 cf.TOWER_UI = [];
 cf.TOWER_UI[16] = {
     name: 'cannon',
-    idleIDP: 15,
-    attackIDP: 9,
+    idleIPD: 15,
+    attackIPD: 9,
 };
 cf.TOWER_UI[17] = {
     name: 'wizard',
-    idleIDP: 15,
-    attackIDP: 9,
+    idleIPD: 15,
+    attackIPD: 9,
 };
 cf.TOWER_UI[18] = {
     name: 'boomerang',
-    idleIDP: 14,
-    attackIDP: 11,
+    idleIPD: 14,
+    attackIPD: 11,
+    bulletIPD: 10,
 };
+cf.TOWER_UI[19] = {
+    name: 'oil_gun',
+    idleIPD: 14,
+    attackIPD: 11,
+    bulletIPD: 7,
+};
+cf.TOWER_UI[20] = {
+    name: 'ice_gun',
+    idleIPD: 14,
+    attackIPD: 10,
+};
+cf.TOWER_UI[21] = {
+    name: 'damage',
+    idleIPD: 17,
+    attackIPD: 15,
+};
+
+cf.EMPTY_BULLET = -11;
 
 // id - 1xx: tower, 2xx: monster, 3xx: spell
 cf.CARD = [

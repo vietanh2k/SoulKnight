@@ -1,141 +1,173 @@
-var _TOWER_CONFIG;
-/**
- * Abstract class*/
 var Tower = TowerUI.extend({
+
     render: function (playerState) {
-        if (!this._is_set_pos) {
-            this.renderRule = playerState.rule
-            var self = this
+        if (!this.isSetPosition) {
+            this.renderRule = playerState.rule;
 
             if (this.renderRule === 1) {
-                // dir.set(dir.x, -dir.y)
-                let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
-                let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
-                let height = dy + CELLWIDTH * 5
-                let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
-                let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
-
-                this.x = dx + x
-                this.y = height - y
-
+                let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2;
+                let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3;
+                let height = dy + CELLWIDTH * 5;
+                let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH;
+                let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH;
+                this.x = dx + x;
+                this.y = height - y;
             } else {
-                // dir.set(-dir.x, dir.y)
-                let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
-                let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3
-                let height = dy + CELLWIDTH * 6
-                let width = dx + CELLWIDTH * 7
-
-                let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
-                let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
-
-                this.setPosition(width - x, height + y)
+                let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2;
+                let dy = winSize.height / 2 - HEIGHTSIZE / 2 + CELLWIDTH * 3;
+                let height = dy + CELLWIDTH * 6;
+                let width = dx + CELLWIDTH * 7;
+                let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH;
+                let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH;
+                this.x = width - x;
+                this.y = height + y;
             }
-            // this.addTimerUI()
-            this._is_set_pos = true
-            if(this.fire_fx!=null){
-                this.fire_fx.setPosition(this.x, this.y);
+            this.isSetPosition = true;
+            if (this.fireFx != null) {
+                this.fireFx.setPosition(this.x, this.y);
             }
         }
 
         if (this.renderRule === 1) {
-            if (this._last_status == undefined || this.status != this._last_status || (this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir)) {
-                if (this.status == 'idle') {
-                    this.updateDirection(this._new_dir);
+            if (this.lastStatus === undefined || this.status !== this.lastStatus || (this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir)) {
+                if (this.status === 'readyToFire') {
+                    this.updateDirection(this.newDir);
                 } else {
-                    this.playAttack(this._new_dir);
-                    this.status = 'idle'
+                    this.playAttack(this.newDir);
+                    this.status = 'readyToFire';
                 }
 
-                this._last_dir = this._new_dir;
-                this._last_status = this.status;
+                this.lastDir = this.newDir;
+                this.lastStatus = this.status;
             }
         } else {
-            if (this._last_status == undefined || this.status != this._last_status || this._new_dir != undefined && this._new_dir != null && this._new_dir != this._last_dir) {
-                var dir = (this._new_dir + 8) % 16;
-                if (this.status == 'idle') {
+            if (this.lastStatus === undefined || this.status !== this.lastStatus || this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir) {
+                let dir = (this.newDir + 8) % 16;
+                if (this.status === 'readyToFire') {
                     this.updateDirection(dir);
                 } else {
                     this.playAttack(dir);
-                    this.status = 'idle'
+                    this.status = 'readyToFire';
                 }
-
-                // this.updateDirection((this._new_dir+8)%16)
-                this._last_dir = this._new_dir
-                this._last_status = this.status
+                this.lastDir = this.newDir;
+                this.lastStatus = this.status;
             }
-
         }
+    },
 
-    },
     getAttackSpeed: function () {
-        return this.getConfig()["stat"][this.getLevel()]['attackSpeed'] / 1000;
+        return cf.TOWER.tower[this.instance].stat[this.level].attackSpeed / 1000;
     },
+
+    getTargetType: function () {
+        return cf.TOWER.tower[this.instance].targetType;
+    },
+
     getPending: function () {
         return this.pendingSecond;
     },
+
     resetPending: function () {
         // this.pendingSecond = this.getConfig()["buildingTime"] / 1000;
         this.pendingSecond = 0
         this.max_pending = this.pendingSecond;
     },
+
     updatePending: function (dt) {
         if (this.pendingSecond > 0) {
             this.pendingSecond -= dt;
         }
-        // try{
-        //     this.timerBar.setPercentage(this.pendingSecond/this.max_pending)
-        // } catch (e){
-        //     cc.log('can not update timer tower!')
-        // }
+    },
 
-    },
-    prioritize: function (map, object) {
-        if (map.getDistanceBetween(object.position, this.position) <= this.getRange()) {
-            this.target.unshift(object);
-        }
-    },
     fire: function () {
         if (this.target.length > 0) {
-            let bullet = this.getNewBullet(this.target[0]);
+            let target = this.chooseTarget();
+            let bullet = this.getNewBullet(target);
             this.map.addNewBullet(bullet);
-            var direction = this.target[0].position.sub(this.position).normalize();
-            this._new_dir = this.changDirectionHandle(direction);
-
+            let direction = target.position.sub(this.position).normalize();
+            this.newDir = this.changDirectionHandle(direction);
         }
-
     },
-    /**
-     * Chuyển hướng của tháp
-     * @param {Vec2} direction
-     * */
+
+    chooseTarget: function () {
+        if (this.prioritizedTarget === undefined) {
+            return this.target[0];
+        }
+        let record, index;
+        switch (this.prioritizedTarget) {
+            case cf.PRIORITIZED_TARGET.FULL_HP:
+                record = -1;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].health > record) {
+                        record = this.target[i].health;
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            case cf.PRIORITIZED_TARGET.LOW_HP:
+                record = 4000000000;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].health < record) {
+                        record = this.target[i].health;
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            case cf.PRIORITIZED_TARGET.FURTHEST:
+                record = -1;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].position.sub(this.position).length() > record) {
+                        record = this.target[i].position.sub(this.position).length();
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            case cf.PRIORITIZED_TARGET.NEAREST:
+                record = 4000000000;
+                index = -1;
+                for (let i = 0; i < this.target.length; i++) {
+                    if (this.target[i].position.sub(this.position).length() < record) {
+                        record = this.target[i].position.sub(this.position).length();
+                        index = i;
+                    }
+                }
+                return this.target[index];
+            default:
+                return this.target[0];
+        }
+    },
+
     changDirectionHandle: function (direction) {
-        var dirs = [
+        let dirs = [
             [10, 9, 8, 7, 6],
             [11, 12, 8, 7, 5],
             [12, 12, 0, 4, 4],
             [13, 12, 0, 3, 3],
             [14, 15, 0, 1, 2],
         ]
-        cc.log('Pdirection' + direction)
-        direction.set(Math.max(Math.round(2.5 + direction.x * 2.5) - 1, 0)
-            , Math.max(0, Math.round(2.5 + direction.y * 2.5) - 1))
-        cc.log('Adirection' + direction)
+        cc.log('Previous direction' + direction);
+        direction.set(
+            Math.max(Math.round(2.5 + direction.x * 2.5) - 1, 0),
+            Math.max(0, Math.round(2.5 + direction.y * 2.5) - 1)
+        );
+        cc.log('After direction' + direction);
         if (direction) {
-            const dir = dirs[direction.y][direction.x]
-            return dir
+            return dirs[direction.y][direction.x];
         }
         return null;
-
-
-        // cc.log("changDirectionHandle is not overwritten!")
     },
+
     getNewBullet: function (object) {
-        let speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'],
-            damage = this.getConfig()['stat'][this.getLevel()]['damage'],
-            radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
-            position = new Vec2(this.position.x, this.position.y);
+        let speed = cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
+        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
+        let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
+        let position = new Vec2(this.position.x, this.position.y);
         return new Bullet(object, speed, damage, radius, position, this);
     },
+
 
     findTargets: function (playerState) {
         this.target = [];
@@ -164,58 +196,54 @@ var Tower = TowerUI.extend({
         if (this.health <= 0) {
             this.active = false;
         }
-        this.status = 'idle'
+        this.status = 'readyToFire';
         if (this.active) {
-            // this.update(dt);
-
-            // cc.log('updating Tower')
             if (this.getPending() > 0) {
                 this.updatePending(dt);
-                // this.visible = false;
-
             } else {
                 this.visible = true;
 
                 if (this.attackCoolDown <= 0) {
                     this.findTargets(playerState)
-                    if (this.target.length > 0) {
-                        this.status = 'attack'
-                        this.fire();
-                        this.attackCoolDown = self.getAttackSpeed();
+                    this.target = [];
+                    let self = this;
+                    const map = playerState.getMap();
+                    map.getObjectInRange(self.position, self.getRange()).map(function (object) {
+                        if (self.checkIsTarget(object) && (self.getTargetType() === 'all' || self.getTargetType() === object.class)) {
+                            self.target.push(object);
+                        }
+                    });
+                    if (this.attackCooldown <= 0) {
+                        if (this.target.length > 0) {
+                            this.fire();
+                            this.status = 'cooldowning';
+                            this.attackCooldown = self.getAttackSpeed();
+                        }
+                    } else {
+                        this.attackCooldown -= dt;
                     }
-
-                } else {
-                    this.attackCoolDown -= dt;
                 }
             }
-
         }
-
     },
+
     checkIsTarget: function (another) {
         return (another.concept === "monster" || another.concept === "tree");
     },
-    getLevel: function () {
-        return this.level;
-    },
+
     getRange: function () {
-        return this.getConfig()['stat'][this.getLevel()]['range'];
+        return cf.TOWER.tower[this.instance].stat[this.level].range;
     },
-    getConfig: function () {
-        if (_TOWER_CONFIG === undefined || _TOWER_CONFIG == null) {
-            _TOWER_CONFIG = cc.loader.getRes("config/Tower.json");
-        }
-        _TOWER_CONFIG["tower"][this.instance]["buildingTime"] = _TOWER_CONFIG.buildingTime
-        return _TOWER_CONFIG["tower"][this.instance]
-    },
+
     destroy: function () {
-        this.isDestroy = true
+        this.isDestroy = true;
         if (this.getParent() != null) {
-            this.getParent().getEnergyUI(cc.p(this.x, this.y), 5)
+            this.getParent().getEnergyUI(cc.p(this.x, this.y), 5);
         }
         this.visible = false;
         this.active = false;
     },
+
     upgrade: function (card) {
         if (this.level === 3) {
             if (this.renderRule === 1) {
@@ -224,8 +252,10 @@ var Tower = TowerUI.extend({
             return false;
         }
 
-        this.level += 1;
-        setTimeout(() => {this.evolute()}, 1000);
+        setTimeout(() => {
+            this.level += 1;
+            this.evolute();
+        }, 1000);
         return true;
     },
 });

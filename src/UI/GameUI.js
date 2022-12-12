@@ -20,8 +20,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [17, 16, 0, 2]
-        this.cardPlayable = [0, 2, 16, 17]
+        this.cardInQueue = [16, 17, 0, 2]
+        this.cardPlayable = [18, 19, 20, 21]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -54,31 +54,161 @@ var GameUI = cc.Layer.extend({
         return true;
     },
 
-    /*
-    * touch khi có 1 thẻ đang đc chọn
-    * active cái thẻ đấy khi có đủ NL
-    * */
+    /**
+     * Nếu có thẻ đang được chọn: sử dụng thẻ đó
+     * Nếu hiện tại không chọn thẻ nào: mở UI dùng kĩ năng trụ và đổi ưu tiên mục tiêu
+     */
     addTouchListener: function () {
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             // swallowTouches: true,
             onTouchBegan: (touch, event) => {
-                if (this.cardTouchSlot >= 0 ) {
-                    if(GameStateManagerInstance.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy){
+                if (this.cardTouchSlot >= 0) {
+                    if (GameStateManagerInstance.playerA.energy >= this.listCard[this.cardTouchSlot - 1].energy) {
                         this.activeCard(this.listCard[this.cardTouchSlot - 1], touch.getLocation());
                     } else {
                         Utils.addToastToRunningScene('Không đủ năng lượng!');
-                        this.resetCardTouchState()
+                        this.resetCardTouchState();
                     }
+                    this.removeCurrentTowerActionsUI();
+                    return true;
+                } else if (!this.isShowingTowerOptionsUI) {
+                    if (!isPosInMap(touch.getLocation(), 1)) {
+                        return false;
+                    }
+                    let position = convertIndexToMapPos(convertPosToIndex(touch.getLocation(), 1));
+                    let tower = GameStateManagerInstance.playerA.getMap().getTowerAtPosition(position);
+                    if (tower === undefined) {
+                        return false;
+                    }
+                    this.showTowerOptionsUI(tower);
                     return true;
                 }
-                return false;
+                this.removeCurrentTowerActionsUI();
+                return true;
             },
             onTouchEnded: (touch, event) => {
-                cc.log(this.cardTouchSlot+'enddddddddddddddd')
+                cc.log(this.cardTouchSlot + ' end touch!');
             },
-
         }, this);
+    },
+
+    showTowerOptionsUI: function (tower) {
+        this.isShowingTowerOptionsUI = true;
+
+        this.circleFrame = cc.Sprite(asset.circleFrame_png);
+        this.circleFrame.setPosition(tower.x, tower.y);
+        this.addChild(this.circleFrame);
+
+        let frameRadius = 0.94 * this.circleFrame.width / 2;
+
+        this.targetFullHPBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetFullHPBtn.setZoomScale(0);
+        this.targetFullHPBtn.attr({
+            x: tower.x - frameRadius * Math.cos(Math.PI * 0.1),
+            y: tower.y - frameRadius * Math.sin(Math.PI * 0.1),
+        });
+        this.targetFullHPBtn.addClickEventListener(() => {
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FULL_HP, tower.position.x, tower.position.y, gv.gameClient._userId)]);
+        });
+        this.addChild(this.targetFullHPBtn);
+
+        let targetFullHPIcon = new cc.Sprite(asset.targetFullHP_png);
+        targetFullHPIcon.attr({
+            x: this.targetFullHPBtn.width / 2,
+            y: this.targetFullHPBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetFullHPBtn.addChild(targetFullHPIcon);
+
+        this.targetLowHPBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetLowHPBtn.setZoomScale(0);
+        this.targetLowHPBtn.attr({
+            x: tower.x - frameRadius * Math.cos(Math.PI * 0.3),
+            y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
+        });
+        this.targetLowHPBtn.addClickEventListener(() => {
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.LOW_HP, tower.position.x, tower.position.y, gv.gameClient._userId)]);
+        });
+        this.addChild(this.targetLowHPBtn);
+
+        let targetLowHPIcon = new cc.Sprite(asset.targetLowHP_png);
+        targetLowHPIcon.attr({
+            x: this.targetLowHPBtn.width / 2,
+            y: this.targetLowHPBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetLowHPBtn.addChild(targetLowHPIcon);
+
+        this.targetFurthestBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetFurthestBtn.setZoomScale(0);
+        this.targetFurthestBtn.attr({
+            x: tower.x + frameRadius * Math.cos(Math.PI * 0.3),
+            y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
+        });
+        this.targetFurthestBtn.addClickEventListener(() => {
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FURTHEST, tower.position.x, tower.position.y, gv.gameClient._userId)]);
+        });
+        this.addChild(this.targetFurthestBtn);
+
+        let targetFurthestIcon = new cc.Sprite(asset.targetFurthest_png);
+        targetFurthestIcon.attr({
+            x: this.targetFurthestBtn.width / 2,
+            y: this.targetFurthestBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetFurthestBtn.addChild(targetFurthestIcon);
+
+        this.targetNearestBtn = new ccui.Button(asset.targetIcon_png);
+        this.targetNearestBtn.setZoomScale(0);
+        this.targetNearestBtn.attr({
+            x: tower.x + frameRadius * Math.cos(Math.PI * 0.1),
+            y: tower.y - frameRadius * Math.sin(Math.PI * 0.1),
+        });
+        this.targetNearestBtn.addClickEventListener(() => {
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.NEAREST, tower.position.x, tower.position.y, gv.gameClient._userId)]);
+        });
+        this.addChild(this.targetNearestBtn);
+
+        let targetNearestIcon = new cc.Sprite(asset.targetNearest_png);
+        targetNearestIcon.attr({
+            x: this.targetNearestBtn.width / 2,
+            y: this.targetNearestBtn.height / 2,
+            scale: 0.8,
+        });
+        this.targetNearestBtn.addChild(targetNearestIcon);
+
+        this.destroyTowerBtn = new ccui.Button(asset.targetIcon_png);
+        this.destroyTowerBtn.setZoomScale(0);
+        this.destroyTowerBtn.attr({
+            x: tower.x,
+            y: tower.y - frameRadius,
+        });
+        this.destroyTowerBtn.addClickEventListener(() => {
+            testnetwork.connector.sendActions([new DestroyTowerAction(tower.position.x, tower.position.y, gv.gameClient._userId)]);
+        });
+        this.addChild(this.destroyTowerBtn);
+
+        let destroyTowerIcon = new cc.Sprite(asset.panelBtnClose_png);
+        destroyTowerIcon.attr({
+            x: this.destroyTowerBtn.width / 2,
+            y: this.destroyTowerBtn.height * 0.52,
+            scale: 0.8,
+        });
+        this.destroyTowerBtn.addChild(destroyTowerIcon);
+    },
+
+    removeCurrentTowerActionsUI: function () {
+        if (this.isShowingTowerOptionsUI) {
+            this.isShowingTowerOptionsUI = false;
+
+            this.circleFrame.removeFromParent(true);
+            this.targetFullHPBtn.removeFromParent(true);
+            this.targetLowHPBtn.removeFromParent(true);
+            this.targetFurthestBtn.removeFromParent(true);
+            this.targetNearestBtn.removeFromParent(true);
+            this.destroyTowerBtn.removeFromParent(true);
+        }
     },
 
     /*
@@ -293,9 +423,9 @@ var GameUI = cc.Layer.extend({
     },
 
     addTimerUI: function () {
-        this.addObjectBackground(res.timer1, 0.9 / 8, 0, 0, 1 / 15)
+        this.addObjectBackground(res.timerBackground_png, 0.9 / 8, 0, 0, 1 / 15)
         // this.addObjectBackground(res.timer2,0.8/8,0,0,1/15)
-        var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer_png));
         timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
         timeBar.setBarChangeRate(cc.p(1, 0));
         timeBar.setMidpoint(cc.p(0.5, 0.5))
@@ -310,9 +440,9 @@ var GameUI = cc.Layer.extend({
         numTime.setTextColor(whiteColor)
         numTime.enableShadow()
         this.addChild(numTime, 0, 'time')
-        var time3 = this.addObjectBackground(res.timer3, 0.9 / 8, 0, 0, 1 / 15)
+        var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
         time3.visible = false
-        var touchLayer = new ccui.Button(res.timer3)
+        var touchLayer = new ccui.Button(res.timerBorder_png)
         touchLayer.setScale(WIDTHSIZE / touchLayer.getContentSize().width * 0.9/8);
         touchLayer.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
         touchLayer.opacity = 0
@@ -725,12 +855,7 @@ var GameUI = cc.Layer.extend({
                 Utils.addToastToRunningScene('Không đặt được chỗ này!');
             }
         }
-        this.resetCardTouchState()
-
-        cc.log(isPosInMap(posUI, 1))
-        // var intIndex = convertPosToIndex(posUI, 1)
-        //var rand = Math.floor(Math.random() * 2) + 1;
-
+        this.resetCardTouchState();
     },
 
     activeCardMonster: function (target, posUI) {
@@ -754,7 +879,6 @@ var GameUI = cc.Layer.extend({
             testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
                 gv.gameClient._userId, mapCastAt),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
-
         }
 
         // if(isPosInMap(posUI, 1) || isPosInMap(posUI, 2) ) {
@@ -887,7 +1011,7 @@ var GameUI = cc.Layer.extend({
         var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (this._gameStateManager.canTouchNewWave) {
-            this.getChildByName(res.timer3).visible = true
+            this.getChildByName(res.timerBorder_png).visible = true
         }
     },
 
@@ -1066,25 +1190,31 @@ var GameUI = cc.Layer.extend({
 
     },
     addTimerBeforeCreateTower: function (pos) {
-        let timerBackground = new cc.Sprite(res.timer1);
+        let timerBackground = new cc.Sprite(res.timerBackground_png);
         timerBackground.setPosition(pos);
         timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
-        this.addChild(timerBackground, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerBackground');
+        this.addChild(timerBackground, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER);
 
-        let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
+        let timerBorder = new cc.Sprite(res.timerBorder_png);
+        timerBorder.setPosition(pos);
+        timerBorder.setScale(timerBackground.scale);
+        this.addChild(timerBorder, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER);
+
+        let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer_png));
         timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
         timerTower.setBarChangeRate(cc.p(1, 0));
         timerTower.setMidpoint(cc.p(0.5, 0.5));
         timerTower.setPercentage(100);
         timerTower.setPosition(pos);
         timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
-        this.addChild(timerTower, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerTower');
+        this.addChild(timerTower, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER);
 
         timerTower.runAction(
             cc.sequence(
                 cc.progressTo(cf.DROP_TOWER_DELAY, 0),
                 cc.callFunc(() => {
                     timerBackground.removeFromParent(true);
+                    timerBorder.removeFromParent(true);
                 }),
                 cc.removeSelf()
             )

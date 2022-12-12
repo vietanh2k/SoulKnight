@@ -29,8 +29,6 @@ var MapView = cc.Class.extend({
             this.cells.push(column)
         }
 
-        this.preloadConfig()
-
         this.gateCell = new Cell();
         this.gateCell.setLocation(1, -1)
 
@@ -58,20 +56,9 @@ var MapView = cc.Class.extend({
         this.updatePathForCells()
 
     },
-    preloadConfig: function (){
-        if (_TOWER_CONFIG == undefined || _TOWER_CONFIG == null) {
-            _TOWER_CONFIG = cc.loader.getRes("config/Tower.json");
-        }
-    },
+
     init:function () {
-
         winSize = cc.director.getWinSize();
-
-        // var monster = new Monster(1, this._playerState)
-        // this.monsters.push(monster)
-
-
-
 
         return true;
     },
@@ -447,6 +434,15 @@ var MapView = cc.Class.extend({
             case 18:
                 tower = new TBoomerang(cardType, this._playerState, position, this);
                 break;
+            case 19:
+                tower = new TOilGun(cardType, this._playerState, position, this);
+                break;
+            case 20:
+                tower = new TIceGun(cardType, this._playerState, position, this);
+                break;
+            case 21:
+                tower = new TDamage(cardType, this._playerState, position, this);
+                break;
             default:
                 tower = new TCannon(cardType, this._playerState, position, this);
                 cc.log('Default case of switch cardType to create tower!');
@@ -542,18 +538,21 @@ var MapView = cc.Class.extend({
         return objInRange
 
     },
-    /**
-     * Thêm 1 bullet vào map
-     * @param {Bullet} bullet*/
-    addNewBullet: function (bullet){
-        //if(this.bullets==undefined){
-        //    //this.bullets = [bullet]
-        //} else {
-        //    //this.bullets.push(bullet)
-        //}
 
-        bullet.mapId = this.bullets.add(bullet)
+    getTowerAtPosition: function (position) {
+        let result = undefined;
+        this.towers.forEach(tower => {
+            if (tower.position.x === position.x && tower.position.y === position.y) {
+                cc.log('founded tower position: ' + JSON.stringify(tower.position))
+                result = tower;
+            }
+        });
+        return result;
+    },
 
+    addNewBullet: function (bullet) {
+        if (bullet === cf.EMPTY_BULLET) return;
+        bullet.mapId = this.bullets.add(bullet);
         GameUI.instance.addChild(bullet, 1000000000);
     },
 
