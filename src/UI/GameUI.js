@@ -98,13 +98,13 @@ var GameUI = cc.Layer.extend({
         this.circleFrame.setPosition(tower.x, tower.y);
         this.addChild(this.circleFrame);
 
-        let frameRadius = 0.9 * this.circleFrame.width / 2;
+        let frameRadius = 0.94 * this.circleFrame.width / 2;
 
         this.targetFullHPBtn = new ccui.Button(asset.targetIcon_png);
         this.targetFullHPBtn.setZoomScale(0);
         this.targetFullHPBtn.attr({
-            x: tower.x - frameRadius / Math.sqrt(2),
-            y: tower.y + frameRadius / Math.sqrt(2),
+            x: tower.x - frameRadius * Math.cos(Math.PI * 0.1),
+            y: tower.y - frameRadius * Math.sin(Math.PI * 0.1),
         });
         this.targetFullHPBtn.addClickEventListener(() => {
             testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FULL_HP, tower.position.x, tower.position.y, gv.gameClient._userId)]);
@@ -122,8 +122,8 @@ var GameUI = cc.Layer.extend({
         this.targetLowHPBtn = new ccui.Button(asset.targetIcon_png);
         this.targetLowHPBtn.setZoomScale(0);
         this.targetLowHPBtn.attr({
-            x: tower.x + frameRadius / Math.sqrt(2),
-            y: tower.y + frameRadius / Math.sqrt(2),
+            x: tower.x - frameRadius * Math.cos(Math.PI * 0.3),
+            y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
         });
         this.targetLowHPBtn.addClickEventListener(() => {
             testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.LOW_HP, tower.position.x, tower.position.y, gv.gameClient._userId)]);
@@ -141,8 +141,8 @@ var GameUI = cc.Layer.extend({
         this.targetFurthestBtn = new ccui.Button(asset.targetIcon_png);
         this.targetFurthestBtn.setZoomScale(0);
         this.targetFurthestBtn.attr({
-            x: tower.x - frameRadius / Math.sqrt(2),
-            y: tower.y - frameRadius / Math.sqrt(2),
+            x: tower.x + frameRadius * Math.cos(Math.PI * 0.3),
+            y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
         });
         this.targetFurthestBtn.addClickEventListener(() => {
             testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FURTHEST, tower.position.x, tower.position.y, gv.gameClient._userId)]);
@@ -160,8 +160,8 @@ var GameUI = cc.Layer.extend({
         this.targetNearestBtn = new ccui.Button(asset.targetIcon_png);
         this.targetNearestBtn.setZoomScale(0);
         this.targetNearestBtn.attr({
-            x: tower.x + frameRadius / Math.sqrt(2),
-            y: tower.y - frameRadius / Math.sqrt(2),
+            x: tower.x + frameRadius * Math.cos(Math.PI * 0.1),
+            y: tower.y - frameRadius * Math.sin(Math.PI * 0.1),
         });
         this.targetNearestBtn.addClickEventListener(() => {
             testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.NEAREST, tower.position.x, tower.position.y, gv.gameClient._userId)]);
@@ -175,6 +175,25 @@ var GameUI = cc.Layer.extend({
             scale: 0.8,
         });
         this.targetNearestBtn.addChild(targetNearestIcon);
+
+        this.destroyTowerBtn = new ccui.Button(asset.targetIcon_png);
+        this.destroyTowerBtn.setZoomScale(0);
+        this.destroyTowerBtn.attr({
+            x: tower.x,
+            y: tower.y - frameRadius,
+        });
+        this.destroyTowerBtn.addClickEventListener(() => {
+            testnetwork.connector.sendActions([new DestroyTowerAction(tower.position.x, tower.position.y, gv.gameClient._userId)]);
+        });
+        this.addChild(this.destroyTowerBtn);
+
+        let destroyTowerIcon = new cc.Sprite(asset.panelBtnClose_png);
+        destroyTowerIcon.attr({
+            x: this.destroyTowerBtn.width / 2,
+            y: this.destroyTowerBtn.height * 0.52,
+            scale: 0.8,
+        });
+        this.destroyTowerBtn.addChild(destroyTowerIcon);
     },
 
     removeCurrentTowerActionsUI: function () {
@@ -186,6 +205,7 @@ var GameUI = cc.Layer.extend({
             this.targetLowHPBtn.removeFromParent(true);
             this.targetFurthestBtn.removeFromParent(true);
             this.targetNearestBtn.removeFromParent(true);
+            this.destroyTowerBtn.removeFromParent(true);
         }
     },
 
