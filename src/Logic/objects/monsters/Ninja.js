@@ -136,7 +136,8 @@ const Ninja = Monster.extend({
     takeDamage: function (playerState, many, from) {
         const self = this
 
-        this.health -= many
+        //this.health -= many
+        this._super(playerState, many, from)
 
         if (many && this.concept != null) {
             //this.setColor(cc.color(255,0,0,255))
