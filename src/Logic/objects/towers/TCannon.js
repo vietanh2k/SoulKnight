@@ -8,7 +8,6 @@ var TCannon = Tower.extend({
      * @param {MapView} map: map add */
     ctor: function (card, playerState, position, map) {
         this._super(card, 0);
-        // cc.log("Create new Tower: Type=" + type + "player state" + playerState + "position" + position)
 
         this._playerState = playerState
         this.active = true
@@ -30,11 +29,12 @@ var TCannon = Tower.extend({
         this.level = 1
         this.map = map
         this._is_set_pos = false
-        this.setScale(1)
+        this.setScale(cf.TOWER_SCALE[0])
         this.resetPending();
 
         return true;
     },
+
     AnimationSetUp: function (card) {
         this.initTextures = [];
         this.idlePrefixNames = [];
@@ -50,24 +50,26 @@ var TCannon = Tower.extend({
         this.idleIDP = 15;
         this.attackIDP = 9;
         this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
-        GameUI.instance.addChild(this.fire_fx, 900);
+        GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
         this.fire_fx.visible = false;
     },
+
     getNewBullet: function (object) {
         let speed = this.getConfig()['stat'][this.getLevel()]['bulletSpeed'];
         let damage = this.getConfig()['stat'][this.getLevel()]['damage'];
         let radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'];
         let position = new Vec2(this.position.x, this.position.y);
 
-        let newBullet = new TCannonBullet(object, speed, damage, radius, position);
+        let newBullet = new TCannonBullet(object, speed, damage, radius, position, this);
+
+        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
+        newBullet.position.x += gunCenterFromCellCenter.x;
+        newBullet.position.y += gunCenterFromCellCenter.y;
 
         let enemyPosition = new Vec2(object.position.x, object.position.y);
         let direction = enemyPosition.sub(newBullet.position).l2norm();
-
-        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * (-0.3));
-
-        newBullet.position.x += gunCenterFromCellCenter.x + direction.x * MAP_CONFIG.CELL_WIDTH * 0.2;
-        newBullet.position.y += gunCenterFromCellCenter.y + direction.y * MAP_CONFIG.CELL_HEIGHT * 0.2;
+        newBullet.position.x += direction.x * MAP_CONFIG.CELL_WIDTH * 0.3;
+        newBullet.position.y += direction.y * MAP_CONFIG.CELL_HEIGHT * 0.3;
 
         return newBullet;
     },

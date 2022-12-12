@@ -20,8 +20,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 3, 2]
-        this.cardPlayable = [0, 2, 3, 17]
+        this.cardInQueue = [17, 16, 0, 2]
+        this.cardPlayable = [0, 2, 16, 17]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -494,7 +494,7 @@ var GameUI = cc.Layer.extend({
                     this.previewObject = undefined
                     if(GameStateManagerInstance.playerA.energy >= target.energy){
                         this.activeCard(target, touch.getLocation())
-                    }else {
+                    } else {
                         Utils.addToastToRunningScene('Không đủ năng lượng!');
                         this.resetCardTouchState()
                     }
@@ -670,8 +670,10 @@ var GameUI = cc.Layer.extend({
 
 
     /** thả 1 card khi đã check có đủ NL rồi
-     * @param MCard, posUI
-     * @return */
+     * @param target
+     * @param posUI
+     * @return
+     */
     activeCard: function (target, posUI) {
         cc.log(target.concept)
         switch (target.concept) {
@@ -691,8 +693,10 @@ var GameUI = cc.Layer.extend({
     },
 
     /** check đường đi,... xem có đặt trụ được không
-     * @param MCard, posUI
-     * @return */
+     * @param target
+     * @param posUI
+     * @return {void}
+     */
     activeCardTower: function (target, posUI) {
         let canPutTower= true;
         if(isPosInMap(posUI, 1)){
@@ -709,18 +713,15 @@ var GameUI = cc.Layer.extend({
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
                             gv.gameClient._userId),TICK_FOR_DELAY_TOWER]]);
                         this.updateCardSlot(target.numSlot, target.energy);
-                    } else {
-                        canPutTower = false;
                     }
-                }else{
+                } else {
                     GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = tmp;
                     canPutTower = false;
                 }
-
-            }else {
+            } else {
                 canPutTower = false;
             }
-            if(!canPutTower){
+            if (!canPutTower) {
                 Utils.addToastToRunningScene('Không đặt được chỗ này!');
             }
         }
@@ -1068,7 +1069,7 @@ var GameUI = cc.Layer.extend({
         let timerBackground = new cc.Sprite(res.timer1);
         timerBackground.setPosition(pos);
         timerBackground.setScale(WIDTHSIZE / timerBackground.getContentSize().width * 0.08);
-        this.addChild(timerBackground, 999999, 'timerBackground');
+        this.addChild(timerBackground, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerBackground');
 
         let timerTower = cc.ProgressTimer.create(cc.Sprite.create(res.timer2));
         timerTower.setType(cc.ProgressTimer.TYPE_RADIAL);
@@ -1077,7 +1078,7 @@ var GameUI = cc.Layer.extend({
         timerTower.setPercentage(100);
         timerTower.setPosition(pos);
         timerTower.setScale(WIDTHSIZE / timerTower.getContentSize().width * 0.08);
-        this.addChild(timerTower, 999999, 'timerTower');
+        this.addChild(timerTower, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.TIMER_LOCAL_Z_ORDER, 'timerTower');
 
         timerTower.runAction(
             cc.sequence(

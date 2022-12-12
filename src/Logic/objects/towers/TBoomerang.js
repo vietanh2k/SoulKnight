@@ -1,5 +1,4 @@
-// var _TOWER_CONFIG;
-var TWizard = Tower.extend({
+var TBoomerang = Tower.extend({
     /**
      * Khởi tạo
      * @param {MCard} card:
@@ -14,7 +13,7 @@ var TWizard = Tower.extend({
         this.visible = false
 
         this.attackCoolDown = 0;
-        this.instance = "1";
+        this.instance = "2";
         this.target = [];
         this.position = position;
         this.health = 100
@@ -29,7 +28,7 @@ var TWizard = Tower.extend({
         this.level = 1
         this.map = map
         this._is_set_pos = false
-        this.setScale(cf.TOWER_SCALE[1])
+        this.setScale(cf.TOWER_SCALE[2])
         this.resetPending();
 
         return true;
@@ -39,25 +38,19 @@ var TWizard = Tower.extend({
         this.initTextures = [];
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
-        if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.TWizard_plit)) {
-            cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
-        }
         for (let i = 0; i < 3; i++) {
-            this.initTextures[i] = 'res/tower/frame/wizard_1_2/tower_wizard_idle_' + i + '_0000.png';
-            this.idlePrefixNames[i] = 'wizard/tower_wizard_idle_' + i + '_';
-            this.attackPrefixNames[i] = 'wizard/tower_wizard_attack_' + i + '_';
+            this.initTextures[i] = 'res/tower/frame/boomerang_1_2/tower_boomerang_idle_' + i + '_0000.png';
+            this.idlePrefixNames[i] = 'tower_boomerang_idle_' + i + '_';
+            this.attackPrefixNames[i] = 'tower_boomerang_attack_' + i + '_';
         }
-        this.initTextures[3] = 'res/tower/frame/wizard_3/tower_wizard_idle_3_0000.png';
-        this.idlePrefixNames[3] = 'wizard/tower_wizard_idle_3_';
-        this.attackPrefixNames[3] = 'wizard/tower_wizard_attack_3_';
-        this.idleIDP = 15;
-        this.attackIDP = 9;
-        this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
-        this.bullet_fx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
-        GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
-        GameUI.instance.addChild(this.bullet_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
-        this.fire_fx.visible = false;
-        this.bullet_fx.visible = false;
+        this.initTextures[3] = 'res/tower/frame/boomerang_3/tower_boomerang_idle_3_0000.png';
+        this.idlePrefixNames[3] = 'tower_boomerang_idle_3_';
+        this.attackPrefixNames[3] = 'tower_boomerang_attack_3_';
+        this.idleIDP = 14;
+        this.attackIDP = 11;
+        // this.fire_fx = sp.SkeletonAnimation('res/tower/fx/tower_cannon_fx.json', 'res/tower/fx/tower_cannon_fx.atlas');
+        // GameUI.instance.addChild(this.fire_fx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        // this.fire_fx.visible = false;
     },
 
     getNewBullet: function (object) {
@@ -66,7 +59,7 @@ var TWizard = Tower.extend({
         let radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'];
         let position = new Vec2(this.position.x, this.position.y);
 
-        let newBullet = new TWizardBullet(object, speed, damage, radius, position, this.bullet_fx, this);
+        let newBullet = new TCannonBullet(object, speed, damage, radius, position, this);
 
         const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
         newBullet.position.x += gunCenterFromCellCenter.x;
@@ -74,8 +67,8 @@ var TWizard = Tower.extend({
 
         let enemyPosition = new Vec2(object.position.x, object.position.y);
         let direction = enemyPosition.sub(newBullet.position).l2norm();
-        newBullet.position.x += direction.x * MAP_CONFIG.CELL_WIDTH * 0.25;
-        newBullet.position.y += direction.y * MAP_CONFIG.CELL_HEIGHT * 0.25;
+        newBullet.position.x += direction.x * MAP_CONFIG.CELL_WIDTH * 0.3;
+        newBullet.position.y += direction.y * MAP_CONFIG.CELL_HEIGHT * 0.3;
 
         return newBullet;
     },

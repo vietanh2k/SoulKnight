@@ -98,9 +98,9 @@
         "src/UI/GoldFly.js",
         "src/Logic/map/MapView.js",
         "src/Logic/map/MapController.js",
-        "src/Logic/map/GameStateManager.js",
-        "src/Logic/map/PlayerState.js",
-        "src/Logic/map/Timer.js",
+        "src/Logic/GameStateManager.js",
+        "src/Logic/PlayerState.js",
+        "src/Logic/Timer.js",
 
         "src/Logic/objects/MCard.js",
 
@@ -116,6 +116,11 @@
         "src/Logic/utils/Vec2.js",
 
 
+        "src/Logic/objects/effects/Effect.js",
+        "src/Logic/objects/effects/FreezeEffect.js",
+        "src/Logic/objects/effects/DesertKingEffect.js",
+
+
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
         "src/Logic/objects/monsters/Monster.js",
@@ -124,7 +129,11 @@
         "src/Logic/objects/monsters/Giant.js",
         "src/Logic/objects/monsters/Bat.js",
         "src/Logic/objects/monsters/Ninja.js",
+
         "src/Logic/objects/monsters/bosses/DarkGiant.js",
+        "src/Logic/objects/monsters/bosses/Satyr.js",
+        "src/Logic/objects/monsters/bosses/DesertKing.js",
+        "src/Logic/objects/monsters/bosses/Iceman.js",
 
 
         "src/config/GameConfig.js",
@@ -141,8 +150,9 @@
         "src/Logic/objects/bullets/LockBullet.js",
         "src/Logic/objects/bullets/StraightBullet.js",
         "src/Logic/objects/towers/Tower.js",
-        "src/Logic/objects/towers/TWizard.js",
         "src/Logic/objects/towers/TCannon.js",
+        "src/Logic/objects/towers/TWizard.js",
+        "src/Logic/objects/towers/TBoomerang.js",
 
         "src/Logic/objects/spells/Spell.js",
         "src/Logic/objects/spells/FireBall.js",

@@ -33,6 +33,11 @@ const Monster = AnimatedSprite.extend({
         this.pointToAvoidBlockingMonster = null
         this.avoidMonsterStage = 0
 
+        this.recoverHpFx = new sp.SkeletonAnimation(res.heal_fx_json, res.heal_fx_atlas)
+        this.recoverHpFx.visible = false
+        this.recoverHpFx.opacity = 64
+        this.addChild(this.recoverHpFx)
+
         return true;
     },
 
@@ -41,7 +46,13 @@ const Monster = AnimatedSprite.extend({
         this.health = config.hp
         this.MaxHealth = config.hp
         this.energyFromDestroy = config.gainEnergy
-        this.energyWhileImpactMainTower = config.energy
+
+        if (config.category === 'boss') {
+            this.energyWhileImpactMainTower = 5
+        } else {
+            this.energyWhileImpactMainTower = 1
+        }
+
         this.weight = config.weight
         this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH
     },
@@ -266,9 +277,14 @@ const Monster = AnimatedSprite.extend({
 
     route: function (map, distance, prevCell) {
         let currentCell = map.getCellAtPosition(this.position);
+
+        if (!currentCell) return true;
+
         if (currentCell === prevCell) {
             currentCell = currentCell.getNextCell()
         }
+
+        if (!currentCell) return true;
 
         let targetPosition = null
         if (this.targetPosition) {
@@ -336,6 +352,10 @@ const Monster = AnimatedSprite.extend({
             const v = this.animationIds[dir.y +1]
             if (v) this.play(v[dir.x +1])
         }
+
+        if (this.recoverHpFx.visible === true) {
+            this.recoverHpFx.setPosition(this.width / 2.0, this.height / 2.0)
+        }
     },
 
     addHealthUI: function () {
@@ -371,25 +391,25 @@ const Monster = AnimatedSprite.extend({
         this.animationCleanup()
     },
 
-    takeDamage: function (many) {
+    takeDamage: function (playerState, many, from) {
         this.health -= many
         if(this.health > this.MaxHealth){
             this.health = this.MaxHealth
         }
     },
 
-    recoverHpMaintain: function (many) {
+    recoverHp: function (many) {
         this.health = Math.min(this.health + many, this.MaxHealth)
 
-        // if (this.recoverHpFx.visible === false) {
-        //     const self = this
-        //     this.recoverHpFx.visible = true
-        //     this.recoverHpFx.setAnimation(0, 'fx_heal', false)
-        //     this.recoverHpFx.setCompleteListener(() => {
-        //         self.recoverHpFx.visible = false
-        //         self.recoverHpFx.setCompleteListener(null)
-        //     })
-        // }
+        if (this.recoverHpFx.visible === false) {
+            const self = this
+            this.recoverHpFx.visible = true
+            this.recoverHpFx.setAnimation(0, 'fx_heal', false)
+            this.recoverHpFx.setCompleteListener(() => {
+                self.recoverHpFx.visible = false
+                self.recoverHpFx.setCompleteListener(null)
+            })
+        }
     },
 
     onImpact: function (playerState, anotherMonster) {

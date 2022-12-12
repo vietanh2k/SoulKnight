@@ -134,14 +134,33 @@ var Tower = TowerUI.extend({
             damage = this.getConfig()['stat'][this.getLevel()]['damage'],
             radius = this.getConfig()['stat'][this.getLevel()]['bulletRadius'],
             position = new Vec2(this.position.x, this.position.y);
-        return new Bullet(object, speed, damage, radius, position);
+        return new Bullet(object, speed, damage, radius, position, this);
     },
+
+    findTargets: function (playerState) {
+        this.target = [];
+        const self = this;
+        const map = playerState.getMap()
+        /*map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
+            if (self.checkIsTarget(obj)) {
+                self.target.push(obj);
+            }
+        })*/
+
+        const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)
+        enemies.forEach((monster) => {
+            if (self.checkIsTarget(monster)) self.target.push(monster)
+        })
+    },
+
     /**
      * Update logic (tướng ứng với update trong thiết kế)
      * @param {PlayerState} playerState
      * @param {Number} dt
      * */
     logicUpdate: function (playerState, dt) {
+        const self = this;
+
         if (this.health <= 0) {
             this.active = false;
         }
@@ -156,15 +175,9 @@ var Tower = TowerUI.extend({
 
             } else {
                 this.visible = true;
-                this.target = [];
-                var self = this;
-                const map = playerState.getMap()
-                map.getObjectInRange(self.position, self.getRange()).map(function (obj) {
-                    if (self.checkIsTarget(obj)) {
-                        self.target.push(obj);
-                    }
-                })
+
                 if (this.attackCoolDown <= 0) {
+                    this.findTargets(playerState)
                     if (this.target.length > 0) {
                         this.status = 'attack'
                         this.fire();
@@ -180,13 +193,13 @@ var Tower = TowerUI.extend({
 
     },
     checkIsTarget: function (another) {
-        return (another.concept == "monster" || another.concept == "tree");
+        return (another.concept === "monster" || another.concept === "tree");
     },
     getLevel: function () {
         return this.level;
     },
     getRange: function () {
-        return this.getConfig()['stat'][this.getLevel()]['range']
+        return this.getConfig()['stat'][this.getLevel()]['range'];
     },
     getConfig: function () {
         if (_TOWER_CONFIG === undefined || _TOWER_CONFIG == null) {
@@ -204,26 +217,16 @@ var Tower = TowerUI.extend({
         this.active = false;
     },
     upgrade: function (card) {
-        // this.evolute();
-        // // this.level is 1, 2, or 3
-        // if (this.level < 3) {
-        //     this.level += 1;
-        // } else if (this.renderRule === 1) {
-        //     Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-        // }
-
-        if (this.renderRule === 1 && this.level === 3) {
-            Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-            return;
+        if (this.level === 3) {
+            if (this.renderRule === 1) {
+                Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
+            }
+            return false;
         }
-        let sequence = cc.sequence(
-            cc.DelayTime(1),
-            cc.CallFunc(() => {
-                this.evolute();
-                this.level += 1;
-            })
-        );
-        this.runAction(sequence);
+
+        this.level += 1;
+        setTimeout(() => {this.evolute()}, 1000);
+        return true;
     },
 });
 

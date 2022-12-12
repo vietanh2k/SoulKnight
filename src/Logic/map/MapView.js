@@ -12,9 +12,10 @@ var MapView = cc.Class.extend({
         this.rule = rule
         this._mapController = new MapController(intArray,this.rule)
         this.monsters = new UnorderedList() //[]
-        this.towers =  new UnorderedList() //[]
-        this.bullets =  new UnorderedList() //[]
-        this.spells =  new UnorderedList() //[]
+        this.towers   = new UnorderedList() //[]
+        this.bullets  = new UnorderedList() //[]
+        this.spells   = new UnorderedList() //[]
+        this.effects  = new UnorderedList()
         this.init();
 
         this.cells = []
@@ -79,6 +80,9 @@ var MapView = cc.Class.extend({
     constructWorld: function () {
         const self = this
 
+        this.gateCell.clearMonsterOnCell()
+        this.nextGateCell.clearMonsterOnCell()
+        this.mainTowerCell.clearMonsterOnCell()
         for (let x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
             for (let y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
                 const cell = this.cells[x][y]
@@ -234,6 +238,10 @@ var MapView = cc.Class.extend({
             this.towers = temp*/
 
             this.towers.forEach((tower, id, list) => {
+                if (tower.active === false) {
+                    return
+                }
+
                 tower.logicUpdate(this._playerState, dt)
 
                 if(tower.isDestroy){
@@ -275,6 +283,21 @@ var MapView = cc.Class.extend({
                 spell.logicUpdate(this._playerState, dt);
 
                 if(spell.isDestroy){
+                    list.remove(id)
+                }
+            })
+        } catch (e) {
+            cc.log(e)
+            cc.log(e.stack)
+        }
+    },
+
+    updateEffect: function (dt) {
+        try {
+            this.effects.forEach((effect, id, list) => {
+                effect.logicUpdate(this._playerState, dt);
+
+                if (effect.isDestroyed){
                     list.remove(id)
                 }
             })
@@ -341,6 +364,7 @@ var MapView = cc.Class.extend({
     update:function (dt) {
         this.constructWorld()
 
+        this.updateEffect(dt)
         this.updateBullet(dt)
         this.updateTower(dt)
         this.updateMonster(dt)
@@ -371,12 +395,30 @@ var MapView = cc.Class.extend({
 
     addMonster: function (monster) {
         monster.mapId = this.monsters.add(monster)
+        monster.visible = true
     },
 
+    addEffect: function (effect) {
+        effect.mapId = this.effects.add(effect)
+    },
+
+    /**
+     * Kiểm tra thẻ trụ có dùng được trên ô hay không
+     * @param cardType
+     * @param position
+     * @returns {boolean} true nếu dùng được và ngược lại
+     */
     checkUpgradableTower: function (cardType, position) {
         let cell = this.getCellAtPosition(position);
-        return !(cell.getObjectOn() && cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance);
-
+        if (cell.getObjectOn() && cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
+            Utils.addToastToRunningScene('Không thể nâng cấp bằng trụ khác loại!');
+            return false;
+        }
+        if (cell.getObjectOn() && cell.getObjectOn().level === 3) {
+            Utils.addToastToRunningScene('Trụ đã tiến hóa tối đa!');
+            return false;
+        }
+        return true;
     },
 
     deployOrUpgradeTower: function (cardType, position) {
@@ -386,29 +428,35 @@ var MapView = cc.Class.extend({
         if (cell.getObjectOn()) {
             if (cf.CARD_TYPE[cardType] === undefined) {
                 Utils.addToastToRunningScene('Cannot find card type ' + cardType);
-                return;
+                return false;
             } else if (cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
-                return;
+                return false;
             } else {
-                cell.getObjectOn().upgrade(cardType);
-                return;
+                return cell.getObjectOn().upgrade(cardType);
             }
         }
 
         let tower;
         switch (cardType) {
+            case 16:
+                tower = new TCannon(cardType, this._playerState, position, this);
+                break;
             case 17:
                 tower = new TWizard(cardType, this._playerState, position, this);
                 break;
+            case 18:
+                tower = new TBoomerang(cardType, this._playerState, position, this);
+                break;
             default:
                 tower = new TCannon(cardType, this._playerState, position, this);
+                cc.log('Default case of switch cardType to create tower!');
                 break;
         }
         tower.mapId = this.towers.add(tower);
         GameUI.instance.addChild(tower);
         cell.setObjectOn(tower);
         cc.log("Deploy success");
-        return tower;
+        return true;
     },
 
     deploySpell: function (cardType, position, mapCast){
@@ -543,6 +591,44 @@ var MapView = cc.Class.extend({
         monsters.forEach((monster, id, list) => {
             if (monster.isChosen === false
                 && Circle.isCirclesOverlapped(monster.position, monster.hitRadius, pos, radius)) {
+                ret.push(monster)
+                monster.isChosen = true
+            }
+        })
+
+        return ret
+    },
+
+    // return all monsters that position in circle
+    queryEnemiesCircleWithoutOverlap: function (pos, radius) {
+        const self = this
+        const monsters = []
+
+        const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
+        const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
+
+        for (let x = x1; x <= x2; x++) {
+            for (let y = y1; y <= y2; y++) {
+                const cell = self.getCell(x, y)
+
+                if (!cell) {
+                    continue
+                }
+
+                cell.monsters.forEach((monster, id, list) => {
+                    monster.isChosen = false
+                    monsters.push(monster)
+                })
+            }
+        }
+
+        const ret = []
+        monsters.forEach((monster, id, list) => {
+            if (monster.isChosen === false
+                && monster.position.sub(pos).length() <= radius) {
                 ret.push(monster)
                 monster.isChosen = true
             }
