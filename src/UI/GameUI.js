@@ -4,6 +4,7 @@ MAP_RATIO = 15 / 8;
 NUM_CARD_PLAYABLE = 4
 ENERGY_DESTROY_CARD = 5
 TICK_FOR_DELAY_TOWER = 60
+TICK_FOR_DELAY_SPELL_FALL = 30
 
 var GameUI = cc.Layer.extend({
     mapWidth: null,
@@ -98,12 +99,13 @@ var GameUI = cc.Layer.extend({
                 this.activateCardPotion(card_type, position, uid);
                 break;
             default:
-                cc.log('Card concept \"' + target.concept + '\" not found in config.');
+                cc.log('Card concept \"' + card.concept + '\" not found in config.');
                 break;
         }
     },
 
     activateCardTower: function (card_type, position, uid) {
+        cc.log('tower='+position.x+' '+position.y)
         if (uid == gv.gameClient._userId ) {
             this.createObjectByTouch = false
             var loc = convertLogicalPosToIndex(position, 1)
@@ -126,12 +128,20 @@ var GameUI = cc.Layer.extend({
         }
     },
 
-    activateCardPotion: function (card_type, position, uid) {
+    activateCardPotion: function (card_type, position, uid, mapCast) {
         if (uid == gv.gameClient._userId ) {
-            this._gameStateManager.playerA._map.deploySpell(card_type, position)
-
+            if(mapCast == 1) {
+                this._gameStateManager.playerA._map.deploySpell(card_type, position, mapCast)
+            }else {
+                this._gameStateManager.playerB._map.deploySpell(card_type, position, mapCast)
+            }
         } else {
-            this._gameStateManager.playerB._map.deploySpell(card_type, position)
+            if(mapCast == 1) {
+                this._gameStateManager.playerB._map.deploySpell(card_type, position, mapCast)
+            }else {
+                this._gameStateManager.playerA._map.deploySpell(card_type, position, mapCast)
+            }
+
         }
     },
 
@@ -727,15 +737,58 @@ var GameUI = cc.Layer.extend({
     },
 
     activeCardPotion: function (target, posUI) {
-        if(isPosInMap(posUI, 1) || isPosInMap(posUI, 2) ) {
-            var indexFloat = convertPosUIToLocLogic(posUI)
-            var posLogic = this.screenLoc2Position(indexFloat)
-            // this._gameStateManager.playerA._map.deploySpell(target.type, posLogic)
 
-            testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                gv.gameClient._userId),0]]);
-            this.updateCardSlot(target.numSlot, target.energy);
+        let canActive = false;
+        let rule = getRule(target);
+        if( rule == 3){
+            canActive = isPosInMap(posUI, 1) || isPosInMap(posUI, 2);
+        }else {
+            canActive = isPosInMap(posUI, rule);
         }
+        if(canActive) {
+            let mapCastAt = getMapCastAt(posUI) ;
+            let indexFloat = convertPosUIToLocLogic(posUI, mapCastAt)
+            let posLogic = this.screenLoc2Position(indexFloat)
+            this.addFallSpellBeforeExplose(target.type, posUI)
+            testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
+                gv.gameClient._userId, mapCastAt),0]]);
+            this.updateCardSlot(target.numSlot, target.energy);
+
+        }
+
+        // if(isPosInMap(posUI, 1) || isPosInMap(posUI, 2) ) {
+        //
+        //     var indexFloat = convertPosUIToLocLogic(posUI)
+        //     var posLogic = this.screenLoc2Position(indexFloat)
+        //     // this._gameStateManager.playerA._map.deploySpell(target.type, posLogic)
+        //     // var a = new SpellFallUI(target.type, posUI)
+        //     // this.addChild(a);
+        //     testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
+        //         gv.gameClient._userId),0]]);
+        //     this.updateCardSlot(target.numSlot, target.energy);
+        // }
+    },
+
+    addFallSpellBeforeExplose: function (cardType, posUI) {
+        let spell;
+        switch (cardType) {
+            case 0:
+                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');
+                break;
+            case 1:
+                spell = new SpellFieldUI(posUI, 'effect_atk_ice', 'animation_ice_ball');
+                break;
+            case 2:
+                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4);
+                break;
+            case 3:
+                spell = new SpellFieldUI(posUI, 'effect_buff_speed', 4);
+                break;
+            default:
+                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');
+                break;
+        }
+        this.addChild(spell);
     },
 
     generatePreviewPotion: function (target) {

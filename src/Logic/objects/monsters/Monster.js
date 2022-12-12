@@ -1,3 +1,5 @@
+TIME_PER_HEAL = 0.1;
+
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
         this._super(res.m1);
@@ -12,7 +14,7 @@ const Monster = AnimatedSprite.extend({
         this.isChosen = false
         this.timeHealBuff = 0
         this.numHealBuff = 0
-
+        this.sumHealDt = 0;
         this.renderRule = this._playerState.rule
 
         const startCell = playerState.getMap().getStartCell()
@@ -125,17 +127,20 @@ const Monster = AnimatedSprite.extend({
     },
 
     updateBuffDuration:function (dt){
-        this.timeHealBuff -= dt
-        if(this.timeHealBuff < 0){
-            this.timeHealBuff = 0
+        this.sumHealDt += dt;
+        while (this.sumHealDt > TIME_PER_HEAL) {
+            this.sumHealDt -= TIME_PER_HEAL
+            if(this.timeHealBuff > 0){
+                this.timeHealBuff -= TIME_PER_HEAL;
+                this.recoverHpMaintain(this.numHealBuff)
+                this.hurtUI()
+            }
         }
     },
 
-    healHP:function (dt){
-        if(this.timeHealBuff > 0){
-            this.takeDamage(-this.numHealBuff)
-            this.hurtUI()
-        }
+    getHealBuffState:function (timeHealBuff, numHealBuff){
+        this.timeHealBuff = timeHealBuff;
+        this.numHealBuff = numHealBuff;
     },
 
     logicUpdate: function (playerState, dt){
@@ -143,8 +148,11 @@ const Monster = AnimatedSprite.extend({
             this.destroy();
             return;
         }
-        this.updateBuffDuration(dt)
-        this.healHP(dt)
+        if(this.timeHealBuff > 0) {
+            this.updateBuffDuration(dt)
+        }
+
+
 
         /*if (this.impactedMonster) {
             if (this.impactedMonster.isDestroy) {
@@ -348,6 +356,20 @@ const Monster = AnimatedSprite.extend({
         if(this.health > this.MaxHealth){
             this.health = this.MaxHealth
         }
+    },
+
+    recoverHpMaintain: function (many) {
+        this.health = Math.min(this.health + many, this.MaxHealth)
+
+        // if (this.recoverHpFx.visible === false) {
+        //     const self = this
+        //     this.recoverHpFx.visible = true
+        //     this.recoverHpFx.setAnimation(0, 'fx_heal', false)
+        //     this.recoverHpFx.setCompleteListener(() => {
+        //         self.recoverHpFx.visible = false
+        //         self.recoverHpFx.setCompleteListener(null)
+        //     })
+        // }
     },
 
     onImpact: function (playerState, anotherMonster) {

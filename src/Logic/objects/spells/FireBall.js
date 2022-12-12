@@ -2,58 +2,58 @@ FIREBALL_WIDTH = 180
 
 const FireBall = Spell.extend({
     ctor: function (playerState, position) {
-        this._super(playerState, position, 'effect_atk_fire', 'animation_fireball');
+        this._super(playerState, position);
         const config = cf.POTION.potion[SPELL_ID.FIREBALL]
-        this.initOpponentUI(position)
-        this.initFromConfig(playerState, config)
+        // this.initOpponentUI(position)
+        // this.initFromConfig(playerState, config)
         this.radius = 0.8
-        this.setScale(2*CELLWIDTH/FIREBALL_WIDTH*this.radius)
-        cc.log(this.energyCost)
+        this.canCast = true
         return true;
     },
 
-    initOpponentUI: function (position) {
-        if (this.renderRule === 1) {
-            this.speed2 = 10 * MAP_CONFIG.CELL_WIDTH
-            this.position= new Vec2(position.x, position.y-MAP_CONFIG.CELL_WIDTH*4)
-        }else{
-            this.position= new Vec2(position.x, position.y+MAP_CONFIG.CELL_WIDTH*4)
-            this.speed2 = -10 * MAP_CONFIG.CELL_WIDTH
-        }
-    },
+    //
+    // initOpponentUI: function (position) {
+    //     if (this.renderRule === 1) {
+    //         this.speed2 = 10 * MAP_CONFIG.CELL_WIDTH
+    //         this.position= new Vec2(position.x, position.y-MAP_CONFIG.CELL_WIDTH*4)
+    //     }else{
+    //         this.position= new Vec2(position.x, position.y+MAP_CONFIG.CELL_WIDTH*4)
+    //         this.speed2 = -10 * MAP_CONFIG.CELL_WIDTH
+    //     }
+    // },
 
     logicUpdate: function (playerState, dt){
-        const distance = this.speed2 * dt
-        if(this.isCast == false) {
-            this.fall(distance)
+        if(this.canCast == true) {
+            this.canCast = false
+            this.explose(this._playerState, null)
+            this.destroy()
         }
 
-        //this.debug(map)
     },
 
-    fall: function (distance){
-        this.position.y += distance
-        if(this.renderRule == 1) {
-            if (this.position.y >= this.castPosition.y) {
-                this.cast(2)
-                this.runAction(cc.sequence(cc.delayTime(0.05),cc.callFunc(()=>{
-                    this.explose(this._playerState, null);
-                })))
-            }
-        }else{
-            if(this.position.y <= this.castPosition.y){
-                this.cast(2)
-                this.runAction(cc.sequence(cc.delayTime(0.05),cc.callFunc(()=>{
-                    this.explose(this._playerState, null);
-                })))
-
-            }
-        }
-
-
-
-        //this.debug(map)
-    },
+    // fall: function (distance){
+    //     this.position.y += distance
+    //     if(this.renderRule == 1) {
+    //         if (this.position.y >= this.castPosition.y) {
+    //             this.cast(2)
+    //             this.runAction(cc.sequence(cc.delayTime(0.05),cc.callFunc(()=>{
+    //                 this.explose(this._playerState, null);
+    //             })))
+    //         }
+    //     }else{
+    //         if(this.position.y <= this.castPosition.y){
+    //             this.cast(2)
+    //             this.runAction(cc.sequence(cc.delayTime(0.05),cc.callFunc(()=>{
+    //                 this.explose(this._playerState, null);
+    //             })))
+    //
+    //         }
+    //     }
+    //
+    //
+    //
+    //     //this.debug(map)
+    // },
 
     explose: function (playerState, pos) {
         const map = playerState.getMap();

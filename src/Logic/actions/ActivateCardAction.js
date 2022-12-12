@@ -30,6 +30,14 @@ const ActivateCardAction = cc.Class.extend({
 ActivateCardAction.deserializer = function (pkg) {
     let tmp = []
     const card_type = pkg.getByte(), x = pkg.getInt(), y = pkg.getInt(), uid = pkg.getInt();
+
+    /*
+    add timer tower cho map Opponent khi vừa nhận action từ sv
+     */
+    if (uid != gv.gameClient._userId ){
+        var loc = convertLogicalPosToIndex(new Vec2(x, y), 2)
+        GameUI.instance.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
+    }
     tmp.push(card_type)
     tmp.push(x)
     tmp.push(y)

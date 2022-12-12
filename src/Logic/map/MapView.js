@@ -330,14 +330,14 @@ var MapView = cc.Class.extend({
             bullet.render(this._playerState)
         })
     },
-    renderSpell: function () {
-
-        const self = this
-
-        this.spells.forEach((spell, id, list) => {
-            spell.render(this._playerState)
-        })
-    },
+    // renderSpell: function () {
+    //
+    //     const self = this
+    //
+    //     this.spells.forEach((spell, id, list) => {
+    //         spell.render(this._playerState)
+    //     })
+    // },
     update:function (dt) {
         this.constructWorld()
 
@@ -360,7 +360,7 @@ var MapView = cc.Class.extend({
         this.renderTower()
         this.renderMonster()
         this.renderBullet(0)
-        this.renderSpell()
+        // this.renderSpell()
     },
 
     /*addMonster:function (){
@@ -411,7 +411,7 @@ var MapView = cc.Class.extend({
         return tower;
     },
 
-    deploySpell: function (cardType, position){
+    deploySpell: function (cardType, position, mapCast){
         var spell;
         switch (cardType){
             case 0:

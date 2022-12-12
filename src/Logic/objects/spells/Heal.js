@@ -5,9 +5,9 @@ const Heal = Spell.extend({
         this._super(playerState, position, 'effect_buff_heal', 'animation_top');
         const config = cf.POTION.potion[SPELL_ID.FIREBALL]
         this.initOpponentUI(position)
-        this.initFromConfig(playerState, config)
-        this.render(playerState);
-        this.timeCast = 0
+        // this.initFromConfig(playerState, config)
+        // this.render(playerState);
+        this.timeCast = 4
         this.radius = 0.8
         this.setScale(2*CELLWIDTH/HEAL_WIDTH*this.radius)
         return true;
@@ -18,13 +18,20 @@ const Heal = Spell.extend({
     },
 
     logicUpdate: function (playerState, dt){
-        if(this.isDestroy == false) {
-            this.cast(4)
-            this.timeCast = 4
-        }
+        // if(this.canCast == true) {
+        //     this.canCast = false
+        //     this.explose(this._playerState, null)
+        //     this.destroy()
+        // }
+        // if(this.isDestroy == false) {
+        //     this.cast(4)
+        //     this.timeCast = 4
+        // }
         if(this.timeCast > 0){
             this.setBuffOnMonster(playerState,dt)
             this.timeCast -= dt
+        }else {
+            this.destroy()
         }
         //this.debug(map)
     },
@@ -33,8 +40,8 @@ const Heal = Spell.extend({
         const map = playerState.getMap();
         const monsters = map.queryEnemiesCircle(this.castPosition,this.radius* MAP_CONFIG.CELL_WIDTH)
         for (let i = 0; i < monsters.length; i++) {
-            monsters[i].timeHealBuff = 3
-            monsters[i].numHealBuff = 2*dt
+            monsters[i].getHealBuffState(4, 2);
+            // monsters[i].numHealBuff = 2*dt
         }
     }
 

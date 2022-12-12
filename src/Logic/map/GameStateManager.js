@@ -120,13 +120,15 @@ var GameStateManager = cc.Class.extend({
     },
 
     frameUpdate: function () {
-        this.frameUpdateNormal()
         /*
         Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
          */
         if(this.frameCount>= FrameMaxForUpdate){
             return;
         }
+
+
+
         /*
          Nếu frame hiện tại quá chậm so với SV thi tua nhanh
          */
@@ -136,6 +138,8 @@ var GameStateManager = cc.Class.extend({
                 cc.log('tuaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
             }
         }
+
+        this.frameUpdateNormal()
 
 
         // if(this.dem < ActionListInstance.length) {

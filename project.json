@@ -86,6 +86,8 @@
         "src/UI/Explosion.js",
         "src/UI/SoulFly.js",
         "src/UI/EndBattleUI.js",
+        "src/UI/SpellFallUI.js",
+        "src/UI/SpellFieldUI.js",
 
         "src/utils/Utils.js",
         "src/UI/MatchingUI.js",
@@ -130,6 +132,7 @@
 
         "src/Logic/GAME_CONFIG.js",
         "src/Logic/actions/ActivateCardAction.js",
+        "src/Logic/actions/ActivateSpellAction.js",
         "src/Logic/actions/NextWaveAction.js",
         "src/Logic/actions/ActionsDef.js",
         "src/Logic/map/MAP_CONFIG.js",
