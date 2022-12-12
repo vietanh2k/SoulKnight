@@ -107,8 +107,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y + frameRadius / Math.sqrt(2),
         });
         this.targetFullHPBtn.addClickEventListener(() => {
-            tower.prioritizedTarget = 'fullHP';
-            this.removeCurrentTowerActionsUI();
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FULL_HP, tower.position.x, tower.position.y, gv.gameClient._userId)]);
         });
         this.addChild(this.targetFullHPBtn);
 
@@ -127,8 +126,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y + frameRadius / Math.sqrt(2),
         });
         this.targetLowHPBtn.addClickEventListener(() => {
-            tower.prioritizedTarget = 'lowHP';
-            this.removeCurrentTowerActionsUI();
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.LOW_HP, tower.position.x, tower.position.y, gv.gameClient._userId)]);
         });
         this.addChild(this.targetLowHPBtn);
 
@@ -147,8 +145,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y - frameRadius / Math.sqrt(2),
         });
         this.targetFurthestBtn.addClickEventListener(() => {
-            tower.prioritizedTarget = 'furthest';
-            this.removeCurrentTowerActionsUI();
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FURTHEST, tower.position.x, tower.position.y, gv.gameClient._userId)]);
         });
         this.addChild(this.targetFurthestBtn);
 
@@ -167,8 +164,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y - frameRadius / Math.sqrt(2),
         });
         this.targetNearestBtn.addClickEventListener(() => {
-            tower.prioritizedTarget = 'nearest';
-            this.removeCurrentTowerActionsUI();
+            testnetwork.connector.sendActions([new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.NEAREST, tower.position.x, tower.position.y, gv.gameClient._userId)]);
         });
         this.addChild(this.targetNearestBtn);
 
@@ -182,13 +178,15 @@ var GameUI = cc.Layer.extend({
     },
 
     removeCurrentTowerActionsUI: function () {
-        this.isShowingTowerOptionsUI = false;
+        if (this.isShowingTowerOptionsUI) {
+            this.isShowingTowerOptionsUI = false;
 
-        this.circleFrame.removeFromParent(true);
-        this.targetFullHPBtn.removeFromParent(true);
-        this.targetLowHPBtn.removeFromParent(true);
-        this.targetFurthestBtn.removeFromParent(true);
-        this.targetNearestBtn.removeFromParent(true);
+            this.circleFrame.removeFromParent(true);
+            this.targetFullHPBtn.removeFromParent(true);
+            this.targetLowHPBtn.removeFromParent(true);
+            this.targetFurthestBtn.removeFromParent(true);
+            this.targetNearestBtn.removeFromParent(true);
+        }
     },
 
     /*

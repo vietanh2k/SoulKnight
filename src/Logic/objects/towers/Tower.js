@@ -93,7 +93,7 @@ var Tower = TowerUI.extend({
         }
         let record, index;
         switch (this.prioritizedTarget) {
-            case 'fullHP':
+            case cf.PRIORITIZED_TARGET.FULL_HP:
                 record = -1;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
@@ -103,7 +103,7 @@ var Tower = TowerUI.extend({
                     }
                 }
                 return this.target[index];
-            case 'lowHP':
+            case cf.PRIORITIZED_TARGET.LOW_HP:
                 record = 4000000000;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
@@ -113,7 +113,7 @@ var Tower = TowerUI.extend({
                     }
                 }
                 return this.target[index];
-            case 'furthest':
+            case cf.PRIORITIZED_TARGET.FURTHEST:
                 record = -1;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
@@ -123,7 +123,7 @@ var Tower = TowerUI.extend({
                     }
                 }
                 return this.target[index];
-            case 'nearest':
+            case cf.PRIORITIZED_TARGET.NEAREST:
                 record = 4000000000;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
