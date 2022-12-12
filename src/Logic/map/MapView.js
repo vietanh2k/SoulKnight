@@ -420,6 +420,9 @@ var MapView = cc.Class.extend({
             case 2:
                 spell = new Heal(this._playerState, position);
                 break;
+            case 3:
+                spell = new SpeedUp(this._playerState, position);
+                break;
             default:
                 spell = new FireBall(this._playerState, position);
         }

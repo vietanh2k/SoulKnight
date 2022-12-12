@@ -20,8 +20,8 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 0, 2]
-        this.cardPlayable = [0, 2, 16, 17]
+        this.cardInQueue = [16, 17, 3, 2]
+        this.cardPlayable = [0, 2, 3, 17]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -782,7 +782,7 @@ var GameUI = cc.Layer.extend({
                 spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4);
                 break;
             case 3:
-                spell = new SpellFieldUI(posUI, 'effect_buff_speed', 4);
+                spell = new SpellFieldUI(posUI, 'effect_buff_speed', 1.5);
                 break;
             default:
                 spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');

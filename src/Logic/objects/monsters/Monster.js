@@ -15,6 +15,8 @@ const Monster = AnimatedSprite.extend({
         this.timeHealBuff = 0
         this.numHealBuff = 0
         this.sumHealDt = 0;
+        this.timeSpeedUpBuff = 0
+        this.rateSpeedUpBuff = 1
         this.renderRule = this._playerState.rule
 
         const startCell = playerState.getMap().getStartCell()
@@ -126,7 +128,7 @@ const Monster = AnimatedSprite.extend({
         return false;
     },
 
-    updateBuffDuration:function (dt){
+    updateHealDuration:function (dt){
         this.sumHealDt += dt;
         while (this.sumHealDt > TIME_PER_HEAL) {
             this.sumHealDt -= TIME_PER_HEAL
@@ -138,9 +140,25 @@ const Monster = AnimatedSprite.extend({
         }
     },
 
+
     getHealBuffState:function (timeHealBuff, numHealBuff){
         this.timeHealBuff = timeHealBuff;
         this.numHealBuff = numHealBuff;
+    },
+
+    updateSpeedUpDuration:function (dt){
+
+        if(this.timeSpeedUpBuff > 0){
+            this.timeSpeedUpBuff -= dt;
+        }else {
+            this.rateSpeedUpBuff = 1;
+        }
+
+    },
+
+    getSpeedUpState:function (timeSpeedUpBuff, rateSpeedUpBuff){
+        this.timeSpeedUpBuff = timeSpeedUpBuff;
+        this.rateSpeedUpBuff = rateSpeedUpBuff;
     },
 
     logicUpdate: function (playerState, dt){
@@ -149,8 +167,10 @@ const Monster = AnimatedSprite.extend({
             return;
         }
         if(this.timeHealBuff > 0) {
-            this.updateBuffDuration(dt)
+            this.updateHealDuration(dt);
         }
+        this.updateSpeedUpDuration(dt);
+
 
 
 
@@ -177,7 +197,7 @@ const Monster = AnimatedSprite.extend({
         this.prevPosition.set(this.position.x, this.position.y)
 
         const map = playerState.getMap()
-        const distance = this.speed * dt
+        const distance = this.speed * dt * this.rateSpeedUpBuff;
         if (this.route(map, distance, null)) {
             //this.destroy()
 

@@ -8,7 +8,7 @@ const SpellFallUI = cc.Node.extend({
         this.initAnimation(resSpell, aniSpell)
         this.radius = 0.8
         this.setScale(2*CELLWIDTH/FIREBALL_WIDTH*this.radius)
-        this.ccDT = 0.03
+        this.ccDT = 0.02
         this.schedule(this.fall, this.ccDT)
         this.isCast = false
         return true;
