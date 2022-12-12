@@ -103,8 +103,8 @@ var GameUI = cc.Layer.extend({
         this.targetFullHPBtn = new ccui.Button(asset.targetIcon_png);
         this.targetFullHPBtn.setZoomScale(0);
         this.targetFullHPBtn.attr({
-            x: tower.x - frameRadius,
-            y: tower.y,
+            x: tower.x - frameRadius / Math.sqrt(2),
+            y: tower.y + frameRadius / Math.sqrt(2),
         });
         this.targetFullHPBtn.addClickEventListener(() => {
             tower.prioritizedTarget = 'fullHP';
@@ -123,8 +123,8 @@ var GameUI = cc.Layer.extend({
         this.targetLowHPBtn = new ccui.Button(asset.targetIcon_png);
         this.targetLowHPBtn.setZoomScale(0);
         this.targetLowHPBtn.attr({
-            x: tower.x - frameRadius / 2,
-            y: tower.y + frameRadius * Math.sqrt(3) / 2,
+            x: tower.x + frameRadius / Math.sqrt(2),
+            y: tower.y + frameRadius / Math.sqrt(2),
         });
         this.targetLowHPBtn.addClickEventListener(() => {
             tower.prioritizedTarget = 'lowHP';
@@ -143,8 +143,8 @@ var GameUI = cc.Layer.extend({
         this.targetFurthestBtn = new ccui.Button(asset.targetIcon_png);
         this.targetFurthestBtn.setZoomScale(0);
         this.targetFurthestBtn.attr({
-            x: tower.x + frameRadius / 2,
-            y: tower.y + frameRadius * Math.sqrt(3) / 2,
+            x: tower.x - frameRadius / Math.sqrt(2),
+            y: tower.y - frameRadius / Math.sqrt(2),
         });
         this.targetFurthestBtn.addClickEventListener(() => {
             tower.prioritizedTarget = 'furthest';
@@ -163,8 +163,8 @@ var GameUI = cc.Layer.extend({
         this.targetNearestBtn = new ccui.Button(asset.targetIcon_png);
         this.targetNearestBtn.setZoomScale(0);
         this.targetNearestBtn.attr({
-            x: tower.x + frameRadius,
-            y: tower.y,
+            x: tower.x + frameRadius / Math.sqrt(2),
+            y: tower.y - frameRadius / Math.sqrt(2),
         });
         this.targetNearestBtn.addClickEventListener(() => {
             tower.prioritizedTarget = 'nearest';
@@ -179,23 +179,6 @@ var GameUI = cc.Layer.extend({
             scale: 0.8,
         });
         this.targetNearestBtn.addChild(targetNearestIcon);
-
-        this.skillBtn = new ccui.Button(asset.targetIcon_png);
-        this.skillBtn.setZoomScale(0);
-        this.skillBtn.attr({
-            x: tower.x,
-            y: tower.y - frameRadius,
-        });
-        this.skillBtn.addClickEventListener(() => {});
-        this.addChild(this.skillBtn);
-
-        let skillIcon = new cc.Sprite(asset.iconSkillLocked_png);
-        skillIcon.attr({
-            x: this.skillBtn.width / 2,
-            y: this.skillBtn.height / 2,
-            scale: 0.8 * this.skillBtn.width / skillIcon.width,
-        });
-        this.skillBtn.addChild(skillIcon);
     },
 
     removeCurrentTowerActionsUI: function () {
@@ -206,7 +189,6 @@ var GameUI = cc.Layer.extend({
         this.targetLowHPBtn.removeFromParent(true);
         this.targetFurthestBtn.removeFromParent(true);
         this.targetNearestBtn.removeFromParent(true);
-        this.skillBtn.removeFromParent(true);
     },
 
     /*
