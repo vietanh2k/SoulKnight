@@ -39,7 +39,8 @@ ActivateSpellAction.deserializer = function (pkg) {
         }else {
             otherMap = 1;
         }
-        GameUI.instance.addFallSpellBeforeExplose(card_type, convertPosLogicToPosUI(new Vec2(x,y), otherMap));
+        let posUI = convertPosLogicToPosUI(new Vec2(x,y), otherMap);
+        GameUI.instance.addSpellUIBeforeExplose(card_type, posUI);
     }
     tmp.push(card_type)
     tmp.push(x)

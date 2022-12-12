@@ -31,7 +31,6 @@ const SpellFallUI = cc.Node.extend({
             this.y = this.castPosition.y
             this._speed = 0;
             this.cast(2)
-            this.unscheduleAllCallbacks();
 
         }
     },

@@ -83,6 +83,8 @@ var CurrencyPanel = cc.Layer.extend({
                 try {
                     testnetwork.connector.sendBuyGemOrGold(0, cf.AMOUNT_BTN_GEM);
                 } catch (e) {
+                    cc.log(e);
+                    cc.log(e.stack)
                     cc.log('errrrrrrrrrrror')
                 }
             } else {

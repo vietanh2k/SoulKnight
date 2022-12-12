@@ -51,6 +51,8 @@ testnetwork.Connector = cc.Class.extend({
                 try{
                     fr.getCurrentScreen().requestConfirmMatch()
                 } catch (e){
+                    cc.log(e);
+                    cc.log(e.stack)
                     cc.log('outtttttttttttttt')
                 }
                 break;

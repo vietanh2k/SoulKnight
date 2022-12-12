@@ -107,12 +107,11 @@ const convertPosLogicToPosUI = function (posLogic, rule) {
         let indX = (posLogic.x - MAP_CONFIG.CELL_WIDTH / 2.0) / MAP_CONFIG.CELL_WIDTH,
             indY = (posLogic.y - MAP_CONFIG.CELL_HEIGHT / 2.0) / MAP_CONFIG.CELL_HEIGHT+1;
     if(rule == 1){
-        cc.log('1111111111111111111111111')
         let posX = winSize.width / 2 - WIDTHSIZE / 2 + (indX + 1) * CELLWIDTH,
             posY = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_HEIGHT - indY + 3.5) * CELLWIDTH
         return new Vec2(posX,posY)
     }
-    if(rule == 2){
+    else {
         let posX = winSize.width / 2 - WIDTHSIZE / 2 + (7 - indX) * CELLWIDTH,
             posY = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_HEIGHT + indY + 3.5) * CELLWIDTH
         return new Vec2(posX,posY)

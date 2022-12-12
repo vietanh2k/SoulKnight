@@ -145,7 +145,7 @@ const Monster = AnimatedSprite.extend({
             this.sumHealDt -= TIME_PER_HEAL
             if(this.timeHealBuff > 0){
                 this.timeHealBuff -= TIME_PER_HEAL;
-                this.recoverHpMaintain(this.numHealBuff)
+                this.recoverHp(this.numHealBuff)
                 this.hurtUI()
             }
         }

@@ -14,10 +14,6 @@ const SpellFieldUI = cc.Node.extend({
         return true;
     },
 
-    initPosStart: function (posUI) {
-        this._speed = 10 * CELLWIDTH
-        this.setPosition(posUI.x, posUI.y +4 * CELLWIDTH)
-    },
 
     initAnimation: function (resSpell) {
         this.anim = new sp.SkeletonAnimation("res/potion/"+resSpell+".json",

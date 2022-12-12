@@ -750,7 +750,7 @@ var GameUI = cc.Layer.extend({
             let mapCastAt = getMapCastAt(posUI) ;
             let indexFloat = convertPosUIToLocLogic(posUI, mapCastAt)
             let posLogic = this.screenLoc2Position(indexFloat)
-            this.addFallSpellBeforeExplose(target.type, posUI)
+            this.addSpellUIBeforeExplose(target.type, posUI)
             testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
                 gv.gameClient._userId, mapCastAt),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
@@ -770,14 +770,14 @@ var GameUI = cc.Layer.extend({
         // }
     },
 
-    addFallSpellBeforeExplose: function (cardType, posUI) {
+    addSpellUIBeforeExplose: function (cardType, posUI) {
         let spell;
         switch (cardType) {
             case 0:
                 spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');
                 break;
             case 1:
-                spell = new SpellFieldUI(posUI, 'effect_atk_ice', 'animation_ice_ball');
+                spell = new SpellFallUI(posUI, 'effect_atk_ice', 'animation_ice_ball');
                 break;
             case 2:
                 spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4);

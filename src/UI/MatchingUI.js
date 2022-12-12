@@ -129,6 +129,8 @@ var MatchingUI = cc.Layer.extend({
 
 
         } catch (e){
+            cc.log(e);
+            cc.log(e.stack)
             cc.log('errrrrrrrrrrror')
         }
 

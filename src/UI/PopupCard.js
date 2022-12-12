@@ -124,6 +124,8 @@ var PopupCard = cc.Node.extend({
 
 
         } catch (e){
+            cc.log(e);
+            cc.log(e.stack)
             cc.log('errrrrrrrrrrror')
         }
     },
