@@ -226,6 +226,12 @@ var MapView = cc.Class.extend({
             this.towers = temp*/
 
             this.towers.forEach((tower, id, list) => {
+                if(tower.isDestroy){
+                    self.getCellAtPosition(tower.position).setObjectOn(null)
+                    list.remove(id)
+                    return
+                }
+
                 if (tower.active === false) {
                     return
                 }
@@ -337,8 +343,13 @@ var MapView = cc.Class.extend({
         /*for (i in this.bullets){
             this.bullets[i].render(this._playerState)
         }*/
-
+        const self = this
         this.bullets.forEach((bullet, id, list) => {
+            if (self.rule === 1) {
+                bullet.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + bullet.position.y)
+            }else{
+                bullet.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height - bullet.position.y)
+            }
             bullet.render(this._playerState)
         })
     },

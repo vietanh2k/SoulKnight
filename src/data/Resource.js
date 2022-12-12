@@ -200,5 +200,9 @@ var g_resources = [
     res.health_box,
     res.energyIcon,
     res.explosion_plist,
-    res.explosion_png
+    res.explosion_png,
+    res.TWizard_plit,
+    'res/tower/fx/tower_wizard_fx.json',
+    'res/tower/fx/tower_wizard_fx.atlas',
+    'res/tower/fx/tower_wizard_fx.png',
 ];

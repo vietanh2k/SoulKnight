@@ -188,7 +188,7 @@ const Monster = AnimatedSprite.extend({
 
         if (this.poisonByTOilGunDuration !== undefined && this.poisonByTOilGunDuration > 0) {
             let dtPoison = Math.min(dt, this.poisonByTOilGunDuration);
-            this.takeDamage(this.poisonByTOilGunDps * dtPoison);
+            this.takeDamage(playerState, this.poisonByTOilGunDps * dtPoison);
             this.hurtUI();
             this.poisonByTOilGunDuration -= dtPoison;
         }
@@ -424,6 +424,10 @@ const Monster = AnimatedSprite.extend({
     hurtUI: function () {
         this.healthUI.stopAllActions()
         var percen = this.health / this.MaxHealth*100
+        if(percen < 0) {
+            return;
+            // percen = 0;
+        }
         this.healthUI.getChildByName('loading').setPercent(percen)
         var seq = cc.sequence(cc.fadeIn(0), cc.delayTime(2),cc.fadeOut(0.6))
         this.healthUI.runAction(seq)

@@ -78,7 +78,7 @@ var GameClient = cc.Class.extend({
         },
 
         _onReceived: function (cmd, pkg) {
-            cc.log("_onReceived:", cmd);
+            // cc.log("_onReceived:", cmd);
             var packet = gv.gameClient.getInPacket(cmd, pkg);
             if (packet == null)
                 return;

@@ -39,6 +39,15 @@ const DestroyTowerAction = cc.Class.extend({
 });
 
 DestroyTowerAction.deserializer = function (pkg) {
+    let tmp = []
     const x = pkg.getInt(), y = pkg.getInt(), uid = pkg.getInt();
-    return new DestroyTowerAction(x, y, uid);
+    tmp.push(x)
+    tmp.push(y)
+    tmp.push(uid)
+    return tmp
 };
+
+DestroyTowerAction.deserializerArr = function (pkgArr) {
+    const x = pkgArr[0], y = pkgArr[1], uid = pkgArr[2];
+    return new DestroyTowerAction( x, y, uid);
+}

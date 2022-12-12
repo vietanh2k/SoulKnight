@@ -2,7 +2,7 @@ let TWizardBullet = Bullet.extend({
     name: 'wizard',
     concept: "bullet",
     type: 'straight',
-    ctor: function (target, speed, damage, radius, position, targetType,fromTower, level, explosionFx) {
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, explosionFx) {
         this._super(res.Wizard_Bullet, target, speed, damage, radius, position, fromTower, targetType, level);
         this.fx = explosionFx;
     },
@@ -24,7 +24,7 @@ let TWizardBullet = Bullet.extend({
         }
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
-                object.takeDamage(damage);
+                object.takeDamage(playerState, this.damage, this.fromTower);
                 object.hurtUI();
             }
         }
@@ -44,8 +44,8 @@ let TOilGunBullet = Bullet.extend({
     concept: 'bullet',
     type: 'straight',
 
-    ctor: function (target, speed, damage, radius, position, targetType, level, explosionFx) {
-        this._super(res.TOilGunBullet, target, speed, damage, radius, position, targetType, level);
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, explosionFx) {
+        this._super(res.TOilGunBullet, target, speed, damage, radius, position, fromTower, targetType, level);
         this.fx = explosionFx;
 
         this.runBulletAnimation();

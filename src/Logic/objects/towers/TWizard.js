@@ -33,9 +33,9 @@ var TWizard = Tower.extend({
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
 
-        if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.TWizard_plit)) {
-            cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
-        }
+        // if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.TWizard_plit)) {
+        //     cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
+        // }
 
         for (let i = 0; i < 3; i++) {
             this.initTextures[i] = 'res/tower/frame/wizard_1_2/tower_wizard_idle_' + i + '_0000.png';
@@ -63,7 +63,7 @@ var TWizard = Tower.extend({
         let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
         let position = new Vec2(this.position.x, this.position.y);
 
-        let newBullet = new TWizardBullet(object, speed, damage, radius, position, this.getTargetType(), this.level, this.bulletFx,this);
+        let newBullet = new TWizardBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, this.bulletFx);
 
         const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
         newBullet.position.x += gunCenterFromCellCenter.x;

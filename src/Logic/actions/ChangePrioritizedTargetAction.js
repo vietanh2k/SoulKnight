@@ -41,6 +41,16 @@ const ChangePrioritizedTargetAction = cc.Class.extend({
 });
 
 ChangePrioritizedTargetAction.deserializer = function (pkg) {
+    let tmp = []
     const prioritizedTarget = pkg.getByte(), x = pkg.getInt(), y = pkg.getInt(), uid = pkg.getInt();
-    return new ChangePrioritizedTargetAction(prioritizedTarget, x, y, uid);
+    tmp.push(prioritizedTarget)
+    tmp.push(x)
+    tmp.push(y)
+    tmp.push(uid)
+    return tmp;
 };
+
+ChangePrioritizedTargetAction.deserializerArr = function (pkgArr) {
+    const prioritizedTarget = pkgArr[0], x = pkgArr[1], y = pkgArr[2], uid = pkgArr[3];
+    return new ChangePrioritizedTargetAction(prioritizedTarget, x, y, uid);
+}

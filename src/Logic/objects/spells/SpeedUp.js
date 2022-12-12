@@ -31,7 +31,7 @@ const SpeedUp = Spell.extend({
         const map = playerState.getMap();
         const monsters = map.queryEnemiesCircle(this.castPosition,this.radius* MAP_CONFIG.CELL_WIDTH)
         for (let i = 0; i < monsters.length; i++) {
-            monsters[i].getSpeedUpState(4, 2);
+            monsters[i].getSpeedUpState(4, 4);
             // monsters[i].numHealBuff = 2*dt
         }
     }

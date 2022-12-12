@@ -197,34 +197,23 @@ var Tower = TowerUI.extend({
             this.active = false;
         }
         this.status = 'readyToFire';
-        if (this.active) {
-            if (this.getPending() > 0) {
-                this.updatePending(dt);
-            } else {
-                this.visible = true;
 
-                if (this.attackCoolDown <= 0) {
-                    this.findTargets(playerState)
-                    this.target = [];
-                    let self = this;
-                    const map = playerState.getMap();
-                    map.getObjectInRange(self.position, self.getRange()).map(function (object) {
-                        if (self.checkIsTarget(object) && (self.getTargetType() === 'all' || self.getTargetType() === object.class)) {
-                            self.target.push(object);
-                        }
-                    });
-                    if (this.attackCooldown <= 0) {
-                        if (this.target.length > 0) {
-                            this.fire();
-                            this.status = 'cooldowning';
-                            this.attackCooldown = self.getAttackSpeed();
-                        }
-                    } else {
-                        this.attackCooldown -= dt;
-                    }
+        if (this.getPending() > 0) {
+            this.updatePending(dt);
+        } else {
+            this.visible = true;
+            if (this.attackCooldown <= 0) {
+                this.findTargets(playerState)
+                if (this.target.length > 0) {
+                    this.fire();
+                    this.status = 'cooldowning';
+                    this.attackCooldown = self.getAttackSpeed();
                 }
+            } else {
+                this.attackCooldown -= dt;
             }
         }
+
     },
 
     checkIsTarget: function (another) {
@@ -241,7 +230,8 @@ var Tower = TowerUI.extend({
             this.getParent().getEnergyUI(cc.p(this.x, this.y), 5);
         }
         this.visible = false;
-        this.active = false;
+        this.removeFromParent(true);
+        //this.active = false;
     },
 
     upgrade: function (card) {
@@ -251,11 +241,8 @@ var Tower = TowerUI.extend({
             }
             return false;
         }
-
-        setTimeout(() => {
-            this.level += 1;
-            this.evolute();
-        }, 1000);
+        this.level += 1;
+        this.evolute();
         return true;
     },
 });

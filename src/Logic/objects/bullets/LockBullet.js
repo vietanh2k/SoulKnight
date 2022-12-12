@@ -3,8 +3,8 @@ let TCannonBullet = Bullet.extend({
     concept: "bullet",
     type: 'chasing',
 
-    ctor: function (target, speed, damage, radius, position, targetType, level) {
-        this._super(res.TCannon_Bullet, target, speed, damage, radius, position, targetType, level);
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level) {
+        this._super(res.TCannon_Bullet, target, speed, damage, radius, position, fromTower, targetType, level);
     },
 
     explose: function (playerState, pos) {
@@ -12,7 +12,7 @@ let TCannonBullet = Bullet.extend({
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
-                object.takeDamage(this.damage);
+                object.takeDamage(playerState, this.damage, this.fromTower);
                 if (this.level === 3) {
                     object.stun(0.2);
                 }
@@ -35,8 +35,8 @@ let TIceGunBullet = Bullet.extend({
     concept: "bullet",
     type: 'chasing',
 
-    ctor: function (target, speed, damage, radius, position, targetType, level) {
-        this._super(res.TIceGun_Bullet, target, speed, damage, radius, position, targetType, level);
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level) {
+        this._super(res.TIceGun_Bullet, target, speed, damage, radius, position, fromTower, targetType, level);
     },
 
     explose: function (playerState, pos) {
@@ -44,7 +44,7 @@ let TIceGunBullet = Bullet.extend({
         let objectList = map.getObjectInRange(pos, this.radius);
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
-                object.takeDamage(this.damage);
+                object.takeDamage(playerState, this.damage, this.fromTower);
                 object.freezeByTIceGun(this.getFreezeDuration(), this.level === 3);
                 object.hurtUI();
             }
