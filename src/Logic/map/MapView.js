@@ -228,6 +228,7 @@ var MapView = cc.Class.extend({
 
     updateTower:function (dt) {
         try {
+            const self = this
             /*var temp = []
             this.towers.map(tower=>{
                 tower.logicUpdate(this._playerState, dt)
@@ -245,6 +246,7 @@ var MapView = cc.Class.extend({
                 tower.logicUpdate(this._playerState, dt)
 
                 if(tower.isDestroy){
+                    self.getCellAtPosition(tower.position).setObjectOn(null)
                     list.remove(id)
                 }
             })

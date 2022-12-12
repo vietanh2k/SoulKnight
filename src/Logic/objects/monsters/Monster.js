@@ -54,7 +54,7 @@ const Monster = AnimatedSprite.extend({
     },
 
     initConfig: function (playerState) {
-        this.initFromConfig(null)
+        this.initFromConfig(playerState)
     },
 
     initAnimation: function (){
@@ -364,7 +364,7 @@ const Monster = AnimatedSprite.extend({
     },
 
     takeDamage: function (playerState, many, from) {
-        this.health -= many
+        this.health = Math.max(this.health - many, 0)
         if(this.health > this.MaxHealth){
             this.health = this.MaxHealth
         }
