@@ -35,7 +35,6 @@ var GameUI = cc.Layer.extend({
                 }
             }
         }
-        cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
 
         GameUI.instance = this;
 

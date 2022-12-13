@@ -33,18 +33,15 @@ var TWizard = Tower.extend({
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
 
-        // if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.TWizard_plit)) {
-        //     cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
-        // }
-
         for (let i = 0; i < 3; i++) {
             this.initTextures[i] = 'res/tower/frame/wizard_1_2/tower_wizard_idle_' + i + '_0000.png';
-            this.idlePrefixNames[i] = 'wizard/tower_wizard_idle_' + i + '_';
-            this.attackPrefixNames[i] = 'wizard/tower_wizard_attack_' + i + '_';
+            this.idlePrefixNames[i] = 'tower_wizard_idle_' + i + '_';
+            this.attackPrefixNames[i] = 'tower_wizard_attack_' + i + '_';
         }
         this.initTextures[3] = 'res/tower/frame/wizard_3/tower_wizard_idle_3_0000.png';
-        this.idlePrefixNames[3] = 'wizard/tower_wizard_idle_3_';
-        this.attackPrefixNames[3] = 'wizard/tower_wizard_attack_3_';
+        this.idlePrefixNames[3] = 'tower_wizard_idle_3_';
+        this.attackPrefixNames[3] = 'tower_wizard_attack_3_';
+
         this.idleIPD = cf.TOWER_UI[this.card].idleIPD;
         this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
 
