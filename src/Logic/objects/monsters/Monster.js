@@ -37,7 +37,7 @@ const Monster = AnimatedSprite.extend({
         this.recoverHpFx.visible = false
         this.recoverHpFx.opacity = 64
         this.addChild(this.recoverHpFx)
-
+        // this.___freezeEffect = new FreezeEffect(ICEMAN_FREEZE_EFFECT_TIME, this)
         return true;
     },
 
@@ -400,11 +400,10 @@ const Monster = AnimatedSprite.extend({
             this.setPosition(width - x, height + y)
         }
 
-        if (this.healthUI.opacity !== 0) {
             this.healthUI.setPosition(this.width / 2.0, this.height * 1.0)
-        }
 
-        if (dir) {
+
+        if (dir && this.currentAnimationId !== -1) {
             const v = this.animationIds[dir.y +1]
             if (v) this.play(v[dir.x +1])
         }

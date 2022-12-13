@@ -20,7 +20,7 @@ const Swordsman = Monster.extend({
             [ moveUpLeftAnimId,         moveUpAnimId,            moveUpRightAnimId   ],
         ]
 
-        this.play(0)
+        this.play(1)
     }
 })
 

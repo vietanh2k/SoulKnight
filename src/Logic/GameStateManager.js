@@ -1,4 +1,4 @@
-MAX_WAVE = 25;
+MAX_WAVE = 1;
 MAX_ENERGY = 30;
 MAX_VALUE = 99999
 let GameStateManagerInstance = null
@@ -23,7 +23,9 @@ var GameStateManager = cc.Class.extend({
 
     ctor:function (pkg) {
         GameStateManagerInstance = this
-
+        ActionListInstance = []
+        indAction = 0
+        FrameMaxForUpdate = 15
         this.init();
         this.playerA = new PlayerState(1)
         this.playerB = new PlayerState(2)
@@ -80,9 +82,15 @@ var GameStateManager = cc.Class.extend({
         /*if(this.playerA._map.monsters.length == 0){
             this.canTouchNewWave = true
         }*/
-        if(this.playerA.isClearWave() && this.curWave < MAX_WAVE){
+        if(this.playerA.isClearWave() && !this.isMaxWave()){
             this.canTouchNewWave = true
         }
+    },
+    isMaxWave:function (){
+        if(this.curWave < MAX_WAVE){
+            return false;
+        }
+        return true;
     },
     updateStateNewWave:function (){
         this.curWave += 1
@@ -125,6 +133,7 @@ var GameStateManager = cc.Class.extend({
         /*
         Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
          */
+        cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
         if(this.frameCount>= FrameMaxForUpdate){
             return;
         }
@@ -165,14 +174,14 @@ var GameStateManager = cc.Class.extend({
             // while (this.frameCount ){
             //
             // }
-            if (this.frameCount == ActionListInstance[indAction][0]){
+            while (indAction < ActionListInstance.length && this.frameCount >= ActionListInstance[indAction][0] ){
                 cc.log('=========TRIGER++++++')
                 ACTION_DESERIALIZER_FROM_ARR[ActionListInstance[indAction][1]](ActionListInstance[indAction][2]).activate(GameStateManagerInstance)
                 indAction++
-            }else {
-                cc.log(this.frameCount + '  ' + ActionListInstance[indAction][0] + '  ' + indAction)
             }
-
+            if(indAction >0) {
+                cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
+            }
         }
     },
 

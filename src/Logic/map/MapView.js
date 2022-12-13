@@ -468,11 +468,14 @@ var MapView = cc.Class.extend({
         return true;
     },
 
-    deploySpell: function (cardType, position, mapCast){
+    deploySpell: function (card_type, position, uid, mapCast){
         var spell;
-        switch (cardType){
+        switch (card_type){
             case 0:
                 spell = new FireBall(this._playerState, position);
+                break;
+            case 1:
+                spell = new IceBall(this._playerState, position, mapCast);
                 break;
             case 2:
                 spell = new Heal(this._playerState, position);

@@ -5,12 +5,18 @@ const FreezeEffect = Effect.extend({
         this.targetTower = targetTower
         this.targetTower.active = false
         this.targetTower.setColor(cc.color(128, 128, 255))
+        if(this.targetTower.concept == 'monster') {
+            this.targetTower.play(-1)
+        }
         this.targetTower.retain()
     },
 
     destroy: function (playerState) {
         this.targetTower.active = true
         this.targetTower.setColor(cc.color(255, 255, 255))
+        if(this.targetTower.concept == 'monster') {
+            this.targetTower.play(0)
+        }
         this.targetTower.___freezeEffect = null
         this.targetTower.release()
     }

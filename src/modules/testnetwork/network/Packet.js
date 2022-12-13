@@ -545,9 +545,7 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
         readData: function(){
             var num = this.getInt()
             var frameTriggerAction = this.getInt()
-            FrameMaxForUpdate = this.getInt()
-            var self = this
-            var dst = new ArrayBuffer(this.byteLength);
+            var a = this.getInt()
             // new Uint8Array(dst).set(new Uint8Array(this));
             // dst.putInt(2);
             // cc.log('sa'+dst.getInt())
@@ -559,7 +557,20 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
 
                 var arrayPkg = ACTION_DESERIALIZER[actionCode](this)
                 var tmp = [frameTriggerAction,actionCode, arrayPkg]
-                ActionListInstance.push(tmp)
+
+                /*
+                sort cac action theo frame trigger
+                 */
+                if(ActionListInstance.length>0) {
+                    for (let i = ActionListInstance.length-1; i >= 0; i--) {
+                        if (ActionListInstance[i][0] <= tmp[0]) {
+                            ActionListInstance.splice(i + 1, 0, tmp);
+                            break;
+                        }
+                    }
+                }else {
+                    ActionListInstance.push(tmp)
+                }
                 cc.log('Activate ' + num + ' action(s)')
                 cc.log('&&&&& FRAME SERVER NHAN ACTION='+ FrameMaxForUpdate)
                 cc.log('&&&&& FRAME TRIGGER ACTION TAI SERVER='+ frameTriggerAction)

@@ -36,6 +36,8 @@ var res = {
     cantLoadShop: "cantLoadShop.json",
     healthMonster: "healthMonster.json",
     tooltipGold: "tooltipGold.json",
+    backgroundBattle: "backgroundBattle.json",
+    backgroundBattle2: "backgroundBattle2.json",
 
     font_magic: 'res/font/SVN-Supercell Magic.ttf',
     font_normal: 'res/font/SVN-Avo bold.ttf',
@@ -116,7 +118,8 @@ var res = {
     heal_fx_json: 'res/potion/fx_heal.json',
     heal_fx_atlas: 'res/potion/fx_heal.atlas',
 
-
+    mapSheet_plist: 'res/mapSheet.plist',
+    mapSheet_png: 'res/mapSheet.png',
     explosion2_plist: 'res/game/animation/explosion/monster_die_fx.plist',
     explosion2_png: 'res/game/animation/explosion/monster_die_fx.png',
     timerBackground_png: 'res/battle/battle_timer_background.png',
@@ -202,7 +205,15 @@ var g_resources = [
     res.explosion_plist,
     res.explosion_png,
     res.TWizard_plit,
+    res.mapSheet_plist,
+    res.mapSheet_png,
     'res/tower/fx/tower_wizard_fx.json',
     'res/tower/fx/tower_wizard_fx.atlas',
     'res/tower/fx/tower_wizard_fx.png',
+    "res/battle_result/fx/fx_result_draw.atlas",
+    "res/battle_result/fx/fx_result_draw.png",
+    "res/battle_result/fx/fx_result_win.atlas",
+    "res/battle_result/fx/fx_result_win.png",
+    "res/battle_result/fx/fx_result_lose.atlas",
+    "res/battle_result/fx/fx_result_lose.png",
 ];
