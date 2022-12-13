@@ -1,5 +1,7 @@
 TIME_PER_HEAL = 0.1;
 
+const FLOAT_THRESHOLD = 0.04
+
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
         this._super(res.m1);
@@ -37,6 +39,15 @@ const Monster = AnimatedSprite.extend({
         this.recoverHpFx.visible = false
         this.recoverHpFx.opacity = 64
         this.addChild(this.recoverHpFx)
+
+        this.tempTargetPosition = new Vec2(0,0)
+        this.targetPosition = null
+        this.impactVec = new Vec2(0,0)
+        this.movingDirection = new Vec2(0,0)
+        this.transformMat = new Mat3()
+        this.impactCenter = new Vec2(0,0)
+        this.impactMonsters = new UnorderedList()
+        this.impactDirection = null
 
         return true;
     },
@@ -94,7 +105,7 @@ const Monster = AnimatedSprite.extend({
      * */
     // direction must be normalized
     getRightSidePoint: function (direction, radius) {
-        const rotate = new Mat3().setRotation(-Math.PI / 2.0)
+        const rotate = this.transformMat.setRotation(-Math.PI / 2.0)
         return this.position.add(rotate.mul(direction).normalize().mul(radius))
     },
 
@@ -106,6 +117,60 @@ const Monster = AnimatedSprite.extend({
 
     getForwardSidePoint: function (direction, radius) {
         return this.position.add(direction.mul(radius))
+    },
+
+    getForwardTangent: function (center, direction) {
+        const rotate = this.transformMat.setRotation(-Math.PI / 2.0)
+        const dir = this.position.sub(center).normalize()
+        const ret = rotate.mul(dir).normalize()
+
+        if (direction.dot(ret) < 0.0) {
+            ret.set(-ret.x, -ret.y)
+        }
+
+        return ret
+    },
+
+    calculateImpactCenter: function () {
+        const self = this
+        let sum = new Vec2(0,0)
+        //cc.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
+        this.impactMonsters.forEach((monster, id, list) => {
+            //cc.log("calculateImpactCenter --> " + id)
+            const vec = monster.position.sub(self.position)
+            const dir = vec.normal()
+
+            if (dir.dot(self.movingDirection) < -FLOAT_THRESHOLD || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
+                list.remove(id)
+                monster.release()
+                //cc.log("Remove --> " + id)
+                return
+            }
+
+            sum = sum.add(monster.position)
+        })
+       // cc.log("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+
+        if (this.impactMonsters.size() !== 0) {
+            sum = sum.div(this.impactMonsters.size())
+        } else {
+            sum.set(0,0)
+        }
+        return sum
+    },
+
+    calculateImpactDirection: function () {
+        let sum = new Vec2(0,0)
+        this.impactMonsters.forEach((monster, id, list) => {
+            sum = sum.add(monster.movingDirection)
+        })
+
+        if (this.impactMonsters.size() !== 0) {
+            sum = sum.div(this.impactMonsters.size())
+        } else {
+            sum.set(0,0)
+        }
+        return sum
     },
 
     debug: function (map) {
@@ -264,11 +329,67 @@ const Monster = AnimatedSprite.extend({
         distance += this.speed * dt;
         distance *= this.rateSpeedUpBuff;
 
+        this.targetPosition = null
+        if (this.impactMonsters.size() !== 0) {
+            this.impactCenter = this.calculateImpactCenter()
+            this.impactDirection = this.calculateImpactDirection()
+
+            if (!this.impactCenter.isZero() && !this.impactDirection.isZero()) {
+                this.impactVec = this.getForwardTangent(this.impactCenter, this.impactDirection).normalize()
+                this.tempTargetPosition = this.position.add(this.impactVec.mul(distance))
+                this.targetPosition = this.tempTargetPosition
+            }
+        }
+
         const map = playerState.getMap()
+
+        if (this.targetPosition) {
+            const cell = map.getCellAtPosition(this.targetPosition)
+            if (!cell || cell.nextCell == null) {
+                distance = 0.1
+                this.targetPosition = null
+                //cc.log('=====================================')
+            }
+
+            /*const pos = this.position
+            const r = this.hitRadius
+
+            const tempPos = new Vec2(0,0)
+
+            const self = this
+
+            for (let i = 0; i < 4; i++) {
+                tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * r
+                tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * r
+
+                const cell1 = map.getCellAtPosition(tempPos.x, tempPos.y)
+
+                if (!cell1 || cell1.nextCell == null) {
+                    distance = 0.1
+                    this.targetPosition = null
+
+                    //cc.log(this.impactMonsters.size())
+                    //cc.log('------------------------------------------------------------')
+                    //cc.log(this.hitRadius / MAP_CONFIG.CELL_WIDTH)
+                    //this.impactMonsters.forEach((monster) => {
+                        //const vec = monster.position.sub(self.position)
+                        //cc.log(vec.length())
+                        //cc.log(monster.hitRadius + self.hitRadius)
+                        //cc.log(vec.length() > monster.hitRadius + self.hitRadius)
+                        //cc.log(((vec.length()) > (monster.hitRadius + self.hitRadius)))
+                    //})
+                }
+            }*/
+        }
+
         if (this.route(map, distance, null)) {
             //this.destroy()
 
             if (!this.targetPosition) this.debug(map)
+        }
+
+        if (!this.position.isApprox(this.prevPosition)) {
+            this.movingDirection = this.position.sub(this.prevPosition).normalize()
         }
 
         /*if (this.targetPosition && this.position.isApprox(this.targetPosition)) {
@@ -484,6 +605,7 @@ const Monster = AnimatedSprite.extend({
     },
 
     recoverHp: function (many) {
+        many = Math.floor(many)
         this.health = Math.min(this.health + many, this.MaxHealth)
 
         if (this.recoverHpFx.visible === false) {
@@ -514,7 +636,25 @@ const Monster = AnimatedSprite.extend({
                 this.impactedMonster = null
             }
         }*/
+        if (this.speed <= anotherMonster.speed) return
+        if (this.impactMonsters.size() >= 2) return
+        //if (this.position.sub(anotherMonster.position).length() <= this.hitRadius + anotherMonster.hitRadius) {
+        //    let dir = this.position.sub(anotherMonster.position).normalize()
+        //    const pos = anotherMonster.position.add(dir.mul(this.hitRadius + anotherMonster.hitRadius))
+        //    this.position.set(pos.x, pos.y)
+        //}
 
+        //const tangent = anotherMonster.getForwardTangent(this.position)
+        //this.impactVec = this.impactVec.add(tangent).normalize();
+        const dir = anotherMonster.position.sub(this.position).normalize()
+        if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
+            return
+        }
+
+        if (this.impactMonsters.indexOf(anotherMonster) === -1) {
+            this.impactMonsters.add(anotherMonster)
+            anotherMonster.retain()
+        }
     },
 
 });

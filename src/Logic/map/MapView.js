@@ -124,6 +124,7 @@ var MapView = cc.Class.extend({
                 const parent = parents[x][y];
                 const cell = this.cells[x][y]
 
+                cell.state = 1
                 if (parent.x === -1000) {
                     cell.nextCell = null
                     //cell.prevCell = null
@@ -185,13 +186,13 @@ var MapView = cc.Class.extend({
             const self = this
 
             this.monsters.forEach((monster, id, list) => {
-                if (!monster.active) return
+                if (!monster.active || monster.class !== 'land') return
 
                 const monsters = self.queryEnemiesCircle(monster.position, monster.hitRadius)
                 for (let i = 0; i < monsters.length; i++) {
                     const m = monsters[i]
 
-                    if (m !== monster) {
+                    if (m !== monster && m.class === 'land') {
                         monster.onImpact(this._playerState, m)
                     }
                 }
