@@ -1,5 +1,9 @@
 var Tower = TowerUI.extend({
 
+    ctor: function (mcard, evolution) {
+        this._super(mcard, evolution);
+    },
+
     render: function (playerState) {
         if (!this.isSetPosition) {
             this.renderRule = playerState.rule;
