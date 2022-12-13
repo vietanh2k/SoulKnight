@@ -1060,29 +1060,29 @@ var GameUI = cc.Layer.extend({
     },
 
     initCellSlot: function (mapArray, rule) {
-        for (let i = 0; i < MAP_WIDTH + 1; i++) {
-            for (let j = 0; j < MAP_HEIGHT + 1; j++) {
-                let object;
-                switch (mapArray[i][j]) {
-                    case -1:
-                        object = this.addObjectUI(res.buffD, i, j, 1, 0, rule);
-                        break;
-                    case -2:
-                        object = this.addObjectUI(res.buffS, i, j, 1, 0, rule);
-                        break;
-                    case -3:
-                        object = this.addObjectUI(res.buffR, i, j, 1, 0, rule);
-                        break;
-                    case 1:
-                        object = this.addObjectUI(res.treeUI, i, j, 0.85, 0, rule);
-                        break;
-                    case 2:
-                        object = this.addObjectUI(res.hole, i, j, 0.85, 0, rule);
-                        break;
-                    default:
-                        return;
+        var arr = this._gameStateManager.playerA._map._mapController.intArray
+        for (var i = 0; i < MAP_WIDTH + 1; i++) {
+            for (var j = 0; j < MAP_HEIGHT + 1; j++) {
+                if (mapArray[i][j] == -1) {
+                    var obj = this.addObjectUI(res.buffD, i, j, 1, 0, rule)
+                    this.addChild(obj, 0, res.buffD + rule)
                 }
-                this.addChild(object);
+                if (mapArray[i][j] == -2) {
+                    var obj = this.addObjectUI(res.buffS, i, j, 1, 0, rule)
+                    this.addChild(obj, 0, res.buffD + rule)
+                }
+                if (mapArray[i][j] == -3) {
+                    var obj = this.addObjectUI(res.buffR, i, j, 1, 0, rule)
+                    this.addChild(obj, 0, res.buffD + rule)
+                }
+                if (mapArray[i][j] == 1) {
+                    var obj = this.addObjectUI(res.treeUI, i, j, 0.85, 0, rule)
+                    this.addChild(obj, 0, res.buffD + rule)
+                }
+                if (mapArray[i][j] == 2) {
+                    var obj = this.addObjectUI(res.hole, i, j, 0.85, 0, rule)
+                    this.addChild(obj, 0, res.buffD + rule)
+                }
             }
         }
     },
