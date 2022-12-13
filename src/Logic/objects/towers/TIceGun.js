@@ -45,7 +45,7 @@ let TIceGun = Tower.extend({
         this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
 
         this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_ice_fx.json', 'res/tower/fx/tower_ice_fx.atlas');
-        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height);
         this.fireFx.visible = false;
     },
 

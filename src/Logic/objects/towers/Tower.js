@@ -185,7 +185,11 @@ var Tower = TowerUI.extend({
 
         const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)
         enemies.forEach((monster) => {
-            if (self.checkIsTarget(monster)) self.target.push(monster)
+            if (self.checkIsTarget(monster)) {
+                if (self.getTargetType() === 'all' || self.getTargetType() === monster.class) {
+                    self.target.push(monster);
+                }
+            }
         })
     },
 

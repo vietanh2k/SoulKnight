@@ -45,7 +45,7 @@ var TOilGun = Tower.extend({
         this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
 
         this.bulletFx = sp.SkeletonAnimation('res/tower/fx/tower_oil_fx.json', 'res/tower/fx/tower_oil_fx.atlas');
-        GameUI.instance.addChild(this.bulletFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        GameUI.instance.addChild(this.bulletFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height);
         this.bulletFx.visible = false;
     },
 
