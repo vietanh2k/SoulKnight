@@ -1094,32 +1094,31 @@ var GameUI = cc.Layer.extend({
     initCellSlot: function (mapArray, rule) {
         for (let i = 0; i < MAP_WIDTH + 1; i++) {
             for (let j = 0; j < MAP_HEIGHT + 1; j++) {
-                let object;
+                let obj;
                 switch (mapArray[i][j]) {
                     case cf.MAP_CELL.BUFF_DAMAGE:
-                        var obj = this.addObjectUI('#battle/battle_item_damage.png', i, j, 1, 0, rule)
+                        obj = this.addObjectUI('#battle/battle_item_damage.png', i, j, 1, 0, rule)
                         this.addChild(obj, 0, res.buffD + rule)
                         break;
                     case cf.MAP_CELL.BUFF_ATTACK_SPEED:
-                        var obj = this.addObjectUI('#battle/battle_item_attack_speed.png', i, j, 1, 0, rule)
+                        obj = this.addObjectUI('#battle/battle_item_attack_speed.png', i, j, 1, 0, rule)
                         this.addChild(obj, 0, res.buffS + rule)
                         break;
                     case cf.MAP_CELL.BUFF_RANGE:
-                        var obj = this.addObjectUI('#battle/battle_item_range.png', i, j, 1, 0, rule)
+                        obj = this.addObjectUI('#battle/battle_item_range.png', i, j, 1, 0, rule)
                         this.addChild(obj, 0, res.buffR + rule)
                         break;
                     case cf.MAP_CELL.TREE:
-                        var obj = this.addObjectUI('#map/map_forest_obstacle_1.png', i, j, 0.85, 0, rule)
+                        obj = this.addObjectUI('#map/map_forest_obstacle_1.png', i, j, 0.85, 0, rule)
                         this.addChild(obj, 0, res.treeUI + rule)
                         break;
                     case cf.MAP_CELL.HOLE:
-                        var obj = this.addObjectUI('#battle/UI/ui_hole.png', i, j, 0.85, 0, rule)
+                        obj = this.addObjectUI('#battle/UI/ui_hole.png', i, j, 0.85, 0, rule)
                         this.addChild(obj, 0, res.hole + rule)
                         break;
                     default:
                         continue;
                 }
-                this.addChild(object, 0, res.buffD + rule);
             }
         }
     },
