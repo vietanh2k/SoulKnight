@@ -162,6 +162,7 @@
 
         "src/Logic/objects/spells/Spell.js",
         "src/Logic/objects/spells/FireBall.js",
+        "src/Logic/objects/spells/IceBall.js",
         "src/Logic/objects/spells/Heal.js",
         "src/Logic/objects/spells/SpeedUp.js",
         "src/Logic/objects/spells/SPELL_ID.js"

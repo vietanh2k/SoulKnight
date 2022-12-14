@@ -1,4 +1,4 @@
-TIME_WAVE= 25
+TIME_WAVE= 20
 var Timer = cc.Class.extend({
     curTime:0,
     cellWidth: null,
@@ -26,9 +26,11 @@ var Timer = cc.Class.extend({
         }
         if (this.curTime == 0 && !this.checkSendNewWaveOnce) {
             this.checkSendNewWaveOnce = true
-            testnetwork.connector.sendActions([[new NextWaveAction(this._gameStateManager.waveCount), 0]]); //this.addMonsterToBoth()
-            // this.resetTime(TIME_WAVE)
-            cc.log('touch2222222222222222222222')
+            if(!GameStateManagerInstance.isMaxWave()) {
+                testnetwork.connector.sendActions([[new NextWaveAction(this._gameStateManager.waveCount), 0]]); //this.addMonsterToBoth()
+                // this.resetTime(TIME_WAVE)
+                cc.log('touch2222222222222222222222')
+            }
         }
     },
 

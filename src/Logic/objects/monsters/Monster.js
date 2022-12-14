@@ -9,7 +9,7 @@ const Monster = AnimatedSprite.extend({
         this.setScale(1.2)
         this.active = true
         this.visible = true
-
+        this.tes = 0
         this.mapId = -1
         this.isChosen = false
         this.timeHealBuff = 0
@@ -37,7 +37,7 @@ const Monster = AnimatedSprite.extend({
         this.recoverHpFx.visible = false
         this.recoverHpFx.opacity = 64
         this.addChild(this.recoverHpFx)
-
+        // this.___freezeEffect = new FreezeEffect(ICEMAN_FREEZE_EFFECT_TIME, this)
         return true;
     },
 
@@ -112,7 +112,7 @@ const Monster = AnimatedSprite.extend({
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
             this._playerState.updateHealth(-this.energyWhileImpactMainTower)
-            cc.log('destroy')
+            cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
             this.destroy()
 
 
@@ -174,6 +174,13 @@ const Monster = AnimatedSprite.extend({
     },
 
     logicUpdate: function (playerState, dt){
+        this.tes++;
+        if(this.tes == 200){
+            cc.log('possss200= '+this.position.x+' '+this.position.y)
+        }
+        if(this.tes == 300){
+            cc.log('possss300= '+this.position.x+' '+this.position.y)
+        }
         if(this.health<=0){
             this.destroy();
             return;
@@ -400,11 +407,10 @@ const Monster = AnimatedSprite.extend({
             this.setPosition(width - x, height + y)
         }
 
-        if (this.healthUI.opacity !== 0) {
             this.healthUI.setPosition(this.width / 2.0, this.height * 1.0)
-        }
 
-        if (dir) {
+
+        if (dir && this.currentAnimationId !== -1) {
             const v = this.animationIds[dir.y +1]
             if (v) this.play(v[dir.x +1])
         }

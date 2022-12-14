@@ -17,6 +17,7 @@ var GameUI = cc.Layer.extend({
 
     ctor: function (pkg) {
         cc.spriteFrameCache.addSpriteFrames(res.explosion2_plist, res.explosion2_png);
+        cc.spriteFrameCache.addSpriteFrames(res.mapSheet_plist, res.mapSheet_png);
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
@@ -278,15 +279,15 @@ var GameUI = cc.Layer.extend({
     activateCardPotion: function (card_type, position, uid, mapCast) {
         if (uid == gv.gameClient._userId ) {
             if(mapCast == 1) {
-                this._gameStateManager.playerA._map.deploySpell(card_type, position, mapCast)
+                this._gameStateManager.playerA._map.deploySpell(card_type, position, uid, mapCast)
             }else {
-                this._gameStateManager.playerB._map.deploySpell(card_type, position, mapCast)
+                this._gameStateManager.playerB._map.deploySpell(card_type, position, uid, mapCast)
             }
         } else {
             if(mapCast == 1) {
-                this._gameStateManager.playerB._map.deploySpell(card_type, position, mapCast)
+                this._gameStateManager.playerB._map.deploySpell(card_type, position, uid, mapCast)
             }else {
-                this._gameStateManager.playerA._map.deploySpell(card_type, position, mapCast)
+                this._gameStateManager.playerA._map.deploySpell(card_type, position, uid, mapCast)
             }
 
         }
@@ -333,10 +334,10 @@ var GameUI = cc.Layer.extend({
             if (dir.x == 0 && dir.y == -1) numDir = 2
             if (dir.x == 0 && dir.y == 1) numDir = 8
 
-            var obj = this.addObjectUI(res.highlightPath, node.x, node.y, 1, 0, rule)
+            var obj = this.addObjectUI('#battle/UI/ui_transparent_square.png', node.x, node.y, 1, 0, rule)
             this.addChild(obj, 0, res.highlightPath + rule)
 
-            var arrow = this.addObjectUI(res.iconArrow, node.x, node.y, 0.5, numDir, rule)
+            var arrow = this.addObjectUI('#battle/UI/ui_icon_arrow.png', node.x, node.y, 0.5, numDir, rule)
             this.addChild(arrow, 0, res.iconArrow + rule)
             var seq = cc.sequence(cc.DelayTime(0.5), cc.fadeOut(0), cc.DelayTime(delay), cc.fadeIn(0), cc.DelayTime(0.5), cc.fadeOut(0.5));
             arrow.runAction(seq)
@@ -357,67 +358,74 @@ var GameUI = cc.Layer.extend({
         backg0.setScaleY(winSize.height / backg0.getContentSize().height)
         backg0.setScaleX(winSize.width / backg0.getContentSize().width)
         this.addChild(backg0);
-
-        this.addObjectBackground(res.river0, 1, 0, 0, 1 / 15)
-        this.addObjectBackground(res.river1, 1, 0, 0, 1 / 15)
-        this.addObjectBackground(res.mapbackground03, 0, 6 / 15, 0.01, -2.5 / 15)
-        this.addObjectBackground(res.mapbackground02, 0, 6 / 15, 0, 4.5 / 15)
-        this.addObjectBackground(res.cell_start2, 1 / 8, 0, -3 / 8, 1 / 15)
-        this.addObjectBackground(res.cell_start2, 1 / 8, 0, -2 / 8, 1 / 15)
-        this.addObjectBackground(res.cell_start1, 1 / 8, 0, 3 / 8, 1 / 15)
-        this.addObjectBackground(res.cell_start1, 1 / 8, 0, 2 / 8, 1 / 15)
-
-        this.addObjectBackground(res.mapbackground01, 7 / 8, 0, 0, -2 / 15)
-        this.addObjectBackground(res.mapbackground0, 7 / 8, 0, 0, 4 / 15)
-        this.addObjectBackground(res.gridui, 7 / 8, 0, 0, 4 / 15)
-        this.addObjectBackground(res.gridui, 7 / 8, 0, 0, -2 / 15)
-        this.addObjectBackground(res.grid1, 2 / 8, 0, -2.5 / 8, 0.5 / 15)
-        this.addObjectBackground(res.grid2, 2 / 8, 0, 2.5 / 8, 1.5 / 15)
-
-        this.addObjectBackground(res.gate2, 1.5 / 8, 0, -2.1 / 8, 1.1 / 15)
-        this.addObjectBackground(res.gate1, 1.5 / 8, 0, 2.1 / 8, 1.1 / 15)
+        this.addObjectBackground(res.mapbackground03, 0, 5.65 / 15, 0.01, -2.35 / 15)
+        this.addObjectBackground(res.mapbackground02, 0, 5.65 / 15, 0, 4.55 / 15)
+        var backgroundBattle = ccs.load(res.backgroundBattle, "").node;
+        this.addChild(backgroundBattle);
 
 
-        this.addObjectBackground(res.rock4, 1 / 8.5, 0, -6 / 15, 7 / 15)
-        this.addObjectBackground(res.grass3, 1 / 7, 0, 8.5 / 15, 6.5 / 15)
-        this.addObjectBackground(res.grass2, 1 / 15, 0, 8.7 / 15, 6.3 / 15)
-        this.addObjectBackground(res.tree0, 1 / 5, 0, 8 / 15, 5.5 / 15)
-        this.addObjectBackground(res.rock0, 1 / 9, 0, 8 / 15, 4.2 / 15)
-        this.addObjectBackground(res.tree2, 1 / 3, 0, 8 / 15, 3.5 / 15)
-        this.addObjectBackground(res.tree1, 1 / 5, 0, 7 / 15, 7.5 / 15)
-        this.addObjectBackground(res.tree3, 1 / 5, 0, 5.5 / 15, 7.5 / 15)
-        this.addObjectBackground(res.grass1, 1 / 10, 0, -7.7 / 15, 5.3 / 15)
-        this.addObjectBackground(res.tree1, 1 / 5, 0, -8.2 / 15, 4.5 / 15)
-        this.addObjectBackground(res.tree3, 1 / 6, 0, -8 / 15, 3.5 / 15)
-        this.addObjectBackground(res.grass0, 1 / 12, 0, -2.2 / 15, 7 / 15)
-        this.addObjectBackground(res.tree0, 1 / 5.5, 0, -3.2 / 15, 7.5 / 15)
-        this.addObjectBackground(res.tree2, 1 / 3.5, 0, -4.5 / 15, 7.5 / 15)
-        this.addObjectBackground(res.rock3, 1 / 7, 0, -0.2 / 15, 7 / 15)
-        this.addObjectBackground(res.grass1, 1 / 11, 0, 3.5 / 15, 7 / 15)
 
-        this.addObjectBackground(res.decorate, 0, 2.2 / 15, 9 / 15, 1 / 15)
-        this.addObjectBackground(res.decorate1, 0, 2.3 / 15, -8.15 / 15, 1.25 / 15)
-        this.addObjectBackground(res.grass1, 1 / 11, 0, -8 / 15, -1.5 / 15)
-        this.addObjectBackground(res.tree0, 1 / 4, 0, -8.5 / 15, -0.5 / 15)
+        this.addObjectBackground(res.river0, 0.8, 0, 0, 1 / 15)
+        this.addObjectBackground(res.river1, 0.8, 0, 0, 1 / 15)
+        this.addObjectBackground('#map/cell_start_02.png', 1 / 8, 0, -3 / 8, 1 / 15)
+        this.addObjectBackground('#map/cell_start_02.png', 1 / 8, 0, -2 / 8, 1 / 15)
+        this.addObjectBackground('#map/cell_start_01.png', 1 / 8, 0, 3 / 8, 1 / 15)
+        this.addObjectBackground('#map/cell_start_01.png', 1 / 8, 0, 2 / 8, 1 / 15)
 
-        this.addObjectBackground(res.rock3, 1 / 8, 0, -8.5 / 15, -2 / 15)
-        this.addObjectBackground(res.tree1, 1 / 5, 0, -8.5 / 15, -2.6 / 15)
+        this.addObjectBackground('#map/map_background_0001.png', 7 / 8, 0, 0, -2 / 15)
+        this.addObjectBackground('#map/map_background_0000.png', 7 / 8, 0, 0, 4 / 15)
+        this.addObjectBackground('#battle/UI/ui_grid.png', 7 / 8, 0, 0, 4 / 15)
+        this.addObjectBackground('#battle/UI/ui_grid.png', 7 / 8, 0, 0, -2 / 15)
+        this.addObjectBackground('#map/grid.png', 2 / 8, 0, -2.5 / 8, 0.49 / 15)
+        this.addObjectBackground('#map/grid2.png', 2 / 8, 0, 2.5 / 8, 1.51 / 15)
+
+        this.addObjectBackground('#map/map_monster_gate_player.png', 1.5 / 8, 0, -2.1 / 8, 1.1 / 15)
+        let gateEnemy = this.addObjectBackground('#map/map_monster_gate_player.png', 1.5 / 8, 0, 2.1 / 8, 1.1 / 15)
+        gateEnemy.setFlippedX(true)
+        this.addObjectBackground('#map/map_house.png', 1 / 6.5, 0, -3.9 / 8, 6.2 / 15)
+        this.addObjectBackground('#map/map_house.png', 1 / 6.5, 0, 3.9 / 8, -3.8 / 15)
+
+        // this.addObjectBackground(res.rock4, 1 / 8.5, 0, -6 / 15, 7 / 15)
+        // this.addObjectBackground(res.grass3, 1 / 7, 0, 8.5 / 15, 6.5 / 15)
+        // this.addObjectBackground(res.grass2, 1 / 15, 0, 8.7 / 15, 6.3 / 15)
+        // this.addObjectBackground(res.tree0, 1 / 5, 0, 8 / 15, 5.5 / 15)
+        // this.addObjectBackground(res.rock0, 1 / 9, 0, 8 / 15, 4.2 / 15)
+        // this.addObjectBackground(res.tree2, 1 / 3, 0, 8 / 15, 3.5 / 15)
+        // this.addObjectBackground(res.tree1, 1 / 5, 0, 7 / 15, 7.5 / 15)
+        // this.addObjectBackground(res.tree3, 1 / 5, 0, 5.5 / 15, 7.5 / 15)
+        // this.addObjectBackground(res.grass1, 1 / 10, 0, -7.7 / 15, 5.3 / 15)
+        // this.addObjectBackground(res.tree1, 1 / 5, 0, -8.2 / 15, 4.5 / 15)
+        // this.addObjectBackground(res.tree3, 1 / 6, 0, -8 / 15, 3.5 / 15)
+        // this.addObjectBackground(res.grass0, 1 / 12, 0, -2.2 / 15, 7 / 15)
+        // this.addObjectBackground(res.tree0, 1 / 5.5, 0, -3.2 / 15, 7.5 / 15)
+        // this.addObjectBackground(res.tree2, 1 / 3.5, 0, -4.5 / 15, 7.5 / 15)
+        // this.addObjectBackground(res.rock3, 1 / 7, 0, -0.2 / 15, 7 / 15)
+        // this.addObjectBackground(res.grass1, 1 / 11, 0, 3.5 / 15, 7 / 15)
+
+        this.addObjectBackground('#map/map_decoration_0002.png', 0, 2.2 / 15, 9 / 15, 1 / 15)
+        this.addObjectBackground('#map/map_decoration_0001.png', 0, 2.3 / 15, -8.15 / 15, 1.25 / 15)
+        var backgroundBattle2 = ccs.load(res.backgroundBattle2, "").node;
+        this.addChild(backgroundBattle2);
+        // this.addObjectBackground(res.grass1, 1 / 11, 0, -8 / 15, -1.5 / 15)
+        // this.addObjectBackground(res.tree0, 1 / 4, 0, -8.5 / 15, -0.5 / 15)
+        //
+        // this.addObjectBackground(res.rock3, 1 / 8, 0, -8.5 / 15, -2 / 15)
+        // this.addObjectBackground(res.tree1, 1 / 5, 0, -8.5 / 15, -2.6 / 15)
+        //
+        //
+        // this.addObjectBackground(res.grass1, 1 / 10, 0, 3.5 / 15, -5 / 15)
+        // this.addObjectBackground(res.grass1, 1 / 10, 0, -7.5 / 15, -4.5 / 15)
+        // this.addObjectBackground(res.tree2, 1 / 5, 0, -8 / 15, -5 / 15)
+        // this.addObjectBackground(res.grass1, 1 / 11, 0, 8 / 15, 0.1 / 15)
+        // this.addObjectBackground(res.tree1, 1 / 5, 0, 8.5 / 15, -0.5 / 15)
+        // this.addObjectBackground(res.grass0, 1 / 10, 0, 8 / 15, -2.8 / 15)
+        // this.addObjectBackground(res.rock3, 1 / 6, 0, 9 / 15, -3.3 / 15)
+        // this.addObjectBackground(res.tree2, 1 / 5, 0, 8.5 / 15, -1.5 / 15)
+        // this.addObjectBackground(res.rock4, 1 / 7, 0, -8.5 / 15, -4 / 15)
+        // this.addObjectBackground(res.tree2, 1 / 3.5, 0, 8.8 / 15, -4.5 / 15)
+        // this.addObjectBackground(res.tree1, 1 / 3.7, 0, -6 / 15, -5.6 / 15)
 
 
-        this.addObjectBackground(res.grass1, 1 / 10, 0, 3.5 / 15, -5 / 15)
-        this.addObjectBackground(res.grass1, 1 / 10, 0, -7.5 / 15, -4.5 / 15)
-        this.addObjectBackground(res.tree2, 1 / 5, 0, -8 / 15, -5 / 15)
-        this.addObjectBackground(res.grass1, 1 / 11, 0, 8 / 15, 0.1 / 15)
-        this.addObjectBackground(res.tree1, 1 / 5, 0, 8.5 / 15, -0.5 / 15)
-        this.addObjectBackground(res.grass0, 1 / 10, 0, 8 / 15, -2.8 / 15)
-        this.addObjectBackground(res.rock3, 1 / 6, 0, 9 / 15, -3.3 / 15)
-        this.addObjectBackground(res.tree2, 1 / 5, 0, 8.5 / 15, -1.5 / 15)
-        this.addObjectBackground(res.rock4, 1 / 7, 0, -8.5 / 15, -4 / 15)
-        this.addObjectBackground(res.tree2, 1 / 3.5, 0, 8.8 / 15, -4.5 / 15)
-        this.addObjectBackground(res.tree1, 1 / 3.7, 0, -6 / 15, -5.6 / 15)
-
-        this.addObjectBackground(res.house, 1 / 6.5, 0, -3.9 / 8, 6.2 / 15)
-        this.addObjectBackground(res.house, 1 / 6.5, 0, 3.9 / 8, -3.8 / 15)
         // this.healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
         this.addHealthUI()
         this.addTimerUI()
@@ -440,7 +448,7 @@ var GameUI = cc.Layer.extend({
     },
 
     addTimerUI: function () {
-        this.addObjectBackground(res.timerBackground_png, 0.9 / 8, 0, 0, 1 / 15)
+        this.addObjectBackground('#battle/battle_timer_background.png', 0.9 / 8, 0, 0, 1 / 15)
         // this.addObjectBackground(res.timer2,0.8/8,0,0,1/15)
         var timeBar = cc.ProgressTimer.create(cc.Sprite.create(res.timer_png));
         timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
@@ -451,14 +459,15 @@ var GameUI = cc.Layer.extend({
         this.addChild(timeBar, 0, 'timeBar');
 
 
+
+        var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
+        time3.visible = false
         var numTime = new ccui.Text(TIME_WAVE, res.font_magic, 24)
         numTime.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
         var whiteColor = new cc.Color(255, 255, 255, 255);
         numTime.setTextColor(whiteColor)
         numTime.enableShadow()
         this.addChild(numTime, 0, 'time')
-        var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
-        time3.visible = false
         var touchLayer = new ccui.Button(res.timerBorder_png)
         touchLayer.setScale(WIDTHSIZE / touchLayer.getContentSize().width * 0.9/8);
         touchLayer.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
@@ -1076,6 +1085,7 @@ var GameUI = cc.Layer.extend({
     },*/
 
     activateNextWave: function (monstersId) {
+        cc.log("next wave tai frame ="+ GameStateManagerInstance.frameCount)
         this._gameStateManager.updateStateNewWave()
         this.getNewWave()
         this._gameStateManager.activateNextWave(this, monstersId)
@@ -1084,30 +1094,31 @@ var GameUI = cc.Layer.extend({
     initCellSlot: function (mapArray, rule) {
         for (let i = 0; i < MAP_WIDTH + 1; i++) {
             for (let j = 0; j < MAP_HEIGHT + 1; j++) {
-                let object;
+                let obj;
                 switch (mapArray[i][j]) {
                     case cf.MAP_CELL.BUFF_DAMAGE:
-                        object = this.addObjectUI(res.buffD, i, j, 1, 0, rule);
-                        cc.log('buff damage location of rule ' + rule + ': ' + i + ', ' + j);
+                        obj = this.addObjectUI('#battle/battle_item_damage.png', i, j, 1, 0, rule)
+                        this.addChild(obj, 0, res.buffD + rule)
                         break;
                     case cf.MAP_CELL.BUFF_ATTACK_SPEED:
-                        object = this.addObjectUI(res.buffS, i, j, 1, 0, rule);
-                        cc.log('buff attack speed location of rule ' + rule + ': ' + i + ', ' + j);
+                        obj = this.addObjectUI('#battle/battle_item_attack_speed.png', i, j, 1, 0, rule)
+                        this.addChild(obj, 0, res.buffS + rule)
                         break;
                     case cf.MAP_CELL.BUFF_RANGE:
-                        object = this.addObjectUI(res.buffR, i, j, 1, 0, rule);
-                        cc.log('buff range location of rule ' + rule + ': ' + i + ', ' + j);
+                        obj = this.addObjectUI('#battle/battle_item_range.png', i, j, 1, 0, rule)
+                        this.addChild(obj, 0, res.buffR + rule)
                         break;
                     case cf.MAP_CELL.TREE:
-                        object = this.addObjectUI(res.treeUI, i, j, 1, 0, rule);
+                        obj = this.addObjectUI('#map/map_forest_obstacle_1.png', i, j, 0.85, 0, rule)
+                        this.addChild(obj, 0, res.treeUI + rule)
                         break;
                     case cf.MAP_CELL.HOLE:
-                        object = this.addObjectUI(res.hole, i, j, 1, 0, rule);
+                        obj = this.addObjectUI('#battle/UI/ui_hole.png', i, j, 0.85, 0, rule)
+                        this.addChild(obj, 0, res.hole + rule)
                         break;
                     default:
                         continue;
                 }
-                this.addChild(object, 0, res.buffD + rule);
             }
         }
     },
