@@ -1,7 +1,7 @@
 var Tower = TowerUI.extend({
 
-    ctor: function (mcard, evolution) {
-        this._super(mcard, evolution);
+    ctor: function (card, evolution) {
+        this._super(card, evolution);
     },
 
     render: function (playerState) {
@@ -35,9 +35,9 @@ var Tower = TowerUI.extend({
         if (this.renderRule === 1) {
             if (this.lastStatus === undefined || this.status !== this.lastStatus || (this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir)) {
                 if (this.status === 'readyToFire') {
-                    this.updateDirection(this.newDir);
+                    this.updateDirectionForIdle(this.newDir);
                 } else {
-                    this.playAttack(this.newDir);
+                    this.updateDirectionForAttack(this.newDir);
                     this.status = 'readyToFire';
                 }
 
@@ -48,9 +48,9 @@ var Tower = TowerUI.extend({
             if (this.lastStatus === undefined || this.status !== this.lastStatus || this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir) {
                 let dir = (this.newDir + 8) % 16;
                 if (this.status === 'readyToFire') {
-                    this.updateDirection(dir);
+                    this.updateDirectionForIdle(dir);
                 } else {
-                    this.playAttack(dir);
+                    this.updateDirectionForAttack(dir);
                     this.status = 'readyToFire';
                 }
                 this.lastDir = this.newDir;

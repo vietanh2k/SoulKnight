@@ -28,7 +28,7 @@ var TOilGun = Tower.extend({
         return true;
     },
 
-    AnimationSetUp: function (card) {
+    initAnimations: function (card) {
         this.initTextures = [];
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];

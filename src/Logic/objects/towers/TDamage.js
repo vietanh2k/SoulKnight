@@ -36,7 +36,7 @@ let TDamage = Tower.extend({
         this.fireFx.setAnimation(0, 'attack_1', true);
     },
 
-    AnimationSetUp: function (card) {
+    initAnimations: function (card) {
         this.initTextures = [];
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
@@ -77,7 +77,7 @@ let TDamage = Tower.extend({
         }
     },
 
-    updateDirection: function (dir, force = false) {
+    updateDirectionForIdle: function (dir, force = false) {
         if (this.dir === dir && !force) {
             return;
         }
@@ -100,7 +100,7 @@ let TDamage = Tower.extend({
         }
     },
 
-    playAttack: function (dir) {
+    updateDirectionForAttack: function (dir) {
         this.stopActions();
         let sequence, self = this;
         const actionToRun = this.attackActions;
@@ -110,7 +110,7 @@ let TDamage = Tower.extend({
                     sequence = cc.sequence(
                         actionToRun[0][dir],
                         cc.callFunc(() => {
-                            self.updateDirection(dir, true)
+                            self.updateDirectionForIdle(dir, true)
                         }));
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {

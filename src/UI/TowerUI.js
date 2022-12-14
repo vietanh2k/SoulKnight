@@ -32,11 +32,11 @@ var TowerUI = cc.Sprite.extend({
         SSW: 15,
     },
 
-    ctor: function (mcard, evolution) {
-        this.card = mcard;
+    ctor: function (card, evolution) {
+        this.card = card;
         this.evolution = evolution;
 
-        this.AnimationSetUp(mcard);
+        this.initAnimations(card);
         this._super(this.initTextures[0]);
 
         this.part = [];
@@ -60,7 +60,7 @@ var TowerUI = cc.Sprite.extend({
         this.visible = true;
     },
 
-    AnimationSetUp: function (card) {
+    initAnimations: function (card) {
         this.initTextures = [];
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
@@ -91,7 +91,7 @@ var TowerUI = cc.Sprite.extend({
         this.part[this.evolution + 1].setPosition(this.width / 2, this.height / 2);
         this.addChild(this.part[this.evolution + 1]);
 
-        this.updateDirection(this.dir, true);
+        this.updateDirectionForIdle(this.dir, true);
     },
 
     stopActions: function () {
@@ -104,13 +104,7 @@ var TowerUI = cc.Sprite.extend({
         }
     },
 
-    /**
-     * Update idle animation by direction
-     *
-     * @param {number} dir: direction index
-     * @param {boolean} force: force to change
-     */
-    updateDirection: function (dir, force = false) {
+    updateDirectionForIdle: function (dir, force = false) {
         if (this.dir === dir && !force) {
             return;
         }
@@ -138,7 +132,7 @@ var TowerUI = cc.Sprite.extend({
         }
     },
 
-    playAttack: function (dir) {
+    updateDirectionForAttack: function (dir) {
         this.stopActions();
         let sequence, self = this;
         const actionToRun = this.attackActions;
@@ -148,7 +142,7 @@ var TowerUI = cc.Sprite.extend({
                     sequence = cc.sequence(
                         actionToRun[0][dir],
                         cc.callFunc(() => {
-                            self.updateDirection(dir, true)
+                            self.updateDirectionForIdle(dir, true)
                         }));
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
