@@ -144,7 +144,7 @@ var GameStateManager = cc.Class.extend({
         /*
             Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
         */
-        // cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
+        cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
         if(this.frameCount>= FrameMaxForUpdate){
             return;
         }
@@ -184,9 +184,10 @@ var GameStateManager = cc.Class.extend({
                 ACTION_DESERIALIZER_FROM_ARR[ActionListInstance[indAction][1]](ActionListInstance[indAction][2]).activate(GameStateManagerInstance)
                 indAction++
             }
-            if(indAction >0) {
-                cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
-            }
+
+        }
+        if(indAction >0) {
+            cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
         }
     },
 
