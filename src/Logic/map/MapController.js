@@ -1,70 +1,59 @@
-
 var MapController = cc.Class.extend({
     mapArray: null,
     path: null,
-    intArray:null,
-    createObjectByTouch:null,
+    intArray: null,
+    createObjectByTouch: null,
     deleteObjectByTouch: null,
-    mapChange:null,
+    mapChange: null,
 
-
-    ctor:function (arr, rule) {
-        this.createObjectByTouch = false
-        this.deleteObjectByTouch = false
-        this.mapChange = false
-        this.rule = rule
-        this.mapArray =  Array.from(
-            {length:MAP_WIDTH+1},
-            ()=>Array.from(
-                {length:MAP_HEIGHT+1}
+    ctor: function (arr, rule) {
+        this.createObjectByTouch = false;
+        this.deleteObjectByTouch = false;
+        this.mapChange = false;
+        this.rule = rule;
+        this.mapArray = Array.from(
+            {length: MAP_WIDTH + 1},
+            () => Array.from(
+                {length: MAP_HEIGHT + 1}
             )
         );
-        this.listPath =  Array.from(
-            {length:MAP_WIDTH+1},
-            ()=>Array.from(
-                {length:MAP_HEIGHT+1}
+        this.listPath = Array.from(
+            {length: MAP_WIDTH + 1},
+            () => Array.from(
+                {length: MAP_HEIGHT + 1}
             )
         );
-        this.path = {}
-        this.intArray =  Array.from(
-            {length:MAP_WIDTH+1},
-            ()=>Array.from(
-                {length:MAP_HEIGHT+1},
-                ()=>0
+        this.path = {};
+        this.intArray = Array.from(
+            {length: MAP_WIDTH + 1},
+            () => Array.from(
+                {length: MAP_HEIGHT + 1},
+                () => 0
             )
         );
-        for(var i=1; i<=MAP_WIDTH;i++){
-            this.intArray[i][0] = 5
+        for (let i = 1; i <= MAP_WIDTH; i++) {
+            this.intArray[i][0] = 5;
         }
-        for(var i=1; i<MAP_HEIGHT;i++){
-            this.intArray[MAP_WIDTH][i] = 5
+        for (let i = 1; i < MAP_HEIGHT; i++) {
+            this.intArray[MAP_WIDTH][i] = 5;
         }
-        for(var i=0; i<MAP_WIDTH;i++){
-            for(var j=0; j <MAP_HEIGHT;j++){
-                this.intArray[i][j+1] = arr[i][j]
+        for (let i = 0; i < MAP_WIDTH; i++) {
+            for (let j = 0; j < MAP_HEIGHT; j++) {
+                this.intArray[i][j + 1] = arr[i][j];
             }
         }
-
-        // this.findPath()
-        //this.findPathBFS()
-        //this.initCell();
-
-
-
     },
+
     init:function () {
-
         winSize = cc.director.getWinSize();
-
-
         return true;
     },
-    initCell:function () {
-        for(var i=0; i<MAP_WIDTH; i ++){
-            for(var j=0; j<MAP_HEIGHT+1; j++){
-                var pos = convertIndexToPos(i,j,this.rule)
-                var cell = new Cell(this.intArray[i][j],pos)
-                this.mapArray[i][j] = cell
+
+    initCell: function () {
+        for (let i = 0; i < MAP_WIDTH; i++) {
+            for (let j = 0; j < MAP_HEIGHT + 1; j++) {
+                let pos = convertIndexToPos(i, j, this.rule);
+                this.mapArray[i][j] = new Cell(this.intArray[i][j], pos);
             }
         }
     },

@@ -32,6 +32,13 @@ const convertIndexToMapPos = function (index) {
     );
 };
 
+const convertMapPosToIndex = function (pos) {
+    return new cc.p(
+        Math.floor(pos.x / MAP_CONFIG.CELL_WIDTH),
+        Math.floor(pos.y / MAP_CONFIG.CELL_HEIGHT) + 1
+    );
+};
+
 const isCorInMap = function (cor) {
     return cor.x >= 0 && cor.x <= MAP_WIDTH - 1 && cor.y >= 1 && cor.y <= MAP_HEIGHT;
 };

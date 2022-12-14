@@ -11,6 +11,7 @@ var TWizard = Tower.extend({
         this.instance = "1";
         this.target = [];
         this.position = position;
+        this.mapPos = convertMapPosToIndex(this.position);
         this.health = 100;
         this.isDestroy = false;
         this.renderRule = this._playerState.rule;
@@ -28,39 +29,36 @@ var TWizard = Tower.extend({
         return true;
     },
 
-    AnimationSetUp: function (card) {
+    initAnimations: function (card) {
         this.initTextures = [];
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
 
-        // if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.TWizard_plit)) {
-        //     cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
-        // }
-
         for (let i = 0; i < 3; i++) {
             this.initTextures[i] = 'res/tower/frame/wizard_1_2/tower_wizard_idle_' + i + '_0000.png';
-            this.idlePrefixNames[i] = 'wizard/tower_wizard_idle_' + i + '_';
-            this.attackPrefixNames[i] = 'wizard/tower_wizard_attack_' + i + '_';
+            this.idlePrefixNames[i] = 'tower_wizard_idle_' + i + '_';
+            this.attackPrefixNames[i] = 'tower_wizard_attack_' + i + '_';
         }
         this.initTextures[3] = 'res/tower/frame/wizard_3/tower_wizard_idle_3_0000.png';
-        this.idlePrefixNames[3] = 'wizard/tower_wizard_idle_3_';
-        this.attackPrefixNames[3] = 'wizard/tower_wizard_attack_3_';
+        this.idlePrefixNames[3] = 'tower_wizard_idle_3_';
+        this.attackPrefixNames[3] = 'tower_wizard_attack_3_';
+
         this.idleIPD = cf.TOWER_UI[this.card].idleIPD;
         this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
 
         this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
-        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height);
         this.fireFx.visible = false;
 
         this.bulletFx = sp.SkeletonAnimation('res/tower/fx/tower_wizard_fx.json', 'res/tower/fx/tower_wizard_fx.atlas');
-        GameUI.instance.addChild(this.bulletFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        GameUI.instance.addChild(this.bulletFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height);
         this.bulletFx.visible = false;
     },
 
     getNewBullet: function (object) {
-        let speed = cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
-        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
-        let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
+        let speed = this.getBulletSpeed();
+        let damage = this.getDamage();
+        let radius = this.getBulletRadius();
         let position = new Vec2(this.position.x, this.position.y);
 
         let newBullet = new TWizardBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, this.bulletFx);
