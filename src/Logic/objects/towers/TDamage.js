@@ -11,6 +11,7 @@ let TDamage = Tower.extend({
         this.instance = "5";
         this.target = [];
         this.position = position;
+        this.mapPos = convertMapPosToIndex(this.position);
         this.health = 100;
         this.isDestroy = false;
         this.renderRule = this._playerState.rule;

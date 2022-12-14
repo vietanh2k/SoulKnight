@@ -40,7 +40,6 @@ var GameUI = cc.Layer.extend({
 
     },
     init: function () {
-
         winSize = cc.director.getWinSize();
         this.initDeckCard();
         this.initBackGround();
@@ -55,13 +54,13 @@ var GameUI = cc.Layer.extend({
         return true;
     },
 
-    initDeckCard:function (){
+    initDeckCard: function () {
         let deck = sharePlayerInfo.deck;
-        for(let i=0; i< 4; i++){
+        for (let i = 0; i < 4; i++) {
             this.cardPlayable[i] = deck[i].type;
         }
-        for(let i=0; i< 4; i++){
-            this.cardInQueue[i] = deck[i+4].type;
+        for (let i = 0; i < 4; i++) {
+            this.cardInQueue[i] = deck[i + 4].type;
         }
     },
 
@@ -251,20 +250,20 @@ var GameUI = cc.Layer.extend({
         if (uid == gv.gameClient._userId ) {
             this.createObjectByTouch = false
             var loc = convertLogicalPosToIndex(position, 1)
-            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
+            if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-            // this.listCard[this.cardTouchSlot - 1].actualType = card_type
-            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
             var tower = this._gameStateManager.playerA._map.deployOrUpgradeTower(card_type, position);
             var pos = convertIndexToPos(loc.x, loc.y, 1)
         } else {
             var loc = convertLogicalPosToIndex(position, 2)
-            this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = 999
+            if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
             this._gameStateManager.playerB._map.updatePathForCells()
-            // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
             var tower = this._gameStateManager.playerB._map.deployOrUpgradeTower(card_type, position);
             var pos = convertIndexToPos(loc.x, loc.y, 0)
         }
@@ -840,20 +839,21 @@ var GameUI = cc.Layer.extend({
      * @return {void}
      */
     activeCardTower: function (target, posUI) {
-        let canPutTower= true;
-        if(isPosInMap(posUI, 1)){
-            var intIndex = convertPosToIndex(posUI, 1)
-            if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] <= 0 ||
-                GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] ==999) {
+        let canPutTower = true;
+        if (isPosInMap(posUI, 1)) {
+            let intIndex = convertPosToIndex(posUI, 1);
+            if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] <= cf.MAP_CELL.BUFF_OR_NORMAL_CHECK_NOT_HIGHER || GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] > cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 let tmp = GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y];
-                GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = 999;
-                if(!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()){
-                    var posLogic = this.screenLoc2Position(intIndex);
-                    if(GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
-                        var loc = convertLogicalPosToIndex(posLogic, 1)
-                        this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1))
+                if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                    GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+                }
+                if (!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
+                    let posLogic = this.screenLoc2Position(intIndex);
+                    if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
+                        let loc = convertLogicalPosToIndex(posLogic, 1);
+                        this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                            gv.gameClient._userId),TICK_FOR_DELAY_TOWER]]);
+                            gv.gameClient._userId), TICK_FOR_DELAY_TOWER]]);
                         this.updateCardSlot(target.numSlot, target.energy);
                     }
                 } else {
@@ -1064,19 +1064,22 @@ var GameUI = cc.Layer.extend({
             for (let j = 0; j < MAP_HEIGHT + 1; j++) {
                 let object;
                 switch (mapArray[i][j]) {
-                    case -1:
+                    case cf.MAP_CELL.BUFF_DAMAGE:
                         object = this.addObjectUI(res.buffD, i, j, 1, 0, rule);
+                        cc.log('buff damage location of rule ' + rule + ': ' + i + ', ' + j);
                         break;
-                    case -2:
+                    case cf.MAP_CELL.BUFF_ATTACK_SPEED:
                         object = this.addObjectUI(res.buffS, i, j, 1, 0, rule);
+                        cc.log('buff attack speed location of rule ' + rule + ': ' + i + ', ' + j);
                         break;
-                    case -3:
+                    case cf.MAP_CELL.BUFF_RANGE:
                         object = this.addObjectUI(res.buffR, i, j, 1, 0, rule);
+                        cc.log('buff range location of rule ' + rule + ': ' + i + ', ' + j);
                         break;
-                    case 1:
+                    case cf.MAP_CELL.TREE:
                         object = this.addObjectUI(res.treeUI, i, j, 1, 0, rule);
                         break;
-                    case 2:
+                    case cf.MAP_CELL.HOLE:
                         object = this.addObjectUI(res.hole, i, j, 1, 0, rule);
                         break;
                     default:

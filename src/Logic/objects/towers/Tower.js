@@ -59,8 +59,39 @@ var Tower = TowerUI.extend({
         }
     },
 
+    getRange: function () {
+        let range = cf.TOWER.tower[this.instance].stat[this.level].range;
+        if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+            range *= cf.MAP_BUFF.RANGE;
+        }
+        return range;
+    },
+
+    /**
+     * @returns {number} Khoảng thời gian (giây) giữa 2 lần bắn liên tiếp.
+     */
     getAttackSpeed: function () {
-        return cf.TOWER.tower[this.instance].stat[this.level].attackSpeed / 1000;
+        let attackSpeed = cf.TOWER.tower[this.instance].stat[this.level].attackSpeed / 1000;
+        if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_ATTACK_SPEED + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_ATTACK_SPEED + cf.MAP_CELL.TOWER_ADDITIONAL) {
+            attackSpeed /= cf.MAP_BUFF.ATTACK_SPEED;
+        }
+        return attackSpeed;
+    },
+
+    getDamage: function () {
+        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
+        if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+            damage *= cf.MAP_BUFF.DAMAGE;
+        }
+        return damage;
+    },
+
+    getBulletSpeed: function () {
+        return cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
+    },
+
+    getBulletRadius: function () {
+        return cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
     },
 
     getTargetType: function () {
@@ -165,9 +196,9 @@ var Tower = TowerUI.extend({
     },
 
     getNewBullet: function (object) {
-        let speed = cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
-        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
-        let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
+        let speed = this.getBulletSpeed();
+        let damage = this.getDamage();
+        let radius = this.getBulletRadius();
         let position = new Vec2(this.position.x, this.position.y);
         return new Bullet(object, speed, damage, radius, position, this);
     },
@@ -226,10 +257,6 @@ var Tower = TowerUI.extend({
 
     checkIsTarget: function (another) {
         return (another.concept === "monster" || another.concept === "tree");
-    },
-
-    getRange: function () {
-        return cf.TOWER.tower[this.instance].stat[this.level].range;
     },
 
     destroy: function () {

@@ -11,6 +11,7 @@ let TIceGun = Tower.extend({
         this.instance = "4";
         this.target = [];
         this.position = position;
+        this.mapPos = convertMapPosToIndex(this.position);
         this.health = 100;
         this.isDestroy = false;
         this.renderRule = this._playerState.rule;
@@ -50,9 +51,9 @@ let TIceGun = Tower.extend({
     },
 
     getNewBullet: function (object) {
-        let speed = cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
-        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
-        let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
+        let speed = this.getBulletSpeed();
+        let damage = this.getDamage();
+        let radius = this.getBulletRadius();
         let position = new Vec2(this.position.x, this.position.y);
 
         let newBullet = new TIceGunBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level);
