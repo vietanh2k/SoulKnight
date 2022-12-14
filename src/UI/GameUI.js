@@ -20,8 +20,6 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 0, 2]
-        this.cardPlayable = [18, 19, 20, 21]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -55,6 +53,8 @@ var GameUI = cc.Layer.extend({
     },
 
     initDeckCard: function () {
+        this.cardPlayable = [];
+        this.cardInQueue = [];
         let deck = sharePlayerInfo.deck;
         for (let i = 0; i < 4; i++) {
             this.cardPlayable[i] = deck[i].type;
@@ -299,7 +299,7 @@ var GameUI = cc.Layer.extend({
     screenLoc2Position: function (loc) {
         return new Vec2((loc.x) * MAP_CONFIG.CELL_WIDTH + MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y - 1) * MAP_CONFIG.CELL_HEIGHT + MAP_CONFIG.CELL_HEIGHT / 2.0)
     },
-    isNodehasMonsterAbove: function (loc) {
+    nodeHasMonsterAbove: function (loc) {
         var monsterList = GameStateManagerInstance.playerA.getMap().monsters;
         var map = GameStateManagerInstance.playerA.getMap()
         let ret = false
@@ -856,7 +856,7 @@ var GameUI = cc.Layer.extend({
                 if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                     GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
                 }
-                if (!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
+                if (!this.nodeHasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
                     let posLogic = this.screenLoc2Position(intIndex);
                     if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
                         let loc = convertLogicalPosToIndex(posLogic, 1);
