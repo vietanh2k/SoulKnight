@@ -798,7 +798,9 @@ var GameUI = cc.Layer.extend({
             this.addChild(this.previewObject);
         }
         this.previewObject.setPosition(getMiddleOfCell(posUI, rule));
-        this.updateRangeOfPreviewObject(convertPosToIndex(posUI, rule), rule);
+        if (isPosInMap(posUI, rule)) {
+            this.updateRangeOfPreviewObject(convertPosToIndex(posUI, rule), rule);
+        }
         this.previewObject.visible = isPosInMap(this.previewObject, rule);
     },
 
