@@ -1,4 +1,4 @@
-MAX_WAVE = 2;
+MAX_WAVE = 25;
 MAX_ENERGY = 30;
 MAX_VALUE = 99999
 let GameStateManagerInstance = null

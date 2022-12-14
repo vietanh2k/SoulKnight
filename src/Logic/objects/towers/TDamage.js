@@ -31,23 +31,25 @@ let TDamage = Tower.extend({
         return true;
     },
 
-    // logicUpdate: function (playerState, dt) {
-    //     if (this.getPending() > 0) {
-    //         this.updatePending(dt);
-    //     } else {
-    //         this.findTargets(playerState);
-    //         if (this.target.length > 0) {
-    //             // this.fire(dt);
-    //         }
-    //     }
-    // },
+    logicUpdate: function (playerState, dt) {
+        if (this.getPending() > 0) {
+            this.updatePending(dt);
+        } else {
+            this.visible = true;
+            this.findTargets(playerState); // fixme đổi tên hàm
+            if (this.target.length > 0) {
+                this.fire(dt);
+            }
+        }
+    },
 
-    // fire: function (dt) {
-    //     for (let i = 0; i < this.target.length; i++) {
-    //         this.target[i].slowDuration = dt;
-    //         this.target[i].speedReduced = 0.8 * this.target[i].speed;
-    //     }
-    // },
+    fire: function (dt) {
+        Utils.addToastToRunningScene('found ' + this.target.length + ' target in range ' + this.getRange())
+        for (let i = 0; i < this.target.length; i++) {
+            this.target[i].slowDuration = dt;
+            this.target[i].speedReduced = 0.8 * this.target[i].speed;
+        }
+    },
 
     runFireAnimationForever: function () {
         this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_strength_fx.json', 'res/tower/fx/tower_strength_fx.atlas');
