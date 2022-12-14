@@ -203,7 +203,6 @@ var Tower = TowerUI.extend({
         return new Bullet(object, speed, damage, radius, position, this);
     },
 
-
     findTargets: function (playerState) {
         this.target = [];
         const self = this;

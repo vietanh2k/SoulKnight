@@ -31,6 +31,19 @@ let TDamage = Tower.extend({
         return true;
     },
 
+    // fire: function () {
+    //     if (this.level < 3) {
+    //         Utils.addToastToRunningScene('chưa lên level 3!');
+    //         return;
+    //     }
+    //     // fixme
+    //     Utils.addToastToRunningScene('tìm được ' + this.target.length + ' mục tiêu!');
+    //     for (let i = 0; i < this.target.length; i++) {
+    //         this.target[i].speedReduced = 0.8 * this.target[i].speed;
+    //         this.slowDuration = this.getAttackSpeed();
+    //     }
+    // },
+
     runFireAnimationForever: function () {
         this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_strength_fx.json', 'res/tower/fx/tower_strength_fx.atlas');
         GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
@@ -116,14 +129,6 @@ let TDamage = Tower.extend({
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
                         this.part[i].runAction(actionToRun[i][dir]);
-                    }
-                }
-                if (this.fireFx != null) {
-                    this.fireFx.visible = true;
-                    let animationName = 'attack_' + (Math.min(dir, 16 - dir) + 1);
-                    this.fireFx.setAnimation(0, animationName, false);
-                    if ([this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1) {
-                        this.fireFx.scaleX = -1;
                     }
                 }
             }
