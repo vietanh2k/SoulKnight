@@ -10,8 +10,8 @@ var PlayerState = cc.Class.extend({
 
     ctor:function (rule) {
         this.rule = rule
-        this.health = 1
-        this.energy = 20
+        this.health = 200
+        this.energy = 30
         this.intArray =  Array.from(
             {length:MAP_WIDTH},
             ()=>Array.from(
