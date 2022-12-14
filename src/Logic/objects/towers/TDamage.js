@@ -31,16 +31,21 @@ let TDamage = Tower.extend({
         return true;
     },
 
-    // fire: function () {
-    //     if (this.level < 3) {
-    //         Utils.addToastToRunningScene('chưa lên level 3!');
-    //         return;
+    // logicUpdate: function (playerState, dt) {
+    //     if (this.getPending() > 0) {
+    //         this.updatePending(dt);
+    //     } else {
+    //         this.findTargets(playerState);
+    //         if (this.target.length > 0) {
+    //             // this.fire(dt);
+    //         }
     //     }
-    //     // fixme
-    //     Utils.addToastToRunningScene('tìm được ' + this.target.length + ' mục tiêu!');
+    // },
+
+    // fire: function (dt) {
     //     for (let i = 0; i < this.target.length; i++) {
+    //         this.target[i].slowDuration = dt;
     //         this.target[i].speedReduced = 0.8 * this.target[i].speed;
-    //         this.slowDuration = this.getAttackSpeed();
     //     }
     // },
 
