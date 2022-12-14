@@ -245,27 +245,24 @@ var GameUI = cc.Layer.extend({
         }
     },
 
-    activateCardTower: function (card_type, position, uid) {
-        cc.log('tower='+position.x+' '+position.y)
-        if (uid == gv.gameClient._userId ) {
+    activateCardTower: function (cardType, position, uid) {
+        if (uid === gv.gameClient._userId) {
             this.createObjectByTouch = false
-            var loc = convertLogicalPosToIndex(position, 1)
+            let loc = convertLogicalPosToIndex(position, 1);
             if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
             }
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-            var tower = this._gameStateManager.playerA._map.deployOrUpgradeTower(card_type, position);
-            var pos = convertIndexToPos(loc.x, loc.y, 1)
+            this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
-            var loc = convertLogicalPosToIndex(position, 2)
+            let loc = convertLogicalPosToIndex(position, 2);
             if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
             }
             this._gameStateManager.playerB._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-            var tower = this._gameStateManager.playerB._map.deployOrUpgradeTower(card_type, position);
-            var pos = convertIndexToPos(loc.x, loc.y, 0)
+            this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
         }
     },
 
@@ -792,6 +789,7 @@ var GameUI = cc.Layer.extend({
             this.addChild(this.previewObject);
         }
         this.previewObject.setPosition(getMiddleOfCell(posUI, rule));
+        this.updateRangeOfPreviewObject(convertPosToIndex(posUI, rule), rule);
         this.previewObject.visible = isPosInMap(this.previewObject, rule);
     },
 
@@ -943,16 +941,29 @@ var GameUI = cc.Layer.extend({
         let towerPreview = new TowerUI(target, 0);
         let card = new Card(target.type, 1, 0);
         towerPreview.setScale(cf.TOWER_SCALE[card.id - 100]);
-        let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
-        let rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
-        rangePreview.attr({
+        towerPreview.range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
+        towerPreview.rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
+        towerPreview.rangePreview.attr({
             x: towerPreview.width / 2,
             y: towerPreview.height / 2,
-            scale: range * CELLWIDTH * 2 / rangePreview.height / towerPreview.scale,
+            scale: towerPreview.range * CELLWIDTH * 2 / towerPreview.rangePreview.height / towerPreview.scale,
         });
-        towerPreview.addChild(rangePreview);
+        towerPreview.addChild(towerPreview.rangePreview);
 
         return towerPreview;
+    },
+
+    updateRangeOfPreviewObject: function (index, rule) {
+        if (this.previewObject === undefined || rule === 2) {
+            return;
+        }
+        if (rule === 1) {
+            if (this._gameStateManager.playerA._map._mapController.intArray[index.x][index.y] === cf.MAP_CELL.BUFF_RANGE || this._gameStateManager.playerA._map._mapController.intArray[index.x][index.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+                this.previewObject.rangePreview.setScale(this.previewObject.range * CELLWIDTH * 2 / this.previewObject.rangePreview.height / this.previewObject.scale * cf.MAP_BUFF.RANGE);
+            } else {
+                this.previewObject.rangePreview.setScale(this.previewObject.range * CELLWIDTH * 2 / this.previewObject.rangePreview.height / this.previewObject.scale);
+            }
+        }
     },
 
     generateTowerUI: function (type, evolution, corX, corY) {
