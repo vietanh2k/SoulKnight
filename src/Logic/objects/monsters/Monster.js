@@ -59,6 +59,7 @@ const Monster = AnimatedSprite.extend({
         this.MaxHealth = config.hp
         this.energyFromDestroy = config.gainEnergy
 
+        this.category = config.category
         if (config.category === 'boss') {
             this.energyWhileImpactMainTower = 5
         } else {
@@ -131,7 +132,8 @@ const Monster = AnimatedSprite.extend({
         return ret
     },
 
-    calculateImpactCenter: function () {
+    calculateImpactCenter: function (playerState) {
+        const map = playerState.getMap()
         const self = this
         let sum = new Vec2(0,0)
         //cc.log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
@@ -331,7 +333,7 @@ const Monster = AnimatedSprite.extend({
 
         this.targetPosition = null
         if (this.impactMonsters.size() !== 0) {
-            this.impactCenter = this.calculateImpactCenter()
+            this.impactCenter = this.calculateImpactCenter(playerState)
             this.impactDirection = this.calculateImpactDirection()
 
             if (!this.impactCenter.isZero() && !this.impactDirection.isZero()) {
@@ -346,7 +348,7 @@ const Monster = AnimatedSprite.extend({
         if (this.targetPosition) {
             const cell = map.getCellAtPosition(this.targetPosition)
             if (!cell || cell.nextCell == null) {
-                distance = 0.1
+                distance = 0.5
                 this.targetPosition = null
                 //cc.log('=====================================')
             }
@@ -636,8 +638,8 @@ const Monster = AnimatedSprite.extend({
                 this.impactedMonster = null
             }
         }*/
-        if (this.speed <= anotherMonster.speed) return
-        if (this.impactMonsters.size() >= 2) return
+        /*if (this.speed <= anotherMonster.speed) return
+        //if (this.impactMonsters.size() >= 2) return
         //if (this.position.sub(anotherMonster.position).length() <= this.hitRadius + anotherMonster.hitRadius) {
         //    let dir = this.position.sub(anotherMonster.position).normalize()
         //    const pos = anotherMonster.position.add(dir.mul(this.hitRadius + anotherMonster.hitRadius))
@@ -646,6 +648,7 @@ const Monster = AnimatedSprite.extend({
 
         //const tangent = anotherMonster.getForwardTangent(this.position)
         //this.impactVec = this.impactVec.add(tangent).normalize();
+
         const dir = anotherMonster.position.sub(this.position).normalize()
         if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
             return
@@ -654,7 +657,7 @@ const Monster = AnimatedSprite.extend({
         if (this.impactMonsters.indexOf(anotherMonster) === -1) {
             this.impactMonsters.add(anotherMonster)
             anotherMonster.retain()
-        }
+        }*/
     },
 
 });
