@@ -62,8 +62,7 @@ const IceBall = Spell.extend({
             if(mapCast == 1) {
                 objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius)
             }else {
-                return;
-                objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius);
+                objects = map.queryTowerCircleWithoutOverlap(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius);
             }
 
             // const monsters = map.queryEnemiesCircle(this.castPosition,MAP_CONFIG.CELL_WIDTH*this.radius)

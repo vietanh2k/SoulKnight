@@ -1064,6 +1064,7 @@ var GameUI = cc.Layer.extend({
     },*/
 
     activateNextWave: function (monstersId) {
+        cc.log("next wave tai frame ="+ GameStateManagerInstance.frameCount)
         this._gameStateManager.updateStateNewWave()
         this.getNewWave()
         this._gameStateManager.activateNextWave(this, monstersId)

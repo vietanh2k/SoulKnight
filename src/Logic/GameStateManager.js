@@ -1,4 +1,4 @@
-MAX_WAVE = 1;
+MAX_WAVE = 2;
 MAX_ENERGY = 30;
 MAX_VALUE = 99999
 let GameStateManagerInstance = null
@@ -105,38 +105,50 @@ var GameStateManager = cc.Class.extend({
             }else{
                 this.winner = 0
             }
-            return;
+            return true;
         }
 
         if (!(this.playerA.health <= 0 || this.playerB.health <= 0)) {
-            return
+            return false;
         }
 
         if ((this.playerA.health <= 0 && this.playerB.health <= 0) || this.playerA.health === this.playerB.health) {
             this.winner = 0
-            return
+            return true;
         }
 
         if(this.playerA.health <= 0){
             this.winner = 2
-            return
+            return true;
         }
 
         if(this.playerB.health <= 0){
             this.winner = 1
+            return true;
         }
 
-
+        return false;
     },
 
     frameUpdate: function () {
         /*
-        Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
+        check da end game chua
          */
-        cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
+        this.isClearWave()
+        let isEnd = this.checkWinner();
+        if(isEnd){
+            cc.log('KET THUC TAI FRAME = '+this.frameCount)
+            return;
+        }
+
+        /*
+            Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
+        */
+        // cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
         if(this.frameCount>= FrameMaxForUpdate){
             return;
         }
+
 
 
 
@@ -153,27 +165,20 @@ var GameStateManager = cc.Class.extend({
         this.frameUpdateNormal()
 
 
-        // if(this.dem < ActionListInstance.length) {
-        //     if (this.frameCount >= ActionListInstance[this.dem][0]){
-        //         cc.log('=========TRIGER++++++')
-        //         ACTION_DESERIALIZER_FROM_ARR[ActionListInstance[this.dem][1]](ActionListInstance[this.dem][2]).activate(GameStateManagerInstance)
-        //         this.dem++
-        //     }else {
-        //         cc.log(this.frameCount + '  ' + ActionListInstance[this.dem][0]+'  '+this.dem)
-        //     }
-        // }
     },
     frameUpdateNormal: function () {
+
         this.playerA.update(this.dt)
         this.playerB.update(this.dt)
         this._timer.updateRealTime(this.dt)
-        this.isClearWave()
-        this.checkWinner()
+
         this.frameCount++
+
+
         if(indAction < ActionListInstance.length) {
-            // while (this.frameCount ){
-            //
-            // }
+            /*
+            khi towi
+             */
             while (indAction < ActionListInstance.length && this.frameCount >= ActionListInstance[indAction][0] ){
                 cc.log('=========TRIGER++++++')
                 ACTION_DESERIALIZER_FROM_ARR[ActionListInstance[indAction][1]](ActionListInstance[indAction][2]).activate(GameStateManagerInstance)

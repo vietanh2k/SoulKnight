@@ -9,7 +9,7 @@ const Monster = AnimatedSprite.extend({
         this.setScale(1.2)
         this.active = true
         this.visible = true
-
+        this.tes = 0
         this.mapId = -1
         this.isChosen = false
         this.timeHealBuff = 0
@@ -112,7 +112,7 @@ const Monster = AnimatedSprite.extend({
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
             this._playerState.updateHealth(-this.energyWhileImpactMainTower)
-            cc.log('destroy')
+            cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
             this.destroy()
 
 
@@ -174,6 +174,13 @@ const Monster = AnimatedSprite.extend({
     },
 
     logicUpdate: function (playerState, dt){
+        this.tes++;
+        if(this.tes == 200){
+            cc.log('possss200= '+this.position.x+' '+this.position.y)
+        }
+        if(this.tes == 300){
+            cc.log('possss300= '+this.position.x+' '+this.position.y)
+        }
         if(this.health<=0){
             this.destroy();
             return;
