@@ -104,10 +104,18 @@ var GameUI = cc.Layer.extend({
     },
 
     showTowerOptionsUI: function (tower) {
-        let zOrder = GAME_CONFIG.RENDER_START_Z_ORDER_VALUE+ winSize.height+1;
+        let zOrder = GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height + 1;
         this.isShowingTowerOptionsUI = true;
 
-        this.circleFrame = cc.Sprite(asset.circleFrame_png);
+        this.towerShowRangeUI = new cc.Sprite(asset.towerRange_png);
+        this.towerShowRangeUI.attr({
+            x: tower.x,
+            y: tower.y,
+            scale: tower.getRange() * CELLWIDTH * 2 / this.towerShowRangeUI.height,
+        });
+        this.addChild(this.towerShowRangeUI, zOrder);
+
+        this.circleFrame = new cc.Sprite(asset.circleFrame_png);
         this.circleFrame.setPosition(tower.x, tower.y);
         this.addChild(this.circleFrame, zOrder);
 
@@ -120,7 +128,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y - frameRadius * Math.sin(Math.PI * 0.1),
         });
         this.targetFullHPBtn.addClickEventListener(() => {
-            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FULL_HP, tower.position.x, tower.position.y, gv.gameClient._userId),0]]);
+            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FULL_HP, tower.position.x, tower.position.y, gv.gameClient._userId), 0]]);
         });
         this.addChild(this.targetFullHPBtn, zOrder);
 
@@ -139,7 +147,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
         });
         this.targetLowHPBtn.addClickEventListener(() => {
-            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.LOW_HP, tower.position.x, tower.position.y, gv.gameClient._userId),0]]);
+            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.LOW_HP, tower.position.x, tower.position.y, gv.gameClient._userId), 0]]);
         });
         this.addChild(this.targetLowHPBtn, zOrder);
 
@@ -158,9 +166,9 @@ var GameUI = cc.Layer.extend({
             y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
         });
         this.targetFurthestBtn.addClickEventListener(() => {
-            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FURTHEST, tower.position.x, tower.position.y, gv.gameClient._userId),0]]);
+            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FURTHEST, tower.position.x, tower.position.y, gv.gameClient._userId), 0]]);
         });
-        this.addChild(this.targetFurthestBtn,zOrder);
+        this.addChild(this.targetFurthestBtn, zOrder);
 
         let targetFurthestIcon = new cc.Sprite(asset.targetFurthest_png);
         targetFurthestIcon.attr({
@@ -213,6 +221,7 @@ var GameUI = cc.Layer.extend({
         if (this.isShowingTowerOptionsUI) {
             this.isShowingTowerOptionsUI = false;
 
+            this.towerShowRangeUI.removeFromParent(true);
             this.circleFrame.removeFromParent(true);
             this.targetFullHPBtn.removeFromParent(true);
             this.targetLowHPBtn.removeFromParent(true);
@@ -942,7 +951,7 @@ var GameUI = cc.Layer.extend({
         let card = new Card(target.type, 1, 0);
         towerPreview.setScale(cf.TOWER_SCALE[card.id - 100]);
         towerPreview.range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
-        towerPreview.rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
+        towerPreview.rangePreview = cc.Sprite(asset.towerRange_png);
         towerPreview.rangePreview.attr({
             x: towerPreview.width / 2,
             y: towerPreview.height / 2,
