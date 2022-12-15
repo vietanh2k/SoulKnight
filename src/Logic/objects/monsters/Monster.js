@@ -127,8 +127,8 @@ const Monster = AnimatedSprite.extend({
     isAtLocation: function (map, loc) {
 
         const currentCell = map.getCellAtPosition(this.position);
-        cc.log('222222222222:'+currentCell.getLocation().x+''+currentCell.getLocation().y)
-        cc.log('333333333333:'+loc.x+''+loc.y)
+        // cc.log('222222222222:'+currentCell.getLocation().x+''+currentCell.getLocation().y)
+        // cc.log('333333333333:'+loc.x+''+loc.y)
         if (currentCell != null) {
             var curLoc = currentCell.getLocation();
             if(curLoc.x == loc.x && curLoc.y == loc.y-1){
@@ -136,7 +136,7 @@ const Monster = AnimatedSprite.extend({
                 return true;
             }
         }
-        cc.log('falseeeeeeeeee')
+        // cc.log('falseeeeeeeeee')
         return false;
     },
 
@@ -174,13 +174,13 @@ const Monster = AnimatedSprite.extend({
     },
 
     logicUpdate: function (playerState, dt){
-        this.tes++;
-        if(this.tes == 200){
-            cc.log('possss200= '+this.position.x+' '+this.position.y)
-        }
-        if(this.tes == 300){
-            cc.log('possss300= '+this.position.x+' '+this.position.y)
-        }
+        // this.tes++;
+        // if(this.tes == 200){
+        //     cc.log('possss200= '+this.position.x+' '+this.position.y)
+        // }
+        // if(this.tes == 300){
+        //     cc.log('possss300= '+this.position.x+' '+this.position.y)
+        // }
         if(this.health<=0){
             this.destroy();
             return;

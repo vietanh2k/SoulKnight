@@ -144,7 +144,7 @@ var GameStateManager = cc.Class.extend({
         /*
             Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
         */
-        cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
+        // cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
         if(this.frameCount>= FrameMaxForUpdate){
             return;
         }
@@ -155,8 +155,8 @@ var GameStateManager = cc.Class.extend({
         /*
          Nếu frame hiện tại quá chậm so với SV thi tua nhanh
          */
-        if(this.frameCount < FrameMaxForUpdate-20){
-            for(var i= this.frameCount; i<FrameMaxForUpdate-5; i++){
+        if(this.frameCount < FrameMaxForUpdate-25){
+            for(var i= this.frameCount; i<FrameMaxForUpdate-15; i++){
                 this.frameUpdateNormal()
                 cc.log('tuaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
             }
@@ -186,9 +186,9 @@ var GameStateManager = cc.Class.extend({
             }
 
         }
-        if(indAction >0) {
-            cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
-        }
+        // if(indAction >0) {
+        //     cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
+        // }
     },
 
     update:function (ccDt){
