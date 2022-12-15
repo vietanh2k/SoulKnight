@@ -40,8 +40,12 @@ const Heal = Spell.extend({
         const map = playerState.getMap();
         const monsters = map.queryEnemiesCircle(this.castPosition,this.radius* MAP_CONFIG.CELL_WIDTH)
         for (let i = 0; i < monsters.length; i++) {
-            monsters[i].getHealBuffState(4, 2);
-            // monsters[i].numHealBuff = 2*dt
+            if (monsters[i].___HealEffect) {
+                monsters[i].___HealEffect.reset()
+            } else {
+                monsters[i].___HealEffect = new HealMaintain(2, 2, monsters[i]);
+                playerState.getMap().addEffect(monsters[i].___HealEffect)
+            }
         }
     }
 

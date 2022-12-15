@@ -9,6 +9,8 @@ const SpeedUp = Spell.extend({
         // this.render(playerState);
         this.timeCast = 1.5
         this.radius = 0.8
+        this.tes = 0
+        this.tes2 = 0
         this.setScale(2*CELLWIDTH/HEAL_WIDTH*this.radius)
         return true;
     },
@@ -18,10 +20,15 @@ const SpeedUp = Spell.extend({
     },
 
     logicUpdate: function (playerState, dt){
+
         if(this.timeCast > 0){
             this.setBuffOnMonster(playerState,dt)
             this.timeCast -= dt
+            this.tes2 ++
         }else {
+            cc.log('tong = '+this.tes)
+            cc.log('tong2 = '+this.tes2)
+            cc.log(dt)
             this.destroy()
         }
         //this.debug(map)
@@ -30,9 +37,18 @@ const SpeedUp = Spell.extend({
     setBuffOnMonster: function (playerState,dt) {
         const map = playerState.getMap();
         const monsters = map.queryEnemiesCircle(this.castPosition,this.radius* MAP_CONFIG.CELL_WIDTH)
+        // cc.log('dem = '+this.tes2)
+        this.tes+= monsters.length
+        // cc.log('tong = '+this.tes)
+        // cc.log('castPosition = '+this.castPosition.x+' '+this.castPosition.y +' '+ this.radius* MAP_CONFIG.CELL_WIDTH)
         for (let i = 0; i < monsters.length; i++) {
-            monsters[i].getSpeedUpState(4, 4);
-            // monsters[i].numHealBuff = 2*dt
+            // cc.log(i+'  '+monsters[i].position.x+ '  '+monsters[i].position.y)
+            if (monsters[i].___SpeedEffect) {
+                monsters[i].___SpeedEffect.reset()
+            } else {
+                monsters[i].___SpeedEffect = new SpeedEffect(3, 5, monsters[i]);
+                playerState.getMap().addEffect(monsters[i].___SpeedEffect)
+            }
         }
     }
 

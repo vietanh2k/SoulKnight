@@ -43,6 +43,7 @@ const IceBall = Spell.extend({
         let objects;
         if(mapCast == 1) {
             objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius)
+            cc.log('dem = '+objects.length)
             for (let i = 0; i < objects.length; i++) {
                 objects[i].___freezeEffect = new FreezeEffect(ICEBALL_FREEZE_MONSTER_TIME, objects[i])
                 playerState.getMap().addEffect(objects[i].___freezeEffect)
