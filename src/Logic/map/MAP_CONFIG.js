@@ -1,6 +1,6 @@
 const MAP_CONFIG = {
-    CELL_WIDTH: 50,
-    CELL_HEIGHT: 50,
+    CELL_WIDTH: 60,
+    CELL_HEIGHT: 60,
 
     MAP_WIDTH:  7,
     MAP_HEIGHT: 5

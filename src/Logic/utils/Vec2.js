@@ -79,6 +79,10 @@ const Vec2 = function (x, y) {
         this.y = _y
     }
 
+    this.isZero = function () {
+        return this.x === 0 && this.y === 0
+    }
+
     this.toString = function() {
         return 'Vec2(' + this.x + ', ' + this.y + ')'
     }

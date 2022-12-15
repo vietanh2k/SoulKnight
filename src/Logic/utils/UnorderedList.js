@@ -56,4 +56,14 @@ const UnorderedList = function (reservedSize = 1024) {
     this.set = function (i, v) {
         this.objs[i] = v
     }
+
+    this.indexOf = function (o) {
+        for (let i = 0; i < this.objs.length; i++) {
+            const obj = this.objs[i]
+            if (obj === o) {
+                return i
+            }
+        }
+        return -1
+    }
 }
