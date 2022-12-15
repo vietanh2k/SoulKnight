@@ -277,6 +277,8 @@ var GameUI = cc.Layer.extend({
     },
 
     activateCardPotion: function (card_type, position, uid, mapCast) {
+        cc.log("deploy spell tai frame ="+ GameStateManagerInstance.frameCount)
+        cc.log("vi tri = "+ position.x+'  '+position.y)
         if (uid == gv.gameClient._userId ) {
             if(mapCast == 1) {
                 this._gameStateManager.playerA._map.deploySpell(card_type, position, uid, mapCast)

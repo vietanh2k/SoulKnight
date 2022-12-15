@@ -442,6 +442,7 @@ const Monster = AnimatedSprite.extend({
     destroy: function () {
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
+        cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
             var ex = new Explosion(cc.p(this.x, this.y))

@@ -17,15 +17,7 @@ const Spell = cc.Node.extend({
 
         return true;
     },
-    // initOpponentUI: function (position) {
-    //     if (this.renderRule === 1) {
-    //         this.speed2 = 10 * MAP_CONFIG.CELL_WIDTH
-    //         this.position= new Vec2(position.x, position.y-MAP_CONFIG.CELL_WIDTH*4)
-    //     }else{
-    //         this.position= new Vec2(position.x, position.y+MAP_CONFIG.CELL_WIDTH*4)
-    //         this.speed2 = -10 * MAP_CONFIG.CELL_WIDTH
-    //     }
-    // },
+
 
 
     destroy: function () {
