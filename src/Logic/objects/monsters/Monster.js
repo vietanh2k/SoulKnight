@@ -142,7 +142,7 @@ const Monster = AnimatedSprite.extend({
             const vec = monster.position.sub(self.position)
             const dir = vec.normal()
 
-            if (dir.dot(self.movingDirection) < -FLOAT_THRESHOLD || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
+            if (monster.isDestroy || dir.dot(monster.movingDirection) < -0.7 || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
                 list.remove(id)
                 monster.release()
                 //cc.log("Remove --> " + id)
@@ -638,7 +638,7 @@ const Monster = AnimatedSprite.extend({
                 this.impactedMonster = null
             }
         }*/
-        /*if (this.speed <= anotherMonster.speed) return
+        if (this.speed <= anotherMonster.speed) return
         //if (this.impactMonsters.size() >= 2) return
         //if (this.position.sub(anotherMonster.position).length() <= this.hitRadius + anotherMonster.hitRadius) {
         //    let dir = this.position.sub(anotherMonster.position).normalize()
@@ -649,15 +649,24 @@ const Monster = AnimatedSprite.extend({
         //const tangent = anotherMonster.getForwardTangent(this.position)
         //this.impactVec = this.impactVec.add(tangent).normalize();
 
+        let dir1 = this.position.sub(anotherMonster.position).normalize()
+        const pos = anotherMonster.position.add(dir1.mul(this.hitRadius + anotherMonster.hitRadius))
+        this.position.set(pos.x, pos.y)
+
         const dir = anotherMonster.position.sub(this.position).normalize()
-        if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
+        if (dir.dot(anotherMonster.movingDirection) < -0.5) {
             return
         }
+
+        /*const dir = anotherMonster.position.sub(this.position).normalize()
+        if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
+            return
+        }*/
 
         if (this.impactMonsters.indexOf(anotherMonster) === -1) {
             this.impactMonsters.add(anotherMonster)
             anotherMonster.retain()
-        }*/
+        }
     },
 
 });
