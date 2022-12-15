@@ -179,7 +179,7 @@ const Monster = AnimatedSprite.extend({
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
             this._playerState.updateHealth(-this.energyWhileImpactMainTower)
-            cc.log('destroy')
+            cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
             this.destroy()
 
 
@@ -194,8 +194,8 @@ const Monster = AnimatedSprite.extend({
     isAtLocation: function (map, loc) {
 
         const currentCell = map.getCellAtPosition(this.position);
-        cc.log('222222222222:'+currentCell.getLocation().x+''+currentCell.getLocation().y)
-        cc.log('333333333333:'+loc.x+''+loc.y)
+        // cc.log('222222222222:'+currentCell.getLocation().x+''+currentCell.getLocation().y)
+        // cc.log('333333333333:'+loc.x+''+loc.y)
         if (currentCell != null) {
             var curLoc = currentCell.getLocation();
             if(curLoc.x == loc.x && curLoc.y == loc.y-1){
@@ -203,7 +203,7 @@ const Monster = AnimatedSprite.extend({
                 return true;
             }
         }
-        cc.log('falseeeeeeeeee')
+        // cc.log('falseeeeeeeeee')
         return false;
     },
 
@@ -523,11 +523,10 @@ const Monster = AnimatedSprite.extend({
             this.setPosition(width - x, height + y)
         }
 
-        if (this.healthUI.opacity !== 0) {
             this.healthUI.setPosition(this.width / 2.0, this.height * 1.0)
-        }
 
-        if (dir) {
+
+        if (dir && this.currentAnimationId !== -1) {
             const v = this.animationIds[dir.y +1]
             if (v) this.play(v[dir.x +1])
         }

@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+	<dict>
+		<key>frames</key>
+		<dict>
+			<key>battle/battle_info_box.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{907,776},{88,88}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{88,88}</string>
+			</dict>
+			<key>map/map_decoration_grass_0000.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{743,962},{68,45}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{68,45}</string>
+			</dict>
+			<key>map/map_decoration_grass_0001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{874,962},{47,33}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{47,33}</string>
+			</dict>
+			<key>map/map_decoration_grass_0002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{907,864},{39,38}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{39,38}</string>
+			</dict>
+			<key>map/map_decoration_grass_0004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{633,752},{87,36}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{87,36}</string>
+			</dict>
+			<key>map/map_decoration_rock_0001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{907,683},{93,103}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{93,103}</string>
+			</dict>
+			<key>map/map_decoration_rock_0003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{811,962},{63,35}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{63,35}</string>
+			</dict>
+			<key>map/map_decoration_rock_0004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{633,683},{69,47}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{69,47}</string>
+			</dict>
+			<key>map/map_decoration_rock_0005.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{633,839},{30,21}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{30,21}</string>
+			</dict>
+			<key>map/map_decoration_rock_0006.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{680,962},{52,63}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{52,63}</string>
+			</dict>
+			<key>map/map_decoration_tree_0001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,870},{145,170}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{145,170}</string>
+			</dict>
+			<key>map/map_decoration_tree_0002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{170,870},{145,170}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{145,170}</string>
+			</dict>
+			<key>map/map_background_0002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,0},{636,437}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{636,437}</string>
+			</dict>
+			<key>map/map_background_0003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{0,437},{633,433}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<false />
+				<key>sourceSize</key>
+				<string>{633,433}</string>
+			</dict>
+			<key>map/map_decoration_tree_0003.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{340,870},{145,170}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{145,170}</string>
+			</dict>
+			<key>map/map_decoration_tree_0004.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{510,870},{145,170}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{145,170}</string>
+			</dict>
+			<key>map/map_decoration_0002.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{680,683},{279,227}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{279,227}</string>
+			</dict>
+			<key>map/map_decoration_0001.png</key>
+			<dict>
+				<key>frame</key>
+				<string>{{633,437},{246,281}}</string>
+				<key>offset</key>
+				<string>{0,0}</string>
+				<key>rotated</key>
+				<true />
+				<key>sourceSize</key>
+				<string>{246,281}</string>
+			</dict>
+		</dict>
+		<key>metadata</key>
+		<dict>
+			<key>format</key>
+			<integer>2</integer>
+			<key>textureFileName</key>
+			<string>battleSheet.png</string>
+			<key>realTextureFileName</key>
+			<string>battleSheet.png</string>
+			<key>size</key>
+			<string>{1024,1024}</string>
+		</dict>
+		<key>texture</key>
+		<dict>
+			<key>width</key>
+			<integer>1024</integer>
+			<key>height</key>
+			<integer>1024</integer>
+		</dict>
+	</dict>
+</plist>

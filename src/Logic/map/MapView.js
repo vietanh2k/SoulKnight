@@ -469,11 +469,14 @@ var MapView = cc.Class.extend({
         return true;
     },
 
-    deploySpell: function (cardType, position, mapCast){
+    deploySpell: function (card_type, position, uid, mapCast){
         var spell;
-        switch (cardType){
+        switch (card_type){
             case 0:
                 spell = new FireBall(this._playerState, position);
+                break;
+            case 1:
+                spell = new IceBall(this._playerState, position, mapCast);
                 break;
             case 2:
                 spell = new Heal(this._playerState, position);
@@ -676,6 +679,42 @@ var MapView = cc.Class.extend({
         }
 
         return treeStones
+    },
+
+    queryTowerCircleWithoutOverlap: function (pos, radius) {
+        const self = this
+        const towers = []
+
+        const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
+        const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
+
+        for (let x = x1; x <= x2; x++) {
+            for (let y = y1; y <= y2; y++) {
+                const cell = self.getCell(x, y)
+
+                if (!cell || !cell.getObjectOn()) {
+                    continue
+                }
+                towers.push(cell.getObjectOn());
+
+                // cell.monsters.forEach((monster, id, list) => {
+                //     monster.isChosen = false
+                //     monsters.push(monster)
+                // })
+            }
+        }
+
+        const ret = []
+        towers.forEach((tower, id, list) => {
+            if (tower.position.sub(pos).length() <= radius) {
+                ret.push(tower)
+            }
+        })
+
+        return ret
     },
 
 });

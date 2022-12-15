@@ -11,11 +11,13 @@ const SpellFallUI = cc.Node.extend({
         this.ccDT = 0.02
         this.schedule(this.fall, this.ccDT)
         this.isCast = false
+        this.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height)
+
         return true;
     },
 
     initPosStart: function (posUI) {
-        this._speed = 10 * CELLWIDTH
+        this._speed = 12 * CELLWIDTH
         this.setPosition(posUI.x, posUI.y +4 * CELLWIDTH)
     },
 
@@ -33,10 +35,12 @@ const SpellFallUI = cc.Node.extend({
             this.cast(2)
 
         }
+
     },
     cast: function (time){
         if(this.isCast == false) {
             this.isCast = true;
+            this.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE)
             this.anim.setAnimation(0, "animation_full", true);
         }
         this.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(()=>{
