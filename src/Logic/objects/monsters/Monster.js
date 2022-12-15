@@ -621,40 +621,40 @@ const Monster = AnimatedSprite.extend({
                 this.impactedMonster = null
             }
         }*/
-        if (this.speed <= anotherMonster.speed) return
-        //if (this.impactMonsters.size() >= 2) return
-        //if (this.position.sub(anotherMonster.position).length() <= this.hitRadius + anotherMonster.hitRadius) {
-        //    let dir = this.position.sub(anotherMonster.position).normalize()
-        //    const pos = anotherMonster.position.add(dir.mul(this.hitRadius + anotherMonster.hitRadius))
-        //    this.position.set(pos.x, pos.y)
-        //}
-
-        //const tangent = anotherMonster.getForwardTangent(this.position)
-        //this.impactVec = this.impactVec.add(tangent).normalize();
-
-        const map = playerState.getMap()
-
-        let dir1 = this.position.sub(anotherMonster.position).normalize()
-        const pos = anotherMonster.position.add(dir1.mul(this.hitRadius + anotherMonster.hitRadius))
-        const cell = map.getCellAtPosition(pos)
-        if (cell && cell.nextCell) {
-            this.position.set(pos.x, pos.y)
-        }
-
-        const dir = anotherMonster.position.sub(this.position).normalize()
-        if (dir.dot(anotherMonster.movingDirection) < -0.9) {
-            return
-        }
-
-        /*const dir = anotherMonster.position.sub(this.position).normalize()
-        if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
-            return
-        }*/
-
-        if (this.impactMonsters.indexOf(anotherMonster) === -1) {
-            this.impactMonsters.add(anotherMonster)
-            anotherMonster.retain()
-        }
+        // if (this.speed <= anotherMonster.speed) return
+        // //if (this.impactMonsters.size() >= 2) return
+        // //if (this.position.sub(anotherMonster.position).length() <= this.hitRadius + anotherMonster.hitRadius) {
+        // //    let dir = this.position.sub(anotherMonster.position).normalize()
+        // //    const pos = anotherMonster.position.add(dir.mul(this.hitRadius + anotherMonster.hitRadius))
+        // //    this.position.set(pos.x, pos.y)
+        // //}
+        //
+        // //const tangent = anotherMonster.getForwardTangent(this.position)
+        // //this.impactVec = this.impactVec.add(tangent).normalize();
+        //
+        // const map = playerState.getMap()
+        //
+        // let dir1 = this.position.sub(anotherMonster.position).normalize()
+        // const pos = anotherMonster.position.add(dir1.mul(this.hitRadius + anotherMonster.hitRadius))
+        // const cell = map.getCellAtPosition(pos)
+        // if (cell && cell.nextCell) {
+        //     this.position.set(pos.x, pos.y)
+        // }
+        //
+        // const dir = anotherMonster.position.sub(this.position).normalize()
+        // if (dir.dot(anotherMonster.movingDirection) < -0.9) {
+        //     return
+        // }
+        //
+        // /*const dir = anotherMonster.position.sub(this.position).normalize()
+        // if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
+        //     return
+        // }*/
+        //
+        // if (this.impactMonsters.indexOf(anotherMonster) === -1) {
+        //     this.impactMonsters.add(anotherMonster)
+        //     anotherMonster.retain()
+        // }
     },
 
 });

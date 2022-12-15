@@ -79,8 +79,6 @@ var MapView = cc.Class.extend({
 
         const cells = [undefined,undefined,undefined,undefined,undefined,undefined,undefined]
 
-        const tempPos = new Vec2(0,0)
-
         this.monsters.forEach((monster, id, list) => {
             cells.length = 0
 
