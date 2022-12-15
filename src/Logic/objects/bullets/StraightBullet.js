@@ -2,16 +2,16 @@ let TWizardBullet = Bullet.extend({
     name: 'wizard',
     concept: "bullet",
     type: 'straight',
-    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, explosionFx) {
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, bulletFx) {
         this._super(res.Wizard_Bullet, target, speed, damage, radius, position, fromTower, targetType, level);
-        this.fx = explosionFx;
+        this.bulletFx = bulletFx;
     },
 
     playExplosionFx: function () {
-        if (this.fx != null) {
-            this.fx.setPosition(this.x, this.y);
-            this.fx.visible = true;
-            this.fx.setAnimation(0, 'hit_target_eff', false);
+        if (this.bulletFx != null) {
+            this.bulletFx.setPosition(this.x, this.y);
+            this.bulletFx.visible = true;
+            this.bulletFx.setAnimation(0, 'hit_target_eff', false);
         }
     },
 
@@ -44,9 +44,9 @@ let TOilGunBullet = Bullet.extend({
     concept: 'bullet',
     type: 'straight',
 
-    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, explosionFx) {
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, bulletFx) {
         this._super(res.TOilGunBullet, target, speed, damage, radius, position, fromTower, targetType, level);
-        this.fx = explosionFx;
+        this.bulletFx = bulletFx;
 
         this.runBulletAnimation();
     },
@@ -58,10 +58,10 @@ let TOilGunBullet = Bullet.extend({
     },
 
     playExplosionFx: function () {
-        if (this.fx != null) {
-            this.fx.setPosition(this.x, this.y);
-            this.fx.visible = true;
-            this.fx.setAnimation(0, 'hit_target_eff', false);
+        if (this.bulletFx != null) {
+            this.bulletFx.setPosition(this.x, this.y);
+            this.bulletFx.visible = true;
+            this.bulletFx.setAnimation(0, 'hit_target_eff', false);
         }
     },
 

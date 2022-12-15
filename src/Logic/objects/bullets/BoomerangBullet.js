@@ -3,13 +3,15 @@ let TBoomerangBullet = Bullet.extend({
     concept: 'bullet',
     type: 'boomerang',
 
-    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, range) {
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level) {
         this._super(res.TBoomerangBullet, target, speed, damage, radius, position, fromTower, targetType, level);
         this.originalPosition = new Vec2(position.x, position.y);
-        this.range = range;
+        this.range = this.fromTower.getRange();
         this.bulletRadius = 0.5;
 
         this.id = Math.random();
+
+        this.modifyFlyingSpeedBasedOnAttackSpeed();
 
         this.runBulletAnimation();
     },
@@ -103,5 +105,15 @@ let TBoomerangBullet = Bullet.extend({
         if (this.target && this.target.release) {
             this.target.release();
         }
+    },
+
+    /**
+     * Thay đổi vận tốc của viên đạn tương ứng với tốc độ đánh của trụ boomerang.
+     * Tổng thời gian bay của viên đạn bằng 0.8 lần khoảng thời gian giữa 2 lần bắn liên tiếp.
+     */
+    modifyFlyingSpeedBasedOnAttackSpeed: function () {
+        let distance = 2 * this.range * MAP_CONFIG.CELL_WIDTH;
+        let time = 0.8 * this.fromTower.getAttackSpeed();
+        this.speed = distance / time;
     },
 });

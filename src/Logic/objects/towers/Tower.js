@@ -1,5 +1,9 @@
 var Tower = TowerUI.extend({
 
+    ctor: function (card, evolution) {
+        this._super(card, evolution);
+    },
+
     render: function (playerState) {
         if (!this.isSetPosition) {
             this.renderRule = playerState.rule;
@@ -31,9 +35,9 @@ var Tower = TowerUI.extend({
         if (this.renderRule === 1) {
             if (this.lastStatus === undefined || this.status !== this.lastStatus || (this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir)) {
                 if (this.status === 'readyToFire') {
-                    this.updateDirection(this.newDir);
+                    this.updateDirectionForIdle(this.newDir);
                 } else {
-                    this.playAttack(this.newDir);
+                    this.updateDirectionForAttack(this.newDir);
                     this.status = 'readyToFire';
                 }
 
@@ -44,9 +48,9 @@ var Tower = TowerUI.extend({
             if (this.lastStatus === undefined || this.status !== this.lastStatus || this.newDir !== undefined && this.newDir != null && this.newDir !== this.lastDir) {
                 let dir = (this.newDir + 8) % 16;
                 if (this.status === 'readyToFire') {
-                    this.updateDirection(dir);
+                    this.updateDirectionForIdle(dir);
                 } else {
-                    this.playAttack(dir);
+                    this.updateDirectionForAttack(dir);
                     this.status = 'readyToFire';
                 }
                 this.lastDir = this.newDir;
@@ -55,8 +59,39 @@ var Tower = TowerUI.extend({
         }
     },
 
+    getRange: function () {
+        let range = cf.TOWER.tower[this.instance].stat[this.level].range;
+        if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+            range *= cf.MAP_BUFF.RANGE;
+        }
+        return range;
+    },
+
+    /**
+     * @returns {number} Khoảng thời gian (giây) giữa 2 lần bắn liên tiếp.
+     */
     getAttackSpeed: function () {
-        return cf.TOWER.tower[this.instance].stat[this.level].attackSpeed / 1000;
+        let attackSpeed = cf.TOWER.tower[this.instance].stat[this.level].attackSpeed / 1000;
+        if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_ATTACK_SPEED + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_ATTACK_SPEED + cf.MAP_CELL.TOWER_ADDITIONAL) {
+            attackSpeed /= cf.MAP_BUFF.ATTACK_SPEED;
+        }
+        return attackSpeed;
+    },
+
+    getDamage: function () {
+        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
+        if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+            damage *= cf.MAP_BUFF.DAMAGE;
+        }
+        return damage;
+    },
+
+    getBulletSpeed: function () {
+        return cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
+    },
+
+    getBulletRadius: function () {
+        return cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
     },
 
     getTargetType: function () {
@@ -161,9 +196,9 @@ var Tower = TowerUI.extend({
     },
 
     getNewBullet: function (object) {
-        let speed = cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
-        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
-        let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
+        let speed = this.getBulletSpeed();
+        let damage = this.getDamage();
+        let radius = this.getBulletRadius();
         let position = new Vec2(this.position.x, this.position.y);
         return new Bullet(object, speed, damage, radius, position, this);
     },
@@ -181,7 +216,11 @@ var Tower = TowerUI.extend({
 
         const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)
         enemies.forEach((monster) => {
-            if (self.checkIsTarget(monster)) self.target.push(monster)
+            if (self.checkIsTarget(monster)) {
+                if (self.getTargetType() === 'all' || self.getTargetType() === monster.class) {
+                    self.target.push(monster);
+                }
+            }
         })
     },
 
@@ -218,10 +257,6 @@ var Tower = TowerUI.extend({
 
     checkIsTarget: function (another) {
         return (another.concept === "monster" || another.concept === "tree");
-    },
-
-    getRange: function () {
-        return cf.TOWER.tower[this.instance].stat[this.level].range;
     },
 
     destroy: function () {

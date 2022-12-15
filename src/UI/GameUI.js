@@ -20,8 +20,6 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
-        this.cardInQueue = [16, 17, 0, 2]
-        this.cardPlayable = [18, 19, 20, 21]
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.init();
@@ -35,13 +33,11 @@ var GameUI = cc.Layer.extend({
                 }
             }
         }
-        cc.spriteFrameCache.addSpriteFrames(res.TWizard_plit)
 
         GameUI.instance = this;
 
     },
     init: function () {
-
         winSize = cc.director.getWinSize();
         this.initDeckCard();
         this.initBackGround();
@@ -56,13 +52,15 @@ var GameUI = cc.Layer.extend({
         return true;
     },
 
-    initDeckCard:function (){
+    initDeckCard: function () {
+        this.cardPlayable = [];
+        this.cardInQueue = [];
         let deck = sharePlayerInfo.deck;
-        for(let i=0; i< 4; i++){
+        for (let i = 0; i < 4; i++) {
             this.cardPlayable[i] = deck[i].type;
         }
-        for(let i=0; i< 4; i++){
-            this.cardInQueue[i] = deck[i+4].type;
+        for (let i = 0; i < 4; i++) {
+            this.cardInQueue[i] = deck[i + 4].type;
         }
     },
 
@@ -106,10 +104,18 @@ var GameUI = cc.Layer.extend({
     },
 
     showTowerOptionsUI: function (tower) {
-        let zOrder = GAME_CONFIG.RENDER_START_Z_ORDER_VALUE+ winSize.height+1;
+        let zOrder = GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height + 1;
         this.isShowingTowerOptionsUI = true;
 
-        this.circleFrame = cc.Sprite(asset.circleFrame_png);
+        this.towerShowRangeUI = new cc.Sprite(asset.towerRange_png);
+        this.towerShowRangeUI.attr({
+            x: tower.x,
+            y: tower.y,
+            scale: tower.getRange() * CELLWIDTH * 2 / this.towerShowRangeUI.height,
+        });
+        this.addChild(this.towerShowRangeUI, zOrder);
+
+        this.circleFrame = new cc.Sprite(asset.circleFrame_png);
         this.circleFrame.setPosition(tower.x, tower.y);
         this.addChild(this.circleFrame, zOrder);
 
@@ -122,7 +128,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y - frameRadius * Math.sin(Math.PI * 0.1),
         });
         this.targetFullHPBtn.addClickEventListener(() => {
-            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FULL_HP, tower.position.x, tower.position.y, gv.gameClient._userId),0]]);
+            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FULL_HP, tower.position.x, tower.position.y, gv.gameClient._userId), 0]]);
         });
         this.addChild(this.targetFullHPBtn, zOrder);
 
@@ -141,7 +147,7 @@ var GameUI = cc.Layer.extend({
             y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
         });
         this.targetLowHPBtn.addClickEventListener(() => {
-            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.LOW_HP, tower.position.x, tower.position.y, gv.gameClient._userId),0]]);
+            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.LOW_HP, tower.position.x, tower.position.y, gv.gameClient._userId), 0]]);
         });
         this.addChild(this.targetLowHPBtn, zOrder);
 
@@ -160,9 +166,9 @@ var GameUI = cc.Layer.extend({
             y: tower.y + frameRadius * Math.sin(Math.PI * 0.3),
         });
         this.targetFurthestBtn.addClickEventListener(() => {
-            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FURTHEST, tower.position.x, tower.position.y, gv.gameClient._userId),0]]);
+            testnetwork.connector.sendActions([[new ChangePrioritizedTargetAction(cf.PRIORITIZED_TARGET.FURTHEST, tower.position.x, tower.position.y, gv.gameClient._userId), 0]]);
         });
-        this.addChild(this.targetFurthestBtn,zOrder);
+        this.addChild(this.targetFurthestBtn, zOrder);
 
         let targetFurthestIcon = new cc.Sprite(asset.targetFurthest_png);
         targetFurthestIcon.attr({
@@ -215,6 +221,7 @@ var GameUI = cc.Layer.extend({
         if (this.isShowingTowerOptionsUI) {
             this.isShowingTowerOptionsUI = false;
 
+            this.towerShowRangeUI.removeFromParent(true);
             this.circleFrame.removeFromParent(true);
             this.targetFullHPBtn.removeFromParent(true);
             this.targetLowHPBtn.removeFromParent(true);
@@ -247,27 +254,24 @@ var GameUI = cc.Layer.extend({
         }
     },
 
-    activateCardTower: function (card_type, position, uid) {
-        cc.log('tower='+position.x+' '+position.y)
-        if (uid == gv.gameClient._userId ) {
+    activateCardTower: function (cardType, position, uid) {
+        if (uid === gv.gameClient._userId) {
             this.createObjectByTouch = false
-            var loc = convertLogicalPosToIndex(position, 1)
-            this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] = 999
+            let loc = convertLogicalPosToIndex(position, 1);
+            if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-            // this.listCard[this.cardTouchSlot - 1].actualType = card_type
-            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
-            var tower = this._gameStateManager.playerA._map.deployOrUpgradeTower(card_type, position);
-            var pos = convertIndexToPos(loc.x, loc.y, 1)
+            this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
-            var loc = convertLogicalPosToIndex(position, 2)
-            this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] = 999
+            let loc = convertLogicalPosToIndex(position, 2);
+            if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
             this._gameStateManager.playerB._map.updatePathForCells()
-            // this.listCard[this.cardTouchSlot - 1].actualType = card_type
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
-            var tower = this._gameStateManager.playerB._map.deployOrUpgradeTower(card_type, position);
-            var pos = convertIndexToPos(loc.x, loc.y, 0)
+            this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
         }
     },
 
@@ -295,7 +299,7 @@ var GameUI = cc.Layer.extend({
     screenLoc2Position: function (loc) {
         return new Vec2((loc.x) * MAP_CONFIG.CELL_WIDTH + MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y - 1) * MAP_CONFIG.CELL_HEIGHT + MAP_CONFIG.CELL_HEIGHT / 2.0)
     },
-    isNodehasMonsterAbove: function (loc) {
+    nodeHasMonsterAbove: function (loc) {
         var monsterList = GameStateManagerInstance.playerA.getMap().monsters;
         var map = GameStateManagerInstance.playerA.getMap()
         let ret = false
@@ -794,6 +798,9 @@ var GameUI = cc.Layer.extend({
             this.addChild(this.previewObject);
         }
         this.previewObject.setPosition(getMiddleOfCell(posUI, rule));
+        if (isPosInMap(posUI, rule)) {
+            this.updateRangeOfPreviewObject(convertPosToIndex(posUI, rule), rule);
+        }
         this.previewObject.visible = isPosInMap(this.previewObject, rule);
     },
 
@@ -841,20 +848,21 @@ var GameUI = cc.Layer.extend({
      * @return {void}
      */
     activeCardTower: function (target, posUI) {
-        let canPutTower= true;
-        if(isPosInMap(posUI, 1)){
-            var intIndex = convertPosToIndex(posUI, 1)
-            if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] <= 0 ||
-                GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] ==999) {
+        let canPutTower = true;
+        if (isPosInMap(posUI, 1)) {
+            let intIndex = convertPosToIndex(posUI, 1);
+            if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] <= cf.MAP_CELL.BUFF_OR_NORMAL_CHECK_NOT_HIGHER || GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] > cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 let tmp = GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y];
-                GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = 999;
-                if(!this.isNodehasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()){
-                    var posLogic = this.screenLoc2Position(intIndex);
-                    if(GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
-                        var loc = convertLogicalPosToIndex(posLogic, 1)
-                        this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1))
+                if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                    GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+                }
+                if (!this.nodeHasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
+                    let posLogic = this.screenLoc2Position(intIndex);
+                    if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
+                        let loc = convertLogicalPosToIndex(posLogic, 1);
+                        this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                            gv.gameClient._userId),TICK_FOR_DELAY_TOWER]]);
+                            gv.gameClient._userId), TICK_FOR_DELAY_TOWER]]);
                         this.updateCardSlot(target.numSlot, target.energy);
                     }
                 } else {
@@ -944,16 +952,29 @@ var GameUI = cc.Layer.extend({
         let towerPreview = new TowerUI(target, 0);
         let card = new Card(target.type, 1, 0);
         towerPreview.setScale(cf.TOWER_SCALE[card.id - 100]);
-        let range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
-        let rangePreview = cc.Sprite('res/battle/battle_tower_range_player.png');
-        rangePreview.attr({
+        towerPreview.range = card.towerInfo.stat[(card.evolution + 1).toString()].range;
+        towerPreview.rangePreview = cc.Sprite(asset.towerRange_png);
+        towerPreview.rangePreview.attr({
             x: towerPreview.width / 2,
             y: towerPreview.height / 2,
-            scale: range * CELLWIDTH * 2 / rangePreview.height / towerPreview.scale,
+            scale: towerPreview.range * CELLWIDTH * 2 / towerPreview.rangePreview.height / towerPreview.scale,
         });
-        towerPreview.addChild(rangePreview);
+        towerPreview.addChild(towerPreview.rangePreview);
 
         return towerPreview;
+    },
+
+    updateRangeOfPreviewObject: function (index, rule) {
+        if (this.previewObject === undefined || rule === 2) {
+            return;
+        }
+        if (rule === 1) {
+            if (this._gameStateManager.playerA._map._mapController.intArray[index.x][index.y] === cf.MAP_CELL.BUFF_RANGE || this._gameStateManager.playerA._map._mapController.intArray[index.x][index.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+                this.previewObject.rangePreview.setScale(this.previewObject.range * CELLWIDTH * 2 / this.previewObject.rangePreview.height / this.previewObject.scale * cf.MAP_BUFF.RANGE);
+            } else {
+                this.previewObject.rangePreview.setScale(this.previewObject.range * CELLWIDTH * 2 / this.previewObject.rangePreview.height / this.previewObject.scale);
+            }
+        }
     },
 
     generateTowerUI: function (type, evolution, corX, corY) {
@@ -1061,29 +1082,32 @@ var GameUI = cc.Layer.extend({
     },
 
     initCellSlot: function (mapArray, rule) {
-        var arr = this._gameStateManager.playerA._map._mapController.intArray
-        for (var i = 0; i < MAP_WIDTH + 1; i++) {
-            for (var j = 0; j < MAP_HEIGHT + 1; j++) {
-                if (mapArray[i][j] == -1) {
-                    var obj = this.addObjectUI(res.buffD, i, j, 1, 0, rule)
-                    this.addChild(obj, 0, res.buffD + rule)
+        for (let i = 0; i < MAP_WIDTH + 1; i++) {
+            for (let j = 0; j < MAP_HEIGHT + 1; j++) {
+                let object;
+                switch (mapArray[i][j]) {
+                    case cf.MAP_CELL.BUFF_DAMAGE:
+                        object = this.addObjectUI(res.buffD, i, j, 1, 0, rule);
+                        cc.log('buff damage location of rule ' + rule + ': ' + i + ', ' + j);
+                        break;
+                    case cf.MAP_CELL.BUFF_ATTACK_SPEED:
+                        object = this.addObjectUI(res.buffS, i, j, 1, 0, rule);
+                        cc.log('buff attack speed location of rule ' + rule + ': ' + i + ', ' + j);
+                        break;
+                    case cf.MAP_CELL.BUFF_RANGE:
+                        object = this.addObjectUI(res.buffR, i, j, 1, 0, rule);
+                        cc.log('buff range location of rule ' + rule + ': ' + i + ', ' + j);
+                        break;
+                    case cf.MAP_CELL.TREE:
+                        object = this.addObjectUI(res.treeUI, i, j, 1, 0, rule);
+                        break;
+                    case cf.MAP_CELL.HOLE:
+                        object = this.addObjectUI(res.hole, i, j, 1, 0, rule);
+                        break;
+                    default:
+                        continue;
                 }
-                if (mapArray[i][j] == -2) {
-                    var obj = this.addObjectUI(res.buffS, i, j, 1, 0, rule)
-                    this.addChild(obj, 0, res.buffD + rule)
-                }
-                if (mapArray[i][j] == -3) {
-                    var obj = this.addObjectUI(res.buffR, i, j, 1, 0, rule)
-                    this.addChild(obj, 0, res.buffD + rule)
-                }
-                if (mapArray[i][j] == 1) {
-                    var obj = this.addObjectUI(res.treeUI, i, j, 0.85, 0, rule)
-                    this.addChild(obj, 0, res.buffD + rule)
-                }
-                if (mapArray[i][j] == 2) {
-                    var obj = this.addObjectUI(res.hole, i, j, 0.85, 0, rule)
-                    this.addChild(obj, 0, res.buffD + rule)
-                }
+                this.addChild(object, 0, res.buffD + rule);
             }
         }
     },

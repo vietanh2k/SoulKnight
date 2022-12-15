@@ -11,6 +11,7 @@ var TOilGun = Tower.extend({
         this.instance = "3";
         this.target = [];
         this.position = position;
+        this.mapPos = convertMapPosToIndex(this.position);
         this.health = 100;
         this.isDestroy = false;
         this.renderRule = this._playerState.rule;
@@ -28,7 +29,7 @@ var TOilGun = Tower.extend({
         return true;
     },
 
-    AnimationSetUp: function (card) {
+    initAnimations: function (card) {
         this.initTextures = [];
         this.idlePrefixNames = [];
         this.attackPrefixNames = [];
@@ -45,14 +46,14 @@ var TOilGun = Tower.extend({
         this.attackIPD = cf.TOWER_UI[this.card].attackIPD;
 
         this.bulletFx = sp.SkeletonAnimation('res/tower/fx/tower_oil_fx.json', 'res/tower/fx/tower_oil_fx.atlas');
-        GameUI.instance.addChild(this.bulletFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
+        GameUI.instance.addChild(this.bulletFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height);
         this.bulletFx.visible = false;
     },
 
     getNewBullet: function (object) {
-        let speed = cf.TOWER.tower[this.instance].stat[this.level].bulletSpeed;
-        let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
-        let radius = cf.TOWER.tower[this.instance].stat[this.level].bulletRadius;
+        let speed = this.getBulletSpeed();
+        let damage = this.getDamage();
+        let radius = this.getBulletRadius();
         let position = new Vec2(this.position.x, this.position.y);
 
         let newBullet = new TOilGunBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, this.bulletFx);
