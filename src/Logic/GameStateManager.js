@@ -152,8 +152,8 @@ var GameStateManager = cc.Class.extend({
         /*
          Nếu frame hiện tại quá chậm so với SV thi tua nhanh
          */
-        if(this.frameCount < FrameMaxForUpdate-60){
-            for(var i= this.frameCount; i<FrameMaxForUpdate-50; i++){
+        if(this.frameCount < FrameMaxForUpdate-30){
+            for(var i= this.frameCount; i<FrameMaxForUpdate-25; i++){
                 this.frameUpdateNormal();
                 cc.log('tuaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
             }
