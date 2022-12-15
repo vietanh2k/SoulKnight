@@ -142,7 +142,7 @@ const Monster = AnimatedSprite.extend({
             const vec = monster.position.sub(self.position)
             const dir = vec.normal()
 
-            if (monster.isDestroy || dir.dot(monster.movingDirection) < -0.7 || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
+            if (monster.isDestroy || dir.dot(monster.movingDirection) < -0.9 || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
                 list.remove(id)
                 monster.release()
                 //cc.log("Remove --> " + id)
@@ -346,42 +346,25 @@ const Monster = AnimatedSprite.extend({
         const map = playerState.getMap()
 
         if (this.targetPosition) {
-            const cell = map.getCellAtPosition(this.targetPosition)
-            if (!cell || cell.nextCell == null) {
-                distance = 0.5
-                this.targetPosition = null
-                //cc.log('=====================================')
-            }
+            //const cell = map.getCellAtPosition(this.targetPosition)
+            //if (!cell || cell.nextCell == null) {
+            //    distance = 0.5
+            //    this.targetPosition = null
+            //    //cc.log('=====================================')
+            //}
 
-            /*const pos = this.position
+            const pos = this.position
             const r = this.hitRadius
+            const cells = map.queryCellsOverlap(pos, r)
 
-            const tempPos = new Vec2(0,0)
-
-            const self = this
-
-            for (let i = 0; i < 4; i++) {
-                tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * r
-                tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * r
-
-                const cell1 = map.getCellAtPosition(tempPos.x, tempPos.y)
-
-                if (!cell1 || cell1.nextCell == null) {
-                    distance = 0.1
+            for (let i = 0; i < cells.length; i++) {
+                const cell = cells[i]
+                if (!cell || !cell.nextCell) {
+                    distance = 0.0
                     this.targetPosition = null
-
-                    //cc.log(this.impactMonsters.size())
-                    //cc.log('------------------------------------------------------------')
-                    //cc.log(this.hitRadius / MAP_CONFIG.CELL_WIDTH)
-                    //this.impactMonsters.forEach((monster) => {
-                        //const vec = monster.position.sub(self.position)
-                        //cc.log(vec.length())
-                        //cc.log(monster.hitRadius + self.hitRadius)
-                        //cc.log(vec.length() > monster.hitRadius + self.hitRadius)
-                        //cc.log(((vec.length()) > (monster.hitRadius + self.hitRadius)))
-                    //})
+                    break
                 }
-            }*/
+            }
         }
 
         if (this.route(map, distance, null)) {
@@ -648,12 +631,17 @@ const Monster = AnimatedSprite.extend({
         //const tangent = anotherMonster.getForwardTangent(this.position)
         //this.impactVec = this.impactVec.add(tangent).normalize();
 
+        const map = playerState.getMap()
+
         let dir1 = this.position.sub(anotherMonster.position).normalize()
         const pos = anotherMonster.position.add(dir1.mul(this.hitRadius + anotherMonster.hitRadius))
-        this.position.set(pos.x, pos.y)
+        const cell = map.getCellAtPosition(pos)
+        if (cell && cell.nextCell) {
+            this.position.set(pos.x, pos.y)
+        }
 
         const dir = anotherMonster.position.sub(this.position).normalize()
-        if (dir.dot(anotherMonster.movingDirection) < -0.5) {
+        if (dir.dot(anotherMonster.movingDirection) < -0.9) {
             return
         }
 

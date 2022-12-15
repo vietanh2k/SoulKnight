@@ -77,7 +77,7 @@ var MapView = cc.Class.extend({
             }
         }
 
-        const cells = [undefined,undefined,undefined,undefined]
+        const cells = [undefined,undefined,undefined,undefined,undefined,undefined,undefined]
 
         const tempPos = new Vec2(0,0)
 
@@ -85,17 +85,21 @@ var MapView = cc.Class.extend({
             cells.length = 0
 
             const pos = monster.position
-            const r = monster.hitRadius
+            const radius = monster.hitRadius
 
-            for (let i = 0; i < 4; i++) {
-                tempPos.x = pos.x + OFFSET_CIRCLE_TO_RECT_X[i] * r
-                tempPos.y = pos.y + OFFSET_CIRCLE_TO_RECT_Y[i] * r
+            const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
+            const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
 
-                const cell = self.getCellAtPosition(tempPos)
+            const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
+            const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
 
-                if (cell && cells.indexOf(cell) === -1) {
-                    cells.push(cell)
-                    cell.addMonsterToCell(monster)
+            for (let x = x1; x < x2; x++) {
+                for (let y = y1; y < y2; y++) {
+                    const cell = self.getCell(x, y)
+                    if (cell && cells.indexOf(cell) === -1) {
+                        cells.push(cell)
+                        cell.addMonsterToCell(monster)
+                    }
                 }
             }
         })
@@ -125,6 +129,7 @@ var MapView = cc.Class.extend({
                 const cell = this.cells[x][y]
 
                 cell.state = 1
+                cell.nextCell = null
                 if (parent.x === -1000) {
                     cell.nextCell = null
                     //cell.prevCell = null
@@ -149,8 +154,7 @@ var MapView = cc.Class.extend({
             }
         }
 
-        //this.cells[0][0].prevCell = this.gateCell;
-        //this.cells[MAP_CONFIG.MAP_WIDTH - 1][MAP_CONFIG.MAP_HEIGHT - 1].nextCell = this.mainTowerCell;
+        this.cells[MAP_CONFIG.MAP_WIDTH - 1][MAP_CONFIG.MAP_HEIGHT - 1].nextCell = this.mainTowerCell;
 
         if (this.cells[0][0].state === 1) {
             cc.log("===========================================ERROR================================================")
@@ -588,8 +592,8 @@ var MapView = cc.Class.extend({
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
 
-        for (let x = x1; x <= x2; x++) {
-            for (let y = y1; y <= y2; y++) {
+        for (let x = x1; x < x2; x++) {
+            for (let y = y1; y < y2; y++) {
                 const cell = self.getCell(x, y)
 
                 if (!cell) {
@@ -615,6 +619,24 @@ var MapView = cc.Class.extend({
         return ret
     },
 
+    queryCellsOverlap: function (pos, radius) {
+        const ret = []
+        const x1 = Math.floor((pos.x - radius) / MAP_CONFIG.CELL_WIDTH)
+        const x2 = Math.ceil((pos.x + radius) / MAP_CONFIG.CELL_WIDTH)
+
+        const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
+        const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
+
+        const self = this
+        for (let x = x1; x < x2; x++) {
+            for (let y = y1; y < y2; y++) {
+                const cell = self.getCell(x, y)
+                ret.push(cell)
+            }
+        }
+        return ret
+    },
+
     // return all monsters that position in circle
     queryEnemiesCircleWithoutOverlap: function (pos, radius) {
         const self = this
@@ -626,8 +648,8 @@ var MapView = cc.Class.extend({
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
 
-        for (let x = x1; x <= x2; x++) {
-            for (let y = y1; y <= y2; y++) {
+        for (let x = x1; x < x2; x++) {
+            for (let y = y1; y < y2; y++) {
                 const cell = self.getCell(x, y)
 
                 if (!cell) {
@@ -664,7 +686,7 @@ var MapView = cc.Class.extend({
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
 
-        for (let x = x1; x < x1; x++) {
+        for (let x = x1; x < x2; x++) {
             for (let y = y1; y < y2; y++) {
                 const cell = self.getCell(x, y)
 
@@ -691,8 +713,8 @@ var MapView = cc.Class.extend({
         const y1 = Math.floor((pos.y - radius) / MAP_CONFIG.CELL_HEIGHT)
         const y2 = Math.ceil((pos.y + radius) / MAP_CONFIG.CELL_HEIGHT)
 
-        for (let x = x1; x <= x2; x++) {
-            for (let y = y1; y <= y2; y++) {
+        for (let x = x1; x < x2; x++) {
+            for (let y = y1; y < y2; y++) {
                 const cell = self.getCell(x, y)
 
                 if (!cell || !cell.getObjectOn()) {
