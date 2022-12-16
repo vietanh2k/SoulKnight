@@ -16,9 +16,9 @@ const MonsterFactory = cc.Class.extend({
 MonsterFactory.prototype.addMonsterInitializer = function (id, name, isBoss, initializer) {
     MonsterFactory.prototype.initializers[name] = new InitializerWithMonsterId(initializer, id);
 
-    if (isBoss === true) {
-        MonsterFactory.prototype.bossNames.push(name);
-    } else {
+    //if (isBoss === true) {
+    //    MonsterFactory.prototype.bossNames.push(name);
+    //} else {
         MonsterFactory.prototype.normalMonsterNames.push(name);
-    }
+    //}
 }
