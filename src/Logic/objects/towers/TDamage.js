@@ -36,15 +36,32 @@ let TDamage = Tower.extend({
             this.updatePending(dt);
         } else {
             this.visible = true;
-            this.findTargets(playerState); // fixme đổi tên hàm
-            if (this.target.length > 0) {
-                this.fire(dt);
+
+
+
+            if (this.level === 3) {
+                this.findTargetsIgnoreTaunt(playerState);
+                if (this.target.length > 0) {
+                    this.slowAllTargets(dt);
+                }
             }
         }
     },
 
-    fire: function (dt) {
-        Utils.addToastToRunningScene('found ' + this.target.length + ' target in range ' + this.getRange())
+    findTargetsIgnoreTaunt: function (playerState) {
+        this.target = [];
+        const self = this;
+        const map = playerState.getMap();
+
+        const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH);
+        enemies.forEach((monster) => {
+            if (self.checkIsTarget(monster)) {
+                self.target.push(monster);
+            }
+        });
+    },
+
+    slowAllTargets: function (dt) {
         for (let i = 0; i < this.target.length; i++) {
             this.target[i].slowDuration = dt;
             this.target[i].speedReduced = 0.8 * this.target[i].speed;
