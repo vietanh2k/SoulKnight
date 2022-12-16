@@ -1,4 +1,6 @@
-FIREBALL_WIDTH = 180
+ICEBALL_WIDTH = 180;
+ICEBALL_FREEZE_MONSTER_TIME = 2;
+ICEBALL_FREEZE_TOWER_TIME = 4;
 
 const IceBall = Spell.extend({
     ctor: function (playerState, position, mapCast) {
@@ -32,45 +34,31 @@ const IceBall = Spell.extend({
 
     },
 
-    // fall: function (distance){
-    //     this.position.y += distance
-    //     if(this.renderRule == 1) {
-    //         if (this.position.y >= this.castPosition.y) {
-    //             this.cast(2)
-    //             this.runAction(cc.sequence(cc.delayTime(0.05),cc.callFunc(()=>{
-    //                 this.explose(this._playerState, null);
-    //             })))
-    //         }
-    //     }else{
-    //         if(this.position.y <= this.castPosition.y){
-    //             this.cast(2)
-    //             this.runAction(cc.sequence(cc.delayTime(0.05),cc.callFunc(()=>{
-    //                 this.explose(this._playerState, null);
-    //             })))
-    //
-    //         }
-    //     }
-    //
-    //
-    //
-    //     //this.debug(map)
-    // },
-
+    /*
+    mapCast = 1 => cast o map player => freeze monster
+    mapCast = 2 => cast o map enemy => freeze tower
+     */
     explose: function (playerState, mapCast) {
         const map = playerState.getMap();
         let objects;
-            if(mapCast == 1) {
-                objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius)
-            }else {
-                objects = map.queryTowerCircleWithoutOverlap(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius);
+        if(mapCast == 1) {
+            objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius)
+            for (let i = 0; i < objects.length; i++) {
+                objects[i].___freezeEffect = new FreezeEffect(ICEBALL_FREEZE_MONSTER_TIME, objects[i])
+                playerState.getMap().addEffect(objects[i].___freezeEffect)
+                // monsters[i].hurtUI()
             }
+        }else {
+            objects = map.queryTowerCircleWithoutOverlap(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius);
+            for (let i = 0; i < objects.length; i++) {
+                objects[i].___freezeEffect = new FreezeEffect(ICEBALL_FREEZE_TOWER_TIME, objects[i])
+                playerState.getMap().addEffect(objects[i].___freezeEffect)
+                // monsters[i].hurtUI()
+            }
+        }
 
             // const monsters = map.queryEnemiesCircle(this.castPosition,MAP_CONFIG.CELL_WIDTH*this.radius)
-        for (let i = 0; i < objects.length; i++) {
-            objects[i].___freezeEffect = new FreezeEffect(ICEMAN_FREEZE_EFFECT_TIME, objects[i])
-            playerState.getMap().addEffect(objects[i].___freezeEffect)
-            // monsters[i].hurtUI()
-        }
+
         // let objectList = map.getObjectInRange(this.castPosition, 1.5);
         // for (let object of objectList) {
         //     if (this.canAttack(object)) {

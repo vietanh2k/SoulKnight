@@ -1,4 +1,4 @@
-MAX_WAVE = 25;
+MAX_WAVE = 20;
 MAX_ENERGY = 30;
 MAX_VALUE = 99999
 let GameStateManagerInstance = null
@@ -11,9 +11,9 @@ var GameStateManager = cc.Class.extend({
     playerB: null,
     cellWidth: null,
     _timer: null,
-    canTouchNewWave:null,
-    curWave:null,
-    winner:null,
+    canTouchNewWave: null,
+    curWave: null,
+    winner: null,
 
 
     UPDATE_TYPE_NORMAL: 0,
@@ -21,7 +21,7 @@ var GameStateManager = cc.Class.extend({
     UPDATE_TYPE_UPDATE_TO_FRAME_N: 2,
 
 
-    ctor:function (pkg) {
+    ctor: function (pkg) {
         GameStateManagerInstance = this
         ActionListInstance = []
         indAction = 0
@@ -36,10 +36,10 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false
         this.curWave = 0
         this.winner = null
-        this.isLastWave= false
+        this.isLastWave = false
         this.dem = 0
         this.sumDt = 0;
-        this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME
+        this.dt = GAME_CONFIG.DEFAULT_DELTA_TIME
         this.frameCount = 0
 
         this.updateType = this.UPDATE_TYPE_NORMAL
@@ -49,7 +49,7 @@ var GameStateManager = cc.Class.extend({
 
 
     },
-    init:function () {
+    init: function () {
 
         winSize = cc.director.getWinSize();
 
@@ -62,14 +62,14 @@ var GameStateManager = cc.Class.extend({
         return true;
     },
 
-    readFrom:function (pkg){
+    readFrom: function (pkg) {
         var userId1 = pkg.getInt()
-        if(userId1 == gv.gameClient._userId){
+        if (userId1 == gv.gameClient._userId) {
             this.xid = 1
             this.playerA.readFrom(pkg)
             var userId2 = pkg.getInt()
             this.playerB.readFrom(pkg)
-        }else{
+        } else {
             this.xid = 2
             this.playerB.readFrom(pkg)
             var userId2 = pkg.getInt()
@@ -78,31 +78,31 @@ var GameStateManager = cc.Class.extend({
 
         Random.seed(pkg.getInt())
     },
-    isClearWave:function (){
+    isClearWave: function () {
         /*if(this.playerA._map.monsters.length == 0){
             this.canTouchNewWave = true
         }*/
-        if(this.playerA.isClearWave() && !this.isMaxWave()){
+        if (this.playerA.isClearWave() && !this.isMaxWave()) {
             this.canTouchNewWave = true
         }
     },
-    isMaxWave:function (){
-        if(this.curWave < MAX_WAVE){
+    isMaxWave: function () {
+        if (this.curWave < MAX_WAVE) {
             return false;
         }
         return true;
     },
-    updateStateNewWave:function (){
+    updateStateNewWave: function () {
         this.curWave += 1
         this.canTouchNewWave = false
     },
-    checkWinner:function (){
-        if(this.curWave >= MAX_WAVE && this.playerA.isClearWave() && this.playerB.isClearWave()){
-            if(this.playerA.health > this.playerB.health){
+    checkWinner: function () {
+        if (this.curWave >= MAX_WAVE && this.playerA.isClearWave() && this.playerB.isClearWave()) {
+            if (this.playerA.health > this.playerB.health) {
                 this.winner = 1
-            }else if(this.playerB.health > this.playerA.health){
+            } else if (this.playerB.health > this.playerA.health) {
                 this.winner = 2
-            }else{
+            } else {
                 this.winner = 0
             }
             return true;
@@ -117,12 +117,12 @@ var GameStateManager = cc.Class.extend({
             return true;
         }
 
-        if(this.playerA.health <= 0){
+        if (this.playerA.health <= 0) {
             this.winner = 2
             return true;
         }
 
-        if(this.playerB.health <= 0){
+        if (this.playerB.health <= 0) {
             this.winner = 1
             return true;
         }
@@ -136,16 +136,16 @@ var GameStateManager = cc.Class.extend({
          */
         this.isClearWave()
         let isEnd = this.checkWinner();
-        if(isEnd){
-            cc.log('KET THUC TAI FRAME = '+this.frameCount)
+        if (isEnd) {
+            cc.log('KET THUC TAI FRAME = ' + this.frameCount)
             return;
         }
 
         /*
             Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
         */
-        cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
-        if(this.frameCount>= FrameMaxForUpdate){
+        // cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
+        if (this.frameCount >= FrameMaxForUpdate) {
             return;
         }
 
@@ -155,8 +155,8 @@ var GameStateManager = cc.Class.extend({
         /*
          Nếu frame hiện tại quá chậm so với SV thi tua nhanh
          */
-        if(this.frameCount < FrameMaxForUpdate-20){
-            for(var i= this.frameCount; i<FrameMaxForUpdate-5; i++){
+        if (this.frameCount < FrameMaxForUpdate - 25) {
+            for (var i = this.frameCount; i < FrameMaxForUpdate - 15; i++) {
                 this.frameUpdateNormal()
                 cc.log('tuaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
             }
@@ -175,23 +175,23 @@ var GameStateManager = cc.Class.extend({
         this.frameCount++
 
 
-        if(indAction < ActionListInstance.length) {
+        if (indAction < ActionListInstance.length) {
             /*
             khi towi
              */
-            while (indAction < ActionListInstance.length && this.frameCount >= ActionListInstance[indAction][0] ){
+            while (indAction < ActionListInstance.length && this.frameCount >= ActionListInstance[indAction][0]) {
                 cc.log('=========TRIGER++++++')
                 ACTION_DESERIALIZER_FROM_ARR[ActionListInstance[indAction][1]](ActionListInstance[indAction][2]).activate(GameStateManagerInstance)
                 indAction++
             }
 
         }
-        if(indAction >0) {
-            cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
-        }
+        // if(indAction >0) {
+        //     cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
+        // }
     },
 
-    update:function (ccDt){
+    update: function (ccDt) {
         // if (this.updateType == this.UPDATE_TYPE_NO_UPDATE) {
         //     return
         // }
@@ -205,11 +205,11 @@ var GameStateManager = cc.Class.extend({
         }*/
 
         // if (this.updateType == this.UPDATE_TYPE_NORMAL) {
-            this.sumDt += ccDt;
-            while (this.sumDt > this.dt) {
-                this.frameUpdate()
-                this.sumDt -= this.dt
-            }
+        this.sumDt += ccDt;
+        while (this.sumDt > this.dt) {
+            this.frameUpdate()
+            this.sumDt -= this.dt
+        }
         // }
     },
 
@@ -232,7 +232,7 @@ var GameStateManager = cc.Class.extend({
             m2.visible = false
             ui.addChild(m2)
         }
-        if(this.curWave >= MAX_WAVE){
+        if (this.curWave >= MAX_WAVE) {
             this.isLastWave = true
         }
     },
