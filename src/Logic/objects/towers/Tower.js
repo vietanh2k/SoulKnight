@@ -259,11 +259,22 @@ var Tower = TowerUI.extend({
     },
 
     destroy: function () {
+        let index = convertMapPosToIndex(this.position);
+        if (this.renderRule === 1) {
+            GameStateManagerInstance.playerA.getMap()._mapController.intArray[index.x][index.y] -= cf.MAP_CELL.TOWER_ADDITIONAL;
+        } else if (this.renderRule === 2) {
+            GameStateManagerInstance.playerB.getMap()._mapController.intArray[index.x][index.y] -= cf.MAP_CELL.TOWER_ADDITIONAL;
+        }
+
         this.isDestroy = true;
         if (this.getParent() != null) {
             this.getParent().getEnergyUI(cc.p(this.x, this.y), 5);
         }
         this.visible = false;
+        if (this.fireFx !== undefined) {
+            this.fireFx.clearTrack(0);
+            this.fireFx.removeFromParent(true);
+        }
         this.removeFromParent(true);
         //this.active = false;
     },
