@@ -14,7 +14,6 @@ let TCannonBullet = Bullet.extend({
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);
                 if (this.level === 3) {
-                    // object.stun(0.2);
                     object.stunEffect = new StunEffect(this.getStunDuration(), object);
                     playerState.getMap().addEffect(object.stunEffect);
                 }
