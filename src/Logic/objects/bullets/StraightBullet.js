@@ -72,6 +72,8 @@ let TOilGunBullet = Bullet.extend({
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower)
                 object.slow(this.getSpeedReduced(), this.getSlowDuration());
+                // object.slowEffect = new SlowEffect(this.getSlowDuration(), object, cf.SLOW_TYPE.FLAT, this.getSpeedReduced());
+                // playerState.getMap().addEffect(object.slowEffect);
                 if (this.level === 3) {
                     object.poisonByTOilGun(2, 3);
                 }

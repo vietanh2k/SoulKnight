@@ -241,10 +241,16 @@ const Monster = AnimatedSprite.extend({
     },
 
     logicUpdate: function (playerState, dt){
-        if(this.health<=0){
+        if (this.health <= 0) {
+            this.active = true;
             this.destroy();
             return;
         }
+
+        if (this.active === false) {
+            return;
+        }
+
         if(this.timeHealBuff > 0) {
             this.updateHealDuration(dt);
         }
