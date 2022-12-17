@@ -4,7 +4,7 @@ const StunEffect = Effect.extend({
         this._super(time);
 
         this.target = target;
-        this.target.active = false;
+        this.target.inactiveSourceCounter++;
         // todo animation stun
         if(this.target.concept === 'monster') {
             this.target.play(-1);
@@ -13,7 +13,7 @@ const StunEffect = Effect.extend({
     },
 
     destroy: function (playerState) {
-        this.target.active = true;
+        this.target.inactiveSourceCounter--;
         if (this.target.concept === 'monster' && !this.target.isDestroy) {
             this.target.play(0);
         }

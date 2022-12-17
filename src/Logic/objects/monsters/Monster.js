@@ -21,6 +21,8 @@ const Monster = AnimatedSprite.extend({
         this.rateSpeedUpBuff = 1
         this.renderRule = this._playerState.rule
 
+        this.inactiveSourceCounter = 0;
+
         const startCell = playerState.getMap().getStartCell()
         this.position = new Vec2(startCell.getEdgePositionWithNextCell().x, startCell.getEdgePositionWithNextCell().y)
         this.prevPosition = new Vec2(startCell.getCenterPosition().x,startCell.getCenterPosition().y)
@@ -246,6 +248,8 @@ const Monster = AnimatedSprite.extend({
             this.destroy();
             return;
         }
+
+        this.active = this.inactiveSourceCounter === 0;
 
         if (this.active === false) {
             return;

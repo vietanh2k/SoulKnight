@@ -12,6 +12,7 @@ const TIceGunEffect = FreezeEffect.extend({
         if (this.target.isVulnerableByTIceGun) {
             this.target.isVulnerableByTIceGun = false;
         }
+        this.target.inactiveSourceCounter--;
         this.target.setColor(cc.color(255, 255, 255));
         if(this.target.concept === 'monster') {
             this.target.play(0);
