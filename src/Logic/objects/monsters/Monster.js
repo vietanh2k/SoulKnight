@@ -293,13 +293,32 @@ const Monster = AnimatedSprite.extend({
         this.prevPosition.set(this.position.x, this.position.y)
 
         let distance = 0;
-        if (this.speedReduced !== undefined && this.slowDuration !== undefined && this.slowDuration > 0) {
-            let dtSlow = Math.min(dt, this.slowDuration);
-            dt -= dtSlow;
-            this.slowDuration -= dtSlow;
-            distance += (this.speed - this.speedReduced) * dtSlow;
-        }
         distance += this.speed * dt;
+        let reducedSpeedFromTOilGun = 0;
+        let reducedSpeedFromTDamage = 0;
+        if (this.slowEffectFromTOilGun !== undefined && this.slowEffectFromTDamage !== undefined) {
+            reducedSpeedFromTOilGun = this.getReducedSpeed(this.speed, this.slowEffectFromTOilGun.slowType, this.slowEffectFromTOilGun.slowValue);
+            reducedSpeedFromTDamage = this.getReducedSpeed(this.speed, this.slowEffectFromTDamage.slowType, this.slowEffectFromTDamage.slowValue);
+            if (reducedSpeedFromTOilGun < reducedSpeedFromTDamage) {
+                let time = Math.min(dt, this.slowEffectFromTOilGun.countDownTime);
+                distance -= reducedSpeedFromTOilGun * time;
+                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage) {
+                    distance -= reducedSpeedFromTDamage * Math.min(0, dt - time, this.slowEffectFromTDamage.countDownTime - time);
+                }
+            } else {
+                let time = Math.min(dt, this.slowEffectFromTDamage.countDownTime);
+                distance -= reducedSpeedFromTDamage * time;
+                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun) {
+                    distance -= reducedSpeedFromTOilGun * Math.min(0, dt - time, this.slowEffectFromTOilGun.countDownTime - time);
+                }
+            }
+        } else if (this.slowEffectFromTOilGun !== undefined) {
+            reducedSpeedFromTOilGun = this.getReducedSpeed(this.speed, this.slowEffectFromTOilGun.slowType, this.slowEffectFromTOilGun.slowValue);
+            distance -= reducedSpeedFromTOilGun * Math.min(dt, this.slowEffectFromTOilGun.countDownTime);
+        } else if (this.slowEffectFromTDamage !== undefined) {
+            reducedSpeedFromTDamage = this.getReducedSpeed(this.speed, this.slowEffectFromTDamage.slowType, this.slowEffectFromTDamage.slowValue);
+            distance -= reducedSpeedFromTDamage * Math.min(dt, this.slowEffectFromTDamage.countDownTime);
+        }
         distance *= this.rateSpeedUpBuff;
 
         this.targetPosition = null
@@ -369,6 +388,15 @@ const Monster = AnimatedSprite.extend({
         }*/
 
         //this.debug(map)
+    },
+
+    getReducedSpeed: function (speed, slowType, slowValue) {
+        switch (slowType) {
+            case cf.SLOW_TYPE.FLAT:
+                return slowValue;
+            case cf.SLOW_TYPE.RATIO:
+                return speed * slowValue;
+        }
     },
 
     getTargetPositionFromMap: function (map, prevCell) {
@@ -541,11 +569,6 @@ const Monster = AnimatedSprite.extend({
     poisonByTOilGun: function (dps, duration) {
         this.poisonByTOilGunDuration = duration;
         this.poisonByTOilGunDps = dps;
-    },
-
-    slow: function (speedReduced, duration) {
-        this.speedReduced = speedReduced;
-        this.slowDuration = duration;
     },
 
     recoverHp: function (many) {

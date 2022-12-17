@@ -166,6 +166,10 @@ cf.SLOW_TYPE = {};
 cf.SLOW_TYPE.FLAT = 0;
 cf.SLOW_TYPE.RATIO = 1;
 
+cf.SLOW_SOURCE = {};
+cf.SLOW_SOURCE.TOILGUN = 0;
+cf.SLOW_SOURCE.TDAMAGE = 1;
+
 // Treasure.json
 cf.CHEST_REWARD = [
     {
