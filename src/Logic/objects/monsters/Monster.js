@@ -260,14 +260,9 @@ const Monster = AnimatedSprite.extend({
         }
         this.updateSpeedUpDuration(dt);
 
-
-
-
-        if (this.poisonByTOilGunDuration !== undefined && this.poisonByTOilGunDuration > 0) {
-            let dtPoison = Math.min(dt, this.poisonByTOilGunDuration);
-            this.takeDamage(playerState, this.poisonByTOilGunDps * dtPoison);
+        if (this.poisonEffect !== undefined) {
+            this.takeDamage(playerState, this.poisonEffect.dps * Math.min(dt, this.poisonEffect.countDownTime));
             this.hurtUI();
-            this.poisonByTOilGunDuration -= dtPoison;
         }
 
         /*if (this.impactedMonster) {
@@ -564,11 +559,6 @@ const Monster = AnimatedSprite.extend({
         if (this.health > this.MaxHealth) {
             this.health = this.MaxHealth;
         }
-    },
-
-    poisonByTOilGun: function (dps, duration) {
-        this.poisonByTOilGunDuration = duration;
-        this.poisonByTOilGunDps = dps;
     },
 
     recoverHp: function (many) {

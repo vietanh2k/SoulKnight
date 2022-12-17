@@ -74,7 +74,12 @@ let TOilGunBullet = Bullet.extend({
                 object.slowEffectFromTOilGun = new SlowEffect(this.getSlowDuration(), object, cf.SLOW_TYPE.FLAT, this.getSpeedReduced(), cf.SLOW_SOURCE.TOILGUN);
                 playerState.getMap().addEffect(object.slowEffectFromTOilGun);
                 if (this.level === 3) {
-                    object.poisonByTOilGun(2, 3);
+                    if (object.poisonEffect !== undefined) {
+                        object.poisonEffect.reset();
+                    } else {
+                        object.poisonEffect = new PoisonEffect(3, object, 2);
+                        playerState.getMap().addEffect(object.poisonEffect);
+                    }
                 }
                 object.hurtUI();
             }
