@@ -37,12 +37,10 @@ let TDamage = Tower.extend({
         } else {
             this.visible = true;
 
-
-
             if (this.level === 3) {
                 this.findTargetsIgnoreTaunt(playerState);
                 if (this.target.length > 0) {
-                    this.slowAllTargets(dt);
+                    this.slowAllTargets(playerState, dt);
                 }
             }
         }
@@ -61,16 +59,12 @@ let TDamage = Tower.extend({
         });
     },
 
-    slowAllTargets: function (dt) {
+    slowAllTargets: function (playerState, dt) {
         for (let i = 0; i < this.target.length; i++) {
             this.target[i].slowDuration = dt;
             this.target[i].speedReduced = 0.8 * this.target[i].speed;
             this.target[i].slowEffectFromTDamage = new SlowEffect(dt, this.target[i], cf.SLOW_TYPE.RATIO, this.getSpeedReduced(), cf.SLOW_SOURCE.TDAMAGE);
-            if (this.target[i].rule === 1) {
-                GameStateManagerInstance.playerA.getMap().addEffect(this.target[i].slowEffectFromTDamage);
-            } else if (this.target[i].rule === 2) {
-                GameStateManagerInstance.playerB.getMap().addEffect(this.target[i].slowEffectFromTDamage);
-            }
+            playerState.getMap().addEffect(this.target[i].slowEffectFromTDamage);
         }
     },
 
