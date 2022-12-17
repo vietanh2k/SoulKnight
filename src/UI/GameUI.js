@@ -61,7 +61,7 @@ var GameUI = cc.Layer.extend({
             this.cardPlayable[i] = deck[7].type;
         }
         for (let i = 0; i < 4; i++) {
-            this.cardInQueue[i] = deck[7].type;
+            this.cardInQueue[i] = deck[6].type;
         }
     },
 

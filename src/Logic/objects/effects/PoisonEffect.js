@@ -13,5 +13,5 @@ const PoisonEffect = Effect.extend({
         // todo animation poison
         this.target.poisonEffect = undefined;
         this.target.release();
-    }
+    },
 });

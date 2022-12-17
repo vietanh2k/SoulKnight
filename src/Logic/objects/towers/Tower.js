@@ -83,6 +83,9 @@ var Tower = TowerUI.extend({
         if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
             damage *= cf.MAP_BUFF.DAMAGE;
         }
+        if (this.damageBuffEffect !== undefined) {
+            damage *= (1 + this.damageBuffEffect.damageAdjustment);
+        }
         return damage;
     },
 

@@ -37,12 +37,33 @@ let TDamage = Tower.extend({
         } else {
             this.visible = true;
 
+            const self = this;
+            const towers = playerState.getMap().queryTowerCircleWithoutOverlap(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH);
+            towers.forEach(tower => {
+                if (tower.damageBuffEffect !== undefined) {
+                    tower.damageBuffEffect.destroy();
+                }
+                tower.damageBuffEffect = new DamageBuffEffect(dt, tower, this.getDamageAdjustment());
+                playerState.getMap().addEffect(tower.damageBuffEffect);
+            });
+
             if (this.level === 3) {
                 this.findTargetsIgnoreTaunt(playerState);
                 if (this.target.length > 0) {
                     this.slowAllTargets(playerState, dt);
                 }
             }
+        }
+    },
+
+    getDamageAdjustment: function () {
+        switch (this.level) {
+            case 1:
+                return 0.2;
+            case 2:
+                return 0.25;
+            case 3:
+                return 0.35;
         }
     },
 

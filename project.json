@@ -122,6 +122,7 @@
         "src/Logic/objects/effects/StunEffect.js",
         "src/Logic/objects/effects/SlowEffect.js",
         "src/Logic/objects/effects/PoisonEffect.js",
+        "src/Logic/objects/effects/DamageBuffEffect.js",
 
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
