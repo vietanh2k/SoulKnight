@@ -115,11 +115,11 @@
         "src/Logic/utils/Mat3.js",
         "src/Logic/utils/Vec2.js",
 
-
         "src/Logic/objects/effects/Effect.js",
         "src/Logic/objects/effects/FreezeEffect.js",
         "src/Logic/objects/effects/DesertKingEffect.js",
-
+        "src/Logic/objects/effects/TIceGunEffect.js",
+        "src/Logic/objects/effects/StunEffect.js",
 
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
