@@ -274,7 +274,7 @@ var Tower = TowerUI.extend({
             this.getParent().getEnergyUI(cc.p(this.x, this.y), 5);
         }
         this.visible = false;
-        if (this.fireFx !== undefined) {
+        if (this.fireFx !== undefined && this.fireFx != null) {
             this.fireFx.clearTrack(0);
             this.fireFx.removeFromParent(true);
         }
