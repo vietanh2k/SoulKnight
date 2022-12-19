@@ -121,6 +121,7 @@
         "src/Logic/objects/effects/DesertKingEffect.js",
         "src/Logic/objects/effects/HealMaintain.js",
         "src/Logic/objects/effects/SpeedEffect.js",
+        "src/Logic/objects/effects/PushEffect.js",
 
 
         "src/Logic/objects/monsters/MONSTER_ID.js",

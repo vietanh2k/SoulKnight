@@ -26,6 +26,7 @@ var GameStateManager = cc.Class.extend({
         ActionListInstance = [];
         indAction = 0;
         FrameMaxForUpdate = 15;
+        this.spellConfig = {}
         this.init();
         this.playerA = new PlayerState(1);
         this.playerB = new PlayerState(2);
@@ -48,16 +49,18 @@ var GameStateManager = cc.Class.extend({
         /*
         lay stat card theo lvl tu config
          */
-        this.cardConfig = {}
+
 
     },
     init:function () {
 
         winSize = cc.director.getWinSize();
-
-
-
-
+        let deck = sharePlayerInfo.deck;
+        for (let i = 0; i < 8; i++) {
+            if(deck[i].concept == 'potion'){
+                this.addSpellConfig(deck[i].type)
+            }
+        }
 
 
 
@@ -137,7 +140,12 @@ var GameStateManager = cc.Class.extend({
         this.isClearWave();
         let isEnd = this.checkWinner();;
         if(isEnd){
+            cc.log('=============================================================');
+            cc.log("Tong vi tri monster = "+this.playerA.getCountPosition().x+ " "+ this.playerA.getCountPosition().y);
+            cc.log("Tong HP monster = "+this.playerA.getCountHP());
+            cc.log("Tong Frame destroy monster = "+this.playerA.getCountDestroyFrame());
             cc.log('KET THUC TAI FRAME = '+this.frameCount);
+            cc.log('=============================================================');
             return;
         }
 
@@ -164,6 +172,9 @@ var GameStateManager = cc.Class.extend({
 
         this.frameUpdateNormal();
 
+        if(this.frameCount % 300 == 0){
+            this.playerA.countAllMonster();
+        }
 
     },
     frameUpdateNormal: function () {
@@ -225,42 +236,37 @@ var GameStateManager = cc.Class.extend({
         return this.curWave;
     },
 
-    addCardConfig: function (typeCard) {
+    addSpellConfig: function (typeCard) {
         const cardInfor = sharePlayerInfo.collection.find(element => element.type === typeCard);
         const lvl =cardInfor.level;
-        const bac = Math.floor((lvl-1)/5);
-        let config = null;
-        let radius = 0;
+        const bac = Math.floor((lvl-1)/5 +1);
+        const radius = cf.POTION2.radius[bac];
         let value = 0;
         switch (typeCard) {
             case 0:
-                config = cf.POTION.potion[SPELL_ID.FIREBALL];
-                radius = cf.POTION.radius[bac];
-                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
-                this.cardConfig[0] = [radius, value];
+                value = cf.POTION2.potion[SPELL_ID.FIREBALL].statPerLevel.damage[lvl];
+                this.spellConfig[0] = [radius, value];
                 break;
             case 1:
-                config = cf.POTION.potion[SPELL_ID.FIREBALL];
-                radius = cf.POTION.radius[bac];
-                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
-                this.cardConfig[0] = [radius, value];
+                value = cf.POTION2.potion[SPELL_ID.FROZEN].statPerLevel.damage[lvl];
+                this.spellConfig[1] = [radius, value];
                 break;
             case 2:
-                config = cf.POTION.potion[SPELL_ID.FIREBALL];
-                radius = cf.POTION.radius[bac];
-                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
-                this.cardConfig[0] = [radius, value];
+                value = cf.POTION2.potion[SPELL_ID.HEAL].statPerLevel.healthUp[lvl];
+                this.spellConfig[2] = [radius, value];
                 break;
             case 3:
-                config = cf.POTION.potion[SPELL_ID.FIREBALL];
-                radius = cf.POTION.radius[bac];
-                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
-                this.cardConfig[0] = [radius, value];
+                value = cf.POTION2.potion[SPELL_ID.SPEED_UP].statPerLevel.duration[lvl];
+                this.spellConfig[3] = [radius, value];
                 break;
             default:
-                cc.log('Card concept \"' + this.concept + '\" not found in config.')
+                cc.log('Card typeCard \"' + typeCard + '\" not found in config.')
                 break;
         }
-        return this.curWave;
+        cc.log('add spell = '+ radius+ ' ' + value)
+    },
+    getSpellConfig: function (typeCard) {
+        return this.spellConfig[typeCard];
+
     },
 });

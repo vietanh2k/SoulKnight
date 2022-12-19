@@ -1,5 +1,5 @@
 {
-  "ID": "9bffd23d-dd8d-4eaf-9cca-01888cfac2b2",
+  "ID": "cd1e5e5c-a9d8-4052-a34e-466a655875c4",
   "Version": "3.10.0.0",
   "Name": "healthRed",
   "Content": {
@@ -12,7 +12,7 @@
       },
       "AnimationList": [],
       "ObjectData": {
-        "Tag": 12,
+        "Tag": 7,
         "Children": [
           {
             "FileData": {
@@ -20,9 +20,10 @@
               "Path": "battle/battle_hp_background.png",
               "Plist": ""
             },
-            "Scale9OriginX": 18,
-            "Scale9Width": 18,
-            "Scale9Height": 6,
+            "Scale9OriginX": 13,
+            "Scale9OriginY": 1,
+            "Scale9Width": 15,
+            "Scale9Height": 4,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
@@ -45,14 +46,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -27.0,
-            "RightMargin": -27.0,
+            "LeftMargin": -20.5,
+            "RightMargin": -20.5,
             "TopMargin": -3.0,
             "BottomMargin": -3.0,
-            "Tag": 13,
-            "ActionTag": -182090770,
+            "Tag": 9,
+            "ActionTag": -69294480,
             "Size": {
-              "X": 54.0,
+              "X": 41.0,
               "Y": 6.0
             },
             "Name": "image",
@@ -87,14 +88,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -26.0,
-            "RightMargin": -26.0,
+            "LeftMargin": -19.5,
+            "RightMargin": -19.5,
             "TopMargin": -2.0,
             "BottomMargin": -2.0,
-            "Tag": 14,
-            "ActionTag": 359022061,
+            "Tag": 8,
+            "ActionTag": 323155484,
             "Size": {
-              "X": 52.0,
+              "X": 39.0,
               "Y": 4.0
             },
             "Name": "loading",

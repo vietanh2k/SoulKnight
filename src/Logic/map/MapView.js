@@ -475,19 +475,19 @@ var MapView = cc.Class.extend({
         var spell;
         switch (card_type){
             case 0:
-                spell = new FireBall(this._playerState, position);
+                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0));
                 break;
             case 1:
-                spell = new IceBall(this._playerState, position, mapCast);
+                spell = new IceBall(this._playerState, position, mapCast, GameStateManagerInstance.getSpellConfig(1));
                 break;
             case 2:
-                spell = new Heal(this._playerState, position);
+                spell = new Heal(this._playerState, position, GameStateManagerInstance.getSpellConfig(2));
                 break;
             case 3:
-                spell = new SpeedUp(this._playerState, position);
+                spell = new SpeedUp(this._playerState, position, GameStateManagerInstance.getSpellConfig(3));
                 break;
             default:
-                spell = new FireBall(this._playerState, position);
+                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0));
         }
         spell.mapId = this.spells.add(spell);
         GameUI.instance.addChild(spell);
@@ -736,5 +736,9 @@ var MapView = cc.Class.extend({
 
         return ret
     },
+
+    getMonsters:function (){
+        return this.monsters;
+    }
 
 });

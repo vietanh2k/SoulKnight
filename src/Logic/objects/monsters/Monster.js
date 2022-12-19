@@ -26,6 +26,10 @@ const Monster = AnimatedSprite.extend({
 
         this.concept="monster"
         this.healthUI = null
+        this.pushSpeed = MAP_CONFIG.CELL_WIDTH*2.5;
+        this.pushVec = new Vec2(0,0);
+        this.pushDistance = 0;
+        this.___pushEffect = null;
 
         this.initConfig(playerState)
         this.addHealthUI()
@@ -437,6 +441,19 @@ const Monster = AnimatedSprite.extend({
     },
 
     route: function (map, distance, prevCell) {
+        if(this.___pushEffect != null){
+            cc.log('aaaaaaaaaaaaaaaaa'+ this.pushVec.x +' '+this.pushVec.y)
+            let tmp2 = this.pushVec.mul(this.pushSpeed*0.016)
+            let tmp = this.position.add(tmp2);
+            let tmpCell = map.getCellAtPosition(tmp)
+            if(!tmpCell || !tmpCell.getNextCell()){
+                this.___pushEffect.isDestroy = true
+                this.___pushEffect = null;
+                return true;
+            }
+            this.position.set(tmp.x, tmp.y);
+            return true;
+        }
         let currentCell = map.getCellAtPosition(this.position);
 
         if (!currentCell) return true;
@@ -545,6 +562,7 @@ const Monster = AnimatedSprite.extend({
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
         cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
+        this._playerState.addCountDestroyFrame(GameStateManagerInstance.frameCount);
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
             var ex = new Explosion(cc.p(this.x, this.y))
@@ -605,6 +623,14 @@ const Monster = AnimatedSprite.extend({
                 self.recoverHpFx.setCompleteListener(null)
             })
         }
+    },
+
+    getHealth:function (){
+        return this.health;
+    },
+
+    setPushStat:function (pushVec ){
+        this.pushVec = pushVec;
     },
 
     onImpact: function (playerState, anotherMonster) {

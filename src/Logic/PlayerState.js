@@ -10,7 +10,7 @@ var PlayerState = cc.Class.extend({
 
     ctor:function (rule) {
         this.rule = rule
-        this.health = 15
+        this.health = 999
         this.energy = 30
         this.intArray =  Array.from(
             {length:MAP_WIDTH},
@@ -25,6 +25,12 @@ var PlayerState = cc.Class.extend({
         this.timePerMonster = GAME_CONFIG.TIME_PER_MONSTER_IN_WAVE;
 
         this.monstersToSpawn = []
+        /*
+        dem tong vi tri,hp, frame destroy cua monster moi 300 frame
+         */
+        this.countPos = new Vec2(0,0);
+        this.countHP = 0;
+        this.countDestroy = 0;
 
     },
     init:function () {
@@ -34,11 +40,34 @@ var PlayerState = cc.Class.extend({
 
 
 
-
-
-
         return true;
     },
+
+    countAllMonster:function () {
+        const monsters = this.getMap().getMonsters();
+        monsters.forEach((monster, __, ___) => {
+            const x = this.countPos.x + monster.position.x;
+            const y = this.countPos.y + monster.position.y;
+            this.countPos.set(x,y);
+            this.countHP += monster.getHealth();
+        });
+    },
+
+    addCountDestroyFrame:function (frame) {
+        this.countDestroy += frame;
+    },
+
+    getCountPosition:function () {
+        return this.countPos;
+    },
+    getCountHP:function () {
+        return this.countHP;
+    },
+
+    getCountDestroyFrame:function () {
+        return this.countDestroy;
+    },
+
     updateHealth:function (amount) {
         this.health += amount
         if(this.health < 0){

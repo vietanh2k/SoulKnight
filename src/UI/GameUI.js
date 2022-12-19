@@ -63,6 +63,12 @@ var GameUI = cc.Layer.extend({
         for (let i = 0; i < 4; i++) {
             this.cardInQueue[i] = deck[i + 4].type;
         }
+        for (let i = 0; i < 4; i++) {
+            this.cardPlayable[i] = 0;
+        }
+        for (let i = 0; i < 4; i++) {
+            this.cardInQueue[i] = 0;
+        }
     },
 
     /**
@@ -927,19 +933,19 @@ var GameUI = cc.Layer.extend({
         let spell;
         switch (cardType) {
             case 0:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');
+                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
                 break;
             case 1:
-                spell = new SpellFallUI(posUI, 'effect_atk_ice', 'animation_ice_ball');
+                spell = new SpellFallUI(posUI, 'effect_atk_ice', 'animation_ice_ball', GameStateManagerInstance.getSpellConfig(1));
                 break;
             case 2:
-                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4);
+                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4, GameStateManagerInstance.getSpellConfig(2)[0]);
                 break;
             case 3:
-                spell = new SpellFieldUI(posUI, 'effect_buff_speed', 1.5);
+                spell = new SpellFieldUI(posUI, 'effect_buff_speed', (GameStateManagerInstance.getSpellConfig(3)[1]/1000), GameStateManagerInstance.getSpellConfig(3)[0]);
                 break;
             default:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');
+                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
                 break;
         }
         this.addChild(spell);

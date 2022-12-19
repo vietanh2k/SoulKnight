@@ -1,14 +1,15 @@
 HEAL_WIDTH = 250
 
 const SpeedUp = Spell.extend({
-    ctor: function (playerState, position) {
-        this._super(playerState, position, 'effect_buff_heal', 'animation_top');
+    ctor: function (playerState, position, stat) {
+        this._super(playerState, position);
         const config = cf.POTION.potion[SPELL_ID.FIREBALL]
         this.initOpponentUI(position)
         // this.initFromConfig(playerState, config)
         // this.render(playerState);
-        this.timeCast = 1.5
-        this.radius = 0.8
+
+        this.radius = stat[0];
+        this.timeCast = stat[1]/1000;
         this.tes = 0
         this.tes2 = 0
         this.setScale(2*CELLWIDTH/HEAL_WIDTH*this.radius)
@@ -46,7 +47,10 @@ const SpeedUp = Spell.extend({
             if (monsters[i].___SpeedEffect) {
                 monsters[i].___SpeedEffect.reset()
             } else {
-                monsters[i].___SpeedEffect = new SpeedEffect(3, 5, monsters[i]);
+                /*
+                tang toc trong 4s, tang 1.5 lan
+                 */
+                monsters[i].___SpeedEffect = new SpeedEffect(4, 1.5, monsters[i]);
                 playerState.getMap().addEffect(monsters[i].___SpeedEffect)
             }
         }

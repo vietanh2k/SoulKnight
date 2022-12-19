@@ -1,5 +1,5 @@
 {
-  "ID": "31676668-161e-4c16-938b-462ba598e461",
+  "ID": "ad932300-8ab3-4064-8e29-d9dc21cbfb10",
   "Version": "3.10.0.0",
   "Name": "healthGreen",
   "Content": {
@@ -12,7 +12,7 @@
       },
       "AnimationList": [],
       "ObjectData": {
-        "Tag": 15,
+        "Tag": 4,
         "Children": [
           {
             "FileData": {
@@ -20,9 +20,10 @@
               "Path": "battle/battle_hp_background.png",
               "Plist": ""
             },
-            "Scale9OriginX": 18,
-            "Scale9Width": 18,
-            "Scale9Height": 6,
+            "Scale9OriginX": 13,
+            "Scale9OriginY": 1,
+            "Scale9Width": 15,
+            "Scale9Height": 4,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
@@ -45,14 +46,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -27.0,
-            "RightMargin": -27.0,
+            "LeftMargin": -20.5,
+            "RightMargin": -20.5,
             "TopMargin": -3.0,
             "BottomMargin": -3.0,
-            "Tag": 21,
-            "ActionTag": 731380214,
+            "Tag": 5,
+            "ActionTag": 696181385,
             "Size": {
-              "X": 54.0,
+              "X": 41.0,
               "Y": 6.0
             },
             "Name": "image",
@@ -87,14 +88,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -26.0,
-            "RightMargin": -26.0,
+            "LeftMargin": -19.5,
+            "RightMargin": -19.5,
             "TopMargin": -2.0,
             "BottomMargin": -2.0,
-            "Tag": 20,
-            "ActionTag": -1333098625,
+            "Tag": 6,
+            "ActionTag": -22021068,
             "Size": {
-              "X": 52.0,
+              "X": 39.0,
               "Y": 4.0
             },
             "Name": "loading",

@@ -1,14 +1,18 @@
 HEAL_WIDTH = 250
 
 const Heal = Spell.extend({
-    ctor: function (playerState, position) {
-        this._super(playerState, position, 'effect_buff_heal', 'animation_top');
+    ctor: function (playerState, position, stat) {
+        this._super(playerState, position);
         const config = cf.POTION.potion[SPELL_ID.FIREBALL]
         this.initOpponentUI(position)
         // this.initFromConfig(playerState, config)
         // this.render(playerState);
+        /*
+        cast trong 4s
+         */
         this.timeCast = 4
-        this.radius = 0.8
+        this.radius = stat[0];
+        this.numEachHeal = stat[1];
         this.setScale(2*CELLWIDTH/HEAL_WIDTH*this.radius)
         return true;
     },
@@ -43,7 +47,10 @@ const Heal = Spell.extend({
             if (monsters[i].___HealEffect) {
                 monsters[i].___HealEffect.reset()
             } else {
-                monsters[i].___HealEffect = new HealMaintain(2, 2, monsters[i]);
+                /*
+                effect trong 5s
+                 */
+                monsters[i].___HealEffect = new HealMaintain(5, this.numEachHeal, monsters[i]);
                 playerState.getMap().addEffect(monsters[i].___HealEffect)
             }
         }

@@ -215,4 +215,6 @@ var g_resources = [
     "res/battle_result/fx/fx_result_lose.png",
     res.healthGreen,
     res.healthRed,
+    res.Swordman_plist,
+    res.assassin_plist
 ];

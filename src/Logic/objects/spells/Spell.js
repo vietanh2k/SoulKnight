@@ -1,7 +1,7 @@
 
 
 const Spell = cc.Node.extend({
-    ctor: function (playerState, position,spellString, aniString) {
+    ctor: function (playerState, position) {
         this._super();
         this._playerState = playerState
 

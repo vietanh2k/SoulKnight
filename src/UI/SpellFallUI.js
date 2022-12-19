@@ -1,15 +1,13 @@
-FIREBALL_WIDTH = 180
+SPELL_FALL_WIDTH = 180
 
 const SpellFallUI = cc.Node.extend({
-    ctor: function ( posUI , resSpell, aniSpell) {
+    ctor: function ( posUI , resSpell, aniSpell, stat) {
         this._super();
         this.castPosition = posUI
         this.initPosStart(posUI)
         this.initAnimation(resSpell, aniSpell)
-        this.radius = 0.8
-        this.setScale(2*CELLWIDTH/FIREBALL_WIDTH*this.radius)
-        this.ccDT = 0.02
-        // this.schedule(this.fall, this.ccDT)
+        this.radius = stat[0]
+        this.setScale(2*CELLWIDTH/SPELL_FALL_WIDTH*this.radius)
         this.isCast = false
         this.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height)
         this.fall();
@@ -17,7 +15,7 @@ const SpellFallUI = cc.Node.extend({
     },
 
     initPosStart: function (posUI) {
-        this._speed = 12 * CELLWIDTH
+        // this._speed = 12 * CELLWIDTH
         this.setPosition(posUI.x, posUI.y +4 * CELLWIDTH)
     },
 

@@ -100,6 +100,9 @@ Utils.loadCardConfig = function () {
     cc.loader.load('json/Potion.json', (err, res) => {
         cf.POTION = res[0];
     });
+    cc.loader.load('json/Potion2.json', (err, res) => {
+        cf.POTION2 = res[0];
+    });
     cc.loader.load('json/TowerBuff.json', (err, res) => {
         cf.TOWER_BUFF = res[0];
     });

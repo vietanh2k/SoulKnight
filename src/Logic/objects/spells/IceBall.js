@@ -3,14 +3,15 @@ ICEBALL_FREEZE_MONSTER_TIME = 2;
 ICEBALL_FREEZE_TOWER_TIME = 4;
 
 const IceBall = Spell.extend({
-    ctor: function (playerState, position, mapCast) {
+    ctor: function (playerState, position, mapCast, stat) {
         this._super(playerState, position);
-        const config = cf.POTION.potion[SPELL_ID.FIREBALL]
+        const config = cf.POTION.potion[SPELL_ID.FIREBALL];
         // this.initOpponentUI(position)
         // this.initFromConfig(playerState, config)
         this.mapCast = mapCast;
-        this.radius = 0.8
-        this.canCast = true
+        this.radius = stat[0];
+        this.dame = stat[1];
+        this.canCast = true;
         return true;
     },
 
@@ -46,6 +47,7 @@ const IceBall = Spell.extend({
             cc.log('dem = '+objects.length)
             for (let i = 0; i < objects.length; i++) {
                 objects[i].___freezeEffect = new FreezeEffect(ICEBALL_FREEZE_MONSTER_TIME, objects[i])
+                objects[i].takeDamage(playerState, this.dame)
                 playerState.getMap().addEffect(objects[i].___freezeEffect)
                 // monsters[i].hurtUI()
             }

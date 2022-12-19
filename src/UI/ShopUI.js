@@ -19,7 +19,7 @@ var ShopUI = cc.Layer.extend({
         // this.scheduleUpdate();
     },
     init:function () {
-
+        cc.log('===== '+cf.POTION2.radius[1])
         winSize = cc.director.getWinSize();
 
 
