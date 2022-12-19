@@ -43,10 +43,10 @@ var GameUI = cc.Layer.extend({
         this.initDeckCard();
         this.initBackGround();
 
-        this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, this._gameStateManager.playerA.rule)
-        this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
-        this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-        this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+        this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, GAME_CONFIG.RULE_A)
+        this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, GAME_CONFIG.RULE_B)
+        this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, GAME_CONFIG.RULE_A)
+        this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, GAME_CONFIG.RULE_B)
 
         this.addTouchListener()
 
@@ -387,27 +387,24 @@ var GameUI = cc.Layer.extend({
         this.addObjectBackground('#map/map_house.png', 1 / 6.5, 0, -3.9 / 8, 6.2 / 15)
         this.addObjectBackground('#map/map_house.png', 1 / 6.5, 0, 3.9 / 8, -3.8 / 15)
 
-        // this.addObjectBackground(res.rock4, 1 / 8.5, 0, -6 / 15, 7 / 15)
-        // this.addObjectBackground(res.grass3, 1 / 7, 0, 8.5 / 15, 6.5 / 15)
-        // this.addObjectBackground(res.grass2, 1 / 15, 0, 8.7 / 15, 6.3 / 15)
-        // this.addObjectBackground(res.tree0, 1 / 5, 0, 8 / 15, 5.5 / 15)
-        // this.addObjectBackground(res.rock0, 1 / 9, 0, 8 / 15, 4.2 / 15)
-        // this.addObjectBackground(res.tree2, 1 / 3, 0, 8 / 15, 3.5 / 15)
-        // this.addObjectBackground(res.tree1, 1 / 5, 0, 7 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.tree3, 1 / 5, 0, 5.5 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.grass1, 1 / 10, 0, -7.7 / 15, 5.3 / 15)
-        // this.addObjectBackground(res.tree1, 1 / 5, 0, -8.2 / 15, 4.5 / 15)
-        // this.addObjectBackground(res.tree3, 1 / 6, 0, -8 / 15, 3.5 / 15)
-        // this.addObjectBackground(res.grass0, 1 / 12, 0, -2.2 / 15, 7 / 15)
-        // this.addObjectBackground(res.tree0, 1 / 5.5, 0, -3.2 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.tree2, 1 / 3.5, 0, -4.5 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.rock3, 1 / 7, 0, -0.2 / 15, 7 / 15)
-        // this.addObjectBackground(res.grass1, 1 / 11, 0, 3.5 / 15, 7 / 15)
+
 
         this.addObjectBackground('#map/map_decoration_0002.png', 0, 2.2 / 15, 9 / 15, 1 / 15)
         this.addObjectBackground('#map/map_decoration_0001.png', 0, 2.3 / 15, -8.15 / 15, 1.25 / 15)
         var backgroundBattle2 = ccs.load(res.backgroundBattle2, "").node;
         this.addChild(backgroundBattle2);
+        let resultAnimation = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
+            "res/map/fx/as_duoi.atlas")
+        resultAnimation.setScale(CELLWIDTH/50)
+        resultAnimation.setPosition(winSize.width / 2 + WIDTHSIZE * 6.2 / 8, winSize.height / 2 + HEIGHTSIZE * -4.4 / 15)
+        resultAnimation.setAnimation(0, "slots", true)
+        this.addChild(resultAnimation)
+        let resultAnimation2 = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
+            "res/map/fx/as_duoi.atlas")
+        resultAnimation2.setScale(CELLWIDTH/50)
+        resultAnimation2.setPosition(winSize.width / 2 + WIDTHSIZE * -1.55 / 8, winSize.height / 2 + HEIGHTSIZE * 5.6/ 15)
+        resultAnimation2.setAnimation(0, "slots", true)
+        this.addChild(resultAnimation2)
         // this.addObjectBackground(res.grass1, 1 / 11, 0, -8 / 15, -1.5 / 15)
         // this.addObjectBackground(res.tree0, 1 / 4, 0, -8.5 / 15, -0.5 / 15)
         //
@@ -594,9 +591,9 @@ var GameUI = cc.Layer.extend({
     },
 
     addInforBoxUI: function () {
-        var mainscene = ccs.load(res.scene, "").node;
-        mainscene.setScale(0.89)
-        this.addChild(mainscene);
+        var OpponentInfor = ccs.load(res.scene, "").node;
+        OpponentInfor.getChildByName('name').setString(shareOpponentInfo.name)
+        this.addChild(OpponentInfor);
 
     },
 

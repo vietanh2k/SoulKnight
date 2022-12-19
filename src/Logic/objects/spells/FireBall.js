@@ -40,7 +40,8 @@ const FireBall = Spell.extend({
         const monsters = map.queryEnemiesCircle(this.castPosition,MAP_CONFIG.CELL_WIDTH*this.radius)
         cc.log('dem = '+monsters.length)
         for (let i = 0; i < monsters.length; i++) {
-            monsters[i].takeDamage(playerState, 50)
+            // monsters[i].takeDamage(playerState, 50)
+            monsters[i].position.x += 70
             monsters[i].hurtUI()
         }
     }

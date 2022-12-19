@@ -48,6 +48,7 @@ testnetwork.Connector = cc.Class.extend({
             case gv.CMD.MATCH_REPONSE:
                 cc.log('matching succeededddddddddddd')
                 cc.log(packet.x)
+                this.getOpponentInfor(packet.x)
                 try{
                     fr.getCurrentScreen().requestConfirmMatch()
                 } catch (e){
@@ -101,6 +102,7 @@ testnetwork.Connector = cc.Class.extend({
                 // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
                 cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
+
             // case gv.CMD.BATTLE_SEND_CUR_FRAME:
             //     // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
             //     // cc.log("=========================send frame$$$$$$================================")
@@ -227,6 +229,11 @@ testnetwork.Connector = cc.Class.extend({
         cc.log('Send upgrade card request: type = ' + type + ', gold spent = ' + goldSpent + '.');
         let pk = this.gameClient.getOutPacket(CmdSendUpgradeCard);
         pk.putData(type, goldSpent);
+        this.gameClient.sendPacket(pk);
+    },
+    getOpponentInfor: function (uid) {
+        let pk = this.gameClient.getOutPacket(CmdGetInforFromUid);
+        pk.putData(uid);
         this.gameClient.sendPacket(pk);
     },
 });

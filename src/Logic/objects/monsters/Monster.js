@@ -519,10 +519,14 @@ const Monster = AnimatedSprite.extend({
     },
 
     addHealthUI: function () {
-        this.healthUI = ccs.load(res.healthMonster, "").node;
+        if(this.renderRule === 1) {
+            this.healthUI = ccs.load(res.healthRed, "").node;
+        }else{
+            this.healthUI = ccs.load(res.healthGreen, "").node;
+        }
         this.healthUI.opacity = 0
 
-        this.healthUI.setScale(0.3)
+        // this.healthUI.setScale(0.3)
         this.addChild(this.healthUI)
     },
     hurtUI: function () {

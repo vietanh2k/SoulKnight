@@ -54,6 +54,7 @@ let EndBattleUI = cc.Layer.extend({
 
         let infor = ccs.load(res.inforEndBattle, "").node;
         infor.getChildByName('name1').setString(sharePlayerInfo.name);
+        infor.getChildByName('name2').setString(shareOpponentInfo.name);
         let healthA = GameStateManagerInstance.playerA.health;
         let healthB = GameStateManagerInstance.playerB.health;
         infor.getChildByName('health1').setString(healthA);

@@ -38,6 +38,8 @@ var res = {
     tooltipGold: "tooltipGold.json",
     backgroundBattle: "backgroundBattle.json",
     backgroundBattle2: "backgroundBattle2.json",
+    healthRed: "healthRed.json",
+    healthGreen: "healthGreen.json",
 
     font_magic: 'res/font/SVN-Supercell Magic.ttf',
     font_normal: 'res/font/SVN-Avo bold.ttf',
@@ -211,4 +213,6 @@ var g_resources = [
     "res/battle_result/fx/fx_result_win.png",
     "res/battle_result/fx/fx_result_lose.atlas",
     "res/battle_result/fx/fx_result_lose.png",
+    res.healthGreen,
+    res.healthRed,
 ];

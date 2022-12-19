@@ -9,8 +9,9 @@ const SpellFieldUI = cc.Node.extend({
         this.setScale(2*CELLWIDTH/FIREBALL_WIDTH*this.radius)
         this.ccDT = 0.03
         this.duration = duration;
-        this.schedule(this.updateDuration, this.ccDT)
+        // this.schedule(this.updateDuration, this.ccDT)
         this.isCast = false
+        this.updateDuration()
         return true;
     },
 
@@ -23,10 +24,14 @@ const SpellFieldUI = cc.Node.extend({
     },
 
     updateDuration: function (){
-        this.duration -= this.ccDT;
-        if(this.duration <= 0){
-            this.destroy()
-        }
+        // this.duration -= this.ccDT;
+        // if(this.duration <= 0){
+        //     this.destroy()
+        // }
+        let seq = cc.sequence(cc.delayTime(this.duration+0.1), cc.callFunc(()=>{
+            this.destroy();
+        }))
+        this.runAction(seq);
     },
 
     destroy: function (){

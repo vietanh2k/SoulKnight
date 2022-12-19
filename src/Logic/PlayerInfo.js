@@ -92,3 +92,4 @@ var PlayerInfo = cc.Class.extend({
 })
 
 var sharePlayerInfo;
+var shareOpponentInfo;

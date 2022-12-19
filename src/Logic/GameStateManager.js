@@ -45,7 +45,10 @@ var GameStateManager = cc.Class.extend({
         this.updateToFrameN = 0;
 
         this.waveCount = 0;
-
+        /*
+        lay stat card theo lvl tu config
+         */
+        this.cardConfig = {}
 
     },
     init:function () {
@@ -222,4 +225,42 @@ var GameStateManager = cc.Class.extend({
         return this.curWave;
     },
 
+    addCardConfig: function (typeCard) {
+        const cardInfor = sharePlayerInfo.collection.find(element => element.type === typeCard);
+        const lvl =cardInfor.level;
+        const bac = Math.floor((lvl-1)/5);
+        let config = null;
+        let radius = 0;
+        let value = 0;
+        switch (typeCard) {
+            case 0:
+                config = cf.POTION.potion[SPELL_ID.FIREBALL];
+                radius = cf.POTION.radius[bac];
+                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
+                this.cardConfig[0] = [radius, value];
+                break;
+            case 1:
+                config = cf.POTION.potion[SPELL_ID.FIREBALL];
+                radius = cf.POTION.radius[bac];
+                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
+                this.cardConfig[0] = [radius, value];
+                break;
+            case 2:
+                config = cf.POTION.potion[SPELL_ID.FIREBALL];
+                radius = cf.POTION.radius[bac];
+                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
+                this.cardConfig[0] = [radius, value];
+                break;
+            case 3:
+                config = cf.POTION.potion[SPELL_ID.FIREBALL];
+                radius = cf.POTION.radius[bac];
+                value = cf.POTION.potion[SPELL_ID.FIREBALL].statPerLevel.dame[lvl];
+                this.cardConfig[0] = [radius, value];
+                break;
+            default:
+                cc.log('Card concept \"' + this.concept + '\" not found in config.')
+                break;
+        }
+        return this.curWave;
+    },
 });
