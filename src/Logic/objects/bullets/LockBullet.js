@@ -14,7 +14,8 @@ let TCannonBullet = Bullet.extend({
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);
                 if (this.level === 3) {
-                    object.stun(0.2);
+                    object.stunEffect = new StunEffect(this.getStunDuration(), object);
+                    playerState.getMap().addEffect(object.stunEffect);
                 }
                 object.hurtUI();
             }
@@ -27,7 +28,11 @@ let TCannonBullet = Bullet.extend({
         if (this.target && this.target.release) {
             this.target.release();
         }
-    }
+    },
+
+    getStunDuration: function () {
+        return 0.2;
+    },
 });
 
 let TIceGunBullet = Bullet.extend({
@@ -45,7 +50,8 @@ let TIceGunBullet = Bullet.extend({
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);
-                object.freezeByTIceGun(this.getFreezeDuration(), this.level === 3);
+                object.tIceGunEffect = new TIceGunEffect(this.getFreezeDuration(), object, this.level === 3);
+                playerState.getMap().addEffect(object.tIceGunEffect);
                 object.hurtUI();
             }
         }

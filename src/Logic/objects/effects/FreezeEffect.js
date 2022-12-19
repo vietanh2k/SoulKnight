@@ -1,23 +1,23 @@
 const FreezeEffect = Effect.extend({
-    ctor: function (t, targetTower) {
-        this._super(t)
+    ctor: function (time, target) {
+        this._super(time)
 
-        this.targetTower = targetTower
-        this.targetTower.active = false
-        this.targetTower.setColor(cc.color(128, 128, 255))
-        if(this.targetTower.concept == 'monster') {
-            this.targetTower.play(-1)
+        this.target = target
+        this.target.inactiveSourceCounter++;
+        this.target.setColor(cc.color(128, 128, 255))
+        if(this.target.concept === 'monster') {
+            this.target.play(-1)
         }
-        this.targetTower.retain()
+        this.target.retain()
     },
 
     destroy: function (playerState) {
-        this.targetTower.active = true
-        this.targetTower.setColor(cc.color(255, 255, 255))
-        if(this.targetTower.concept == 'monster') {
-            this.targetTower.play(0)
+        this.target.inactiveSourceCounter--;
+        this.target.setColor(cc.color(255, 255, 255))
+        if(this.target.concept === 'monster') {
+            this.target.play(0)
         }
-        this.targetTower.___freezeEffect = null
-        this.targetTower.release()
+        this.target.___freezeEffect = null
+        this.target.release()
     }
 })

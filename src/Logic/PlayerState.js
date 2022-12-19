@@ -1,21 +1,21 @@
 
 var PlayerState = cc.Class.extend({
-    rule:null,
+    rule: null,
     uid: null,
     energy: null,
     health: null,
     //_map:null,
-    deck:null,
-    intArray:null,
+    deck: null,
+    intArray: null,
 
-    ctor:function (rule) {
+    ctor: function (rule) {
         this.rule = rule
-        this.health = 9999
-        this.energy = 30
-        this.intArray =  Array.from(
-            {length:MAP_WIDTH},
-            ()=>Array.from(
-                {length:MAP_HEIGHT}
+        this.health = 15
+        this.energy = 20
+        this.intArray = Array.from(
+            { length: MAP_WIDTH },
+            () => Array.from(
+                { length: MAP_HEIGHT }
             )
         );
         this.init();
@@ -27,7 +27,7 @@ var PlayerState = cc.Class.extend({
         this.monstersToSpawn = []
 
     },
-    init:function () {
+    init: function () {
 
         winSize = cc.director.getWinSize();
 
@@ -39,44 +39,44 @@ var PlayerState = cc.Class.extend({
 
         return true;
     },
-    updateHealth:function (amount) {
+    updateHealth: function (amount) {
         this.health += amount
-        if(this.health < 0){
+        if (this.health < 0) {
             this.health = 0
         }
 
     },
-    updateEnergy:function (amount) {
+    updateEnergy: function (amount) {
         this.energy += amount
-        if(this.energy <0){
+        if (this.energy < 0) {
             this.energy = 0
         }
-        if(this.energy > MAX_ENERGY){
+        if (this.energy > MAX_ENERGY) {
             this.energy = MAX_ENERGY
         }
     },
-    readFrom:function (bf) {
+    readFrom: function (bf) {
         bf.getInt();
         bf.getInt();
         for (var y = 0; y < MAP_HEIGHT; y++) {
             for (var x = 0; x < MAP_WIDTH; x++) {
-                var tmp =  bf.getInt();
-                if(tmp == 0) this.intArray[x][y] = 0
-                if(tmp == 1) this.intArray[x][y] = 0
-                if(tmp == 2) this.intArray[x][y] = 0
-                if(tmp == 3) this.intArray[x][y] = 1
-                if(tmp == 4) this.intArray[x][y] = 0
-                if(tmp == 5) this.intArray[x][y] = 2
-                if(tmp == 6) this.intArray[x][y] = -1
-                if(tmp == 7) this.intArray[x][y] = -2
-                if(tmp == 8) this.intArray[x][y] = -3
+                var tmp = bf.getInt();
+                if (tmp == 0) this.intArray[x][y] = 0
+                if (tmp == 1) this.intArray[x][y] = 0
+                if (tmp == 2) this.intArray[x][y] = 0
+                if (tmp == 3) this.intArray[x][y] = 1
+                if (tmp == 4) this.intArray[x][y] = 0
+                if (tmp == 5) this.intArray[x][y] = 2
+                if (tmp == 6) this.intArray[x][y] = -1
+                if (tmp == 7) this.intArray[x][y] = -2
+                if (tmp == 8) this.intArray[x][y] = -3
             }
         }
         this._map = new MapView(this, this.intArray, this.rule)
     },
 
 
-    update: function (dt){
+    update: function (dt) {
         if ((this.timePerMonster -= dt) <= 0) {
             if (this.monstersToSpawn.length !== 0) {
                 //this._map.monsters.push(this.monstersToSpawn.shift())
@@ -93,7 +93,7 @@ var PlayerState = cc.Class.extend({
         return this._map
     },
 
-    addMonster: function (monster){
+    addMonster: function (monster) {
         //this._map.monsters.push(monster)
         //return monster
 

@@ -58,14 +58,14 @@ let TIceGun = Tower.extend({
 
         let newBullet = new TIceGunBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level);
 
-        const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.7 * Math.pow(-1, this.renderRule));
-        newBullet.position.x += gunCenterFromCellCenter.x;
-        newBullet.position.y += gunCenterFromCellCenter.y;
-
-        let enemyPosition = new Vec2(object.position.x, object.position.y);
-        let direction = enemyPosition.sub(newBullet.position).l2norm();
-        newBullet.position.x += direction.x * MAP_CONFIG.CELL_WIDTH * 0.1;
-        newBullet.position.y += direction.y * MAP_CONFIG.CELL_HEIGHT * 0.1;
+        // const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.7 * Math.pow(-1, this.renderRule));
+        // newBullet.position.x += gunCenterFromCellCenter.x;
+        // newBullet.position.y += gunCenterFromCellCenter.y;
+        //
+        // let enemyPosition = new Vec2(object.position.x, object.position.y);
+        // let direction = enemyPosition.sub(newBullet.position).l2norm();
+        // newBullet.position.x += direction.x * MAP_CONFIG.CELL_WIDTH * 0.1;
+        // newBullet.position.y += direction.y * MAP_CONFIG.CELL_HEIGHT * 0.1;
 
         return newBullet;
     },

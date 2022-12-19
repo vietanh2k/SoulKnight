@@ -83,6 +83,9 @@ var Tower = TowerUI.extend({
         if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
             damage *= cf.MAP_BUFF.DAMAGE;
         }
+        if (this.damageBuffEffect !== undefined) {
+            damage *= (1 + this.damageBuffEffect.damageAdjustment);
+        }
         return damage;
     },
 
@@ -183,12 +186,10 @@ var Tower = TowerUI.extend({
             [13, 12, 0, 3, 3],
             [14, 15, 0, 1, 2],
         ]
-        cc.log('Previous direction' + direction);
         direction.set(
             Math.max(Math.round(2.5 + direction.x * 2.5) - 1, 0),
             Math.max(0, Math.round(2.5 + direction.y * 2.5) - 1)
         );
-        cc.log('After direction' + direction);
         if (direction) {
             return dirs[direction.y][direction.x];
         }
@@ -202,7 +203,6 @@ var Tower = TowerUI.extend({
         let position = new Vec2(this.position.x, this.position.y);
         return new Bullet(object, speed, damage, radius, position, this);
     },
-
 
     findTargets: function (playerState) {
         this.target = [];
@@ -260,11 +260,22 @@ var Tower = TowerUI.extend({
     },
 
     destroy: function () {
+        let index = convertMapPosToIndex(this.position);
+        if (this.renderRule === 1) {
+            GameStateManagerInstance.playerA.getMap()._mapController.intArray[index.x][index.y] -= cf.MAP_CELL.TOWER_ADDITIONAL;
+        } else if (this.renderRule === 2) {
+            GameStateManagerInstance.playerB.getMap()._mapController.intArray[index.x][index.y] -= cf.MAP_CELL.TOWER_ADDITIONAL;
+        }
+
         this.isDestroy = true;
         if (this.getParent() != null) {
             this.getParent().getEnergyUI(cc.p(this.x, this.y), 5);
         }
         this.visible = false;
+        if (this.fireFx !== undefined && this.fireFx != null) {
+            this.fireFx.clearTrack(0);
+            this.fireFx.removeFromParent(true);
+        }
         this.removeFromParent(true);
         //this.active = false;
     },
