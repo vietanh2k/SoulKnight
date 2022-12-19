@@ -1,0 +1,119 @@
+{
+  "ID": "31676668-161e-4c16-938b-462ba598e461",
+  "Version": "3.10.0.0",
+  "Name": "healthGreen",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 15,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "battle/battle_hp_background.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 18,
+            "Scale9Width": 18,
+            "Scale9Height": 6,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -27.0,
+            "RightMargin": -27.0,
+            "TopMargin": -3.0,
+            "BottomMargin": -3.0,
+            "Tag": 21,
+            "ActionTag": 731380214,
+            "Size": {
+              "X": 54.0,
+              "Y": 6.0
+            },
+            "Name": "image",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "ProgressInfo": 100,
+            "ImageFileData": {
+              "Type": "Normal",
+              "Path": "battle/hp_green.png",
+              "Plist": ""
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -26.0,
+            "RightMargin": -26.0,
+            "TopMargin": -2.0,
+            "BottomMargin": -2.0,
+            "Tag": 20,
+            "ActionTag": -1333098625,
+            "Size": {
+              "X": 52.0,
+              "Y": 4.0
+            },
+            "Name": "loading",
+            "ctype": "LoadingBarObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "battle/battle_hp_background.png",
+        "battle/hp_green.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}
