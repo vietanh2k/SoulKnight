@@ -1,6 +1,7 @@
 TIME_PER_HEAL = 0.1;
 
 const MONSTER_COS_THRESHOLD = 0.9
+const MONSTER_PUSH_TIME = 2 // s
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -48,6 +49,7 @@ const Monster = AnimatedSprite.extend({
         this.impactCenter = new Vec2(0,0)
         this.impactMonsters = new UnorderedList()
         this.impactDirection = null
+        this.pushingTime = 0
 
         return true;
     },
@@ -360,11 +362,17 @@ const Monster = AnimatedSprite.extend({
             for (let i = 0; i < cells.length; i++) {
                 const cell = cells[i]
                 if (!cell || !cell.nextCell) {
+                    this.pushingTime = MONSTER_PUSH_TIME
+
                     distance = 0.0
                     this.targetPosition = null
                     break
                 }
             }
+        }
+
+        if (this.pushingTime !== 0) {
+            this.pushingTime = Math.max(0, this.pushingTime - dt)
         }
 
         if (this.route(map, distance, null)) {
@@ -604,56 +612,42 @@ const Monster = AnimatedSprite.extend({
     },
 
     onImpact: function (playerState, anotherMonster) {
-        /*this.impactedMonster = anotherMonster
-        this.avoidMonsterStage = 0
-        //cc.log("onImpact")
+        if (this.speed <= anotherMonster.speed) return
 
-        const tPos = this.getTargetPositionFromMap(playerState.getMap(), null)
+        const map = playerState.getMap()
 
-        if (tPos) {
-            let tDir = tPos.sub(this.position).normalize()
+        // this monster is A
+        // another monster is B
+        const BA = this.position.sub(anotherMonster.position).normalize()
+        const AB = anotherMonster.position.sub(this.position).normalize()
 
-            let rDir = this.impactedMonster.position.sub(this.position).normalize()
+        if (this.pushingTime > 0) {
+            const p = this.position.add(AB.mul(this.hitRadius + anotherMonster.hitRadius) + 5)
 
-            if (rDir.dot(tDir) < 0) {
-                this.targetPosition = null
-                this.impactedMonster = null
+            const anotherMonsterCell = map.getCellAtPosition(p)
+            if (anotherMonsterCell != null && anotherMonster.nextCell != null) {
+                anotherMonster.position.set(p.x, p.y)
             }
-        }*/
-        // if (this.speed <= anotherMonster.speed) return
-        // //if (this.impactMonsters.size() >= 2) return
-        // //if (this.position.sub(anotherMonster.position).length() <= this.hitRadius + anotherMonster.hitRadius) {
-        // //    let dir = this.position.sub(anotherMonster.position).normalize()
-        // //    const pos = anotherMonster.position.add(dir.mul(this.hitRadius + anotherMonster.hitRadius))
-        // //    this.position.set(pos.x, pos.y)
-        // //}
-        //
-        // //const tangent = anotherMonster.getForwardTangent(this.position)
-        // //this.impactVec = this.impactVec.add(tangent).normalize();
-        //
-        // const map = playerState.getMap()
-        //
-        // let dir1 = this.position.sub(anotherMonster.position).normalize()
-        // const pos = anotherMonster.position.add(dir1.mul(this.hitRadius + anotherMonster.hitRadius))
-        // const cell = map.getCellAtPosition(pos)
-        // if (cell && cell.nextCell) {
-        //     this.position.set(pos.x, pos.y)
-        // }
-        //
-        // const dir = anotherMonster.position.sub(this.position).normalize()
-        // if (dir.dot(anotherMonster.movingDirection) < -MONSTER_COS_THRESHOLD) {
-        //     return
-        // }
-        //
-        // /*const dir = anotherMonster.position.sub(this.position).normalize()
-        // if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
-        //     return
-        // }*/
-        //
-        // if (this.impactMonsters.indexOf(anotherMonster) === -1) {
-        //     this.impactMonsters.add(anotherMonster)
-        //     anotherMonster.retain()
-        // }
+        }
+
+        const pos = anotherMonster.position.add(BA.mul(this.hitRadius + anotherMonster.hitRadius))
+        const cell = map.getCellAtPosition(pos)
+        if (cell && cell.nextCell) {
+            this.position.set(pos.x, pos.y)
+        }
+
+        if (this.pushingTime > 0) {
+            return
+        }
+
+        if (AB.dot(anotherMonster.movingDirection) < -MONSTER_COS_THRESHOLD) {
+            return
+        }
+
+        if (this.impactMonsters.indexOf(anotherMonster) === -1) {
+            this.impactMonsters.add(anotherMonster)
+            anotherMonster.retain()
+        }
     },
 
 });
