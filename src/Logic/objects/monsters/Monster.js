@@ -2,6 +2,7 @@ TIME_PER_HEAL = 0.1;
 
 const MONSTER_COS_THRESHOLD = 0.9
 const MONSTER_PUSH_TIME = 2 // s
+const MONSTER_PUSH_D = 3
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -347,9 +348,13 @@ const Monster = AnimatedSprite.extend({
             for (let i = 0; i < cells.length; i++) {
                 const cell = cells[i]
                 if (!cell || !cell.nextCell) {
+                    if (this.pushingTime > MONSTER_PUSH_TIME / 2.0) {
+                        distance = 0.0
+                        this.impactMonsters.clear()
+                    }
+
                     this.pushingTime = MONSTER_PUSH_TIME
 
-                    distance = 0.0
                     this.targetPosition = null
                     break
                 }
@@ -584,23 +589,34 @@ const Monster = AnimatedSprite.extend({
         }
     },
 
-    onImpact: function (playerState, anotherMonster) {
-        if (this.speed <= anotherMonster.speed) return
+    pushAnotherMonster: function (map, anotherMonster, AB, dt) {
+        const p = this.position.add(AB.mul(this.hitRadius + anotherMonster.hitRadius + MONSTER_PUSH_D * dt * this.weight / anotherMonster.weight))
 
+        const anotherMonsterCell = map.getCellAtPosition(p)
+        //cc.log('======================== ' + p + ' --- ' + anotherMonsterCell)
+        if (anotherMonsterCell && anotherMonsterCell.nextCell != null) {
+            //cc.log('=================================================================')
+            anotherMonster.position.set(p.x, p.y)
+        }
+    },
+
+    onImpact: function (playerState, anotherMonster) {
         const map = playerState.getMap()
 
         // this monster is A
         // another monster is B
-        const BA = this.position.sub(anotherMonster.position).normalize()
         const AB = anotherMonster.position.sub(this.position).normalize()
+        if (this.speed === anotherMonster.speed) {
+            this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
+            return
+        }
+
+        if (this.speed <= anotherMonster.speed) return
+
+        const BA = this.position.sub(anotherMonster.position).normalize()
 
         if (this.pushingTime > 0) {
-            const p = this.position.add(AB.mul(this.hitRadius + anotherMonster.hitRadius) + 5)
-
-            const anotherMonsterCell = map.getCellAtPosition(p)
-            if (anotherMonsterCell != null && anotherMonster.nextCell != null) {
-                anotherMonster.position.set(p.x, p.y)
-            }
+            this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
         }
 
         const pos = anotherMonster.position.add(BA.mul(this.hitRadius + anotherMonster.hitRadius))

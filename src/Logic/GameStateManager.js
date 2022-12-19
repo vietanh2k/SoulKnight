@@ -27,8 +27,8 @@ var GameStateManager = cc.Class.extend({
         indAction = 0
         FrameMaxForUpdate = 15
         this.init();
-        this.playerA = new PlayerState(1)
-        this.playerB = new PlayerState(2)
+        this.playerA = new PlayerState(1, this)
+        this.playerB = new PlayerState(2, this)
         this.monsterFactory = new MonsterFactory()
         this.xid = 1
         this.readFrom(pkg)

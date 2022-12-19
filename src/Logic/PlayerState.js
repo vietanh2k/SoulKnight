@@ -8,9 +8,9 @@ var PlayerState = cc.Class.extend({
     deck: null,
     intArray: null,
 
-    ctor: function (rule) {
+    ctor: function (rule, gameState) {
         this.rule = rule
-        this.health = 15
+        this.health = 9999
         this.energy = 20
         this.intArray = Array.from(
             { length: MAP_WIDTH },
@@ -25,6 +25,7 @@ var PlayerState = cc.Class.extend({
         this.timePerMonster = GAME_CONFIG.TIME_PER_MONSTER_IN_WAVE;
 
         this.monstersToSpawn = []
+        this.gameStateManager = gameState
 
     },
     init: function () {

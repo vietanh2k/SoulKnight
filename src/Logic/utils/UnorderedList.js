@@ -66,4 +66,10 @@ const UnorderedList = function (reservedSize = 1024) {
         }
         return -1
     }
+
+    this.clear = function () {
+        this.objs.length = 0
+        this.objFreeIds.length = 0
+        this.objsCount = 0
+    }
 }
