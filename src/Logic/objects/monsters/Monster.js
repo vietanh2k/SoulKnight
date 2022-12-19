@@ -1,6 +1,6 @@
 TIME_PER_HEAL = 0.1;
 
-const FLOAT_THRESHOLD = 0.04
+const MONSTER_COS_THRESHOLD = 0.9
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -31,9 +31,9 @@ const Monster = AnimatedSprite.extend({
         this.initConfig(playerState)
         this.addHealthUI()
 
-        this.impactedMonster = null
-        this.pointToAvoidBlockingMonster = null
-        this.avoidMonsterStage = 0
+        //this.impactedMonster = null
+        //this.pointToAvoidBlockingMonster = null
+        //this.avoidMonsterStage = 0
 
         this.recoverHpFx = new sp.SkeletonAnimation(res.heal_fx_json, res.heal_fx_atlas)
         this.recoverHpFx.visible = false
@@ -142,7 +142,7 @@ const Monster = AnimatedSprite.extend({
             const vec = monster.position.sub(self.position)
             const dir = vec.normal()
 
-            if (monster.isDestroy || dir.dot(monster.movingDirection) < -0.9 || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
+            if (monster.isDestroy || dir.dot(monster.movingDirection) < -MONSTER_COS_THRESHOLD || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
                 list.remove(id)
                 monster.release()
                 //cc.log("Remove --> " + id)
@@ -641,7 +641,7 @@ const Monster = AnimatedSprite.extend({
         // }
         //
         // const dir = anotherMonster.position.sub(this.position).normalize()
-        // if (dir.dot(anotherMonster.movingDirection) < -0.9) {
+        // if (dir.dot(anotherMonster.movingDirection) < -MONSTER_COS_THRESHOLD) {
         //     return
         // }
         //
