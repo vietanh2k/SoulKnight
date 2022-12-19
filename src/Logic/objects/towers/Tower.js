@@ -186,12 +186,10 @@ var Tower = TowerUI.extend({
             [13, 12, 0, 3, 3],
             [14, 15, 0, 1, 2],
         ]
-        cc.log('Previous direction' + direction);
         direction.set(
             Math.max(Math.round(2.5 + direction.x * 2.5) - 1, 0),
             Math.max(0, Math.round(2.5 + direction.y * 2.5) - 1)
         );
-        cc.log('After direction' + direction);
         if (direction) {
             return dirs[direction.y][direction.x];
         }
