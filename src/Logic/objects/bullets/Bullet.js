@@ -10,7 +10,7 @@ var Bullet = cc.Sprite.extend({
 
     reset: function (target, speed, damage, radius, position, fromTower, targetType, level) {
         this.target = target;
-        this.speed = speed * cf.BULLET_SPEED_MULTIPLIER;
+        this.speed = speed;
         this.damage = damage;
         this.radius = radius;
         this.isDestroy = false;
@@ -100,7 +100,7 @@ var Bullet = cc.Sprite.extend({
     explose: function (playerState, pos) {
         const map = playerState.getMap();
 
-        let objectList = map.getObjectInRange(pos, this.radius);
+        let objectList = map.queryEnemiesCircle(pos, this.radius * MAP_CONFIG.CELL_WIDTH);
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);

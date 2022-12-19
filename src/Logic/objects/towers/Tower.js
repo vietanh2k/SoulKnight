@@ -60,6 +60,11 @@ var Tower = TowerUI.extend({
     },
 
     getRange: function () {
+        // const map = playerState.getMap()
+        // let range = cf.TOWER.tower[this.instance].stat[this.level].range;
+        // if (map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+        //     range *= cf.MAP_BUFF.RANGE;
+        // }
         let range = cf.TOWER.tower[this.instance].stat[this.level].range;
         if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
             range *= cf.MAP_BUFF.RANGE;
