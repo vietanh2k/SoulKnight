@@ -106,8 +106,8 @@ const Mat3 = function (arr) {
     this.setTranslation = function (vec) {
         this.set(
 
-            1, 0, x,
-            0, 1, y,
+            1, 0, vec.x,
+            0, 1, vec.y,
             0, 0, 1
 
         );

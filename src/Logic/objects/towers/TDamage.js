@@ -31,6 +31,68 @@ let TDamage = Tower.extend({
         return true;
     },
 
+    logicUpdate: function (playerState, dt) {
+        if (this.getPending() > 0) {
+            this.updatePending(dt);
+        } else {
+            this.visible = true;
+
+            const self = this;
+            const towers = playerState.getMap().queryTowerCircleWithoutOverlap(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH);
+            towers.forEach(tower => {
+                if (tower.damageBuffEffect !== undefined) {
+                    tower.damageBuffEffect.destroy();
+                }
+                tower.damageBuffEffect = new DamageBuffEffect(dt, tower, this.getDamageAdjustment());
+                playerState.getMap().addEffect(tower.damageBuffEffect);
+            });
+
+            if (this.level === 3) {
+                this.findTargetsIgnoreTaunt(playerState);
+                if (this.target.length > 0) {
+                    this.slowAllTargets(playerState, dt);
+                }
+            }
+        }
+    },
+
+    getDamageAdjustment: function () {
+        switch (this.level) {
+            case 1:
+                return 0.2;
+            case 2:
+                return 0.25;
+            case 3:
+                return 0.35;
+        }
+    },
+
+    findTargetsIgnoreTaunt: function (playerState) {
+        this.target = [];
+        const self = this;
+        const map = playerState.getMap();
+
+        const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH);
+        enemies.forEach((monster) => {
+            if (self.checkIsTarget(monster)) {
+                self.target.push(monster);
+            }
+        });
+    },
+
+    slowAllTargets: function (playerState, dt) {
+        for (let i = 0; i < this.target.length; i++) {
+            this.target[i].slowDuration = dt;
+            this.target[i].speedReduced = 0.8 * this.target[i].speed;
+            this.target[i].slowEffectFromTDamage = new SlowEffect(dt, this.target[i], cf.SLOW_TYPE.RATIO, this.getSpeedReduced(), cf.SLOW_SOURCE.TDAMAGE);
+            playerState.getMap().addEffect(this.target[i].slowEffectFromTDamage);
+        }
+    },
+
+    getSpeedReduced: function () {
+        return 0.8;
+    },
+
     runFireAnimationForever: function () {
         this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_strength_fx.json', 'res/tower/fx/tower_strength_fx.atlas');
         GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
@@ -116,14 +178,6 @@ let TDamage = Tower.extend({
                     this.runAction(sequence);
                     for (let i = 1; i <= this.evolution + 1; i++) {
                         this.part[i].runAction(actionToRun[i][dir]);
-                    }
-                }
-                if (this.fireFx != null) {
-                    this.fireFx.visible = true;
-                    let animationName = 'attack_' + (Math.min(dir, 16 - dir) + 1);
-                    this.fireFx.setAnimation(0, animationName, false);
-                    if ([this.DIR.NNW, this.DIR.NW, this.DIR.WNW, this.DIR.W, this.DIR.WSW, this.DIR.SW, this.DIR.SSW].indexOf(dir) !== -1) {
-                        this.fireFx.scaleX = -1;
                     }
                 }
             }

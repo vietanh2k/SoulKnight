@@ -27,8 +27,8 @@ const DestroyTowerAction = cc.Class.extend({
                 return false;
             }
             tower.destroy();
-            // GameStateManagerInstance.playerA.getMap().updatePathForCells();
-            // GameUI.instance.showPathUI(GameStateManagerInstance.playerA._map._mapController.listPath, 1);
+            GameStateManagerInstance.playerA.getMap().updatePathForCells();
+            GameUI.instance.showPathUI(GameStateManagerInstance.playerA._map._mapController.listPath, 1);
             GameUI.instance.removeCurrentTowerActionsUI();
         } else {
             let tower = GameStateManagerInstance.playerB.getMap().getTowerAtPosition(new cc.p(this.x, this.y));
@@ -36,8 +36,8 @@ const DestroyTowerAction = cc.Class.extend({
                 return false;
             }
             tower.destroy();
-            // GameStateManagerInstance.playerB.getMap().updatePathForCells();
-            // GameUI.instance.showPathUI(GameStateManagerInstance.playerB._map._mapController.listPath, 2);
+            GameStateManagerInstance.playerB.getMap().updatePathForCells();
+            GameUI.instance.showPathUI(GameStateManagerInstance.playerB._map._mapController.listPath, 2);
         }
     }
 });

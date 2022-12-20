@@ -1,5 +1,8 @@
 
-const FLOAT_THRESHOLD = 0.04
+const MONSTER_COS_THRESHOLD = 0.9
+const MONSTER_PUSH_TIME = 2 // s
+const MONSTER_PUSH_D = 3
+const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD = -0.01
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -20,6 +23,8 @@ const Monster = AnimatedSprite.extend({
         this.rateSpeedUpBuff = 1
         this.renderRule = this._playerState.rule
 
+        this.inactiveSourceCounter = 0;
+
         const startCell = playerState.getMap().getStartCell()
         this.position = new Vec2(startCell.getEdgePositionWithNextCell().x, startCell.getEdgePositionWithNextCell().y)
         this.prevPosition = new Vec2(startCell.getCenterPosition().x,startCell.getCenterPosition().y)
@@ -34,9 +39,9 @@ const Monster = AnimatedSprite.extend({
         this.initConfig(playerState)
         this.addHealthUI()
 
-        this.impactedMonster = null
-        this.pointToAvoidBlockingMonster = null
-        this.avoidMonsterStage = 0
+        //this.impactedMonster = null
+        //this.pointToAvoidBlockingMonster = null
+        //this.avoidMonsterStage = 0
 
         this.recoverHpFx = new sp.SkeletonAnimation(res.heal_fx_json, res.heal_fx_atlas)
         this.recoverHpFx.visible = false
@@ -51,6 +56,7 @@ const Monster = AnimatedSprite.extend({
         this.impactCenter = new Vec2(0,0)
         this.impactMonsters = new UnorderedList()
         this.impactDirection = null
+        this.pushingTime = 0
 
         return true;
     },
@@ -128,7 +134,7 @@ const Monster = AnimatedSprite.extend({
         const dir = this.position.sub(center).normalize()
         const ret = rotate.mul(dir).normalize()
 
-        if (direction.dot(ret) < 0.0) {
+        if (direction.dot(ret) < MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD) {
             ret.set(-ret.x, -ret.y)
         }
 
@@ -145,7 +151,7 @@ const Monster = AnimatedSprite.extend({
             const vec = monster.position.sub(self.position)
             const dir = vec.normal()
 
-            if (monster.isDestroy || dir.dot(monster.movingDirection) < -0.9 || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
+            if (monster.isDestroy || dir.dot(monster.movingDirection) < -MONSTER_COS_THRESHOLD || vec.length() > monster.hitRadius + self.hitRadius + MAP_CONFIG.CELL_WIDTH / 4.0) {
                 list.remove(id)
                 monster.release()
                 //cc.log("Remove --> " + id)
@@ -244,7 +250,8 @@ const Monster = AnimatedSprite.extend({
     // },
 
     logicUpdate: function (playerState, dt){
-        if(this.health<=0){
+        if (this.health <= 0) {
+            this.active = true;
             this.destroy();
             return;
         }
@@ -253,14 +260,15 @@ const Monster = AnimatedSprite.extend({
         // }
         // this.updateSpeedUpDuration(dt);
 
+        this.active = this.inactiveSourceCounter === 0;
 
+        if (this.active === false) {
+            return;
+        }
 
-
-        if (this.poisonByTOilGunDuration !== undefined && this.poisonByTOilGunDuration > 0) {
-            let dtPoison = Math.min(dt, this.poisonByTOilGunDuration);
-            this.takeDamage(playerState, this.poisonByTOilGunDps * dtPoison);
+        if (this.poisonEffect !== undefined) {
+            this.takeDamage(playerState, this.poisonEffect.dps * Math.min(dt, this.poisonEffect.countDownTime));
             this.hurtUI();
-            this.poisonByTOilGunDuration -= dtPoison;
         }
 
         /*if (this.impactedMonster) {
@@ -286,52 +294,32 @@ const Monster = AnimatedSprite.extend({
         this.prevPosition.set(this.position.x, this.position.y)
 
         let distance = 0;
-        if (this.freezeByTIceGunDuration !== undefined && this.freezeByTIceGunDuration > 0) {
-            let dtFreeze = Math.min(dt, this.freezeByTIceGunDuration);
-            dt -= dtFreeze;
-            this.freezeByTIceGunDuration -= dtFreeze;
-            if (this.freezeByTIceGunDuration <= 0) {
-                this.freezeByTIceGunDuration = 0;
-                this.isVulnerableByTIceGun = false;
-            }
-            if (this.slowDuration !== undefined && this.slowDuration > 0) {
-                this.slowDuration -= dtFreeze;
-                if (this.slowDuration < 0) {
-                    this.slowDuration = 0;
-                }
-            }
-            if (this.stunDuration !== undefined && this.stunDuration > 0) {
-                this.stunDuration -= dtFreeze;
-                if (this.stunDuration < 0) {
-                    this.stunDuration = 0;
-                }
-            }
-        }
-        if (this.stunDuration !== undefined && this.stunDuration > 0) {
-            let dtStun = Math.min(dt, this.stunDuration);
-            dt -= dtStun;
-            this.stunDuration -= dtStun;
-            if (this.slowDuration !== undefined && this.slowDuration > 0) {
-                this.slowDuration -= dtStun;
-                if (this.slowDuration < 0) {
-                    this.slowDuration = 0;
-                }
-            }
-            if (this.freezeByTIceGunDuration !== undefined && this.freezeByTIceGunDuration > 0) {
-                this.freezeByTIceGunDuration -= dtStun;
-                if (this.freezeByTIceGunDuration <= 0) {
-                    this.freezeByTIceGunDuration = 0;
-                    this.isVulnerableByTIceGun = false;
-                }
-            }
-        }
-        if (this.speedReduced !== undefined && this.slowDuration !== undefined && this.slowDuration > 0) {
-            let dtSlow = Math.min(dt, this.slowDuration);
-            dt -= dtSlow;
-            this.slowDuration -= dtSlow;
-            distance += (this.speed - this.speedReduced) * dtSlow;
-        }
         distance += this.speed * dt;
+        let reducedSpeedFromTOilGun = 0;
+        let reducedSpeedFromTDamage = 0;
+        if (this.slowEffectFromTOilGun !== undefined && this.slowEffectFromTDamage !== undefined) {
+            reducedSpeedFromTOilGun = this.getReducedSpeed(this.speed, this.slowEffectFromTOilGun.slowType, this.slowEffectFromTOilGun.slowValue);
+            reducedSpeedFromTDamage = this.getReducedSpeed(this.speed, this.slowEffectFromTDamage.slowType, this.slowEffectFromTDamage.slowValue);
+            if (reducedSpeedFromTOilGun < reducedSpeedFromTDamage) {
+                let time = Math.min(dt, this.slowEffectFromTOilGun.countDownTime);
+                distance -= reducedSpeedFromTOilGun * time;
+                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage) {
+                    distance -= reducedSpeedFromTDamage * Math.min(0, dt - time, this.slowEffectFromTDamage.countDownTime - time);
+                }
+            } else {
+                let time = Math.min(dt, this.slowEffectFromTDamage.countDownTime);
+                distance -= reducedSpeedFromTDamage * time;
+                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun) {
+                    distance -= reducedSpeedFromTOilGun * Math.min(0, dt - time, this.slowEffectFromTOilGun.countDownTime - time);
+                }
+            }
+        } else if (this.slowEffectFromTOilGun !== undefined) {
+            reducedSpeedFromTOilGun = this.getReducedSpeed(this.speed, this.slowEffectFromTOilGun.slowType, this.slowEffectFromTOilGun.slowValue);
+            distance -= reducedSpeedFromTOilGun * Math.min(dt, this.slowEffectFromTOilGun.countDownTime);
+        } else if (this.slowEffectFromTDamage !== undefined) {
+            reducedSpeedFromTDamage = this.getReducedSpeed(this.speed, this.slowEffectFromTDamage.slowType, this.slowEffectFromTDamage.slowValue);
+            distance -= reducedSpeedFromTDamage * Math.min(dt, this.slowEffectFromTDamage.countDownTime);
+        }
         distance *= this.rateSpeedUpBuff;
 
         this.targetPosition = null
@@ -363,11 +351,21 @@ const Monster = AnimatedSprite.extend({
             for (let i = 0; i < cells.length; i++) {
                 const cell = cells[i]
                 if (!cell || !cell.nextCell) {
-                    distance = 0.0
+                    if (this.pushingTime > MONSTER_PUSH_TIME / 2.0) {
+                        distance = 0.0
+                        this.impactMonsters.clear()
+                    }
+
+                    this.pushingTime = MONSTER_PUSH_TIME
+
                     this.targetPosition = null
                     break
                 }
             }
+        }
+
+        if (this.pushingTime !== 0) {
+            this.pushingTime = Math.max(0, this.pushingTime - dt)
         }
 
         if (this.route(map, distance, null)) {
@@ -401,6 +399,15 @@ const Monster = AnimatedSprite.extend({
         }*/
 
         //this.debug(map)
+    },
+
+    getReducedSpeed: function (speed, slowType, slowValue) {
+        switch (slowType) {
+            case cf.SLOW_TYPE.FLAT:
+                return slowValue;
+            case cf.SLOW_TYPE.RATIO:
+                return speed * slowValue;
+        }
     },
 
     getTargetPositionFromMap: function (map, prevCell) {
@@ -441,19 +448,6 @@ const Monster = AnimatedSprite.extend({
     },
 
     route: function (map, distance, prevCell) {
-        // if(this.___pushEffect != null){
-        //     cc.log('aaaaaaaaaaaaaaaaa'+ this.pushVec.x +' '+this.pushVec.y)
-        //     let tmp2 = this.pushVec.mul(this.pushSpeed*0.016)
-        //     let tmp = this.position.add(tmp2);
-        //     let tmpCell = map.getCellAtPosition(tmp)
-        //     if(!tmpCell || !tmpCell.getNextCell()){
-        //         this.___pushEffect.isDestroy = true
-        //         this.___pushEffect = null;
-        //         return true;
-        //     }
-        //     this.position.set(tmp.x, tmp.y);
-        //     return true;
-        // }
         let currentCell = map.getCellAtPosition(this.position);
 
         if (!currentCell) return true;
@@ -583,31 +577,10 @@ const Monster = AnimatedSprite.extend({
         if (this.isVulnerableByTIceGun) {
             multiplier *= 1.5;
         }
-        this.health = Math.max(this.health - many * multiplier, 0)
+        this.health = Math.max(this.health - many * multiplier, 0);
         if (this.health > this.MaxHealth) {
             this.health = this.MaxHealth;
         }
-    },
-
-    stun: function (duration) {
-        this.stunDuration = duration;
-    },
-
-    freezeByTIceGun: function (duration, bulletIsLevelThree) {
-        this.freezeByTIceGunDuration = duration;
-        if (bulletIsLevelThree) {
-            this.isVulnerableByTIceGun = true;
-        }
-    },
-
-    poisonByTOilGun: function (dps, duration) {
-        this.poisonByTOilGunDuration = duration;
-        this.poisonByTOilGunDps = dps;
-    },
-
-    slow: function (speedReduced, duration) {
-        this.speedReduced = speedReduced;
-        this.slowDuration = duration;
     },
 
     recoverHp: function (many) {
@@ -625,65 +598,54 @@ const Monster = AnimatedSprite.extend({
         }
     },
 
-    getHealth:function (){
-        return this.health;
-    },
+    pushAnotherMonster: function (map, anotherMonster, AB, dt) {
+        const p = this.position.add(AB.mul(this.hitRadius + anotherMonster.hitRadius + MONSTER_PUSH_D * dt * this.weight / anotherMonster.weight))
 
-    setPushStat:function (pushVec ){
-        this.pushVec = pushVec;
+        const anotherMonsterCell = map.getCellAtPosition(p)
+        //cc.log('======================== ' + p + ' --- ' + anotherMonsterCell)
+        if (anotherMonsterCell && anotherMonsterCell.nextCell != null) {
+            //cc.log('=================================================================')
+            anotherMonster.position.set(p.x, p.y)
+        }
     },
 
     onImpact: function (playerState, anotherMonster) {
-        /*this.impactedMonster = anotherMonster
-        this.avoidMonsterStage = 0
-        //cc.log("onImpact")
+        const map = playerState.getMap()
 
-        const tPos = this.getTargetPositionFromMap(playerState.getMap(), null)
+        // this monster is A
+        // another monster is B
+        const AB = anotherMonster.position.sub(this.position).normalize()
+        if (this.speed === anotherMonster.speed) {
+            this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
+            return
+        }
 
-        if (tPos) {
-            let tDir = tPos.sub(this.position).normalize()
+        if (this.speed <= anotherMonster.speed) return
 
-            let rDir = this.impactedMonster.position.sub(this.position).normalize()
+        const BA = this.position.sub(anotherMonster.position).normalize()
 
-            if (rDir.dot(tDir) < 0) {
-                this.targetPosition = null
-                this.impactedMonster = null
-            }
-        }*/
-        // if (this.speed <= anotherMonster.speed) return
-        // //if (this.impactMonsters.size() >= 2) return
-        // //if (this.position.sub(anotherMonster.position).length() <= this.hitRadius + anotherMonster.hitRadius) {
-        // //    let dir = this.position.sub(anotherMonster.position).normalize()
-        // //    const pos = anotherMonster.position.add(dir.mul(this.hitRadius + anotherMonster.hitRadius))
-        // //    this.position.set(pos.x, pos.y)
-        // //}
-        //
-        // //const tangent = anotherMonster.getForwardTangent(this.position)
-        // //this.impactVec = this.impactVec.add(tangent).normalize();
-        //
-        // const map = playerState.getMap()
-        //
-        // let dir1 = this.position.sub(anotherMonster.position).normalize()
-        // const pos = anotherMonster.position.add(dir1.mul(this.hitRadius + anotherMonster.hitRadius))
-        // const cell = map.getCellAtPosition(pos)
-        // if (cell && cell.nextCell) {
-        //     this.position.set(pos.x, pos.y)
-        // }
-        //
-        // const dir = anotherMonster.position.sub(this.position).normalize()
-        // if (dir.dot(anotherMonster.movingDirection) < -0.9) {
-        //     return
-        // }
-        //
-        // /*const dir = anotherMonster.position.sub(this.position).normalize()
-        // if (dir.dot(this.movingDirection) < -FLOAT_THRESHOLD) {
-        //     return
-        // }*/
-        //
-        // if (this.impactMonsters.indexOf(anotherMonster) === -1) {
-        //     this.impactMonsters.add(anotherMonster)
-        //     anotherMonster.retain()
-        // }
+        if (this.pushingTime > 0) {
+            this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
+        }
+
+        const pos = anotherMonster.position.add(BA.mul(this.hitRadius + anotherMonster.hitRadius))
+        const cell = map.getCellAtPosition(pos)
+        if (cell && cell.nextCell) {
+            this.position.set(pos.x, pos.y)
+        }
+
+        if (this.pushingTime > 0) {
+            return
+        }
+
+        if (AB.dot(anotherMonster.movingDirection) < -MONSTER_COS_THRESHOLD) {
+            return
+        }
+
+        if (this.impactMonsters.indexOf(anotherMonster) === -1) {
+            this.impactMonsters.add(anotherMonster)
+            anotherMonster.retain()
+        }
     },
 
 });

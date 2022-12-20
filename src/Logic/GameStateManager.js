@@ -11,9 +11,9 @@ var GameStateManager = cc.Class.extend({
     playerB: null,
     cellWidth: null,
     _timer: null,
-    canTouchNewWave:null,
-    curWave:null,
-    winner:null,
+    canTouchNewWave: null,
+    curWave: null,
+    winner: null,
 
 
     UPDATE_TYPE_NORMAL: 0,
@@ -28,19 +28,20 @@ var GameStateManager = cc.Class.extend({
         FrameMaxForUpdate = 15;
         this.spellConfig = {}
         this.init();
-        this.playerA = new PlayerState(1);
-        this.playerB = new PlayerState(2);
-        this.monsterFactory = new MonsterFactory();
-        this.readFrom(pkg);
-        this._timer = new Timer(this);
-        this.canTouchNewWave = false;
-        this.curWave = 0;
-        this.winner = null;
-        this.isLastWave= false;
-        this.dem = 0;
+        this.playerA = new PlayerState(1, this)
+        this.playerB = new PlayerState(2, this)
+        this.monsterFactory = new MonsterFactory()
+        this.xid = 1
+        this.readFrom(pkg)
+        this._timer = new Timer(this)
+        this.canTouchNewWave = false
+        this.curWave = 0
+        this.winner = null
+        this.isLastWave = false
+        this.dem = 0
         this.sumDt = 0;
-        this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME;
-        this.frameCount = 0;
+        this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME
+        this.frameCount = 0
 
         this.updateType = this.UPDATE_TYPE_NORMAL;
         this.updateToFrameN = 0;
@@ -87,7 +88,7 @@ var GameStateManager = cc.Class.extend({
 
         Random.seed(pkg.getInt());
     },
-    isClearWave:function (){
+    isClearWave: function () {
         /*if(this.playerA._map.monsters.length == 0){
             this.canTouchNewWave = true
         }*/
@@ -159,7 +160,7 @@ var GameStateManager = cc.Class.extend({
             Nếu frame hiện tại > MaxFrame SV gửi về thì ko update
         */
         // cc.log(this.frameCount +' fam '+FrameMaxForUpdate)
-        if(this.frameCount>= FrameMaxForUpdate){
+        if (this.frameCount >= FrameMaxForUpdate) {
             return;
         }
 

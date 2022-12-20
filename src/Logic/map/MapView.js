@@ -201,9 +201,9 @@ var MapView = cc.Class.extend({
             })
 
             this.monsters.forEach((monster, id, list) => {
-                if (!monster.active) return
-
                 monster.logicUpdate(this._playerState, dt)
+
+                if (!monster.active) return
 
                 if(monster.isDestroy){
                     list.remove(id)

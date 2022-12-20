@@ -1,14 +1,14 @@
 
 var PlayerState = cc.Class.extend({
-    rule:null,
+    rule: null,
     uid: null,
     energy: null,
     health: null,
     //_map:null,
-    deck:null,
-    intArray:null,
+    deck: null,
+    intArray: null,
 
-    ctor:function (rule) {
+    ctor: function (rule, gameState) {
         this.rule = rule
         this.health = 15
         this.energy = 30
@@ -25,6 +25,7 @@ var PlayerState = cc.Class.extend({
         this.timePerMonster = GAME_CONFIG.TIME_PER_MONSTER_IN_WAVE;
 
         this.monstersToSpawn = []
+        this.gameStateManager = gameState
         /*
         dem tong vi tri,hp, frame destroy cua monster moi 300 frame
          */
@@ -33,7 +34,7 @@ var PlayerState = cc.Class.extend({
         this.countDestroy = 0;
 
     },
-    init:function () {
+    init: function () {
 
         winSize = cc.director.getWinSize();
 
@@ -70,21 +71,21 @@ var PlayerState = cc.Class.extend({
 
     updateHealth:function (amount) {
         this.health += amount
-        if(this.health < 0){
+        if (this.health < 0) {
             this.health = 0
         }
 
     },
-    updateEnergy:function (amount) {
+    updateEnergy: function (amount) {
         this.energy += amount
-        if(this.energy <0){
+        if (this.energy < 0) {
             this.energy = 0
         }
         if(this.energy > GAME_CONFIG.MAX_ENERGY){
             this.energy = GAME_CONFIG.MAX_ENERGY
         }
     },
-    readFrom:function (bf) {
+    readFrom: function (bf) {
         bf.getInt();
         bf.getInt();
         for (var y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
@@ -105,7 +106,7 @@ var PlayerState = cc.Class.extend({
     },
 
 
-    update: function (dt){
+    update: function (dt) {
         if ((this.timePerMonster -= dt) <= 0) {
             if (this.monstersToSpawn.length !== 0) {
                 //this._map.monsters.push(this.monstersToSpawn.shift())
@@ -122,7 +123,7 @@ var PlayerState = cc.Class.extend({
         return this._map
     },
 
-    addMonster: function (monster){
+    addMonster: function (monster) {
         //this._map.monsters.push(monster)
         //return monster
 
