@@ -560,7 +560,7 @@ const Monster = AnimatedSprite.extend({
         if (this.isVulnerableByTIceGun) {
             multiplier *= 1.5;
         }
-        this.health = Math.max(this.health - many * multiplier, 0);
+        this.health = Math.max(this.health - Math.floor(many * multiplier), 0);
         if (this.health > this.MaxHealth) {
             this.health = this.MaxHealth;
         }
