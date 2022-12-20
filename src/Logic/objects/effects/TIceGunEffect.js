@@ -14,7 +14,7 @@ const TIceGunEffect = FreezeEffect.extend({
         }
         this.target.inactiveSourceCounter--;
         this.target.setColor(cc.color(255, 255, 255));
-        if(this.target.concept === 'monster') {
+        if (this.target.concept === 'monster' && !this.target.isDestroy) {
             this.target.play(0);
         }
         this.target.tIceGunEffect = undefined;
