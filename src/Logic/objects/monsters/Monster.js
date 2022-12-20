@@ -2,7 +2,7 @@ TIME_PER_HEAL = 0.1;
 
 const MONSTER_COS_THRESHOLD = 0.9
 const MONSTER_PUSH_TIME = 2 // s
-const MONSTER_PUSH_D = 3
+const MONSTER_PUSH_D = 1
 const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD = -0.01
 
 const Monster = AnimatedSprite.extend({
@@ -73,7 +73,7 @@ const Monster = AnimatedSprite.extend({
         }
 
         this.weight = config.weight
-        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH
+        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH / 2.0
     },
 
     initConfig: function (playerState) {
