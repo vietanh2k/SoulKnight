@@ -88,6 +88,7 @@ let TBoomerangBullet = Bullet.extend({
                     let damage = this.damage;
                     if (this.level === 3) {
                         damage *= 1.5;
+                        damage = Math.floor(damage);
                     }
                     object.takeDamage(playerState, this.damage, this.fromTower);
                     object.hurtUI();
