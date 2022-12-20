@@ -76,7 +76,7 @@ let TOilGunBullet = Bullet.extend({
                 if (object.slowEffectFromTOilGun !== undefined) {
                     object.slowEffectFromTOilGun.reset();
                 } else {
-                    object.slowEffectFromTOilGun = new SlowEffect(this.getSlowDuration(), object, cf.SLOW_TYPE.FLAT, this.getSpeedReduced(), cf.SLOW_SOURCE.TOILGUN);
+                    object.slowEffectFromTOilGun = new SlowEffect(this.getSlowDuration(), object, cf.SLOW_TYPE.RATIO, this.getSpeedReduced(), cf.SLOW_SOURCE.TOILGUN);
                     playerState.getMap().addEffect(object.slowEffectFromTOilGun);
                 }
 
@@ -102,7 +102,7 @@ let TOilGunBullet = Bullet.extend({
     },
 
     getSpeedReduced: function () {
-        return 0.2 * MAP_CONFIG.CELL_WIDTH;
+        return 0.5;
     },
 
     getSlowDuration: function () {

@@ -301,13 +301,13 @@ const Monster = AnimatedSprite.extend({
             if (reducedSpeedFromTOilGun < reducedSpeedFromTDamage) {
                 let time = Math.min(dt, this.slowEffectFromTOilGun.countDownTime);
                 distance -= reducedSpeedFromTOilGun * time;
-                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage) {
+                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage.countDownTime) {
                     distance -= reducedSpeedFromTDamage * Math.min(0, dt - time, this.slowEffectFromTDamage.countDownTime - time);
                 }
             } else {
                 let time = Math.min(dt, this.slowEffectFromTDamage.countDownTime);
                 distance -= reducedSpeedFromTDamage * time;
-                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun) {
+                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun.countDownTime) {
                     distance -= reducedSpeedFromTOilGun * Math.min(0, dt - time, this.slowEffectFromTOilGun.countDownTime - time);
                 }
             }
@@ -537,6 +537,7 @@ const Monster = AnimatedSprite.extend({
     },
 
     destroy: function () {
+        cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
         if(this.getParent() != null){
