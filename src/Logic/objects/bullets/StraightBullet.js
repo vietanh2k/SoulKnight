@@ -17,7 +17,7 @@ let TWizardBullet = Bullet.extend({
 
     explose: function (playerState, pos) {
         const map = playerState.getMap();
-        let objectList = map.getObjectInRange(pos, this.radius);
+        let objectList = map.queryEnemiesCircle(pos, this.radius * MAP_CONFIG.CELL_WIDTH);
         let damage = this.damage;
         if (this.level === 3 && objectList.length > 5) {
             damage += 10;
@@ -67,7 +67,7 @@ let TOilGunBullet = Bullet.extend({
 
     explose: function (playerState, pos) {
         const map = playerState.getMap();
-        let objectList = map.getObjectInRange(pos, this.radius);
+        let objectList = map.queryEnemiesCircle(pos, this.radius * MAP_CONFIG.CELL_WIDTH);
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);
