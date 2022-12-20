@@ -70,7 +70,7 @@ let TBoomerangBullet = Bullet.extend({
 
     dealDamage: function (playerState, pos) {
         const map = playerState.getMap();
-        let objectList = map.getObjectInRange(pos, this.bulletRadius);
+        let objectList = map.queryEnemiesCircle(pos, this.bulletRadius * MAP_CONFIG.CELL_WIDTH);
         for (let object of objectList) {
             if (this.canAttack(object)) {
                 if (this.boomerangPhase === 0 && (object.isDamagedInPhaseZero === undefined || !object.isDamagedInPhaseZero[this.id])) {
