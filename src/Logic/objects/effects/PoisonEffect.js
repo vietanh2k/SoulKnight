@@ -5,6 +5,7 @@ const PoisonEffect = Effect.extend({
 
         this.target = target;
         this.dps = dps;
+        this.sumDt = 0;
         // todo animation poison
         this.target.retain();
     },

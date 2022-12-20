@@ -73,8 +73,13 @@ let TOilGunBullet = Bullet.extend({
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);
-                object.slowEffectFromTOilGun = new SlowEffect(this.getSlowDuration(), object, cf.SLOW_TYPE.FLAT, this.getSpeedReduced(), cf.SLOW_SOURCE.TOILGUN);
-                playerState.getMap().addEffect(object.slowEffectFromTOilGun);
+                if (object.slowEffectFromTOilGun !== undefined) {
+                    object.slowEffectFromTOilGun.reset();
+                } else {
+                    object.slowEffectFromTOilGun = new SlowEffect(this.getSlowDuration(), object, cf.SLOW_TYPE.FLAT, this.getSpeedReduced(), cf.SLOW_SOURCE.TOILGUN);
+                    playerState.getMap().addEffect(object.slowEffectFromTOilGun);
+                }
+
                 if (this.level === 3) {
                     if (object.poisonEffect !== undefined) {
                         object.poisonEffect.reset();

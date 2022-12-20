@@ -261,8 +261,12 @@ const Monster = AnimatedSprite.extend({
         this.updateSpeedUpDuration(dt);
 
         if (this.poisonEffect !== undefined) {
-            this.takeDamage(playerState, this.poisonEffect.dps * Math.min(dt, this.poisonEffect.countDownTime));
-            this.hurtUI();
+            this.poisonEffect.sumDt += dt;
+            if (this.poisonEffect.sumDt > 1) {
+                this.takeDamage(playerState, this.poisonEffect.dps);
+                this.hurtUI();
+                this.poisonEffect.sumDt -= 1;
+            }
         }
 
         /*if (this.impactedMonster) {
