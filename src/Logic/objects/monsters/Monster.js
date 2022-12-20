@@ -3,6 +3,7 @@ TIME_PER_HEAL = 0.1;
 const MONSTER_COS_THRESHOLD = 0.9
 const MONSTER_PUSH_TIME = 2 // s
 const MONSTER_PUSH_D = 3
+const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD = -0.01
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -130,7 +131,7 @@ const Monster = AnimatedSprite.extend({
         const dir = this.position.sub(center).normalize()
         const ret = rotate.mul(dir).normalize()
 
-        if (direction.dot(ret) < 0.0) {
+        if (direction.dot(ret) < MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD) {
             ret.set(-ret.x, -ret.y)
         }
 
