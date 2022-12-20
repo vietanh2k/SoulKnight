@@ -114,7 +114,7 @@ testnetwork.Connector = cc.Class.extend({
                 this.checkDelayWithServer(amount);
                 this.checkCorrectWithServer(amount);
                 PreDate = Date.now()
-                cc.log('amount = ' +amount+' '+ FrameDelayPosible*GAME_CONFIG.DEFAULT_DELTA_TIME*1000+'  '+FrameDelayPosible)
+                // cc.log('amount = ' +amount+' '+ FrameDelayPosible*GAME_CONFIG.DEFAULT_DELTA_TIME*1000+'  '+FrameDelayPosible)
                 break
         }
     },

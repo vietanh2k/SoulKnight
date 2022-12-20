@@ -1,7 +1,7 @@
 
 const MONSTER_COS_THRESHOLD = 0.9
 const MONSTER_PUSH_TIME = 2 // s
-const MONSTER_PUSH_D = 3
+const MONSTER_PUSH_D = 1
 const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD = -0.01
 
 const Monster = AnimatedSprite.extend({
@@ -573,6 +573,7 @@ const Monster = AnimatedSprite.extend({
     },
 
     takeDamage: function (playerState, many, from) {
+        many = Math.floor(many)
         let multiplier = 1;
         if (this.isVulnerableByTIceGun) {
             multiplier *= 1.5;
