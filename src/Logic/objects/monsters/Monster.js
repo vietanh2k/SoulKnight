@@ -74,7 +74,7 @@ const Monster = AnimatedSprite.extend({
         }
 
         this.weight = config.weight
-        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH / MONSTER_RADIUS_PERCENT
+        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH
     },
 
     initConfig: function (playerState) {
