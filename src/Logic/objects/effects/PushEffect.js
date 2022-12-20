@@ -7,7 +7,7 @@ const PushEffect = Effect.extend({
         let time = timePush* 5/Math.sqrt(this.monster.weight);
         this._super(time)
 
-        this.monster.active = false
+        this.monster.inactiveSourceCounter++
         this.monster.play(-1)
         this.vecPush = vecPush;
         /*
@@ -38,9 +38,11 @@ const PushEffect = Effect.extend({
     },
 
     destroy: function (playerState) {
-        this.monster.active = true;
+        if( !this.monster.isDestroy) {
+            this.monster.play(0)
+        }
         this.monster.___pushEffect = null;
-        this.monster.play(0)
+        this.monster.inactiveSourceCounter--;
         this.monster.release()
     }
 })

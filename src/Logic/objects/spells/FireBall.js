@@ -26,12 +26,15 @@ const FireBall = Spell.extend({
         const monsters = map.queryEnemiesCircle(this.castPosition,MAP_CONFIG.CELL_WIDTH*this.radius)
         cc.log('dem = '+monsters.length)
         for (let i = 0; i < monsters.length; i++) {
-            monsters[i].takeDamage(playerState, this.dame)
+            // monsters[i].takeDamage(playerState, this.dame)
             /*
             đẩy quái, càng gần tâm đẩy càng xa
              */
             let vecPush = monsters[i].position.sub(this.castPosition)
             let timePush = 1/2*(MAP_CONFIG.CELL_WIDTH*this.radius-vecPush.length())/(MAP_CONFIG.CELL_WIDTH*this.radius)
+            if(vecPush.isZero()){
+                vecPush.set(Random.range(0.5, 1), Random.range(0.5, 1));
+            }
             let vecPushNormal = (vecPush.normalize()).mul((MAP_CONFIG.CELL_WIDTH*this.radius-vecPush.length())/(MAP_CONFIG.CELL_WIDTH*this.radius))
 
             if (monsters[i].___pushEffect) {

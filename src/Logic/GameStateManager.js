@@ -5,6 +5,14 @@ lưu list action để chờ activate
 let ActionListInstance = []
 let indAction = 0
 let FrameMaxForUpdate = 15
+let PreDate = 0;
+/*
+frame mà client có thể delay với server
+Nếu delay nhiều hơn thì tua
+ */
+let FrameDelayPosible = 15;
+const FrameDelayMax = 45;
+const FrameDelayMin = 15;
 
 var GameStateManager = cc.Class.extend({
     playerA: null,
@@ -26,6 +34,7 @@ var GameStateManager = cc.Class.extend({
         ActionListInstance = [];
         indAction = 0;
         FrameMaxForUpdate = 15;
+        PreDate = Date.now();
         this.spellConfig = {}
         this.init();
         this.playerA = new PlayerState(1, this)
@@ -170,8 +179,8 @@ var GameStateManager = cc.Class.extend({
         /*
          Nếu frame hiện tại quá chậm so với SV thi tua nhanh
          */
-        if(this.frameCount < FrameMaxForUpdate-30){
-            for(var i= this.frameCount; i<FrameMaxForUpdate-25; i++){
+        if(this.frameCount < FrameMaxForUpdate-FrameDelayPosible-10){
+            for(var i= this.frameCount; i<=FrameMaxForUpdate-FrameDelayPosible; i++){
                 this.frameUpdateNormal();
                 cc.log('tuaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
             }

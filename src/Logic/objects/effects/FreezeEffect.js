@@ -14,7 +14,7 @@ const FreezeEffect = Effect.extend({
     destroy: function (playerState) {
         this.target.inactiveSourceCounter--;
         this.target.setColor(cc.color(255, 255, 255))
-        if(this.target.concept === 'monster') {
+        if(this.target.concept === 'monster' && !this.target.isDestroy) {
             this.target.play(0)
         }
         this.target.___freezeEffect = null

@@ -648,4 +648,8 @@ const Monster = AnimatedSprite.extend({
         }
     },
 
+    getHealth:function (){
+        return this.health;
+    }
+
 });

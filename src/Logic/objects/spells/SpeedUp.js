@@ -5,7 +5,6 @@ const SpeedUp = Spell.extend({
 
         this.radius = stat[0];
         this.timeCast = stat[1]/1000;
-        this.setScale(2*CELLWIDTH/HEAL_WIDTH*this.radius)
         return true;
     },
 

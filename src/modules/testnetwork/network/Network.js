@@ -1,6 +1,7 @@
-/**
- * Created by KienVN on 10/2/2017.
- */
+COUNT_DELAY_RESET = 12
+COUNT_CORRECT_RESET = 20;
+MAX_DELAY = 5;
+// MAX_CORRECT =
 
 var gv = gv || {};
 var testnetwork = testnetwork || {};
@@ -8,6 +9,9 @@ var testnetwork = testnetwork || {};
 testnetwork.Connector = cc.Class.extend({
     ctor: function (gameClient) {
         this.gameClient = gameClient;
+        this.checkDelay = 0;
+        this.countDelay = 12;
+        this.countCorrect = 20;
         gameClient.packetFactory.addPacketMap(testnetwork.packetMap);
         gameClient.receivePacketSignal.add(this.onReceivedPacket, this);
         this._userName = "username";
@@ -103,10 +107,15 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log("=========================BUY CARD SUCCEEDED================================")
                 break
 
-            // case gv.CMD.BATTLE_SEND_CUR_FRAME:
-            //     // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
-            //     // cc.log("=========================send frame$$$$$$================================")
-            //     break
+            case gv.CMD.BATTLE_SEND_CUR_FRAME:
+                // LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].updateBuyChest(packet)
+                // cc.log("=========================send frame$$$$$$================================")
+                let amount = Date.now() - PreDate
+                this.checkDelayWithServer(amount);
+                this.checkCorrectWithServer(amount);
+                PreDate = Date.now()
+                cc.log('amount = ' +amount+' '+ FrameDelayPosible*GAME_CONFIG.DEFAULT_DELTA_TIME*1000+'  '+FrameDelayPosible)
+                break
         }
     },
     sendGetUserInfo: function () {
@@ -235,5 +244,48 @@ testnetwork.Connector = cc.Class.extend({
         let pk = this.gameClient.getOutPacket(CmdGetInforFromUid);
         pk.putData(uid);
         this.gameClient.sendPacket(pk);
+    },
+
+    /*
+    check xem client có đang delay liên tục không
+    nếu có thì tăng lượng delay tối đa giữa client này với server
+    đầu vào là thời gian nhận gói tin Frame từ server
+     */
+    checkDelayWithServer: function (amount) {
+
+        if(amount>(FrameDelayPosible*GAME_CONFIG.DEFAULT_DELTA_TIME*1000)) {
+            this.checkDelay ++;
+        }
+        if( this.checkDelay >0){
+            this.countDelay --;
+        }
+        if(this.countDelay === 0) {
+            this.countDelay = COUNT_DELAY_RESET;
+            this.checkDelay = 0;
+        }
+        if(this.checkDelay === MAX_DELAY) {
+            FrameDelayPosible = Math.min(FrameDelayPosible += 5, FrameDelayMax);
+            this.checkDelay = 0;
+            this.countDelay = COUNT_DELAY_RESET;
+            cc.log("Frame Posible================ "+ FrameDelayPosible)
+        }
+    },
+
+    /*
+    check xem client có đang chạy đúng liên tục không
+    nếu có thì giảm lượng delay tối đa giữa client này với server
+    đầu vào là thời gian nhận gói tin Frame từ server
+     */
+    checkCorrectWithServer: function (amount) {
+        if(amount>=(FrameDelayPosible*GAME_CONFIG.DEFAULT_DELTA_TIME*1000)){
+            this.countCorrect = COUNT_CORRECT_RESET;
+        }else {
+            this.countCorrect --;
+        }
+        if(this.countCorrect === 0){
+            this.countCorrect = COUNT_CORRECT_RESET;
+            FrameDelayPosible = Math.max(--FrameDelayPosible, FrameDelayMin);
+            cc.log("Frame Posible================ "+ FrameDelayPosible)
+        }
     },
 });
