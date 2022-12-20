@@ -91,7 +91,7 @@ var Tower = TowerUI.extend({
         if (this.damageBuffEffect !== undefined) {
             damage *= (1 + this.damageBuffEffect.damageAdjustment);
         }
-        return damage;
+        return Math.floor(damage);
     },
 
     getBulletSpeed: function () {
