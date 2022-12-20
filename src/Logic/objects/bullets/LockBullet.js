@@ -12,8 +12,12 @@ let TCannonBullet = Bullet.extend({
             this.target.takeDamage(playerState, this.damage, this.fromTower);
             cc.log('Monster HP: ' + this.target.health + ', position: ' + this.target.position + ', frame: ' + GameStateManagerInstance.frameCount)
             if (this.level === 3) {
-                this.target.stunEffect = new StunEffect(this.getStunDuration(), this.target);
-                playerState.getMap().addEffect(this.target.stunEffect);
+                if (this.target.stunEffect !== undefined) {
+                    this.target.stunEffect.reset();
+                } else {
+                    this.target.stunEffect = new StunEffect(this.getStunDuration(), this.target);
+                    playerState.getMap().addEffect(this.target.stunEffect);
+                }
             }
             this.target.hurtUI();
         }
