@@ -1,10 +1,3 @@
-MAP_WIDTH = 7;
-MAP_HEIGHT = 5;
-MAP_RATIO = 15 / 8;
-NUM_CARD_PLAYABLE = 4
-ENERGY_DESTROY_CARD = 5
-TICK_FOR_DELAY_TOWER = 60
-TICK_FOR_DELAY_SPELL_FALL = 30
 
 var GameUI = cc.Layer.extend({
     mapWidth: null,
@@ -334,7 +327,7 @@ var GameUI = cc.Layer.extend({
         var node = new Vec2(0, 0)
         var count = 0
         var delay = 1
-        while (node.x != MAP_WIDTH || node.y != MAP_HEIGHT) {
+        while (node.x != MAP_CONFIG.MAP_WIDTH || node.y != MAP_CONFIG.MAP_HEIGHT) {
             var dir = path[node.x][node.y].sub(node)
             var numDir
             if (dir.x == 1 && dir.y == 0) numDir = 6
@@ -467,7 +460,7 @@ var GameUI = cc.Layer.extend({
 
         var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
         time3.visible = false
-        var numTime = new ccui.Text(TIME_WAVE, res.font_magic, 24)
+        var numTime = new ccui.Text(GAME_CONFIG.TIME_WAVE, res.font_magic, 24)
         numTime.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
         var whiteColor = new cc.Color(255, 255, 255, 255);
         numTime.setTextColor(whiteColor)
@@ -479,7 +472,7 @@ var GameUI = cc.Layer.extend({
         touchLayer.opacity = 0
         touchLayer.addClickEventListener(()=>{
             if (GameStateManagerInstance.canTouchNewWave) {
-                // GameStateManagerInstance._timer.resetTime(TIME_WAVE)
+                // GameStateManagerInstance._timer.resetTime(GAME_CONFIG.TIME_WAVE)
                 this.getNewWave()
                 testnetwork.connector.sendActions([[new NextWaveAction(this._gameStateManager.waveCount), 0]]);
                 cc.log('touch1111111111111111111111')
@@ -547,7 +540,7 @@ var GameUI = cc.Layer.extend({
         lbWave.enableShadow()
         lbWave.setTextColor(blueColor2)
 
-        var strNumWave = this._gameStateManager.curWave + '/' + MAX_WAVE
+        var strNumWave = this._gameStateManager.curWave + '/' + GAME_CONFIG.MAX_WAVE
         var lbNumWave = new ccui.Text(strNumWave, res.font_magic, 30)
         lbNumWave.setScale(CELLWIDTH / lbNumWave.getContentSize().height * 0.35)
         lbNumWave.setPosition(CELLWIDTH * 0.48, winSize.height / 2 + CELLWIDTH * 0.95)
@@ -742,7 +735,7 @@ var GameUI = cc.Layer.extend({
                 // }
             }
         });
-        for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
+        for (let i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
             var cardBox = new cc.Sprite('res/battle/battle_card_box.png')
             cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.43)
             cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
@@ -756,7 +749,7 @@ var GameUI = cc.Layer.extend({
             this.listCard.push(card)
             cc.eventManager.addListener(listener1.clone(), card);
         }
-        for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
+        for (let i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
 
             var btnRemoveCard =new ccui.Button('res/battle/battle_btn_destroy.png');
             btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.4)
@@ -765,8 +758,8 @@ var GameUI = cc.Layer.extend({
 
             btnRemoveCard.addClickEventListener(()=> {
                 if(this.cardTouchSlot >= 0) {
-                    if (GameStateManagerInstance.playerA.energy >= ENERGY_DESTROY_CARD) {
-                        this.updateCardSlot(this.cardTouchSlot, ENERGY_DESTROY_CARD);
+                    if (GameStateManagerInstance.playerA.energy >= GAME_CONFIG.ENERGY_DESTROY_CARD) {
+                        this.updateCardSlot(this.cardTouchSlot, GAME_CONFIG.ENERGY_DESTROY_CARD);
                     } else {
                         Utils.addToastToRunningScene('Không đủ năng lượng!');
                     }
@@ -876,7 +869,7 @@ var GameUI = cc.Layer.extend({
                         let loc = convertLogicalPosToIndex(posLogic, 1);
                         this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                            gv.gameClient._userId), TICK_FOR_DELAY_TOWER]]);
+                            gv.gameClient._userId), GAME_CONFIG.TICK_FOR_DELAY_TOWER]]);
                         this.updateCardSlot(target.numSlot, target.energy);
                     }
                 } else {
@@ -1022,7 +1015,7 @@ var GameUI = cc.Layer.extend({
     * reset về không chọn thẻ nào cả
     * */
     resetCardTouchState: function () {
-        for (var i = 1; i <= NUM_CARD_PLAYABLE; i++) {
+        for (var i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
             var card = this.getChildByName('cardPlayable' + i)
             if (card.onTouch == true) {
                 card.x += 0
@@ -1044,7 +1037,7 @@ var GameUI = cc.Layer.extend({
         }
 
         if (this.getChildByName('energyBar') != null) {
-            var percen = GameStateManagerInstance.playerA.energy/MAX_ENERGY*100
+            var percen = GameStateManagerInstance.playerA.energy/GAME_CONFIG.MAX_ENERGY*100
             if(percen > 100) {
                 percen = 100
             }
@@ -1057,7 +1050,7 @@ var GameUI = cc.Layer.extend({
         // this._gameStateManager._timer.updateRealTime(dt)
         var time = Math.floor(this._gameStateManager._timer.curTime + 0.5)
         this.getChildByName('time').setString(time)
-        var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
+        var percen = 100 - this._gameStateManager._timer.curTime / GAME_CONFIG.TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timerBorder_png).visible = true
@@ -1069,9 +1062,9 @@ var GameUI = cc.Layer.extend({
         * */
     getNewWave: function () {
         this.getChildByName(res.timerBorder_png).visible = false
-        var strNumWave = this._gameStateManager.curWave + '/' + MAX_WAVE
+        var strNumWave = this._gameStateManager.curWave + '/' + GAME_CONFIG.MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)
-        // this._gameStateManager._timer.resetTime(TIME_WAVE)
+        // this._gameStateManager._timer.resetTime(GAME_CONFIG.TIME_WAVE)
         //this.callMonster()
     },
 
@@ -1098,8 +1091,8 @@ var GameUI = cc.Layer.extend({
     },
 
     initCellSlot: function (mapArray, rule) {
-        for (let i = 0; i < MAP_WIDTH + 1; i++) {
-            for (let j = 0; j < MAP_HEIGHT + 1; j++) {
+        for (let i = 0; i < MAP_CONFIG.MAP_WIDTH + 1; i++) {
+            for (let j = 0; j < MAP_CONFIG.MAP_HEIGHT + 1; j++) {
                 let obj;
                 switch (mapArray[i][j]) {
                     case cf.MAP_CELL.BUFF_DAMAGE:

@@ -121,8 +121,8 @@ var MapView = cc.Class.extend({
         }
 
         const parents = this.parents
-        for (let x = 0; x < MAP_WIDTH; x++) {
-            for (let y = 0; y < MAP_HEIGHT; y++) {
+        for (let x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
+            for (let y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
                 const parent = parents[x][y];
                 const cell = this.cells[x][y]
 
@@ -137,7 +137,7 @@ var MapView = cc.Class.extend({
 
                 cell.state = 0
 
-                if (parent.y >= MAP_HEIGHT || parent.x >= MAP_WIDTH) {
+                if (parent.y >= MAP_CONFIG.MAP_HEIGHT || parent.x >= MAP_CONFIG.MAP_WIDTH) {
                     cc.log("Hahahahahahaha")
                     continue;
                 }
@@ -158,8 +158,8 @@ var MapView = cc.Class.extend({
             cc.log("===========================================ERROR================================================")
         }
 
-        for (let x = 0; x < MAP_WIDTH; x++) {
-            for (let y = 0; y < MAP_HEIGHT; y++) {
+        for (let x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
+            for (let y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
                 const currentCell = this.cells[x][y];
 
                 currentCell.nextPos = null;
@@ -499,7 +499,7 @@ var MapView = cc.Class.extend({
         const y = Math.floor(position.y / MAP_CONFIG.CELL_HEIGHT);
         const x = Math.floor(position.x / MAP_CONFIG.CELL_WIDTH);
 
-        if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH) {
+        if (y >= 0 && y < MAP_CONFIG.MAP_HEIGHT && x >= 0 && x < MAP_CONFIG.MAP_WIDTH) {
             return this.cells[x][y];
         }
 
@@ -516,7 +516,7 @@ var MapView = cc.Class.extend({
     },
 
     getCell: function (x, y) {
-        if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH) {
+        if (y >= 0 && y < MAP_CONFIG.MAP_HEIGHT && x >= 0 && x < MAP_CONFIG.MAP_WIDTH) {
             return this.cells[x][y];
         }
 
@@ -739,6 +739,10 @@ var MapView = cc.Class.extend({
 
     getMonsters:function (){
         return this.monsters;
+    },
+
+    getMapController:function (){
+        return this._mapController;
     }
 
 });

@@ -26,7 +26,7 @@ const NextWaveAction = cc.Class.extend({
     activate: function (gameStateManager) {
         if (gameStateManager.waveCount === this.N) {
             //GameUI.instance.addMonsterToBoth()
-            GameStateManagerInstance._timer.resetTime(TIME_WAVE)
+            GameStateManagerInstance._timer.resetTime(GAME_CONFIG.TIME_WAVE)
             GameStateManagerInstance._timer.checkSendNewWaveOnce = false
             GameUI.instance.activateNextWave(this.monstersId)
             gameStateManager.waveCount++

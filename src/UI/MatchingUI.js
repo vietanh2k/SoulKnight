@@ -1,6 +1,3 @@
-MAP_WIDTH = 7;
-MAP_HEIGHT = 5;
-MAP_RATIO = 15/8;
 
 var MatchingUI = cc.Layer.extend({
     mapWidth: null,

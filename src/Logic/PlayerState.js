@@ -10,12 +10,12 @@ var PlayerState = cc.Class.extend({
 
     ctor:function (rule) {
         this.rule = rule
-        this.health = 999
+        this.health = 15
         this.energy = 30
         this.intArray =  Array.from(
-            {length:MAP_WIDTH},
+            {length:MAP_CONFIG.MAP_WIDTH},
             ()=>Array.from(
-                {length:MAP_HEIGHT}
+                {length:MAP_CONFIG.MAP_HEIGHT}
             )
         );
         this.init();
@@ -80,15 +80,15 @@ var PlayerState = cc.Class.extend({
         if(this.energy <0){
             this.energy = 0
         }
-        if(this.energy > MAX_ENERGY){
-            this.energy = MAX_ENERGY
+        if(this.energy > GAME_CONFIG.MAX_ENERGY){
+            this.energy = GAME_CONFIG.MAX_ENERGY
         }
     },
     readFrom:function (bf) {
         bf.getInt();
         bf.getInt();
-        for (var y = 0; y < MAP_HEIGHT; y++) {
-            for (var x = 0; x < MAP_WIDTH; x++) {
+        for (var y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
+            for (var x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
                 var tmp =  bf.getInt();
                 if(tmp == 0) this.intArray[x][y] = 0
                 if(tmp == 1) this.intArray[x][y] = 0

@@ -441,19 +441,19 @@ const Monster = AnimatedSprite.extend({
     },
 
     route: function (map, distance, prevCell) {
-        if(this.___pushEffect != null){
-            cc.log('aaaaaaaaaaaaaaaaa'+ this.pushVec.x +' '+this.pushVec.y)
-            let tmp2 = this.pushVec.mul(this.pushSpeed*0.016)
-            let tmp = this.position.add(tmp2);
-            let tmpCell = map.getCellAtPosition(tmp)
-            if(!tmpCell || !tmpCell.getNextCell()){
-                this.___pushEffect.isDestroy = true
-                this.___pushEffect = null;
-                return true;
-            }
-            this.position.set(tmp.x, tmp.y);
-            return true;
-        }
+        // if(this.___pushEffect != null){
+        //     cc.log('aaaaaaaaaaaaaaaaa'+ this.pushVec.x +' '+this.pushVec.y)
+        //     let tmp2 = this.pushVec.mul(this.pushSpeed*0.016)
+        //     let tmp = this.position.add(tmp2);
+        //     let tmpCell = map.getCellAtPosition(tmp)
+        //     if(!tmpCell || !tmpCell.getNextCell()){
+        //         this.___pushEffect.isDestroy = true
+        //         this.___pushEffect = null;
+        //         return true;
+        //     }
+        //     this.position.set(tmp.x, tmp.y);
+        //     return true;
+        // }
         let currentCell = map.getCellAtPosition(this.position);
 
         if (!currentCell) return true;

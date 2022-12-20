@@ -1,13 +1,7 @@
-ICEBALL_WIDTH = 180;
-ICEBALL_FREEZE_MONSTER_TIME = 2;
-ICEBALL_FREEZE_TOWER_TIME = 4;
 
 const IceBall = Spell.extend({
     ctor: function (playerState, position, mapCast, stat) {
         this._super(playerState, position);
-        const config = cf.POTION.potion[SPELL_ID.FIREBALL];
-        // this.initOpponentUI(position)
-        // this.initFromConfig(playerState, config)
         this.mapCast = mapCast;
         this.radius = stat[0];
         this.dame = stat[1];
@@ -15,16 +9,6 @@ const IceBall = Spell.extend({
         return true;
     },
 
-    //
-    // initOpponentUI: function (position) {
-    //     if (this.renderRule === 1) {
-    //         this.speed2 = 10 * MAP_CONFIG.CELL_WIDTH
-    //         this.position= new Vec2(position.x, position.y-MAP_CONFIG.CELL_WIDTH*4)
-    //     }else{
-    //         this.position= new Vec2(position.x, position.y+MAP_CONFIG.CELL_WIDTH*4)
-    //         this.speed2 = -10 * MAP_CONFIG.CELL_WIDTH
-    //     }
-    // },
 
     logicUpdate: function (playerState, dt){
         if(this.canCast == true) {
@@ -46,16 +30,26 @@ const IceBall = Spell.extend({
             objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius)
             cc.log('dem = '+objects.length)
             for (let i = 0; i < objects.length; i++) {
-                objects[i].___freezeEffect = new FreezeEffect(ICEBALL_FREEZE_MONSTER_TIME, objects[i])
                 objects[i].takeDamage(playerState, this.dame)
-                playerState.getMap().addEffect(objects[i].___freezeEffect)
+                if (objects[i].___freezeEffect) {
+                    objects[i].___freezeEffect.reset()
+                } else {
+                    objects[i].___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_MONSTER_TIME, objects[i])
+                    objects[i].hurtUI()
+                    playerState.getMap().addEffect(objects[i].___freezeEffect)
+                }
                 // monsters[i].hurtUI()
             }
         }else {
             objects = map.queryTowerCircleWithoutOverlap(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius);
             for (let i = 0; i < objects.length; i++) {
-                objects[i].___freezeEffect = new FreezeEffect(ICEBALL_FREEZE_TOWER_TIME, objects[i])
-                playerState.getMap().addEffect(objects[i].___freezeEffect)
+                if (objects[i].___freezeEffect) {
+                    objects[i].___freezeEffect.reset()
+                } else {
+                    objects[i].___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_TOWER_TIME, objects[i])
+                    playerState.getMap().addEffect(objects[i].___freezeEffect)
+                }
+
                 // monsters[i].hurtUI()
             }
         }

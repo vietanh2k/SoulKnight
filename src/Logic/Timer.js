@@ -1,4 +1,4 @@
-TIME_WAVE= 20
+
 var Timer = cc.Class.extend({
     curTime:0,
     cellWidth: null,
@@ -7,7 +7,7 @@ var Timer = cc.Class.extend({
 
     ctor:function (gameManager) {
         this._gameStateManager = gameManager
-        this.curTime = TIME_WAVE
+        this.curTime = GAME_CONFIG.TIME_WAVE
         this.checkSendNewWaveOnce = false
         cc.log('time===' + this.curTime)
         this.init();
@@ -28,7 +28,7 @@ var Timer = cc.Class.extend({
             this.checkSendNewWaveOnce = true
             if(!GameStateManagerInstance.isMaxWave()) {
                 testnetwork.connector.sendActions([[new NextWaveAction(this._gameStateManager.waveCount), 0]]); //this.addMonsterToBoth()
-                // this.resetTime(TIME_WAVE)
+                // this.resetTime(GAME_CONFIG.TIME_WAVE)
                 cc.log('touch2222222222222222222222')
             }
         }

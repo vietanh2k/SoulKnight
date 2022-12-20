@@ -1,7 +1,7 @@
-MAX_WAVE = 20;
-MAX_ENERGY = 30;
-MAX_VALUE = 99999
 let GameStateManagerInstance = null
+/*
+lưu list action để chờ activate
+ */
 let ActionListInstance = []
 let indAction = 0
 let FrameMaxForUpdate = 15
@@ -56,6 +56,9 @@ var GameStateManager = cc.Class.extend({
 
         winSize = cc.director.getWinSize();
         let deck = sharePlayerInfo.deck;
+        /*
+        lấy stat cho các card spell trong deck
+         */
         for (let i = 0; i < 8; i++) {
             if(deck[i].concept == 'potion'){
                 this.addSpellConfig(deck[i].type)
@@ -67,6 +70,9 @@ var GameStateManager = cc.Class.extend({
         return true;
     },
 
+    /*
+    đọc map từ server gửi về
+     */
     readFrom:function (pkg){
         var userId1 = pkg.getInt();
         if(userId1 == gv.gameClient._userId){
@@ -90,7 +96,7 @@ var GameStateManager = cc.Class.extend({
         }
     },
     isMaxWave:function (){
-        if(this.curWave < MAX_WAVE){
+        if(this.curWave < GAME_CONFIG.MAX_WAVE){
             return false;
         }
         return true;
@@ -100,7 +106,7 @@ var GameStateManager = cc.Class.extend({
         this.canTouchNewWave = false;
     },
     checkWinner:function (){
-        if(this.curWave >= MAX_WAVE && this.playerA.isClearWave() && this.playerB.isClearWave()){
+        if(this.curWave >= GAME_CONFIG.MAX_WAVE && this.playerA.isClearWave() && this.playerB.isClearWave()){
             if(this.playerA.health > this.playerB.health){
                 this.winner = 1;
             }else if(this.playerB.health > this.playerA.health){
@@ -178,14 +184,6 @@ var GameStateManager = cc.Class.extend({
 
     },
     frameUpdateNormal: function () {
-
-        this.playerA.update(this.dt);
-        this.playerB.update(this.dt);
-        this._timer.updateRealTime(this.dt);
-
-        this.frameCount++;
-
-
         if(indAction < ActionListInstance.length) {
             /*
             khi tới frame trigger action thì trigger
@@ -197,6 +195,15 @@ var GameStateManager = cc.Class.extend({
             }
 
         }
+
+        this.playerA.update(this.dt);
+        this.playerB.update(this.dt);
+        this._timer.updateRealTime(this.dt);
+
+        this.frameCount++;
+
+
+
         // if(indAction >0) {
         //     cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
         // }
