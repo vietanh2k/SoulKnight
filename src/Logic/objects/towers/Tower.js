@@ -133,8 +133,12 @@ var Tower = TowerUI.extend({
     },
 
     chooseTarget: function () {
+        if (this.currentTarget != null && !this.currentTarget.isDestroy) {
+            return this.currentTarget;
+        }
         if (this.prioritizedTarget === undefined) {
-            return this.target[0];
+            this.currentTarget = this.target[0];
+            return this.currentTarget;
         }
         let record, index;
         switch (this.prioritizedTarget) {
@@ -147,7 +151,8 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             case cf.PRIORITIZED_TARGET.LOW_HP:
                 record = 4000000000;
                 index = -1;
@@ -157,7 +162,8 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             case cf.PRIORITIZED_TARGET.FURTHEST:
                 record = -1;
                 index = -1;
@@ -167,7 +173,8 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             case cf.PRIORITIZED_TARGET.NEAREST:
                 record = 4000000000;
                 index = -1;
@@ -177,10 +184,13 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             default:
-                return this.target[0];
+                this.currentTarget = this.target[0];
+                break;
         }
+        return this.currentTarget;
     },
 
     changDirectionHandle: function (direction) {

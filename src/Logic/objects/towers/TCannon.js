@@ -26,6 +26,8 @@ var TCannon = Tower.extend({
         this.setScale(cf.TOWER_SCALE[0]);
         this.resetPending();
 
+        this.counter = 0;
+
         return true;
     },
 
@@ -54,6 +56,9 @@ var TCannon = Tower.extend({
         let damage = this.getDamage();
         let radius = this.getBulletRadius();
         let position = new Vec2(this.position.x, this.position.y);
+
+        this.counter++;
+        cc.log("Shoot bullet number " + this.counter + ', speed: ' + this.getBulletSpeed() + " to target with position " + object.position)
 
         let newBullet = new TCannonBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level);
 
