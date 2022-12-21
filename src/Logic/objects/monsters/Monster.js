@@ -267,8 +267,12 @@ const Monster = AnimatedSprite.extend({
         }
 
         if (this.poisonEffect !== undefined) {
-            this.takeDamage(playerState, this.poisonEffect.dps * Math.min(dt, this.poisonEffect.countDownTime));
-            this.hurtUI();
+            this.poisonEffect.sumDt += dt;
+            if (this.poisonEffect.sumDt > 1) {
+                this.takeDamage(playerState, this.poisonEffect.dps);
+                this.hurtUI();
+                this.poisonEffect.sumDt -= 1;
+            }
         }
 
         /*if (this.impactedMonster) {
@@ -303,13 +307,13 @@ const Monster = AnimatedSprite.extend({
             if (reducedSpeedFromTOilGun < reducedSpeedFromTDamage) {
                 let time = Math.min(dt, this.slowEffectFromTOilGun.countDownTime);
                 distance -= reducedSpeedFromTOilGun * time;
-                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage) {
+                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage.countDownTime) {
                     distance -= reducedSpeedFromTDamage * Math.min(0, dt - time, this.slowEffectFromTDamage.countDownTime - time);
                 }
             } else {
                 let time = Math.min(dt, this.slowEffectFromTDamage.countDownTime);
                 distance -= reducedSpeedFromTDamage * time;
-                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun) {
+                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun.countDownTime) {
                     distance -= reducedSpeedFromTOilGun * Math.min(0, dt - time, this.slowEffectFromTOilGun.countDownTime - time);
                 }
             }
@@ -553,6 +557,7 @@ const Monster = AnimatedSprite.extend({
     },
 
     destroy: function () {
+        cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
         cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
@@ -578,7 +583,7 @@ const Monster = AnimatedSprite.extend({
         if (this.isVulnerableByTIceGun) {
             multiplier *= 1.5;
         }
-        this.health = Math.max(this.health - many * multiplier, 0);
+        this.health = Math.max(this.health - Math.floor(many * multiplier), 0);
         if (this.health > this.MaxHealth) {
             this.health = this.MaxHealth;
         }

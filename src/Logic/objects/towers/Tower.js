@@ -60,6 +60,11 @@ var Tower = TowerUI.extend({
     },
 
     getRange: function () {
+        // const map = playerState.getMap()
+        // let range = cf.TOWER.tower[this.instance].stat[this.level].range;
+        // if (map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
+        //     range *= cf.MAP_BUFF.RANGE;
+        // }
         let range = cf.TOWER.tower[this.instance].stat[this.level].range;
         if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_RANGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
             range *= cf.MAP_BUFF.RANGE;
@@ -86,7 +91,7 @@ var Tower = TowerUI.extend({
         if (this.damageBuffEffect !== undefined) {
             damage *= (1 + this.damageBuffEffect.damageAdjustment);
         }
-        return damage;
+        return Math.floor(damage);
     },
 
     getBulletSpeed: function () {
@@ -128,8 +133,12 @@ var Tower = TowerUI.extend({
     },
 
     chooseTarget: function () {
+        if (this.currentTarget != null && !this.currentTarget.isDestroy && Circle.isCirclesOverlapped(this.currentTarget.position, this.currentTarget.hitRadius, this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)) {
+            return this.currentTarget;
+        }
         if (this.prioritizedTarget === undefined) {
-            return this.target[0];
+            this.currentTarget = this.target[0];
+            return this.currentTarget;
         }
         let record, index;
         switch (this.prioritizedTarget) {
@@ -142,7 +151,8 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             case cf.PRIORITIZED_TARGET.LOW_HP:
                 record = 4000000000;
                 index = -1;
@@ -152,7 +162,8 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             case cf.PRIORITIZED_TARGET.FURTHEST:
                 record = -1;
                 index = -1;
@@ -162,7 +173,8 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             case cf.PRIORITIZED_TARGET.NEAREST:
                 record = 4000000000;
                 index = -1;
@@ -172,10 +184,13 @@ var Tower = TowerUI.extend({
                         index = i;
                     }
                 }
-                return this.target[index];
+                this.currentTarget = this.target[index];
+                break;
             default:
-                return this.target[0];
+                this.currentTarget = this.target[0];
+                break;
         }
+        return this.currentTarget;
     },
 
     changDirectionHandle: function (direction) {
