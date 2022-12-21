@@ -106,4 +106,13 @@ var PlayerState = cc.Class.extend({
         return this.monstersToSpawn.length === 0 && this._map.monsters.size() === 0 //.length === 0
     },
 
+    activateNextWave: function (ui, monsterFactory, monstersId) {
+        for (let i = 0; i < monstersId.length; i++) {
+            const m1 = monsterFactory.getMonster(this, monstersId[i])
+            this.addMonster(m1)
+            m1.visible = false
+            ui.addChild(m1)
+        }
+    }
+
 });

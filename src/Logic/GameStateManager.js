@@ -220,18 +220,10 @@ var GameStateManager = cc.Class.extend({
         return monstersId;
     },
 
-    activateNextWave: function (ui, monstersId) {
-        for (let i = 0; i < monstersId.length; i++) {
-            const m1 = this.monsterFactory.getMonster(this.playerA, monstersId[i])
-            this.playerA.addMonster(m1)
-            m1.visible = false
-            ui.addChild(m1)
+    activateNextWaveForPlayer: function (ui, userId, monstersId) {
+        const playerState = (userId === gv.gameClient._userId) ? this.playerA : this.playerB;
+        playerState.activateNextWave(ui, this.monsterFactory, monstersId)
 
-            const m2 = this.monsterFactory.getMonster(this.playerB, monstersId[i])
-            this.playerB.addMonster(m2)
-            m2.visible = false
-            ui.addChild(m2)
-        }
         if (this.curWave >= MAX_WAVE) {
             this.isLastWave = true
         }

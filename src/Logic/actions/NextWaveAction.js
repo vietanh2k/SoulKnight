@@ -1,12 +1,21 @@
 const NextWaveAction = cc.Class.extend({
-    ctor: function (N, monstersId) {
+    // ctor: function (N, monstersId) {
+    //     this.N = N
+    //
+    //     if (monstersId) {
+    //         this.monstersId = monstersId
+    //     } else {
+    //         this.monstersId = null
+    //     }
+    // },
+
+    ctor: function (N, monstersIdA, monstersIdB, userIdA, userIdB) {
         this.N = N
 
-        if (monstersId) {
-            this.monstersId = monstersId
-        } else {
-            this.monstersId = null
-        }
+        this.monstersIdA = monstersIdA
+        this.monstersIdB = monstersIdB
+        this.userIdA = userIdA
+        this.userIdB = userIdB
     },
 
     writeTo: function (pkg) {
@@ -28,7 +37,7 @@ const NextWaveAction = cc.Class.extend({
             //GameUI.instance.addMonsterToBoth()
             GameStateManagerInstance._timer.resetTime(TIME_WAVE)
             GameStateManagerInstance._timer.checkSendNewWaveOnce = false
-            GameUI.instance.activateNextWave(this.monstersId)
+            GameUI.instance.activateNextWaveForBoth(this.monstersIdA, this.monstersIdB, this.userIdA, this.userIdB)
             gameStateManager.waveCount++
         }
     }
@@ -37,33 +46,43 @@ const NextWaveAction = cc.Class.extend({
 NextWaveAction.deserializer = function (pkg) {
     let tmp = []
     const N = pkg.getInt()
-    const num = pkg.getInt()
     tmp.push(N)
-    tmp.push(num)
-    cc.log("======================= Wave monster count: " + num)
 
-    const monstersId = []
-    for (let i = 0; i < num; i++) {
-        var tmp2 = pkg.getInt()
-        // monstersId.push(tmp2)
-        tmp.push(tmp2)
+    const numA = pkg.getInt()
+    tmp.push(numA)
+    for (let i = 0; i < numA; i++) {
+        tmp.push(pkg.getInt())
     }
-    // var dst = new ArrayBuffer(this.byteLength);
 
+    const numB = pkg.getInt()
+    tmp.push(numB)
+    for (let i = 0; i < numB; i++) {
+        tmp.push(pkg.getInt())
+    }
+
+    tmp.push(pkg.getInt())
+    tmp.push(pkg.getInt())
 
     return tmp
 }
 
 NextWaveAction.deserializerArr = function (arrPkg) {
-    const N = arrPkg[0]
-    const num = arrPkg[1]
+    let c = 0
+    const N = arrPkg[c++]
 
-    cc.log("======================= Wave monster count: " + num)
-
-    const monstersId = []
-    for (let i = 0; i < num; i++) {
-        monstersId.push(arrPkg[2+i])
+    const numA = arrPkg[c++]
+    const monstersIdA = []
+    for (let i = 0; i < numA; i++) {
+        monstersIdA.push(arrPkg[c++])
     }
 
-    return new NextWaveAction(N, monstersId)
+    const numB = arrPkg[c++]
+    const monstersIdB = []
+    for (let i = 0; i < numB; i++) {
+        monstersIdB.push(arrPkg[c++])
+    }
+
+    const userIdA = arrPkg[c++]
+    const userIdB = arrPkg[c++]
+    return new NextWaveAction(N, monstersIdA, monstersIdB, userIdA, userIdB)
 }

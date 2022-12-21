@@ -1084,11 +1084,12 @@ var GameUI = cc.Layer.extend({
         this.addChild(monster2, 2000)
     },*/
 
-    activateNextWave: function (monstersId) {
+    activateNextWaveForBoth: function (monstersIdA, monstersIdB, userIdA, userIdB) {
         cc.log("next wave tai frame ="+ GameStateManagerInstance.frameCount)
         this._gameStateManager.updateStateNewWave()
         this.getNewWave()
-        this._gameStateManager.activateNextWave(this, monstersId)
+        this._gameStateManager.activateNextWaveForPlayer(this, userIdA, monstersIdA)
+        this._gameStateManager.activateNextWaveForPlayer(this, userIdB, monstersIdB)
     },
 
     initCellSlot: function (mapArray, rule) {
