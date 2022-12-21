@@ -188,7 +188,7 @@ var MapView = cc.Class.extend({
             const self = this
 
             this.monsters.forEach((monster, id, list) => {
-                if (!monster.active || monster.class !== 'land') return
+                if (monster.class !== 'land') return
 
                 const monsters = self.queryEnemiesCircle(monster.position, monster.hitRadius)
                 for (let i = 0; i < monsters.length; i++) {

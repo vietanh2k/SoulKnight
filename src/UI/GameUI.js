@@ -56,12 +56,12 @@ var GameUI = cc.Layer.extend({
         for (let i = 0; i < 4; i++) {
             this.cardInQueue[i] = deck[i + 4].type;
         }
-        for (let i = 0; i < 4; i++) {
-            this.cardPlayable[i] = 0+i;
-        }
-        for (let i = 0; i < 4; i++) {
-            this.cardInQueue[i] = 0+i;
-        }
+        // for (let i = 0; i < 4; i++) {
+        //     this.cardPlayable[i] = 0+i;
+        // }
+        // for (let i = 0; i < 4; i++) {
+        //     this.cardInQueue[i] = 0+i;
+        // }
     },
 
     /**
@@ -258,6 +258,13 @@ var GameUI = cc.Layer.extend({
         if (uid === gv.gameClient._userId) {
             this.createObjectByTouch = false
             let loc = convertLogicalPosToIndex(position, 1);
+
+            const playerAMap = this._gameStateManager.playerA._map
+            let cellA = playerAMap.getCellAtPosition(position);
+            if (!cellA._objectOn && cellA.monsters.length !== 0) {
+                return;
+            }
+
             if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
             }
@@ -266,6 +273,13 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
             let loc = convertLogicalPosToIndex(position, 2);
+
+            const playerBMap = this._gameStateManager.playerB._map
+            let cellB = playerBMap.getCellAtPosition(position);
+            if (!cellB._objectOn && cellB.monsters.length !== 0) {
+                return;
+            }
+
             if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
             }
@@ -997,8 +1011,8 @@ var GameUI = cc.Layer.extend({
      * @param slot (1,2,3,4), numEnergy
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
-        // this._gameStateManager.playerA.energy -= numEnergy
-        this._gameStateManager.playerA.energy -= 0
+        this._gameStateManager.playerA.energy -= numEnergy
+        // this._gameStateManager.playerA.energy -= 0
         this.cardInQueue.push(this.listCard[numSlot - 1].type)
         this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
         this.cardInQueue.shift()

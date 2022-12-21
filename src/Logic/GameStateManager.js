@@ -51,7 +51,7 @@ var GameStateManager = cc.Class.extend({
         this.sumDt = 0;
         this.dt =  GAME_CONFIG.DEFAULT_DELTA_TIME
         this.frameCount = 0
-
+        this.tes = 0
         this.updateType = this.UPDATE_TYPE_NORMAL;
         this.updateToFrameN = 0;
 
@@ -161,6 +161,7 @@ var GameStateManager = cc.Class.extend({
             cc.log("Tong HP monster = "+this.playerA.getCountHP());
             cc.log("Tong Frame destroy monster = "+this.playerA.getCountDestroyFrame());
             cc.log('KET THUC TAI FRAME = '+this.frameCount);
+            cc.log('====== = '+this.tes);
             cc.log('=============================================================');
             return;
         }
@@ -188,9 +189,7 @@ var GameStateManager = cc.Class.extend({
 
         this.frameUpdateNormal();
 
-        if(this.frameCount % 300 == 0){
-            this.playerA.countAllMonster();
-        }
+
 
     },
     frameUpdateNormal: function () {
@@ -213,7 +212,10 @@ var GameStateManager = cc.Class.extend({
         this.frameCount++;
 
 
-
+        if(this.frameCount % 300 == 0){
+            this.tes ++;
+            this.playerA.countAllMonster();
+        }
         // if(indAction >0) {
         //     cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
         // }

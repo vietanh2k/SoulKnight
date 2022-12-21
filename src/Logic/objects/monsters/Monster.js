@@ -3,6 +3,7 @@ const MONSTER_COS_THRESHOLD = 0.9
 const MONSTER_PUSH_TIME = 2 // s
 const MONSTER_PUSH_D = 1
 const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD = -0.01
+const MONSTER_OFFSET_Y = 3.0;
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -621,6 +622,16 @@ const Monster = AnimatedSprite.extend({
         // this monster is A
         // another monster is B
         const AB = anotherMonster.position.sub(this.position).normalize()
+
+        if (isNaN(AB.x) || isNaN(AB.y)) {
+            const pos_ = this.position.add(this.movingDirection.mul(MONSTER_OFFSET_Y));
+            const cell_ = map.getCellAtPosition(pos_);
+            if (cell_ != null && cell_.getNextCell() != null) {
+                this.position.set(pos_.x, pos_.y);
+            }
+            return;
+        }
+
         if (this.speed === anotherMonster.speed) {
             this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
             return

@@ -2,6 +2,7 @@ var Tower = TowerUI.extend({
 
     ctor: function (card, evolution) {
         this._super(card, evolution);
+        this.inactiveSourceCounter = 0;
     },
 
     render: function (playerState) {

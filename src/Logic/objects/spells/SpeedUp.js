@@ -5,6 +5,8 @@ const SpeedUp = Spell.extend({
 
         this.radius = stat[0];
         this.timeCast = stat[1]/1000;
+        cc.log("timeCast = "+this.timeCast)
+        cc.log("radius = "+this.radius)
         return true;
     },
 

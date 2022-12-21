@@ -30,7 +30,7 @@ const IceBall = Spell.extend({
             objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius)
             cc.log('dem = '+objects.length)
             for (let i = 0; i < objects.length; i++) {
-                // objects[i].takeDamage(playerState, this.dame)
+                objects[i].takeDamage(playerState, this.dame)
                 if (objects[i].___freezeEffect) {
                     objects[i].___freezeEffect.reset()
                 } else {
