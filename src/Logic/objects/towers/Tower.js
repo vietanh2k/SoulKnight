@@ -133,7 +133,7 @@ var Tower = TowerUI.extend({
     },
 
     chooseTarget: function () {
-        if (this.currentTarget != null && !this.currentTarget.isDestroy) {
+        if (this.currentTarget != null && !this.currentTarget.isDestroy && Circle.isCirclesOverlapped(this.currentTarget.position, this.currentTarget.hitRadius, this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)) {
             return this.currentTarget;
         }
         if (this.prioritizedTarget === undefined) {
