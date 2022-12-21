@@ -2,10 +2,10 @@ const convertIndexToPos = function (corX, corY, rule) {
     var x, y
     if (rule === 1) {
         x = winSize.width / 2 - WIDTHSIZE / 2 + (corX + 1) * CELLWIDTH
-        y = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_HEIGHT - corY + 3.5) * CELLWIDTH
+        y = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_CONFIG.MAP_HEIGHT - corY + 3.5) * CELLWIDTH
     } else {
         x = winSize.width / 2 - WIDTHSIZE / 2 + (7 - corX) * CELLWIDTH
-        y = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_HEIGHT + corY + 3.5) * CELLWIDTH
+        y = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_CONFIG.MAP_HEIGHT + corY + 3.5) * CELLWIDTH
     }
     return new cc.p(x, y)
 };
@@ -14,10 +14,10 @@ const convertPosToIndex = function (pos, rule) {
     var x, y
     if (rule === 1) {
         x = Math.floor((pos.x - winSize.width / 2 + WIDTHSIZE / 2) / CELLWIDTH - 0.5)
-        y = Math.floor(MAP_HEIGHT + 3.5 - (pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH + 0.5)
+        y = Math.floor(MAP_CONFIG.MAP_HEIGHT + 3.5 - (pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH + 0.5)
     } else if (rule === 2) {
-        x = Math.floor(MAP_WIDTH - (pos.x - winSize.width / 2 + WIDTHSIZE / 2) / CELLWIDTH + 0.5)
-        y = Math.floor((pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH - MAP_HEIGHT - 3.5 + 0.5)
+        x = Math.floor(MAP_CONFIG.MAP_WIDTH - (pos.x - winSize.width / 2 + WIDTHSIZE / 2) / CELLWIDTH + 0.5)
+        y = Math.floor((pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH - MAP_CONFIG.MAP_HEIGHT - 3.5 + 0.5)
     } else {
         cc.log('invalid rule: ' + rule);
         return null;
@@ -40,7 +40,7 @@ const convertMapPosToIndex = function (pos) {
 };
 
 const isCorInMap = function (cor) {
-    return cor.x >= 0 && cor.x <= MAP_WIDTH - 1 && cor.y >= 1 && cor.y <= MAP_HEIGHT;
+    return cor.x >= 0 && cor.x <= MAP_CONFIG.MAP_WIDTH - 1 && cor.y >= 1 && cor.y <= MAP_CONFIG.MAP_HEIGHT;
 };
 
 const isPosInMap = function (pos, rule) {
@@ -108,13 +108,13 @@ const convertLogicalPosToIndex = function (pos, rule) {
 const convertPosUIToLocLogic = function (pos, rule) {
     if(rule === 1) {
         var corX = (pos.x - winSize.width / 2 + WIDTHSIZE / 2) / CELLWIDTH - 1
-        var corY = MAP_HEIGHT + 3.5 - (pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH
+        var corY = MAP_CONFIG.MAP_HEIGHT + 3.5 - (pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH
         var p = new Vec2(corX, corY)
         return p
     }
     if(rule === 2){
-        var corX = MAP_WIDTH - (pos.x - winSize.width / 2 + WIDTHSIZE / 2) / CELLWIDTH
-        var corY = (pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH - MAP_HEIGHT - 3.5
+        var corX = MAP_CONFIG.MAP_WIDTH - (pos.x - winSize.width / 2 + WIDTHSIZE / 2) / CELLWIDTH
+        var corY = (pos.y - winSize.height / 2 + HEIGHTSIZE / 2) / CELLWIDTH - MAP_CONFIG.MAP_HEIGHT - 3.5
         var p = new Vec2(corX, corY)
         return p
     }
@@ -126,12 +126,12 @@ const convertPosLogicToPosUI = function (posLogic, rule) {
             indY = (posLogic.y - MAP_CONFIG.CELL_HEIGHT / 2.0) / MAP_CONFIG.CELL_HEIGHT+1;
     if(rule == 1){
         let posX = winSize.width / 2 - WIDTHSIZE / 2 + (indX + 1) * CELLWIDTH,
-            posY = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_HEIGHT - indY + 3.5) * CELLWIDTH
+            posY = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_CONFIG.MAP_HEIGHT - indY + 3.5) * CELLWIDTH
         return new Vec2(posX,posY)
     }
     else {
         let posX = winSize.width / 2 - WIDTHSIZE / 2 + (7 - indX) * CELLWIDTH,
-            posY = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_HEIGHT + indY + 3.5) * CELLWIDTH
+            posY = winSize.height / 2 - HEIGHTSIZE / 2 + (MAP_CONFIG.MAP_HEIGHT + indY + 3.5) * CELLWIDTH
         return new Vec2(posX,posY)
     }
 };

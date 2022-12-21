@@ -19,7 +19,7 @@ var ShopUI = cc.Layer.extend({
         // this.scheduleUpdate();
     },
     init:function () {
-
+        cc.log('===== '+cf.POTION2.radius[1])
         winSize = cc.director.getWinSize();
 
 
@@ -210,7 +210,7 @@ var ShopUI = cc.Layer.extend({
             // var cardInfor1 = sharePlayerInfo.collection[cardID1]
             let cardInfor1 = sharePlayerInfo.collection.find(element => element.type === cardID1);
 
-
+            cc.log(cardInfor1.texture)
             card1.getChildByName('item').setTexture(cardInfor1.texture)
             card1.getChildByName('numCost').setString(pkg.cardOffers[0][2])
             card1.getChildByName('touchLayer').addClickEventListener(() => this.showPopupCard(cardID1, pkg.cardOffers[0][2],pkg.cardOffers[0][1], 2))

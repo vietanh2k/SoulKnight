@@ -22,7 +22,7 @@ cc.game.onStart = function () {
         var frameSize = cc.view.getFrameSize();
         var ratio = frameSize.height/frameSize.width;
         if(ratio < 1.875){
-            HEIGHTSIZE = DESIGN_RESOLUTION_HEIGHT
+            HEIGHTSIZE = DESIGN_RESOLUTION_HEIGHT*0.98
             WIDTHSIZE = HEIGHTSIZE/1.875
         }else{
             WIDTHSIZE = DESIGN_RESOLUTION_WIDTH*0.95

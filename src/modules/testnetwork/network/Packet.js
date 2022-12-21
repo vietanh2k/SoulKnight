@@ -7,6 +7,7 @@ gv.CMD.HAND_SHAKE = 0;
 gv.CMD.USER_LOGIN = 1;
 
 gv.CMD.USER_INFO = 1001;
+gv.CMD.USER_INFOR_FROM_UID = 1002;
 gv.CMD.MOVE = 2001;
 gv.CMD.OPEN_CHEST = 3001;
 gv.CMD.OPEN_CHEST_NOW = 3001;
@@ -335,6 +336,19 @@ CmdSendUpgradeCard = fr.OutPacket.extend({
         this.packHeader();
         this.putByte(type);
         this.putInt(goldSpent);
+        this.updateSize();
+    },
+});
+CmdGetInforFromUid = fr.OutPacket.extend({
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.USER_INFOR_FROM_UID);
+    },
+
+    putData: function (uid) {
+        this.packHeader();
+        this.putInt(uid);
         this.updateSize();
     },
 });
@@ -824,6 +838,26 @@ testnetwork.packetMap[gv.CMD.BATTLE_SEND_CUR_FRAME] = fr.InPacket.extend({
 
             FrameMaxForUpdate = this.getInt();
             // cc.log("============================frame=================="+FrameMaxForUpdate)
+        }
+    }
+);
+
+testnetwork.packetMap[gv.CMD.USER_INFOR_FROM_UID] = fr.InPacket.extend({
+
+        ctor: function () {
+            this._super();
+        },
+
+        readData: function () {
+            let id = this.getInt();
+            let name = this.getString();
+            let gold = this.getInt();
+            let gem = this.getInt();
+            let trophy = this.getInt();
+            let collection = [];
+            let chestList = [];
+            let deck = [];
+            shareOpponentInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
         }
     }
 );

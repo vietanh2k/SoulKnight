@@ -1,10 +1,3 @@
-MAP_WIDTH = 7;
-MAP_HEIGHT = 5;
-MAP_RATIO = 15 / 8;
-NUM_CARD_PLAYABLE = 4
-ENERGY_DESTROY_CARD = 5
-TICK_FOR_DELAY_TOWER = 60
-TICK_FOR_DELAY_SPELL_FALL = 30
 
 var GameUI = cc.Layer.extend({
     mapWidth: null,
@@ -43,10 +36,10 @@ var GameUI = cc.Layer.extend({
         this.initDeckCard();
         this.initBackGround();
 
-        this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, this._gameStateManager.playerA.rule)
-        this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, this._gameStateManager.playerB.rule)
-        this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-        this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+        this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, GAME_CONFIG.RULE_A)
+        this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, GAME_CONFIG.RULE_B)
+        this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, GAME_CONFIG.RULE_A)
+        this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, GAME_CONFIG.RULE_B)
 
         this.addTouchListener()
 
@@ -58,11 +51,17 @@ var GameUI = cc.Layer.extend({
         this.cardInQueue = [];
         let deck = sharePlayerInfo.deck;
         for (let i = 0; i < 4; i++) {
-            this.cardPlayable[i] = deck[7].type;
+            this.cardPlayable[i] = deck[i].type;
         }
         for (let i = 0; i < 4; i++) {
-            this.cardInQueue[i] = deck[6].type;
+            this.cardInQueue[i] = deck[i + 4].type;
         }
+        // for (let i = 0; i < 4; i++) {
+        //     this.cardPlayable[i] = 0+i;
+        // }
+        // for (let i = 0; i < 4; i++) {
+        //     this.cardInQueue[i] = 0+i;
+        // }
     },
 
     /**
@@ -259,6 +258,13 @@ var GameUI = cc.Layer.extend({
         if (uid === gv.gameClient._userId) {
             this.createObjectByTouch = false
             let loc = convertLogicalPosToIndex(position, 1);
+
+            const playerAMap = this._gameStateManager.playerA._map
+            let cellA = playerAMap.getCellAtPosition(position);
+            if (!cellA._objectOn && cellA.monsters.length !== 0) {
+                return;
+            }
+
             if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
             }
@@ -267,6 +273,13 @@ var GameUI = cc.Layer.extend({
             this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
             let loc = convertLogicalPosToIndex(position, 2);
+
+            const playerBMap = this._gameStateManager.playerB._map
+            let cellB = playerBMap.getCellAtPosition(position);
+            if (!cellB._objectOn && cellB.monsters.length !== 0) {
+                return;
+            }
+
             if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
             }
@@ -277,6 +290,8 @@ var GameUI = cc.Layer.extend({
     },
 
     activateCardPotion: function (card_type, position, uid, mapCast) {
+        cc.log("deploy spell tai frame ="+ GameStateManagerInstance.frameCount)
+        cc.log("vi tri = "+ position.x+'  '+position.y)
         if (uid == gv.gameClient._userId ) {
             if(mapCast == 1) {
                 this._gameStateManager.playerA._map.deploySpell(card_type, position, uid, mapCast)
@@ -326,7 +341,7 @@ var GameUI = cc.Layer.extend({
         var node = new Vec2(0, 0)
         var count = 0
         var delay = 1
-        while (node.x != MAP_WIDTH || node.y != MAP_HEIGHT) {
+        while (node.x != MAP_CONFIG.MAP_WIDTH || node.y != MAP_CONFIG.MAP_HEIGHT) {
             var dir = path[node.x][node.y].sub(node)
             var numDir
             if (dir.x == 1 && dir.y == 0) numDir = 6
@@ -385,27 +400,24 @@ var GameUI = cc.Layer.extend({
         this.addObjectBackground('#map/map_house.png', 1 / 6.5, 0, -3.9 / 8, 6.2 / 15)
         this.addObjectBackground('#map/map_house.png', 1 / 6.5, 0, 3.9 / 8, -3.8 / 15)
 
-        // this.addObjectBackground(res.rock4, 1 / 8.5, 0, -6 / 15, 7 / 15)
-        // this.addObjectBackground(res.grass3, 1 / 7, 0, 8.5 / 15, 6.5 / 15)
-        // this.addObjectBackground(res.grass2, 1 / 15, 0, 8.7 / 15, 6.3 / 15)
-        // this.addObjectBackground(res.tree0, 1 / 5, 0, 8 / 15, 5.5 / 15)
-        // this.addObjectBackground(res.rock0, 1 / 9, 0, 8 / 15, 4.2 / 15)
-        // this.addObjectBackground(res.tree2, 1 / 3, 0, 8 / 15, 3.5 / 15)
-        // this.addObjectBackground(res.tree1, 1 / 5, 0, 7 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.tree3, 1 / 5, 0, 5.5 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.grass1, 1 / 10, 0, -7.7 / 15, 5.3 / 15)
-        // this.addObjectBackground(res.tree1, 1 / 5, 0, -8.2 / 15, 4.5 / 15)
-        // this.addObjectBackground(res.tree3, 1 / 6, 0, -8 / 15, 3.5 / 15)
-        // this.addObjectBackground(res.grass0, 1 / 12, 0, -2.2 / 15, 7 / 15)
-        // this.addObjectBackground(res.tree0, 1 / 5.5, 0, -3.2 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.tree2, 1 / 3.5, 0, -4.5 / 15, 7.5 / 15)
-        // this.addObjectBackground(res.rock3, 1 / 7, 0, -0.2 / 15, 7 / 15)
-        // this.addObjectBackground(res.grass1, 1 / 11, 0, 3.5 / 15, 7 / 15)
+
 
         this.addObjectBackground('#map/map_decoration_0002.png', 0, 2.2 / 15, 9 / 15, 1 / 15)
         this.addObjectBackground('#map/map_decoration_0001.png', 0, 2.3 / 15, -8.15 / 15, 1.25 / 15)
         var backgroundBattle2 = ccs.load(res.backgroundBattle2, "").node;
         this.addChild(backgroundBattle2);
+        let resultAnimation = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
+            "res/map/fx/as_duoi.atlas")
+        resultAnimation.setScale(CELLWIDTH/50)
+        resultAnimation.setPosition(winSize.width / 2 + WIDTHSIZE * 6.2 / 8, winSize.height / 2 + HEIGHTSIZE * -4.4 / 15)
+        resultAnimation.setAnimation(0, "slots", true)
+        this.addChild(resultAnimation)
+        let resultAnimation2 = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
+            "res/map/fx/as_duoi.atlas")
+        resultAnimation2.setScale(CELLWIDTH/50)
+        resultAnimation2.setPosition(winSize.width / 2 + WIDTHSIZE * -1.55 / 8, winSize.height / 2 + HEIGHTSIZE * 5.6/ 15)
+        resultAnimation2.setAnimation(0, "slots", true)
+        this.addChild(resultAnimation2)
         // this.addObjectBackground(res.grass1, 1 / 11, 0, -8 / 15, -1.5 / 15)
         // this.addObjectBackground(res.tree0, 1 / 4, 0, -8.5 / 15, -0.5 / 15)
         //
@@ -462,7 +474,7 @@ var GameUI = cc.Layer.extend({
 
         var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
         time3.visible = false
-        var numTime = new ccui.Text(TIME_WAVE, res.font_magic, 24)
+        var numTime = new ccui.Text(GAME_CONFIG.TIME_WAVE, res.font_magic, 24)
         numTime.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
         var whiteColor = new cc.Color(255, 255, 255, 255);
         numTime.setTextColor(whiteColor)
@@ -474,7 +486,7 @@ var GameUI = cc.Layer.extend({
         touchLayer.opacity = 0
         touchLayer.addClickEventListener(()=>{
             if (GameStateManagerInstance.canTouchNewWave) {
-                // GameStateManagerInstance._timer.resetTime(TIME_WAVE)
+                // GameStateManagerInstance._timer.resetTime(GAME_CONFIG.TIME_WAVE)
                 this.getNewWave()
                 testnetwork.connector.sendActions([[new NextWaveAction(this._gameStateManager.waveCount), 0]]);
                 cc.log('touch1111111111111111111111')
@@ -542,7 +554,7 @@ var GameUI = cc.Layer.extend({
         lbWave.enableShadow()
         lbWave.setTextColor(blueColor2)
 
-        var strNumWave = this._gameStateManager.curWave + '/' + MAX_WAVE
+        var strNumWave = this._gameStateManager.curWave + '/' + GAME_CONFIG.MAX_WAVE
         var lbNumWave = new ccui.Text(strNumWave, res.font_magic, 30)
         lbNumWave.setScale(CELLWIDTH / lbNumWave.getContentSize().height * 0.35)
         lbNumWave.setPosition(CELLWIDTH * 0.48, winSize.height / 2 + CELLWIDTH * 0.95)
@@ -592,9 +604,9 @@ var GameUI = cc.Layer.extend({
     },
 
     addInforBoxUI: function () {
-        var mainscene = ccs.load(res.scene, "").node;
-        mainscene.setScale(0.89)
-        this.addChild(mainscene);
+        var OpponentInfor = ccs.load(res.scene, "").node;
+        OpponentInfor.getChildByName('name').setString(shareOpponentInfo.name)
+        this.addChild(OpponentInfor);
 
     },
 
@@ -737,7 +749,7 @@ var GameUI = cc.Layer.extend({
                 // }
             }
         });
-        for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
+        for (let i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
             var cardBox = new cc.Sprite('res/battle/battle_card_box.png')
             cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.43)
             cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
@@ -751,7 +763,7 @@ var GameUI = cc.Layer.extend({
             this.listCard.push(card)
             cc.eventManager.addListener(listener1.clone(), card);
         }
-        for (let i = 1; i <= NUM_CARD_PLAYABLE; i++) {
+        for (let i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
 
             var btnRemoveCard =new ccui.Button('res/battle/battle_btn_destroy.png');
             btnRemoveCard.setScale(CELLWIDTH / btnRemoveCard.getContentSize().width * 1.4)
@@ -760,8 +772,8 @@ var GameUI = cc.Layer.extend({
 
             btnRemoveCard.addClickEventListener(()=> {
                 if(this.cardTouchSlot >= 0) {
-                    if (GameStateManagerInstance.playerA.energy >= ENERGY_DESTROY_CARD) {
-                        this.updateCardSlot(this.cardTouchSlot, ENERGY_DESTROY_CARD);
+                    if (GameStateManagerInstance.playerA.energy >= GAME_CONFIG.ENERGY_DESTROY_CARD) {
+                        this.updateCardSlot(this.cardTouchSlot, GAME_CONFIG.ENERGY_DESTROY_CARD);
                     } else {
                         Utils.addToastToRunningScene('Không đủ năng lượng!');
                     }
@@ -871,7 +883,7 @@ var GameUI = cc.Layer.extend({
                         let loc = convertLogicalPosToIndex(posLogic, 1);
                         this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                            gv.gameClient._userId), TICK_FOR_DELAY_TOWER]]);
+                            gv.gameClient._userId), GAME_CONFIG.TICK_FOR_DELAY_TOWER]]);
                         this.updateCardSlot(target.numSlot, target.energy);
                     }
                 } else {
@@ -928,19 +940,19 @@ var GameUI = cc.Layer.extend({
         let spell;
         switch (cardType) {
             case 0:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');
+                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
                 break;
             case 1:
-                spell = new SpellFallUI(posUI, 'effect_atk_ice', 'animation_ice_ball');
+                spell = new SpellFallUI(posUI, 'effect_atk_ice', 'animation_ice_ball', GameStateManagerInstance.getSpellConfig(1));
                 break;
             case 2:
-                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4);
+                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4, GameStateManagerInstance.getSpellConfig(2)[0]);
                 break;
             case 3:
-                spell = new SpellFieldUI(posUI, 'effect_buff_speed', 1.5);
+                spell = new SpellFieldUI(posUI, 'effect_buff_speed', (GameStateManagerInstance.getSpellConfig(3)[1]/1000), GameStateManagerInstance.getSpellConfig(3)[0]);
                 break;
             default:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball');
+                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
                 break;
         }
         this.addChild(spell);
@@ -1000,6 +1012,7 @@ var GameUI = cc.Layer.extend({
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
         this._gameStateManager.playerA.energy -= numEnergy
+        // this._gameStateManager.playerA.energy -= 0
         this.cardInQueue.push(this.listCard[numSlot - 1].type)
         this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
         this.cardInQueue.shift()
@@ -1016,7 +1029,7 @@ var GameUI = cc.Layer.extend({
     * reset về không chọn thẻ nào cả
     * */
     resetCardTouchState: function () {
-        for (var i = 1; i <= NUM_CARD_PLAYABLE; i++) {
+        for (var i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
             var card = this.getChildByName('cardPlayable' + i)
             if (card.onTouch == true) {
                 card.x += 0
@@ -1038,7 +1051,7 @@ var GameUI = cc.Layer.extend({
         }
 
         if (this.getChildByName('energyBar') != null) {
-            var percen = GameStateManagerInstance.playerA.energy/MAX_ENERGY*100
+            var percen = GameStateManagerInstance.playerA.energy/GAME_CONFIG.MAX_ENERGY*100
             if(percen > 100) {
                 percen = 100
             }
@@ -1051,7 +1064,7 @@ var GameUI = cc.Layer.extend({
         // this._gameStateManager._timer.updateRealTime(dt)
         var time = Math.floor(this._gameStateManager._timer.curTime + 0.5)
         this.getChildByName('time').setString(time)
-        var percen = 100 - this._gameStateManager._timer.curTime / TIME_WAVE * 100
+        var percen = 100 - this._gameStateManager._timer.curTime / GAME_CONFIG.TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
         if (this._gameStateManager.canTouchNewWave) {
             this.getChildByName(res.timerBorder_png).visible = true
@@ -1063,9 +1076,9 @@ var GameUI = cc.Layer.extend({
         * */
     getNewWave: function () {
         this.getChildByName(res.timerBorder_png).visible = false
-        var strNumWave = this._gameStateManager.curWave + '/' + MAX_WAVE
+        var strNumWave = this._gameStateManager.curWave + '/' + GAME_CONFIG.MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)
-        // this._gameStateManager._timer.resetTime(TIME_WAVE)
+        // this._gameStateManager._timer.resetTime(GAME_CONFIG.TIME_WAVE)
         //this.callMonster()
     },
 
@@ -1093,8 +1106,8 @@ var GameUI = cc.Layer.extend({
     },
 
     initCellSlot: function (mapArray, rule) {
-        for (let i = 0; i < MAP_WIDTH + 1; i++) {
-            for (let j = 0; j < MAP_HEIGHT + 1; j++) {
+        for (let i = 0; i < MAP_CONFIG.MAP_WIDTH + 1; i++) {
+            for (let j = 0; j < MAP_CONFIG.MAP_HEIGHT + 1; j++) {
                 let obj;
                 switch (mapArray[i][j]) {
                     case cf.MAP_CELL.BUFF_DAMAGE:

@@ -118,11 +118,15 @@
         "src/Logic/objects/effects/Effect.js",
         "src/Logic/objects/effects/FreezeEffect.js",
         "src/Logic/objects/effects/DesertKingEffect.js",
+        "src/Logic/objects/effects/HealMaintain.js",
+        "src/Logic/objects/effects/SpeedEffect.js",
+        "src/Logic/objects/effects/PushEffect.js",
         "src/Logic/objects/effects/TIceGunEffect.js",
         "src/Logic/objects/effects/StunEffect.js",
         "src/Logic/objects/effects/SlowEffect.js",
         "src/Logic/objects/effects/PoisonEffect.js",
         "src/Logic/objects/effects/DamageBuffEffect.js",
+
 
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
@@ -161,6 +165,7 @@
         "src/Logic/objects/towers/TIceGun.js",
         "src/Logic/objects/towers/TDamage.js",
 
+        "src/Logic/objects/spells/SPELL_CONFIG.js",
         "src/Logic/objects/spells/Spell.js",
         "src/Logic/objects/spells/FireBall.js",
         "src/Logic/objects/spells/IceBall.js",

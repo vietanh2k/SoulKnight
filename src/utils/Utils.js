@@ -100,6 +100,9 @@ Utils.loadCardConfig = function () {
     cc.loader.load('json/Potion.json', (err, res) => {
         cf.POTION = res[0];
     });
+    cc.loader.load('json/Potion2.json', (err, res) => {
+        cf.POTION2 = res[0];
+    });
     cc.loader.load('json/TowerBuff.json', (err, res) => {
         cf.TOWER_BUFF = res[0];
     });
@@ -297,6 +300,6 @@ Utils.generateCardAttributes = function (card, index) {
 
 // Utils.convertPosUIToLocLogic = function (pos, rule) {
 //     let corX = (pos.x - cf.WIDTH / 2 + WIDTHSIZE / 2) / CELLWIDTH - 1;
-//     let corY = MAP_HEIGHT + 3.5 - (pos.y - cf.HEIGHT / 2 + HEIGHTSIZE / 2) / CELLWIDTH;
+//     let corY = MAP_CONFIG.MAP_HEIGHT + 3.5 - (pos.y - cf.HEIGHT / 2 + HEIGHTSIZE / 2) / CELLWIDTH;
 //     return new Vec2(corX, corY);
 // };

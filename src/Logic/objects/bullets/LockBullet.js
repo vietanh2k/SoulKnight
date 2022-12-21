@@ -8,18 +8,20 @@ let TCannonBullet = Bullet.extend({
     },
 
     explose: function (playerState, pos) {
-        const map = playerState.getMap();
-        let objectList = map.getObjectInRange(pos, this.radius);
-        for (let object of objectList) {
-            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
-                object.takeDamage(playerState, this.damage, this.fromTower);
-                if (this.level === 3) {
-                    object.stunEffect = new StunEffect(this.getStunDuration(), object);
-                    playerState.getMap().addEffect(object.stunEffect);
+        if (this.canAttack(this.target) && (this.targetType === 'all' || this.targetType === this.target.class)) {
+            this.target.takeDamage(playerState, this.damage, this.fromTower);
+            cc.log('Monster HP: ' + this.target.health + ', position: ' + this.target.position + ', frame: ' + GameStateManagerInstance.frameCount)
+            if (this.level === 3) {
+                if (this.target.stunEffect !== undefined) {
+                    this.target.stunEffect.reset();
+                } else {
+                    this.target.stunEffect = new StunEffect(this.getStunDuration(), this.target);
+                    playerState.getMap().addEffect(this.target.stunEffect);
                 }
-                object.hurtUI();
             }
+            this.target.hurtUI();
         }
+
         this.isDestroy = true;
         this.active = false;
         this.visible = false;
@@ -45,19 +47,18 @@ let TIceGunBullet = Bullet.extend({
     },
 
     explose: function (playerState, pos) {
-        const map = playerState.getMap();
-        let objectList = map.getObjectInRange(pos, this.radius);
-        for (let object of objectList) {
-            if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
-                object.takeDamage(playerState, this.damage, this.fromTower);
-                object.tIceGunEffect = new TIceGunEffect(this.getFreezeDuration(), object, this.level === 3);
-                playerState.getMap().addEffect(object.tIceGunEffect);
-                object.hurtUI();
-            }
+        if (this.canAttack(this.target) && (this.targetType === 'all' || this.targetType === this.target.class)) {
+            this.target.takeDamage(playerState, this.damage, this.fromTower);
+            this.target.tIceGunEffect = new TIceGunEffect(this.getFreezeDuration(), this.target, this.level === 3);
+            playerState.getMap().addEffect(this.target.tIceGunEffect);
+            this.target.hurtUI();
         }
+
         this.isDestroy = true;
         this.active = false;
         this.visible = false;
+
+        cc.log('exlose frame: ' + GameStateManagerInstance.frameCount)
 
         GameUI.instance.removeChild(this);
         if (this.target && this.target.release) {

@@ -1,10 +1,10 @@
-TIME_PER_HEAL = 0.1;
 
 const MONSTER_COS_THRESHOLD = 0.9
 const MONSTER_PUSH_TIME = 2 // s
 const MONSTER_PUSH_D = 1
 const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD = -0.01
 const MONSTER_RADIUS_PERCENT = 1;
+const MONSTER_OFFSET_Y = 3.0;
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -33,6 +33,10 @@ const Monster = AnimatedSprite.extend({
 
         this.concept="monster"
         this.healthUI = null
+        this.pushSpeed = MAP_CONFIG.CELL_WIDTH*2.5;
+        this.pushVec = new Vec2(0,0);
+        this.pushDistance = 0;
+        this.___pushEffect = null;
 
         this.initConfig(playerState)
         this.addHealthUI()
@@ -214,38 +218,38 @@ const Monster = AnimatedSprite.extend({
         return false;
     },
 
-    updateHealDuration:function (dt){
-        this.sumHealDt += dt;
-        while (this.sumHealDt > TIME_PER_HEAL) {
-            this.sumHealDt -= TIME_PER_HEAL
-            if(this.timeHealBuff > 0){
-                this.timeHealBuff -= TIME_PER_HEAL;
-                this.recoverHp(this.numHealBuff)
-                this.hurtUI()
-            }
-        }
-    },
-
-
-    getHealBuffState:function (timeHealBuff, numHealBuff){
-        this.timeHealBuff = timeHealBuff;
-        this.numHealBuff = numHealBuff;
-    },
-
-    updateSpeedUpDuration:function (dt){
-
-        if(this.timeSpeedUpBuff > 0){
-            this.timeSpeedUpBuff -= dt;
-        }else {
-            this.rateSpeedUpBuff = 1;
-        }
-
-    },
-
-    getSpeedUpState:function (timeSpeedUpBuff, rateSpeedUpBuff){
-        this.timeSpeedUpBuff = timeSpeedUpBuff;
-        this.rateSpeedUpBuff = rateSpeedUpBuff;
-    },
+    // updateHealDuration:function (dt){
+    //     this.sumHealDt += dt;
+    //     while (this.sumHealDt > TIME_PER_HEAL) {
+    //         this.sumHealDt -= TIME_PER_HEAL
+    //         if(this.timeHealBuff > 0){
+    //             this.timeHealBuff -= TIME_PER_HEAL;
+    //             this.recoverHp(this.numHealBuff)
+    //             this.hurtUI()
+    //         }
+    //     }
+    // },
+    //
+    //
+    // getHealBuffState:function (timeHealBuff, numHealBuff){
+    //     this.timeHealBuff = timeHealBuff;
+    //     this.numHealBuff = numHealBuff;
+    // },
+    //
+    // updateSpeedUpDuration:function (dt){
+    //
+    //     if(this.timeSpeedUpBuff > 0){
+    //         this.timeSpeedUpBuff -= dt;
+    //     }else {
+    //         this.rateSpeedUpBuff = 1;
+    //     }
+    //
+    // },
+    //
+    // getSpeedUpState:function (timeSpeedUpBuff, rateSpeedUpBuff){
+    //     this.timeSpeedUpBuff = timeSpeedUpBuff;
+    //     this.rateSpeedUpBuff = rateSpeedUpBuff;
+    // },
 
     logicUpdate: function (playerState, dt){
         if (this.health <= 0) {
@@ -253,6 +257,10 @@ const Monster = AnimatedSprite.extend({
             this.destroy();
             return;
         }
+        // if(this.timeHealBuff > 0) {
+        //     this.updateHealDuration(dt);
+        // }
+        // this.updateSpeedUpDuration(dt);
 
         this.active = this.inactiveSourceCounter === 0;
 
@@ -260,14 +268,13 @@ const Monster = AnimatedSprite.extend({
             return;
         }
 
-        if(this.timeHealBuff > 0) {
-            this.updateHealDuration(dt);
-        }
-        this.updateSpeedUpDuration(dt);
-
         if (this.poisonEffect !== undefined) {
-            this.takeDamage(playerState, this.poisonEffect.dps * Math.min(dt, this.poisonEffect.countDownTime));
-            this.hurtUI();
+            this.poisonEffect.sumDt += dt;
+            if (this.poisonEffect.sumDt > 1) {
+                this.takeDamage(playerState, this.poisonEffect.dps);
+                this.hurtUI();
+                this.poisonEffect.sumDt -= 1;
+            }
         }
 
         /*if (this.impactedMonster) {
@@ -302,13 +309,13 @@ const Monster = AnimatedSprite.extend({
             if (reducedSpeedFromTOilGun < reducedSpeedFromTDamage) {
                 let time = Math.min(dt, this.slowEffectFromTOilGun.countDownTime);
                 distance -= reducedSpeedFromTOilGun * time;
-                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage) {
+                if (this.slowEffectFromTOilGun.countDownTime < this.slowEffectFromTDamage.countDownTime) {
                     distance -= reducedSpeedFromTDamage * Math.min(0, dt - time, this.slowEffectFromTDamage.countDownTime - time);
                 }
             } else {
                 let time = Math.min(dt, this.slowEffectFromTDamage.countDownTime);
                 distance -= reducedSpeedFromTDamage * time;
-                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun) {
+                if (this.slowEffectFromTDamage.countDownTime < this.slowEffectFromTOilGun.countDownTime) {
                     distance -= reducedSpeedFromTOilGun * Math.min(0, dt - time, this.slowEffectFromTOilGun.countDownTime - time);
                 }
             }
@@ -529,10 +536,14 @@ const Monster = AnimatedSprite.extend({
     },
 
     addHealthUI: function () {
-        this.healthUI = ccs.load(res.healthMonster, "").node;
+        if(this.renderRule === 1) {
+            this.healthUI = ccs.load(res.healthRed, "").node;
+        }else{
+            this.healthUI = ccs.load(res.healthGreen, "").node;
+        }
         this.healthUI.opacity = 0
 
-        this.healthUI.setScale(0.3)
+        // this.healthUI.setScale(0.3)
         this.addChild(this.healthUI)
     },
     hurtUI: function () {
@@ -548,8 +559,11 @@ const Monster = AnimatedSprite.extend({
     },
 
     destroy: function () {
+        cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
+        cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
+        this._playerState.addCountDestroyFrame(GameStateManagerInstance.frameCount);
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
             var ex = new Explosion(cc.p(this.x, this.y))
@@ -566,11 +580,12 @@ const Monster = AnimatedSprite.extend({
     },
 
     takeDamage: function (playerState, many, from) {
+        many = Math.floor(many)
         let multiplier = 1;
         if (this.isVulnerableByTIceGun) {
             multiplier *= 1.5;
         }
-        this.health = Math.max(this.health - many * multiplier, 0);
+        this.health = Math.max(this.health - Math.floor(many * multiplier), 0);
         if (this.health > this.MaxHealth) {
             this.health = this.MaxHealth;
         }
@@ -608,6 +623,16 @@ const Monster = AnimatedSprite.extend({
         // this monster is A
         // another monster is B
         const AB = anotherMonster.position.sub(this.position).normalize()
+
+        if (isNaN(AB.x) || isNaN(AB.y)) {
+            const pos_ = this.position.add(this.movingDirection.mul(MONSTER_OFFSET_Y));
+            const cell_ = map.getCellAtPosition(pos_);
+            if (cell_ != null && cell_.getNextCell() != null) {
+                this.position.set(pos_.x, pos_.y);
+            }
+            return;
+        }
+
         if (this.speed === anotherMonster.speed) {
             this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
             return
@@ -640,5 +665,9 @@ const Monster = AnimatedSprite.extend({
             anotherMonster.retain()
         }
     },
+
+    getHealth:function (){
+        return this.health;
+    }
 
 });

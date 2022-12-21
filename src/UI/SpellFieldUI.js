@@ -1,16 +1,16 @@
-FIREBALL_WIDTH = 180
+SPELL_FIELD_WIDTH = 230
 
 const SpellFieldUI = cc.Node.extend({
-    ctor: function ( posUI , resSpell, duration) {
+    ctor: function ( posUI , resSpell, duration, radius) {
         this._super();
         this.setPosition(posUI.x, posUI.y)
         this.initAnimation(resSpell)
-        this.radius = 0.8
-        this.setScale(2*CELLWIDTH/FIREBALL_WIDTH*this.radius)
-        this.ccDT = 0.03
+        this.radius = radius;
+        this.setScale(2*CELLWIDTH/SPELL_FIELD_WIDTH*this.radius)
         this.duration = duration;
-        this.schedule(this.updateDuration, this.ccDT)
+        // this.schedule(this.updateDuration, this.ccDT)
         this.isCast = false
+        this.updateDuration()
         return true;
     },
 
@@ -23,10 +23,14 @@ const SpellFieldUI = cc.Node.extend({
     },
 
     updateDuration: function (){
-        this.duration -= this.ccDT;
-        if(this.duration <= 0){
-            this.destroy()
-        }
+        // this.duration -= this.ccDT;
+        // if(this.duration <= 0){
+        //     this.destroy()
+        // }
+        let seq = cc.sequence(cc.delayTime(this.duration+0.1), cc.callFunc(()=>{
+            this.destroy();
+        }))
+        this.runAction(seq);
     },
 
     destroy: function (){
