@@ -37,8 +37,12 @@ var GameStateManager = cc.Class.extend({
         PreDate = Date.now();
         this.spellConfig = {}
         this.init();
+
         this.playerA = new PlayerState(1, this)
         this.playerB = new PlayerState(2, this)
+        this.orderedPlayerA = null
+        this.orderedPlayerB = null
+
         this.monsterFactory = new MonsterFactory()
         this.xid = 1
         this.readFrom(pkg)
@@ -89,10 +93,16 @@ var GameStateManager = cc.Class.extend({
             this.playerA.readFrom(pkg);
             var userId2 = pkg.getInt();
             this.playerB.readFrom(pkg);
+
+            this.orderedPlayerA = this.playerA
+            this.orderedPlayerB = this.playerB
         }else{
             this.playerB.readFrom(pkg);
             var userId2 = pkg.getInt();
             this.playerA.readFrom(pkg);
+
+            this.orderedPlayerA = this.playerB
+            this.orderedPlayerB = this.playerA
         }
 
         Random.seed(pkg.getInt());
@@ -205,8 +215,8 @@ var GameStateManager = cc.Class.extend({
 
         }
 
-        this.playerA.update(this.dt);
-        this.playerB.update(this.dt);
+        this.orderedPlayerA.update(this.dt);
+        this.orderedPlayerB.update(this.dt);
         this._timer.updateRealTime(this.dt);
 
         this.frameCount++;
