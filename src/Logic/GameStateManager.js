@@ -288,4 +288,27 @@ var GameStateManager = cc.Class.extend({
         return this.spellConfig[typeCard];
 
     },
+    /*
+       sort cac action theo frame trigger
+    */
+    addActionBySort:function (frameTrigger, actionArray){
+        if(ActionListInstance.length>0) {
+            let check1 = false;
+            for (let i = ActionListInstance.length-1; i >= 0; i--) {
+                if (ActionListInstance[i][0] <= frameTrigger) {
+                    ActionListInstance.splice(i + 1, 0, actionArray);
+                    check1 = true;
+                    break;
+                }
+            }
+            /*
+            Nếu duyệt về đầu mà ko tìm thấy frame bé hơn => add vào đầu
+             */
+            if(!check1){
+                ActionListInstance.unshift(actionArray);
+            }
+        }else {
+            ActionListInstance.push(actionArray)
+        }
+    },
 });
