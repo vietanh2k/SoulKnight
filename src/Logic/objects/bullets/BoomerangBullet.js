@@ -9,7 +9,7 @@ let TBoomerangBullet = Bullet.extend({
         this.range = this.fromTower.getRange();
         this.bulletRadius = 0.5;
 
-        this.id = Math.random();
+        this.id = Date.now();
 
         this.modifyFlyingSpeedBasedOnAttackSpeed();
 

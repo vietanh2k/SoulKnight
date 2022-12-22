@@ -1011,8 +1011,8 @@ var GameUI = cc.Layer.extend({
      * @param slot (1,2,3,4), numEnergy
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
-        this._gameStateManager.playerA.energy -= numEnergy
-        // this._gameStateManager.playerA.energy -= 0
+        // this._gameStateManager.playerA.energy -= numEnergy
+        this._gameStateManager.playerA.energy -= 0
         this.cardInQueue.push(this.listCard[numSlot - 1].type)
         this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
         this.cardInQueue.shift()

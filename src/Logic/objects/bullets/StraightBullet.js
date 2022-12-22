@@ -24,12 +24,15 @@ let TWizardBullet = Bullet.extend({
             damage += 10;
         }
 
+        let counter = 0;
         for (let object of objectList) {
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, damage, this.fromTower);
+                counter++;
                 object.hurtUI();
             }
         }
+        Utils.addToastToRunningScene(objectList.length + ', ' + GameStateManagerInstance.frameCount + ', ' + this.radius + ', ' + (pos.x - pos.y))
         this.isDestroy = true;
         this.active = false;
         this.visible = false;
