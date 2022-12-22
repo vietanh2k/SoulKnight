@@ -231,6 +231,42 @@ var GameUI = cc.Layer.extend({
         }
     },
 
+    checkCanDeployCardTower: function (card_type, position, uid) {
+        cc.log('11111111111111111111111111111')
+        if (uid === gv.gameClient._userId) {
+            let loc = convertLogicalPosToIndex(position, 1);
+
+            const playerAMap = this._gameStateManager.playerA._map
+            let cellA = playerAMap.getCellAtPosition(position);
+            if (!cellA._objectOn && cellA.monsters.length !== 0) {
+                return;
+            }
+
+            if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
+            this._gameStateManager.playerA._map.updatePathForCells()
+            this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
+            // this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
+        } else {
+            cc.log('3333333333333333333333333333')
+            let loc = convertLogicalPosToIndex(position, 2);
+
+            const playerBMap = this._gameStateManager.playerB._map
+            let cellB = playerBMap.getCellAtPosition(position);
+            if (!cellB._objectOn && cellB.monsters.length !== 0) {
+                return;
+            }
+
+            if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
+            this._gameStateManager.playerB._map.updatePathForCells()
+            this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+            // this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
+        }
+    },
+
     /*
     * deploy tower cho 2 client
     * */
@@ -256,35 +292,35 @@ var GameUI = cc.Layer.extend({
 
     activateCardTower: function (cardType, position, uid) {
         if (uid === gv.gameClient._userId) {
-            this.createObjectByTouch = false
-            let loc = convertLogicalPosToIndex(position, 1);
-
-            const playerAMap = this._gameStateManager.playerA._map
-            let cellA = playerAMap.getCellAtPosition(position);
-            if (!cellA._objectOn && cellA.monsters.length !== 0) {
-                return;
-            }
-
-            if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
-                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
-            }
-            this._gameStateManager.playerA._map.updatePathForCells()
-            this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
+            // this.createObjectByTouch = false
+            // let loc = convertLogicalPosToIndex(position, 1);
+            //
+            // const playerAMap = this._gameStateManager.playerA._map
+            // let cellA = playerAMap.getCellAtPosition(position);
+            // if (!cellA._objectOn && cellA.monsters.length !== 0) {
+            //     return;
+            // }
+            //
+            // if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+            //     this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            // }
+            // this._gameStateManager.playerA._map.updatePathForCells()
+            // this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
             this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
-            let loc = convertLogicalPosToIndex(position, 2);
-
-            const playerBMap = this._gameStateManager.playerB._map
-            let cellB = playerBMap.getCellAtPosition(position);
-            if (!cellB._objectOn && cellB.monsters.length !== 0) {
-                return;
-            }
-
-            if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
-                this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
-            }
-            this._gameStateManager.playerB._map.updatePathForCells()
-            this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+            // let loc = convertLogicalPosToIndex(position, 2);
+            //
+            // const playerBMap = this._gameStateManager.playerB._map
+            // let cellB = playerBMap.getCellAtPosition(position);
+            // if (!cellB._objectOn && cellB.monsters.length !== 0) {
+            //     return;
+            // }
+            //
+            // if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+            //     this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            // }
+            // this._gameStateManager.playerB._map.updatePathForCells()
+            // this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
             this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
         }
     },
@@ -883,7 +919,7 @@ var GameUI = cc.Layer.extend({
                         let loc = convertLogicalPosToIndex(posLogic, 1);
                         this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                            gv.gameClient._userId), GAME_CONFIG.TICK_FOR_DELAY_TOWER]]);
+                            gv.gameClient._userId), 0]]);
                         this.updateCardSlot(target.numSlot, target.energy);
                     }
                 } else {
@@ -1011,8 +1047,8 @@ var GameUI = cc.Layer.extend({
      * @param slot (1,2,3,4), numEnergy
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
-        this._gameStateManager.playerA.energy -= numEnergy
-        // this._gameStateManager.playerA.energy -= 0
+        // this._gameStateManager.playerA.energy -= numEnergy
+        this._gameStateManager.playerA.energy -= 0
         this.cardInQueue.push(this.listCard[numSlot - 1].type)
         this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
         this.cardInQueue.shift()
