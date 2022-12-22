@@ -1,10 +1,10 @@
 
-const MONSTER_COS_THRESHOLD = 0.9
-const MONSTER_PUSH_TIME = 2 // s
-const MONSTER_PUSH_D = 1
-const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD = -0.01
-const MONSTER_RADIUS_PERCENT = 1;
-const MONSTER_OFFSET_Y = 3.0;
+const MONSTER_COS_THRESHOLD                     = 0.9
+const MONSTER_COS_LOWER_THAN_ZERO_THRESHOLD     = -0.01
+const MONSTER_PUSH_TIME                         = 2 // s
+const MONSTER_PUSH_D                            = 1
+const MONSTER_OFFSET_Y                          = 3.0;
+const MONSTER_RADIUS_PERCENT                    = 0.5;
 
 const Monster = AnimatedSprite.extend({
     ctor: function (type, playerState) {
@@ -78,7 +78,7 @@ const Monster = AnimatedSprite.extend({
         }
 
         this.weight = config.weight
-        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH
+        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH * MONSTER_RADIUS_PERCENT
     },
 
     initConfig: function (playerState) {

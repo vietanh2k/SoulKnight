@@ -130,6 +130,7 @@
 
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
+        "src/Logic/objects/monsters/wavehandlers/MonsterWaveHandler.js",
         "src/Logic/objects/monsters/Monster.js",
         "src/Logic/objects/monsters/Swordsman.js",
         "src/Logic/objects/monsters/Assassin.js",
