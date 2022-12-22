@@ -6,7 +6,7 @@ const StunEffect = Effect.extend({
         this.target = target;
         this.target.inactiveSourceCounter++;
         // todo animation stun
-        if(this.target.concept === 'monster') {
+        if(this.target.concept === 'monster' && !this.target.isDestroy) {
             this.target.play(-1);
         }
         this.target.retain();

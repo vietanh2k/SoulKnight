@@ -284,7 +284,7 @@ testnetwork.Connector = cc.Class.extend({
         }
         if(this.countCorrect === 0){
             this.countCorrect = COUNT_CORRECT_RESET;
-            FrameDelayPosible = Math.max(--FrameDelayPosible, FrameDelayMin);
+            FrameDelayPosible = Math.max(FrameDelayPosible -= 2, FrameDelayMin);
             cc.log("Frame Posible================ "+ FrameDelayPosible)
         }
     },

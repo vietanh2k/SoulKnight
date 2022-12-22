@@ -850,6 +850,7 @@
             "ctype": "TextObjectData"
           },
           {
+            "IsCustomSize": true,
             "FontSize": 22,
             "LabelText": "100 - 200",
             "FontResource": {
@@ -876,7 +877,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": -128.2319,
+              "X": -113.23,
               "Y": 28.83
             },
             "Scale": {
@@ -896,20 +897,21 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -200.7319,
-            "RightMargin": 55.7319,
+            "LeftMargin": -203.73,
+            "RightMargin": 22.73,
             "TopMargin": -44.83,
             "BottomMargin": 12.83,
             "Tag": 148,
             "ActionTag": -1597720370,
             "Size": {
-              "X": 145.0,
+              "X": 181.0,
               "Y": 32.0
             },
             "Name": "numGoldGet",
             "ctype": "TextObjectData"
           },
           {
+            "IsCustomSize": true,
             "FontSize": 22,
             "LabelText": "x40 - 50",
             "FontResource": {
@@ -936,7 +938,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 129.88,
+              "X": 152.88,
               "Y": 28.83
             },
             "Scale": {
@@ -956,14 +958,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": 65.38,
-            "RightMargin": -194.38,
+            "LeftMargin": 62.38,
+            "RightMargin": -243.38,
             "TopMargin": -44.83,
             "BottomMargin": 12.83,
             "Tag": 150,
             "ActionTag": 995453402,
             "Size": {
-              "X": 129.0,
+              "X": 181.0,
               "Y": 32.0
             },
             "Name": "numCardGet",

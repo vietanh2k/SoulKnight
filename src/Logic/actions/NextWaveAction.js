@@ -56,6 +56,8 @@ NextWaveAction.deserializer = function (pkg) {
 
     const numB = pkg.getInt()
     tmp.push(numB)
+
+    cc.log('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> '+ numB)
     for (let i = 0; i < numB; i++) {
         tmp.push(pkg.getInt())
     }

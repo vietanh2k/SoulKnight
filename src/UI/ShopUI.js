@@ -53,6 +53,7 @@ var ShopUI = cc.Layer.extend({
     showPopupGold:function (itemNode){
         this.popup = new PopupGold(itemNode)
         this.addChild(this.popup,0,'popup')
+
     },
 
     showPopupCard:function (cardID,numGold,numCard, numSlot){

@@ -11,9 +11,6 @@ let EndBattleUI = cc.Layer.extend({
     },
     init:function (resultString, numTrophy) {
         winSize = cc.director.getWinSize();
-        if(resultString == 'draw'){
-            numTrophy = Math.floor(numTrophy/4);
-        }
         let delayT = numTrophy*0.05+0.5;
         let seq1 = cc.sequence(cc.delayTime(0.7), cc.callFunc(()=>this.addAtlasEndBattle(resultString)),
             cc.delayTime(1.7), cc.callFunc(()=>this.addInforEndBattle(resultString)),
@@ -85,7 +82,7 @@ let EndBattleUI = cc.Layer.extend({
         this.inter =setInterval(()=>{
             infor.getChildByName('trophyGet').setString(tmp);
             tmp +=1;
-            if(tmp == num) {
+            if(tmp > num) {
                 clearInterval(this.inter);
             }
         },50)
