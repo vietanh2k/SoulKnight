@@ -130,6 +130,7 @@
 
         "src/Logic/objects/monsters/MONSTER_ID.js",
         "src/Logic/objects/monsters/MonsterFactory.js",
+        "src/Logic/objects/monsters/wavehandlers/MonsterWaveHandler.js",
         "src/Logic/objects/monsters/Monster.js",
         "src/Logic/objects/monsters/Swordsman.js",
         "src/Logic/objects/monsters/Assassin.js",
@@ -143,8 +144,10 @@
         "src/Logic/objects/monsters/bosses/Iceman.js",
 
         "src/config/GameConfig.js",
+        "src/config/ToastConfig.js",
 
         "src/Logic/GAME_CONFIG.js",
+        "src/Logic/actions/AppearTowerAction.js",
         "src/Logic/actions/ActivateCardAction.js",
         "src/Logic/actions/ActivateSpellAction.js",
         "src/Logic/actions/NextWaveAction.js",

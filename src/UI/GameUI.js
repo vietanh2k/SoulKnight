@@ -16,6 +16,9 @@ var GameUI = cc.Layer.extend({
         this.listCard = []
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
+        this.numSlotCardTower = 1;
+        this.canTouchCard = true;
+        this.mapCanCastSpell1 = null;
         this.init();
         this.scheduleUpdate();
 
@@ -231,6 +234,42 @@ var GameUI = cc.Layer.extend({
         }
     },
 
+    checkCanDeployCardTower: function (card_type, position, uid) {
+        if (uid === gv.gameClient._userId) {
+            let loc = convertLogicalPosToIndex(position, 1);
+
+            const playerAMap = this._gameStateManager.playerA._map
+            let cellA = playerAMap.getCellAtPosition(position);
+            if (!cellA._objectOn && cellA.monsters.length !== 0) {
+                Utils.addToastToRunningScene(TOAST_CONFIG.CANT_DEPLOY_TOWER);
+                return false;
+            }
+            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
+            if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
+            this._gameStateManager.playerA._map.updatePathForCells()
+            this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
+            // this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
+        } else {
+            let loc = convertLogicalPosToIndex(position, 2);
+
+            const playerBMap = this._gameStateManager.playerB._map
+            let cellB = playerBMap.getCellAtPosition(position);
+            if (!cellB._objectOn && cellB.monsters.length !== 0) {
+                return false;
+            }
+            // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
+            if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+                this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            }
+            this._gameStateManager.playerB._map.updatePathForCells()
+            this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+            // this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
+        }
+        return true;
+    },
+
     /*
     * deploy tower cho 2 client
     * */
@@ -256,35 +295,35 @@ var GameUI = cc.Layer.extend({
 
     activateCardTower: function (cardType, position, uid) {
         if (uid === gv.gameClient._userId) {
-            this.createObjectByTouch = false
-            let loc = convertLogicalPosToIndex(position, 1);
-
-            const playerAMap = this._gameStateManager.playerA._map
-            let cellA = playerAMap.getCellAtPosition(position);
-            if (!cellA._objectOn && cellA.monsters.length !== 0) {
-                return;
-            }
-
-            if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
-                this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
-            }
-            this._gameStateManager.playerA._map.updatePathForCells()
-            this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
+            // this.createObjectByTouch = false
+            // let loc = convertLogicalPosToIndex(position, 1);
+            //
+            // const playerAMap = this._gameStateManager.playerA._map
+            // let cellA = playerAMap.getCellAtPosition(position);
+            // if (!cellA._objectOn && cellA.monsters.length !== 0) {
+            //     return;
+            // }
+            //
+            // if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+            //     this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            // }
+            // this._gameStateManager.playerA._map.updatePathForCells()
+            // this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
             this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
-            let loc = convertLogicalPosToIndex(position, 2);
-
-            const playerBMap = this._gameStateManager.playerB._map
-            let cellB = playerBMap.getCellAtPosition(position);
-            if (!cellB._objectOn && cellB.monsters.length !== 0) {
-                return;
-            }
-
-            if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
-                this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
-            }
-            this._gameStateManager.playerB._map.updatePathForCells()
-            this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+            // let loc = convertLogicalPosToIndex(position, 2);
+            //
+            // const playerBMap = this._gameStateManager.playerB._map
+            // let cellB = playerBMap.getCellAtPosition(position);
+            // if (!cellB._objectOn && cellB.monsters.length !== 0) {
+            //     return;
+            // }
+            //
+            // if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
+            //     this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
+            // }
+            // this._gameStateManager.playerB._map.updatePathForCells()
+            // this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
             this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
         }
     },
@@ -631,6 +670,53 @@ var GameUI = cc.Layer.extend({
 
     },
 
+    showMapCanCastSpell:function (mapCast){
+        if(this.mapCanCastSpell1 == null) {
+            if(mapCast == 1) {
+                this.mapCanCastSpell1 = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+                    "res/battle/fx/enemy_circle.atlas")
+                // resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
+                this.mapCanCastSpell1.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * -2/15)
+                this.mapCanCastSpell1.setAnimation(0, "field_green", true)
+                this.addChild(this.mapCanCastSpell1, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE)
+            }
+            if(mapCast == 2) {
+                this.mapCanCastSpell1 = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+                    "res/battle/fx/enemy_circle.atlas")
+                // resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
+                this.mapCanCastSpell1.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 4/15)
+                this.mapCanCastSpell1.setAnimation(0, "field_green", true)
+                this.addChild(this.mapCanCastSpell1, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE)
+            }
+            if(mapCast == 3) {
+
+                this.mapCanCastSpell1 = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+                    "res/battle/fx/enemy_circle.atlas")
+                // resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
+                this.mapCanCastSpell1.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * -2/15)
+                this.mapCanCastSpell1.setAnimation(0, "field_green", true)
+                this.addChild(this.mapCanCastSpell1, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE)
+
+                this.mapCanCastSpell2 = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+                    "res/battle/fx/enemy_circle.atlas")
+                // resultAnimation.setScale(8.9 * WIDTHSIZE / resultAnimation.getBoundingBox().width)
+                this.mapCanCastSpell2.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 4/15)
+                this.mapCanCastSpell2.setAnimation(0, "field_green", true)
+                this.addChild(this.mapCanCastSpell2, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE)
+            }
+        }
+    },
+    hidemapCanCastSpell1:function (){
+        if(this.mapCanCastSpell1 != null){
+            this.mapCanCastSpell1.removeFromParent(true);
+            this.mapCanCastSpell1 = null;
+        }
+        if(this.mapCanCastSpell2 != null){
+            this.mapCanCastSpell2.removeFromParent(true);
+            this.mapCanCastSpell2 = null;
+        }
+    },
+
     addListCardUI: function () {
         let move = false;
         var listener1 = cc.EventListener.create({
@@ -639,9 +725,14 @@ var GameUI = cc.Layer.extend({
             onTouchBegan: (touch, event) => {
                 var target = event.getCurrentTarget();
                 var locationInNode = target.convertToNodeSpace(touch.getLocation());
+                cc.log('a')
                 var s = target.getContentSize();
                 var rect = cc.rect(0, 0, s.width, s.height);
-                return !!cc.rectContainsPoint(rect, locationInNode);
+                let checkTouchRight = !!cc.rectContainsPoint(rect, locationInNode);
+                if(checkTouchRight && target.concept == 'potion') {
+                    this.showMapCanCastSpell(getRule(target));
+                }
+                return (checkTouchRight && this.canTouchCard);
             },
 
             /** chỉ kéo thả đc khi ko có thẻ nào đang được chọn
@@ -657,6 +748,7 @@ var GameUI = cc.Layer.extend({
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
                 if(move && this.previewObject != undefined){
+                    this.hidemapCanCastSpell1()
                     move = false;
                     this.previewObject.removeFromParent(true);
                     this.previewObject = undefined
@@ -676,10 +768,13 @@ var GameUI = cc.Layer.extend({
 
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = true
+                        if( target.concept == 'potion') {
+                            this.showMapCanCastSpell(getRule(target));
+                        }
                     }else if(target.onTouch == true){
                         target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
-
+                        this.hidemapCanCastSpell1();
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = false
                         target.getParent().cardTouchSlot = -1
@@ -831,12 +926,18 @@ var GameUI = cc.Layer.extend({
 
     touchMovePotion: function (target,posUI) {
         let rule = getRule(target);
+        let canActive = false;
+        if( rule == 3){
+            canActive = isPosInMap(posUI, 1) || isPosInMap(posUI, 2);
+        }else {
+            canActive = isPosInMap(posUI, rule);
+        }
         if (this.previewObject === undefined) {
             this.previewObject = this.generatePreviewPotion(target);
             this.addChild(this.previewObject);
         }
         this.previewObject.setPosition(posUI);
-        // this.previewObject.visible = isPosInMap(this.previewObject, rule);
+        this.previewObject.visible = canActive;
     },
 
 
@@ -883,8 +984,10 @@ var GameUI = cc.Layer.extend({
                         let loc = convertLogicalPosToIndex(posLogic, 1);
                         this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
-                            gv.gameClient._userId), GAME_CONFIG.TICK_FOR_DELAY_TOWER]]);
-                        this.updateCardSlot(target.numSlot, target.energy);
+                            gv.gameClient._userId), 0]]);
+                        this.numSlotCardTower = target.numSlot;
+                        this.canTouchCard = false;
+                        // this.updateCardSlot(target.numSlot, target.energy);
                     }
                 } else {
                     GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = tmp;
@@ -905,7 +1008,7 @@ var GameUI = cc.Layer.extend({
     },
 
     activeCardPotion: function (target, posUI) {
-
+        this.hidemapCanCastSpell1();
         let canActive = false;
         let rule = getRule(target);
         if( rule == 3){
@@ -959,9 +1062,8 @@ var GameUI = cc.Layer.extend({
     },
 
     generatePreviewPotion: function (target) {
-        let card = new Card(target.type, 1, 0);
         // let radius = card.spellInfo.radius;
-        let radius =0.8
+        let radius =GameStateManagerInstance.getSpellConfig(target.type)[0]
         let rangePreview = cc.Sprite('res/battle/battle_potion_range.png');
         rangePreview.setScale(2.3*CELLWIDTH/rangePreview.getContentSize().width*radius)
 
@@ -1097,11 +1199,12 @@ var GameUI = cc.Layer.extend({
         this.addChild(monster2, 2000)
     },*/
 
-    activateNextWave: function (monstersId) {
+    activateNextWaveForBoth: function (monstersIdA, monstersIdB, userIdA, userIdB) {
         cc.log("next wave tai frame ="+ GameStateManagerInstance.frameCount)
         this._gameStateManager.updateStateNewWave()
         this.getNewWave()
-        this._gameStateManager.activateNextWave(this, monstersId)
+        this._gameStateManager.activateNextWaveForPlayer(this, userIdA, monstersIdA)
+        this._gameStateManager.activateNextWaveForPlayer(this, userIdB, monstersIdB)
     },
 
     initCellSlot: function (mapArray, rule) {
@@ -1152,7 +1255,7 @@ var GameUI = cc.Layer.extend({
         if (direc == 2) {
             object.setRotation(270)
         }
-        if (_res == res.iconArrow && rule == 2) object.setRotation(object.getRotation() + 180)
+        if (_res === '#battle/UI/ui_icon_arrow.png' && rule === 2) object.setRotation(object.getRotation() + 180)
         return object
     },
 
@@ -1188,15 +1291,15 @@ var GameUI = cc.Layer.extend({
     checkEndBattle: function () {
         if (this._gameStateManager.winner == 1) {
             this.blockEndBattleLayer()
-            this.showResultBattleUI('win')
+            this.showResultBattleUI('win', 10)
         }
         if (this._gameStateManager.winner == 2) {
             this.blockEndBattleLayer()
-            this.showResultBattleUI('lose')
+            this.showResultBattleUI('lose', 10)
         }
         if (this._gameStateManager.winner == 0) {
             this.blockEndBattleLayer()
-            this.showResultBattleUI('draw')
+            this.showResultBattleUI('draw', 0)
         }
 
     },
@@ -1222,9 +1325,8 @@ var GameUI = cc.Layer.extend({
         }, blockLayer);
 
     },
-    showResultBattleUI: function (resultString) {
-
-        var end = new EndBattleUI(resultString,15)
+    showResultBattleUI: function (resultString, numTrophy) {
+        var end = new EndBattleUI(resultString,numTrophy)
         this.addChild(end, 4000)
     },
 

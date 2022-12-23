@@ -37,8 +37,12 @@ var GameStateManager = cc.Class.extend({
         PreDate = Date.now();
         this.spellConfig = {}
         this.init();
+
         this.playerA = new PlayerState(1, this)
         this.playerB = new PlayerState(2, this)
+        this.orderedPlayerA = null
+        this.orderedPlayerB = null
+
         this.monsterFactory = new MonsterFactory()
         this.xid = 1
         this.readFrom(pkg)
@@ -89,10 +93,16 @@ var GameStateManager = cc.Class.extend({
             this.playerA.readFrom(pkg);
             var userId2 = pkg.getInt();
             this.playerB.readFrom(pkg);
+
+            this.orderedPlayerA = this.playerA
+            this.orderedPlayerB = this.playerB
         }else{
             this.playerB.readFrom(pkg);
             var userId2 = pkg.getInt();
             this.playerA.readFrom(pkg);
+
+            this.orderedPlayerA = this.playerB
+            this.orderedPlayerB = this.playerA
         }
 
         Random.seed(pkg.getInt());
@@ -205,8 +215,8 @@ var GameStateManager = cc.Class.extend({
 
         }
 
-        this.playerA.update(this.dt);
-        this.playerB.update(this.dt);
+        this.orderedPlayerA.update(this.dt);
+        this.orderedPlayerB.update(this.dt);
         this._timer.updateRealTime(this.dt);
 
         this.frameCount++;
@@ -237,17 +247,12 @@ var GameStateManager = cc.Class.extend({
         return monstersId;
     },
 
-    activateNextWave: function (ui, monstersId) {
-        for (let i = 0; i < monstersId.length; i++) {
-            const m1 = this.monsterFactory.getMonster(this.playerA, monstersId[i]);
-            this.playerA.addMonster(m1);
-            m1.visible = false;
-            ui.addChild(m1);
+    activateNextWaveForPlayer: function (ui, userId, monstersId) {
+        const playerState = (userId === gv.gameClient._userId) ? this.playerA : this.playerB;
+        playerState.activateNextWave(ui, this.monsterFactory, monstersId)
 
-            const m2 = this.monsterFactory.getMonster(this.playerB, monstersId[i]);
-            this.playerB.addMonster(m2);
-            m2.visible = false;
-            ui.addChild(m2);
+        if (this.curWave >= GAME_CONFIG.MAX_WAVE) {
+            this.isLastWave = true
         }
     },
 
@@ -287,5 +292,28 @@ var GameStateManager = cc.Class.extend({
     getSpellConfig: function (typeCard) {
         return this.spellConfig[typeCard];
 
+    },
+    /*
+       sort cac action theo frame trigger
+    */
+    addActionBySort:function (frameTrigger, actionArray){
+        if(ActionListInstance.length>0) {
+            let check1 = false;
+            for (let i = ActionListInstance.length-1; i >= 0; i--) {
+                if (ActionListInstance[i][0] <= frameTrigger) {
+                    ActionListInstance.splice(i + 1, 0, actionArray);
+                    check1 = true;
+                    break;
+                }
+            }
+            /*
+            Nếu duyệt về đầu mà ko tìm thấy frame bé hơn => add vào đầu
+             */
+            if(!check1){
+                ActionListInstance.unshift(actionArray);
+            }
+        }else {
+            ActionListInstance.push(actionArray)
+        }
     },
 });

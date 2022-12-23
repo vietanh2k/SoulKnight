@@ -91,15 +91,15 @@ var PlayerState = cc.Class.extend({
         for (var y = 0; y < MAP_CONFIG.MAP_HEIGHT; y++) {
             for (var x = 0; x < MAP_CONFIG.MAP_WIDTH; x++) {
                 var tmp =  bf.getInt();
-                if(tmp == 0) this.intArray[x][y] = 0
-                if(tmp == 1) this.intArray[x][y] = 0
-                if(tmp == 2) this.intArray[x][y] = 0
-                if(tmp == 3) this.intArray[x][y] = 1
+                if(tmp == 0) this.intArray[x][y] = 0;
+                if(tmp == 1) this.intArray[x][y] = 0;
+                if(tmp == 2) this.intArray[x][y] = 0;
+                if(tmp == 3) this.intArray[x][y] = cf.MAP_CELL.TREE;
                 if(tmp == 4) this.intArray[x][y] = 0
-                if(tmp == 5) this.intArray[x][y] = 2
-                if(tmp == 6) this.intArray[x][y] = -1
-                if(tmp == 7) this.intArray[x][y] = -2
-                if(tmp == 8) this.intArray[x][y] = -3
+                if(tmp == 5) this.intArray[x][y] = cf.MAP_CELL.HOLE;
+                if(tmp == 6) this.intArray[x][y] = cf.MAP_CELL.BUFF_DAMAGE;
+                if(tmp == 7) this.intArray[x][y] = cf.MAP_CELL.BUFF_ATTACK_SPEED;
+                if(tmp == 8) this.intArray[x][y] = cf.MAP_CELL.BUFF_RANGE;
             }
         }
         this._map = new MapView(this, this.intArray, this.rule)
@@ -134,5 +134,18 @@ var PlayerState = cc.Class.extend({
     isClearWave: function () {
         return this.monstersToSpawn.length === 0 && this._map.monsters.size() === 0 //.length === 0
     },
+
+    activateNextWave: function (ui, monsterFactory, monstersId) {
+        const totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this.getMap());
+        const hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
+
+        for (let i = 0; i < monstersId.length; i++) {
+            const m1 = monsterFactory.getMonster(this, monstersId[i])
+            m1.health = m1.health * hpMul
+            this.addMonster(m1)
+            m1.visible = false
+            ui.addChild(m1)
+        }
+    }
 
 });

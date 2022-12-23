@@ -575,24 +575,25 @@ testnetwork.packetMap[gv.CMD.BATTLE_ACTIONS] = fr.InPacket.extend({
                 /*
                 sort cac action theo frame trigger
                  */
-                if(ActionListInstance.length>0) {
-                    let check1 = false;
-                    for (let i = ActionListInstance.length-1; i >= 0; i--) {
-                        if (ActionListInstance[i][0] <= tmp[0]) {
-                            ActionListInstance.splice(i + 1, 0, tmp);
-                            check1 = true;
-                            break;
-                        }
-                    }
-                    /*
-                    Nếu duyệt về đầu mà ko tìm thấy frame bé hơn => add vào đầu
-                     */
-                    if(!check1){
-                        ActionListInstance.unshift(tmp);
-                    }
-                }else {
-                    ActionListInstance.push(tmp)
-                }
+                GameStateManagerInstance.addActionBySort(tmp[0], tmp);
+                // if(ActionListInstance.length>0) {
+                //     let check1 = false;
+                //     for (let i = ActionListInstance.length-1; i >= 0; i--) {
+                //         if (ActionListInstance[i][0] <= tmp[0]) {
+                //             ActionListInstance.splice(i + 1, 0, tmp);
+                //             check1 = true;
+                //             break;
+                //         }
+                //     }
+                //     /*
+                //     Nếu duyệt về đầu mà ko tìm thấy frame bé hơn => add vào đầu
+                //      */
+                //     if(!check1){
+                //         ActionListInstance.unshift(tmp);
+                //     }
+                // }else {
+                //     ActionListInstance.push(tmp)
+                // }
                 cc.log('Activate ' + num + ' action(s)')
                 cc.log('&&&&& FRAME SERVER NHAN ACTION='+ FrameMaxForUpdate)
                 cc.log('&&&&& FRAME TRIGGER ACTION TAI SERVER='+ frameTriggerAction)

@@ -1,5 +1,6 @@
 const ActivateCardAction = cc.Class.extend({
     ctor: function (card_type, x,y, uid) {
+        cc.log(' Client an dat tru tai frame = '+ GameStateManagerInstance.frameCount)
         this.card_type = card_type
         this.x = x
         this.y = y
@@ -23,14 +24,32 @@ const ActivateCardAction = cc.Class.extend({
     },
 
     activate: function (gameStateManager) {
-        GameUI.instance.activateCard(this.card_type, new Vec2(this.x, this.y), this.uid);
+
+        let check = GameUI.instance.checkCanDeployCardTower(this.card_type, new Vec2(this.x, this.y), this.uid);
+        GameUI.instance.canTouchCard = true;
+        if(check) {
+            cc.log(' Check duong di thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
+            if (this.uid === gv.gameClient._userId ){
+                let cardInfor = sharePlayerInfo.collection.find(element => element.type === this.card_type);
+                GameUI.instance.updateCardSlot(GameUI.instance.numSlotCardTower, cardInfor.energy);
+            }
+
+            let arrayPkg = []
+            arrayPkg.push(this.card_type)
+            arrayPkg.push(this.x)
+            arrayPkg.push(this.y)
+            arrayPkg.push(this.uid)
+            let tmp = [GameStateManagerInstance.frameCount + 45, ACTION_CODE.APPEAR_TOWER_ACTION, arrayPkg]
+            GameStateManagerInstance.addActionBySort(tmp[0], tmp);
+        }else {
+            cc.log(' Check duong di koooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
+        }
     }
 })
 
 ActivateCardAction.deserializer = function (pkg) {
     let tmp = []
     const card_type = pkg.getByte(), x = pkg.getInt(), y = pkg.getInt(), uid = pkg.getInt();
-
     /*
     add timer tower cho map Opponent khi vừa nhận action từ sv
      */
