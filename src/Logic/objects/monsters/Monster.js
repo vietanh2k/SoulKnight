@@ -190,7 +190,8 @@ const Monster = AnimatedSprite.extend({
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
             this._playerState.updateHealth(-this.energyWhileImpactMainTower)
-            cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
+            // cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
+            cc.log('Remaining health is ' + this._playerState.health + ' at frame ' + GameStateManagerInstance.frameCount)
             this.destroy()
 
 

@@ -32,7 +32,7 @@ let TWizardBullet = Bullet.extend({
                 object.hurtUI();
             }
         }
-        Utils.addToastToRunningScene(objectList.length + ', ' + GameStateManagerInstance.frameCount + ', ' + this.radius + ', ' + (pos.x - pos.y))
+        // Utils.addToastToRunningScene(objectList.length + ', ' + GameStateManagerInstance.frameCount + ', ' + this.radius + ', ' + (pos.x - pos.y))
         this.isDestroy = true;
         this.active = false;
         this.visible = false;
