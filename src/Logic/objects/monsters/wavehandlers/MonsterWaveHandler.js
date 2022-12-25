@@ -21,6 +21,7 @@ const MonsterWaveHandler = {
 
         for (; i < 20; i++) {
             this.numMonstersMultiplier[i]    = 4;
+            this.numMonsterHpMultiplier[i]   = 10;
         }
 
         for (; i < 25; i++) {
@@ -30,6 +31,7 @@ const MonsterWaveHandler = {
 
         for (; i < 30; i++) {
             this.numMonstersMultiplier[i]    = 6;
+            this.numMonsterHpMultiplier[i]   = 20;
         }
 
         for (; i < this.numMonstersMultiplier.length; i++) {
