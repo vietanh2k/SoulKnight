@@ -90,10 +90,7 @@ var res = {
     gridui: 'res/battle/UI/ui_grid.png',
     deck: 'res/battle/battle_deck.png',
     tree3: 'res/map/map_decoration_tree_0003.png',
-    ninja_plist : 'res/ninja.plist',
-    ninja_png : 'res/ninja.png',
-    ninja_fx_digging_atlas : 'res/monster/fx/fx_digging.atlas',
-    ninja_fx_digging_json : 'res/monster/fx/fx_digging.json',
+
     //darkgiant_plist : 'res/darkG.plist',
     //darkgiant_png : 'res/darkG.png',
     highlightPath: 'res/battle/UI/ui_transparent_square.png',
@@ -101,21 +98,36 @@ var res = {
 
 
     Swordman_plist:'res/swordsman.plist',
+    Swordman_png:'res/swordsman.png',
     assassin_plist:'res/assassin.plist',
+    assassin_png:'res/assassin.png',
     giant_plist:'res/giant.plist',
+    giant_png:'res/giant.png',
     bat_plist:'res/bat.plist',
-    //ninja_plist:'res/ninja.plist',
+    bat_png:'res/bat.png',
+    ninja_plist : 'res/ninja.plist',
+    ninja_png : 'res/ninja.png',
+    ninja_fx_digging_atlas : 'res/monster/fx/fx_digging.atlas',
+    ninja_fx_digging_json : 'res/monster/fx/fx_digging.json',
+    ninja_fx_digging_png : 'res/monster/fx/fx_digging.png',
 
     dark_giant_plist:'res/dark_giant.plist',
+    dark_giant_png:'res/dark_giant.png',
+
     satyr_plist:'res/satyr.plist',
+    satyr_png:'res/satyr.png',
     satyr_fx_atlas : 'res/monster/fx/fx_boss_demon_tree.atlas',
     satyr_fx_json : 'res/monster/fx/fx_boss_demon_tree.json',
+    satyr_fx_png : 'res/monster/fx/fx_boss_demon_tree.png',
 
     desert_king_plist:'res/desert_king.plist',
+    desert_king_png:'res/desert_king.png',
     desert_king_fx_atlas : 'res/monster/fx/fx_boss_sand_king.atlas',
     desert_king_fx_json : 'res/monster/fx/fx_boss_sand_king.json',
+    desert_king_fx_png : 'res/monster/fx/fx_boss_sand_king.png',
 
     iceman_plist:'res/iceman.plist',
+    iceman_png:'res/iceman.png',
 
     heal_fx_json: 'res/potion/fx_heal.json',
     heal_fx_atlas: 'res/potion/fx_heal.atlas',
@@ -191,13 +203,40 @@ var g_resources = [
     "zcsd/screen_zalo.json",
     "res/battle_result/fx/fx_result_draw.json",
     "res/battle_result/fx/fx_result_draw.atlas",
-    res.ninja_plist,
-    res.ninja_png,
-    res.darkgiant_plist,
-    res.darkgiant_png,
+
+    // res.Swordman_plist,
+    // res.Swordman_png,
+    // res.assassin_plist,
+    // res.assassin_png,
+    // res.giant_plist,
+    // res.giant_png,
+    // res.bat_plist,
+    // res.bat_png,
+    // res.ninja_plist,
+    // res.ninja_png,
+    // res.ninja_fx_digging_atlas : 'res/monster/fx/fx_digging.atlas',
+    // res.ninja_fx_digging_json : 'res/monster/fx/fx_digging.json',
+    //
+    // res.dark_giant_plist:'res/dark_giant.plist',
+    // res.dark_giant_png:'res/dark_giant.png',
+    //
+    // res.satyr_plist:'res/satyr.plist',
+    // res.satyr_png:'res/satyr.png',
+    // res.satyr_fx_atlas : 'res/monster/fx/fx_boss_demon_tree.atlas',
+    // res.satyr_fx_json : 'res/monster/fx/fx_boss_demon_tree.json',
+    //
+    // res.desert_king_plist:'res/desert_king.plist',
+    // res.desert_king_png:'res/desert_king.png',
+    // res.desert_king_fx_atlas : 'res/monster/fx/fx_boss_sand_king.atlas',
+    // res.desert_king_fx_json : 'res/monster/fx/fx_boss_sand_king.json',
+    //
+    // res.iceman_plist:'res/iceman.plist',
+    // res.iceman_png:'res/iceman.png',
+
+
     res.highlightPath,
     res.iconArrow,
-    res.Swordman_plist,
+
     res.timerBackground_png,
     res.timer_png,
     res.timerBorder_png,
@@ -215,6 +254,8 @@ var g_resources = [
     "res/battle_result/fx/fx_result_lose.png",
     res.healthGreen,
     res.healthRed,
-    res.Swordman_plist,
-    res.assassin_plist
 ];
+
+g_resources = g_resources.concat(Object.keys(res).map((k) => {
+    return res[k]
+}))
