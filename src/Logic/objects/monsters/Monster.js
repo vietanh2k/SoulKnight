@@ -78,7 +78,7 @@ const Monster = AnimatedSprite.extend({
         }
 
         this.weight = config.weight
-        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH * MONSTER_RADIUS_PERCENT
+        this.hitRadius = config.hitRadius * MAP_CONFIG.CELL_WIDTH * MONSTER_RADIUS_PERCENT/2
     },
 
     initConfig: function (playerState) {
@@ -190,7 +190,7 @@ const Monster = AnimatedSprite.extend({
         const currentCell = map.getCellAtPosition(this.position);
         if (currentCell == null || currentCell.getEdgePositionWithNextCell() == null) {
             this._playerState.updateHealth(-this.energyWhileImpactMainTower)
-            cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
+            // cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
             this.destroy()
 
 
@@ -268,14 +268,14 @@ const Monster = AnimatedSprite.extend({
             return;
         }
 
-        if (this.poisonEffect !== undefined) {
-            this.poisonEffect.sumDt += dt;
-            if (this.poisonEffect.sumDt > 1) {
-                this.takeDamage(playerState, this.poisonEffect.dps);
-                this.hurtUI();
-                this.poisonEffect.sumDt -= 1;
-            }
-        }
+        // if (this.poisonEffect !== undefined) {
+        //     this.poisonEffect.sumDt += dt;
+        //     if (this.poisonEffect.sumDt > 1) {
+        //         this.takeDamage(playerState, this.poisonEffect.dps);
+        //         this.hurtUI();
+        //         this.poisonEffect.sumDt -= 1;
+        //     }
+        // }
 
         /*if (this.impactedMonster) {
             if (this.impactedMonster.isDestroy) {
@@ -548,8 +548,10 @@ const Monster = AnimatedSprite.extend({
     },
     hurtUI: function () {
         this.healthUI.stopAllActions()
-        var percen = this.health / this.MaxHealth*100
-        if(percen < 0) {
+        cc.log(this.health)
+        let tmp = Math.floor(this.health / this.MaxHealth*100)
+        var percen = tmp
+        if(percen < 1 && percen > 100) {
             return;
             // percen = 0;
         }
@@ -559,10 +561,10 @@ const Monster = AnimatedSprite.extend({
     },
 
     destroy: function () {
-        cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
+        // cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
-        cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
+        // cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
         this._playerState.addCountDestroyFrame(GameStateManagerInstance.frameCount);
         if(this.getParent() != null){
             this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)

@@ -170,6 +170,10 @@ var GameStateManager = cc.Class.extend({
             cc.log("Tong vi tri monster = "+this.playerA.getCountPosition().x+ " "+ this.playerA.getCountPosition().y);
             cc.log("Tong HP monster = "+this.playerA.getCountHP());
             cc.log("Tong Frame destroy monster = "+this.playerA.getCountDestroyFrame());
+            cc.log('=============================================================');
+            cc.log("Tong vi tri monster = "+this.playerB.getCountPosition().x+ " "+ this.playerB.getCountPosition().y);
+            cc.log("Tong HP monster = "+this.playerB.getCountHP());
+            cc.log("Tong Frame destroy monster = "+this.playerB.getCountDestroyFrame());
             cc.log('KET THUC TAI FRAME = '+this.frameCount);
             cc.log('====== = '+this.tes);
             cc.log('=============================================================');
@@ -191,9 +195,10 @@ var GameStateManager = cc.Class.extend({
          Nếu frame hiện tại quá chậm so với SV thi tua nhanh
          */
         if(this.frameCount < FrameMaxForUpdate-FrameDelayPosible-10){
+            cc.log('tuaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa so frame = ' +(FrameMaxForUpdate-FrameDelayPosible - this.frameCount));
             for(var i= this.frameCount; i<=FrameMaxForUpdate-FrameDelayPosible; i++){
                 this.frameUpdateNormal();
-                cc.log('tuaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
+
             }
         }
 
@@ -225,6 +230,7 @@ var GameStateManager = cc.Class.extend({
         if(this.frameCount % 300 == 0){
             this.tes ++;
             this.playerA.countAllMonster();
+            this.playerB.countAllMonster();
         }
         // if(indAction >0) {
         //     cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)

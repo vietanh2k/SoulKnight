@@ -59,12 +59,12 @@ var GameUI = cc.Layer.extend({
         for (let i = 0; i < 4; i++) {
             this.cardInQueue[i] = deck[i + 4].type;
         }
-        // for (let i = 0; i < 4; i++) {
-        //     this.cardPlayable[i] = 0+i;
-        // }
-        // for (let i = 0; i < 4; i++) {
-        //     this.cardInQueue[i] = 0+i;
-        // }
+        for (let i = 0; i < 4; i++) {
+            this.cardPlayable[i] = i;
+        }
+        for (let i = 0; i < 4; i++) {
+            this.cardInQueue[i] = i;
+        }
     },
 
     /**
@@ -242,8 +242,10 @@ var GameUI = cc.Layer.extend({
             let cellA = playerAMap.getCellAtPosition(position);
             if (!cellA._objectOn && cellA.monsters.length !== 0) {
                 Utils.addToastToRunningScene(TOAST_CONFIG.CANT_DEPLOY_TOWER);
+                cc.log('player '+uid+' Check duong di koooooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
                 return false;
             }
+            cc.log('player '+uid+' Check duong di thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
             // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
             if (this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerA._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
@@ -257,8 +259,10 @@ var GameUI = cc.Layer.extend({
             const playerBMap = this._gameStateManager.playerB._map
             let cellB = playerBMap.getCellAtPosition(position);
             if (!cellB._objectOn && cellB.monsters.length !== 0) {
+                cc.log('player '+uid+' Check duong di koooooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
                 return false;
             }
+            cc.log('player '+uid+' Check duong di thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
             // this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 2));
             if (this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                 this._gameStateManager.playerB._map._mapController.intArray[loc.x][loc.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
@@ -354,19 +358,18 @@ var GameUI = cc.Layer.extend({
     screenLoc2Position: function (loc) {
         return new Vec2((loc.x) * MAP_CONFIG.CELL_WIDTH + MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y - 1) * MAP_CONFIG.CELL_HEIGHT + MAP_CONFIG.CELL_HEIGHT / 2.0)
     },
-    nodeHasMonsterAbove: function (loc) {
-        var monsterList = GameStateManagerInstance.playerA.getMap().monsters;
-        var map = GameStateManagerInstance.playerA.getMap()
-        let ret = false
+    /*
+    check có đặt được trụ map player ko
+    tham số là vị trí logic
+     */
+    checkCanDeployTowerMapA: function (posLogic) {
+        const playerAMap = this._gameStateManager.playerA._map;
+        let cellA = playerAMap.getCellAtPosition(posLogic);
+        if (!cellA._objectOn && cellA.monsters.length !== 0) {
+            return false;
+        }
 
-        monsterList.forEach((monster, id, list) => {
-            if(monster.isAtLocation(map, loc)){
-                ret = true
-                return true
-            }
-        })
-
-        return ret
+        return true;
     },
 
     showPathUI: function (path, rule) {
@@ -671,6 +674,7 @@ var GameUI = cc.Layer.extend({
     },
 
     showMapCanCastSpell:function (mapCast){
+        this.hidemapCanCastSpell1()
         if(this.mapCanCastSpell1 == null) {
             if(mapCast == 1) {
                 this.mapCanCastSpell1 = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
@@ -748,6 +752,7 @@ var GameUI = cc.Layer.extend({
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
                 if(move && this.previewObject != undefined){
+                    cc.log('2222222222222222222')
                     this.hidemapCanCastSpell1()
                     move = false;
                     this.previewObject.removeFromParent(true);
@@ -760,6 +765,7 @@ var GameUI = cc.Layer.extend({
                     }
                 }else{
                     if (target.getParent().cardTouchSlot !== target.numSlot) {
+                        this.hidemapCanCastSpell1()
                         this.resetCardTouchState()
                         target.y += CELLWIDTH * 0.5
                         target.onTouch = true
@@ -774,6 +780,7 @@ var GameUI = cc.Layer.extend({
                     }else if(target.onTouch == true){
                         target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
+                        cc.log('333333333333333333333')
                         this.hidemapCanCastSpell1();
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = false
@@ -783,65 +790,7 @@ var GameUI = cc.Layer.extend({
 
                     }
                 }
-                // MW.DELAY_TOUCH = true;
-                // this.runAction(cc.sequence(cc.delayTime(0.25),cc.callFunc(()=> this.readyTouch(), this)));
-                // if (this.previewObject !== undefined) {
-                //     let target = event.getCurrentTarget();
-                //     this.cardTouchSlot = target.numSlot
-                //     let rule = getRule(target);
-                //     this.previewObject.removeFromParent(true);
-                //     this.previewObject = undefined;
-                //     let pos = touch.getLocation();
-                //     let cor = convertPosToIndex(pos, rule);
-                //     if(GameStateManagerInstance.playerA.energy >= target.energy){
-                //         if (this.towerUIMap[cor.x] !== undefined && this.towerUIMap[cor.x][cor.y] !== undefined) {
-                //             // fixme khác loại trụ?
-                //             if (this.towerUIMap[cor.x][cor.y].evolution >= 2) {
-                //                 Utils.addToastToRunningScene('Đã đạt cấp tiến hóa tối đa!');
-                //                 this.resetCardTouchState()
-                //             } else {
-                //                 this.towerUIMap[cor.x][cor.y].evolute();
-                //                 this.updateCardSlot(target.energy)
-                //             }
-                //         }
-                //         else if (isPosInMap(pos, rule) && GameStateManagerInstance.playerA.getMap()._mapController.intArray[cor.x][cor.y] <= 0) {
-                //             MW.MOUSE = pos;
-                //             this.createObjectByTouch = true;
-                //
-                //         } else {
-                //             this.resetCardTouchState()
-                //             return;
-                //         }
-                //     }else{
-                //         Utils.addToastToRunningScene('Không đủ năng lượng!');
-                //         this.resetCardTouchState()
-                //     }
-                //
-                // }else if (target.getParent() != null) {
-                //
-                //     if (target.getParent().cardTouchSlot !== target.numSlot) {
-                //         target.getParent().resetCardTouchState()
-                //         target.x += 0
-                //         target.y += CELLWIDTH * 0.5
-                //         target.onTouch = true
-                //         target.getParent().cardTouchSlot = target.numSlot
-                //         target.setCardUpUI()
-                //
-                //         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
-                //         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = true
-                //     }else if(target.onTouch == true){
-                //         target.x += 0
-                //         target.y -= CELLWIDTH * 0.5
-                //         target.onTouch = false
-                //
-                //         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
-                //         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = false
-                //         target.getParent().cardTouchSlot = -1
-                //
-                //         target.setCardDownUI()
-                //
-                //     }
-                // }
+
             }
         });
         for (let i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
@@ -937,7 +886,12 @@ var GameUI = cc.Layer.extend({
             this.addChild(this.previewObject);
         }
         this.previewObject.setPosition(posUI);
-        this.previewObject.visible = canActive;
+        if(canActive){
+            this.previewObject.setColor(cc.color(255, 255, 255));
+        }else{
+            this.previewObject.setColor(cc.color(249, 52, 40));
+        }
+        // this.previewObject.visible = canActive;
     },
 
 
@@ -978,8 +932,9 @@ var GameUI = cc.Layer.extend({
                 if (GameStateManagerInstance.playerA.getMap()._mapController.intArray[intIndex.x][intIndex.y] < cf.MAP_CELL.TOWER_CHECK_HIGHER) {
                     GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] += cf.MAP_CELL.TOWER_ADDITIONAL;
                 }
-                if (!this.nodeHasMonsterAbove(intIndex) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
-                    let posLogic = this.screenLoc2Position(intIndex);
+                let posLogic = this.screenLoc2Position(intIndex);
+                if (this.checkCanDeployTowerMapA(posLogic) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
+
                     if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
                         let loc = convertLogicalPosToIndex(posLogic, 1);
                         this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
@@ -989,10 +944,12 @@ var GameUI = cc.Layer.extend({
                         this.canTouchCard = false;
                         // this.updateCardSlot(target.numSlot, target.energy);
                     }
+
                 } else {
-                    GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = tmp;
+
                     canPutTower = false;
                 }
+                GameStateManagerInstance.playerA._map._mapController.intArray[intIndex.x][intIndex.y] = tmp;
             } else {
                 canPutTower = false;
             }
@@ -1008,7 +965,7 @@ var GameUI = cc.Layer.extend({
     },
 
     activeCardPotion: function (target, posUI) {
-        this.hidemapCanCastSpell1();
+
         let canActive = false;
         let rule = getRule(target);
         if( rule == 3){
@@ -1017,6 +974,7 @@ var GameUI = cc.Layer.extend({
             canActive = isPosInMap(posUI, rule);
         }
         if(canActive) {
+            this.hidemapCanCastSpell1();
             let mapCastAt = getMapCastAt(posUI) ;
             let indexFloat = convertPosUIToLocLogic(posUI, mapCastAt)
             let posLogic = this.screenLoc2Position(indexFloat)
@@ -1114,6 +1072,7 @@ var GameUI = cc.Layer.extend({
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
         // this._gameStateManager.playerA.energy -= numEnergy
+        this.hidemapCanCastSpell1()
         this._gameStateManager.playerA.energy -= 0
         this.cardInQueue.push(this.listCard[numSlot - 1].type)
         this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
@@ -1201,10 +1160,13 @@ var GameUI = cc.Layer.extend({
 
     activateNextWaveForBoth: function (monstersIdA, monstersIdB, userIdA, userIdB) {
         cc.log("next wave tai frame ="+ GameStateManagerInstance.frameCount)
+
         this._gameStateManager.updateStateNewWave()
         this.getNewWave()
+        let date = Date.now()
         this._gameStateManager.activateNextWaveForPlayer(this, userIdA, monstersIdA)
         this._gameStateManager.activateNextWaveForPlayer(this, userIdB, monstersIdB)
+        cc.log("\n\n=>>>>> time function activateNextWaveForBoth = "+(Date.now() - date))
     },
 
     initCellSlot: function (mapArray, rule) {

@@ -33,6 +33,7 @@ const NextWaveAction = cc.Class.extend({
     },
 
     activate: function (gameStateManager) {
+        let date = Date.now();
         if (gameStateManager.waveCount === this.N) {
             //GameUI.instance.addMonsterToBoth()
             GameStateManagerInstance._timer.resetTime(GAME_CONFIG.TIME_WAVE)
@@ -40,6 +41,7 @@ const NextWaveAction = cc.Class.extend({
             GameUI.instance.activateNextWaveForBoth(this.monstersIdA, this.monstersIdB, this.userIdA, this.userIdB)
             gameStateManager.waveCount++
         }
+        cc.log("\n\n=>>>>> time function nextwave = "+(Date.now() - date))
     }
 })
 

@@ -156,7 +156,6 @@ testnetwork.Connector = cc.Class.extend({
     sendMatchRequest: function () {
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);
-        cc.log(pk)
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
@@ -199,7 +198,6 @@ testnetwork.Connector = cc.Class.extend({
     },
     sendRequestOffer: function () {
         var pk = this.gameClient.getOutPacket(CmdOfferRequest);
-        cc.log(pk)
         pk.pack(null);
         this.gameClient.sendPacket(pk);
     },
@@ -285,7 +283,7 @@ testnetwork.Connector = cc.Class.extend({
         if(this.countCorrect === 0){
             this.countCorrect = COUNT_CORRECT_RESET;
             FrameDelayPosible = Math.max(FrameDelayPosible -= 2, FrameDelayMin);
-            cc.log("Frame Posible================ "+ FrameDelayPosible)
+            // cc.log("Frame Posible================ "+ FrameDelayPosible)
         }
     },
 });

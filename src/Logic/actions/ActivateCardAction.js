@@ -24,11 +24,11 @@ const ActivateCardAction = cc.Class.extend({
     },
 
     activate: function (gameStateManager) {
-
+        let date = Date.now();
         let check = GameUI.instance.checkCanDeployCardTower(this.card_type, new Vec2(this.x, this.y), this.uid);
         GameUI.instance.canTouchCard = true;
         if(check) {
-            cc.log(' Check duong di thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
+
             if (this.uid === gv.gameClient._userId ){
                 let cardInfor = sharePlayerInfo.collection.find(element => element.type === this.card_type);
                 GameUI.instance.updateCardSlot(GameUI.instance.numSlotCardTower, cardInfor.energy);
@@ -41,9 +41,11 @@ const ActivateCardAction = cc.Class.extend({
             arrayPkg.push(this.uid)
             let tmp = [GameStateManagerInstance.frameCount + 45, ACTION_CODE.APPEAR_TOWER_ACTION, arrayPkg]
             GameStateManagerInstance.addActionBySort(tmp[0], tmp);
-        }else {
-            cc.log(' Check duong di koooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
         }
+        cc.log("=>>>>> time function active card = "+(Date.now() - date))
+        // else {
+        //     cc.log(' Check duong di koooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
+        // }
     }
 })
 

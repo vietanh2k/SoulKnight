@@ -23,8 +23,11 @@ const AppearTowerAction = cc.Class.extend({
     },
 
     activate: function (gameStateManager) {
+        let date = Date.now();
         cc.log('tru xuat hien tai frame = '+ GameStateManagerInstance.frameCount)
         GameUI.instance.activateCard(this.card_type, new Vec2(this.x, this.y), this.uid);
+
+        cc.log("/n =>>>>> time function appear tower = "+(Date.now() - date))
     }
 })
 

@@ -25,7 +25,10 @@ const ActivateSpellAction = cc.Class.extend({
     },
 
     activate: function (gameStateManager) {
+        let date = Date.now();
         GameUI.instance.activateCardPotion(this.card_type, new Vec2(this.x, this.y), this.uid, this.mapCast);
+
+        cc.log("=>>>>> time function spell = "+(Date.now() - date))
     }
 })
 
