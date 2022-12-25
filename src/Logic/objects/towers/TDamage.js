@@ -82,8 +82,8 @@ let TDamage = Tower.extend({
 
     slowAllTargets: function (playerState, dt) {
         for (let i = 0; i < this.target.length; i++) {
-            this.target[i].slowDuration = dt;
-            this.target[i].speedReduced = 0.8 * this.target[i].speed;
+            // this.target[i].slowDuration = dt;
+            // this.target[i].speedReduced = 0.8 * this.target[i].speed;
             this.target[i].slowEffectFromTDamage = new SlowEffect(dt, this.target[i], cf.SLOW_TYPE.RATIO, this.getSpeedReduced(), cf.SLOW_SOURCE.TDAMAGE);
             playerState.getMap().addEffect(this.target[i].slowEffectFromTDamage);
         }

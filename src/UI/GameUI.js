@@ -752,7 +752,6 @@ var GameUI = cc.Layer.extend({
             onTouchEnded: (touch, event) => {
                 let target = event.getCurrentTarget();
                 if(move && this.previewObject != undefined){
-                    cc.log('2222222222222222222')
                     this.hidemapCanCastSpell1()
                     move = false;
                     this.previewObject.removeFromParent(true);
