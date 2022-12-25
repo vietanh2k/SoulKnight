@@ -141,6 +141,10 @@ var Tower = TowerUI.extend({
             this.prioritizedTarget = cf.PRIORITIZED_TARGET.FULL_HP;
         }
         let record, index;
+        if (this.currentTarget) {
+            this.currentTarget.release()
+        }
+
         switch (this.prioritizedTarget) {
             case cf.PRIORITIZED_TARGET.FULL_HP:
                 record = -1;
@@ -190,6 +194,11 @@ var Tower = TowerUI.extend({
                 this.currentTarget = this.target[0];
                 break;
         }
+
+        if (this.currentTarget) {
+            this.currentTarget.retain()
+        }
+
         return this.currentTarget;
     },
 

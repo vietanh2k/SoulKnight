@@ -137,12 +137,15 @@ var PlayerState = cc.Class.extend({
 
     activateNextWave: function (ui, monsterFactory, monstersId) {
         const totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this.getMap());
+        cc.log('+++++++++++>    ' + totalTowersLv)
         const hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
+        cc.log('===========>    ' + hpMul)
         let date = Date.now()
         for (let i = 0; i < monstersId.length; i++) {
             // let date2 = Date.now()
             const m1 = monsterFactory.getMonster(this, monstersId[i])
-            m1.health = m1.health * hpMul
+            //m1.health = m1.health * hpMul
+            //m1.MaxHealth = m1.MaxHealth * hpMul
             this.addMonster(m1)
             m1.visible = false
             ui.addChild(m1)
