@@ -590,20 +590,20 @@ const Monster = AnimatedSprite.extend({
         /*if(this.isDestroy){
             return;
         }*/
-        cc.log("isDestroy = " + this.isDestroy)
-        cc.log("MaxHealth = " + this.MaxHealth)
-        cc.log("many ==== "+ many)
+        // cc.log("isDestroy = " + this.isDestroy)
+        // cc.log("MaxHealth = " + this.MaxHealth)
+        // cc.log("many ==== "+ many)
         many = Math.floor(many)
         let multiplier = 1;
         if (this.isVulnerableByTIceGun) {
             multiplier *= 1.5;
         }
-        cc.log("health2 ====" + this.health)
+        // cc.log("health2 ====" + this.health)
         this.health = Math.max(this.health - Math.floor(many * multiplier), 0);
         if (this.health > this.MaxHealth) {
             this.health = this.MaxHealth;
         }
-        cc.log("health ====" + this.health)
+        // cc.log("health ====" + this.health)
     },
 
     recoverHp: function (many) {
