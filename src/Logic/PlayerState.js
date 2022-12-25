@@ -140,15 +140,15 @@ var PlayerState = cc.Class.extend({
         const hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
         let date = Date.now()
         for (let i = 0; i < monstersId.length; i++) {
-            let date2 = Date.now()
+            // let date2 = Date.now()
             const m1 = monsterFactory.getMonster(this, monstersId[i])
             m1.health = m1.health * hpMul
             this.addMonster(m1)
             m1.visible = false
             ui.addChild(m1)
-            cc.log("\n\n=>>>>> time function addMonster = "+(Date.now() - date2))
+            // cc.log("\n\n=>>>>> time function addMonster = "+(Date.now() - date2))
         }
-        cc.log("\n\n=>>>>> time function addMonster = "+(Date.now() - date))
+        // cc.log("\n\n=>>>>> time function addMonster = "+(Date.now() - date))
     }
 
 });

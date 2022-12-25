@@ -4,8 +4,8 @@ const NINJA_DIGGING_FADE_IN_TIME = 2
 const NINJA_PERCENT_AXIS_OFFSET = 0.5
 const NINJA_FX_SCALE = 1.3
 
-const NINJA_DIGGING_DOWN_TIME = 1;
-const NINJA_DIGGING_UP_TIME = 1.5;
+const NINJA_DIGGING_DOWN_TIME = 1.0;
+const NINJA_DIGGING_UP_TIME = 1.0;
 
 const Ninja = Monster.extend({
     initConfig: function (playerState) {

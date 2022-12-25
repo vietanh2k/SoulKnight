@@ -563,7 +563,7 @@ const Monster = AnimatedSprite.extend({
     },
 
     destroy: function () {
-        // cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
+        cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
         this._playerState.updateEnergy(this.energyFromDestroy)
         this.isDestroy = true
         // cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
