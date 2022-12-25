@@ -779,7 +779,6 @@ var GameUI = cc.Layer.extend({
                     }else if(target.onTouch == true){
                         target.y -= CELLWIDTH * 0.5
                         target.onTouch = false
-                        cc.log('333333333333333333333')
                         this.hidemapCanCastSpell1();
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = false
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = false
