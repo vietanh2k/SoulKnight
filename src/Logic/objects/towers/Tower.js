@@ -3,6 +3,8 @@ var Tower = TowerUI.extend({
     ctor: function (card, evolution) {
         this._super(card, evolution);
         this.inactiveSourceCounter = 0;
+
+        this.correspondingCard = sharePlayerInfo.deck.find(element => element.type === card);
     },
 
     render: function (playerState) {
