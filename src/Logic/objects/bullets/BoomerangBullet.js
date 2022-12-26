@@ -11,8 +11,6 @@ let TBoomerangBullet = Bullet.extend({
 
         this.id = id;
 
-        Utils.addToastToRunningScene(this.id);
-
         this.modifyFlyingSpeedBasedOnAttackSpeed();
 
         this.runBulletAnimation();
