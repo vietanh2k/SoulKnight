@@ -27,6 +27,7 @@ let TDamage = Tower.extend({
         this.resetPending();
 
         this.runFireAnimationForever();
+        this.updateFireAnimationRange(this.getRange());
 
         return true;
     },
@@ -42,7 +43,6 @@ let TDamage = Tower.extend({
             towers.forEach(tower => {
                 if (tower.damageBuffEffect !== undefined) {
                     if (tower.damageBuffEffect.damageAdjustment < self.getDamageAdjustment()) {
-                        tower.damageBuffEffect.destroy();
                         tower.damageBuffEffect = new DamageBuffEffect(dt, tower, self.getDamageAdjustment());
                         playerState.getMap().addEffect(tower.damageBuffEffect);
                     } else if (tower.damageBuffEffect.damageAdjustment === self.getDamageAdjustment()) {
@@ -104,6 +104,15 @@ let TDamage = Tower.extend({
         this.fireFx = sp.SkeletonAnimation('res/tower/fx/tower_strength_fx.json', 'res/tower/fx/tower_strength_fx.atlas');
         GameUI.instance.addChild(this.fireFx, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + cf.BULLET_LOCAL_Z_ORDER);
         this.fireFx.setAnimation(0, 'attack_1', true);
+    },
+
+    updateFireAnimationRange: function (range) {
+        this.fireFx.scale = range * 0.9;
+    },
+
+    evolute: function () {
+        this._super();
+        this.updateFireAnimationRange(this.getRange());
     },
 
     initAnimations: function (card) {
