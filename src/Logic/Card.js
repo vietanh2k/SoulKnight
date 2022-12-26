@@ -143,5 +143,9 @@ var Card = cc.Class.extend({
             return this;
         }
         return new Card(this.type, this.level + 1, this.fragment - this.reqFrag);
+    },
+
+    getMaxUpgradeableLevel: function () {
+        return this.evolution + 1;
     }
 });
