@@ -146,6 +146,7 @@ var PlayerState = cc.Class.extend({
     //},
 
     addMonsterId: function (monsterId, hpMul) {
+        cc.log('ccccccccccccccccccccccccccc')
         this.monstersToSpawn.push(0)
         this.monstersIdToSpawn.push(monsterId)
         this.monstersHpMulToSpawn.push(hpMul)

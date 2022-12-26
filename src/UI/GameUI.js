@@ -351,6 +351,17 @@ var GameUI = cc.Layer.extend({
         }
     },
 
+    activateCardMonster: function (card_type, uid) {
+        let monsterID = getIdMonsterByTypeCard(card_type);
+        const totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this.getMap());
+        const hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
+        if (uid == gv.gameClient._userId ) {
+            this._gameStateManager.playerB.addMonsterId(monsterID, hpMul)
+        } else {
+           this._gameStateManager.playerA.addMonsterId(monsterID, hpMul)
+        }
+    },
+
 
     /**Convert Screen location in gridXY into logical position (game object position)
      * @param {cc.p} loc
@@ -905,6 +916,7 @@ var GameUI = cc.Layer.extend({
                 this.activeCardTower(target, posUI);
                 break;
             case 'monster':
+                cc.log('bbbbbbbbbbbbbbb')
                 this.activeCardMonster(target, posUI);
                 break;
             case 'potion':
@@ -959,6 +971,13 @@ var GameUI = cc.Layer.extend({
     },
 
     activeCardMonster: function (target, posUI) {
+        let canActive = isPosInMap(posUI, 2);
+        if(canActive) {
+            this.hidemapCanCastSpell1();
+            testnetwork.connector.sendActions([[new ActivateMonsterAction(target.type,
+                gv.gameClient._userId),0]]);
+            this.updateCardSlot(target.numSlot, target.energy);
+        }
 
     },
 

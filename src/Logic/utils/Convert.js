@@ -98,6 +98,23 @@ const getRule = function (target) {
     }
 };
 
+const getIdMonsterByTypeCard = function (typeCard) {
+    switch (typeCard) {
+        case 4:
+            return 0;
+        case 5:
+            return 1;
+        case 6:
+            return 2;
+        case 7:
+            return 3;
+        case 8:
+            return 4;
+        default:
+            return 1;
+    }
+};
+
 const convertLogicalPosToIndex = function (pos, rule) {
     let x = Math.floor((pos.x - MAP_CONFIG.CELL_WIDTH / 2.0) / MAP_CONFIG.CELL_WIDTH),
         y = 1 + Math.floor((pos.y - MAP_CONFIG.CELL_HEIGHT / 2.0) / MAP_CONFIG.CELL_HEIGHT);
