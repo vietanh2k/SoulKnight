@@ -743,6 +743,14 @@ var MapView = cc.Class.extend({
 
     getMapController:function (){
         return this._mapController;
-    }
+    },
 
+    getTotalTowersLv: function () {
+        let sum = 0;
+        const towers = this.towers;
+        towers.forEach((v, i, list) => {
+            sum += v.level;
+        });
+        return sum;
+    },
 });

@@ -4,7 +4,7 @@ efect đẩy quái
 const PushEffect = Effect.extend({
     ctor: function (vecPush , timePush, monster) {
         this.monster = monster;
-        let time = timePush* 5/Math.sqrt(this.monster.weight);
+        let time = timePush* 2.5/Math.sqrt(Math.sqrt(this.monster.weight));
         this._super(time)
 
         this.monster.inactiveSourceCounter++

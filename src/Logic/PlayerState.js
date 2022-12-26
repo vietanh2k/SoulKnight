@@ -146,6 +146,7 @@ var PlayerState = cc.Class.extend({
     //},
 
     addMonsterId: function (monsterId, hpMul) {
+        this.monstersToSpawn.push(0)
         this.monstersIdToSpawn.push(monsterId)
         this.monstersHpMulToSpawn.push(hpMul)
     },
@@ -167,7 +168,6 @@ var PlayerState = cc.Class.extend({
             //m1.MaxHealth = m1.MaxHealth * hpMul
             //this.addMonster(m1)
 
-            this.monstersToSpawn.push(0)
             this.addMonsterId(monstersId[i], hpMul)
 
             //m1.visible = false

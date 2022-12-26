@@ -2,7 +2,8 @@ const FireBall = Spell.extend({
     ctor: function (playerState, position, stat) {
         this._super(playerState, position);
         this.radius = stat[0]
-        this.dame = stat[1]
+        this.dame = Math.floor(stat[1]*this.hpMul);
+        cc.log("dame = "+this.dame)
         this.canCast = true
         return true;
     },
@@ -26,7 +27,7 @@ const FireBall = Spell.extend({
         const monsters = map.queryEnemiesCircle(this.castPosition,MAP_CONFIG.CELL_WIDTH*this.radius)
         cc.log('dem = '+monsters.length)
         for (let i = 0; i < monsters.length; i++) {
-            monsters[i].takeDamage(playerState, this.dame)
+            // monsters[i].takeDamage(playerState, this.dame);
             /*
             đẩy quái, càng gần tâm đẩy càng xa
              */

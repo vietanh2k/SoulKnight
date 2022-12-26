@@ -4,7 +4,8 @@ const IceBall = Spell.extend({
         this._super(playerState, position);
         this.mapCast = mapCast;
         this.radius = stat[0];
-        this.dame = stat[1];
+        this.dame = Math.floor(stat[1]*this.hpMul);
+        cc.log("dame = "+this.dame)
         this.canCast = true;
         return true;
     },
@@ -30,13 +31,20 @@ const IceBall = Spell.extend({
             objects = map.queryEnemiesCircle(this.castPosition, MAP_CONFIG.CELL_WIDTH * this.radius)
             cc.log('dem = '+objects.length)
             for (let i = 0; i < objects.length; i++) {
-                objects[i].takeDamage(playerState, this.dame, this)
-                if (objects[i].___freezeEffect) {
-                    objects[i].___freezeEffect.reset()
+                const monster = objects[i]
+                monster.takeDamage(playerState, this.dame, this)
+                monster.hurtUI()
+                if (monster instanceof Ninja) {
+                    if (!monster.concept) {
+                        continue;
+                    }
+                }
+
+                if (monster.___freezeEffect) {
+                    monster.___freezeEffect.reset()
                 } else {
-                    objects[i].___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_MONSTER_TIME, objects[i])
-                    objects[i].hurtUI()
-                    playerState.getMap().addEffect(objects[i].___freezeEffect)
+                    monster.___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_MONSTER_TIME, monster)
+                    playerState.getMap().addEffect(monster.___freezeEffect)
                 }
                 // monsters[i].hurtUI()
             }

@@ -220,38 +220,6 @@ const Monster = AnimatedSprite.extend({
         return false;
     },
 
-    // updateHealDuration:function (dt){
-    //     this.sumHealDt += dt;
-    //     while (this.sumHealDt > TIME_PER_HEAL) {
-    //         this.sumHealDt -= TIME_PER_HEAL
-    //         if(this.timeHealBuff > 0){
-    //             this.timeHealBuff -= TIME_PER_HEAL;
-    //             this.recoverHp(this.numHealBuff)
-    //             this.hurtUI()
-    //         }
-    //     }
-    // },
-    //
-    //
-    // getHealBuffState:function (timeHealBuff, numHealBuff){
-    //     this.timeHealBuff = timeHealBuff;
-    //     this.numHealBuff = numHealBuff;
-    // },
-    //
-    // updateSpeedUpDuration:function (dt){
-    //
-    //     if(this.timeSpeedUpBuff > 0){
-    //         this.timeSpeedUpBuff -= dt;
-    //     }else {
-    //         this.rateSpeedUpBuff = 1;
-    //     }
-    //
-    // },
-    //
-    // getSpeedUpState:function (timeSpeedUpBuff, rateSpeedUpBuff){
-    //     this.timeSpeedUpBuff = timeSpeedUpBuff;
-    //     this.rateSpeedUpBuff = rateSpeedUpBuff;
-    // },
 
     logicUpdate: function (playerState, dt){
         if (this.health <= 0) {
