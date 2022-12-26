@@ -52,6 +52,12 @@ const Ninja = Monster.extend({
     },
 
     logicUpdate: function (playerState, dt) {
+        this.active = this.inactiveSourceCounter === 0;
+
+        if (this.active === false) {
+            return;
+        }
+
         const self = this
 
         if (this.isStopedMoving) {
@@ -139,7 +145,7 @@ const Ninja = Monster.extend({
         //this.health -= many
         this._super(playerState, many, from)
 
-        if (many && this.concept != null) {
+        if (many && this.concept != null && !(from instanceof IceBall)) {
             //this.setColor(cc.color(255,0,0,255))
             this.concept = null
             this.abilityDistance = this.defaultAbilityDistance

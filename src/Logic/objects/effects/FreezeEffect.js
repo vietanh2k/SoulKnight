@@ -3,9 +3,10 @@ const FreezeEffect = Effect.extend({
         this._super(time)
 
         this.target = target
-        if(this.target.concept === 'monster' && !this.target.isDestroy) {
+        if(this.target instanceof Monster && !this.target.isDestroy) {
             this.target.play(-1)
             this.target.inactiveSourceCounter++;
+            this.target.active = false;
         }else {
             this.target.active = false;
         }
@@ -18,9 +19,11 @@ const FreezeEffect = Effect.extend({
     destroy: function (playerState) {
 
         this.target.setColor(cc.color(255, 255, 255))
-        if(this.target.concept === 'monster' && !this.target.isDestroy) {
+        if(this.target instanceof Monster && !this.target.isDestroy) {
             this.target.play(0)
-            this.target.inactiveSourceCounter--;
+            if ((--this.target.inactiveSourceCounter) === 0) {
+                this.target.active = true;
+            }
         }else {
             this.target.active = true;
         }
