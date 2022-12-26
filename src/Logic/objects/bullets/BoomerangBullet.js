@@ -3,13 +3,15 @@ let TBoomerangBullet = Bullet.extend({
     concept: 'bullet',
     type: 'boomerang',
 
-    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level) {
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, id) {
         this._super(res.TBoomerangBullet, target, speed, damage, radius, position, fromTower, targetType, level);
         this.originalPosition = new Vec2(position.x, position.y);
         this.range = this.fromTower.getRange();
         this.bulletRadius = 0.5;
 
-        this.id = Date.now();
+        this.id = id;
+
+        Utils.addToastToRunningScene(this.id);
 
         this.modifyFlyingSpeedBasedOnAttackSpeed();
 
