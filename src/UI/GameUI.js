@@ -944,8 +944,8 @@ var GameUI = cc.Layer.extend({
                 }
                 let posLogic = this.screenLoc2Position(intIndex);
                 if (this.checkCanDeployTowerMapA(posLogic) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
-
-                    if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
+                    let card = sharePlayerInfo.deck.find(element => element.type === this.cardPlayable[target.numSlot - 1]);
+                    if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, card, posLogic)) {
                         let loc = convertLogicalPosToIndex(posLogic, 1);
                         this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
