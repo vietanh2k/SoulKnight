@@ -41,10 +41,17 @@ let TDamage = Tower.extend({
             const towers = playerState.getMap().queryTowerCircleWithoutOverlap(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH);
             towers.forEach(tower => {
                 if (tower.damageBuffEffect !== undefined) {
-                    tower.damageBuffEffect.destroy();
+                    if (tower.damageBuffEffect.damageAdjustment < self.getDamageAdjustment()) {
+                        tower.damageBuffEffect.destroy();
+                        tower.damageBuffEffect = new DamageBuffEffect(dt, tower, self.getDamageAdjustment());
+                        playerState.getMap().addEffect(tower.damageBuffEffect);
+                    } else if (tower.damageBuffEffect.damageAdjustment === self.getDamageAdjustment()) {
+                        tower.damageBuffEffect.reset();
+                    }
+                } else {
+                    tower.damageBuffEffect = new DamageBuffEffect(dt, tower, self.getDamageAdjustment());
+                    playerState.getMap().addEffect(tower.damageBuffEffect);
                 }
-                tower.damageBuffEffect = new DamageBuffEffect(dt, tower, this.getDamageAdjustment());
-                playerState.getMap().addEffect(tower.damageBuffEffect);
             });
 
             if (this.level === 3) {
