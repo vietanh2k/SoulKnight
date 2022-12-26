@@ -25,6 +25,9 @@ var PlayerState = cc.Class.extend({
         this.timePerMonster = GAME_CONFIG.TIME_PER_MONSTER_IN_WAVE;
 
         this.monstersToSpawn = []
+        this.monstersIdToSpawn = []
+        this.monstersHpMulToSpawn = []
+
         this.gameStateManager = gameState
         /*
         dem tong vi tri,hp, frame destroy cua monster moi 300 frame
@@ -105,12 +108,23 @@ var PlayerState = cc.Class.extend({
         this._map = new MapView(this, this.intArray, this.rule)
     },
 
+    spawnNextMonster: function () {
+        this.monstersToSpawn.shift()
+        const id = this.monstersIdToSpawn.shift()
+        const hpMul = this.monstersHpMulToSpawn.shift()
+        const m1 = this.gameStateManager.monsterFactory.getMonster(this, id)
+        m1.health = m1.health * hpMul
+        m1.MaxHealth = m1.MaxHealth * hpMul
+        this._map.addMonster(m1)
+        GameUI.instance.addChild(m1)
+    },
 
     update: function (dt) {
         if ((this.timePerMonster -= dt) <= 0) {
-            if (this.monstersToSpawn.length !== 0) {
+            if (this.monstersIdToSpawn.length !== 0) {
                 //this._map.monsters.push(this.monstersToSpawn.shift())
-                this._map.addMonster(this.monstersToSpawn.shift())
+                //this._map.addMonster(this.monstersToSpawn.shift())
+                this.spawnNextMonster()
             }
 
             this.timePerMonster = this.timePerMonsterMax
@@ -123,12 +137,17 @@ var PlayerState = cc.Class.extend({
         return this._map
     },
 
-    addMonster: function (monster) {
+    //addMonster: function (monster) {
         //this._map.monsters.push(monster)
         //return monster
 
-        this.monstersToSpawn.push(monster)
+        //this.monstersToSpawn.push(monster)
 
+    //},
+
+    addMonsterId: function (monsterId, hpMul) {
+        this.monstersIdToSpawn.push(monsterId)
+        this.monstersHpMulToSpawn.push(hpMul)
     },
 
     isClearWave: function () {
@@ -140,15 +159,19 @@ var PlayerState = cc.Class.extend({
         // cc.log('+++++++++++>    ' + totalTowersLv)
         const hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
         // cc.log('===========>    ' + hpMul)
-        let date = Date.now()
+        //let date = Date.now()
         for (let i = 0; i < monstersId.length; i++) {
             // let date2 = Date.now()
-            const m1 = monsterFactory.getMonster(this, monstersId[i])
-            m1.health = m1.health * hpMul
-            m1.MaxHealth = m1.MaxHealth * hpMul
-            this.addMonster(m1)
-            m1.visible = false
-            ui.addChild(m1)
+            //const m1 = monsterFactory.getMonster(this, monstersId[i])
+            //m1.health = m1.health * hpMul
+            //m1.MaxHealth = m1.MaxHealth * hpMul
+            //this.addMonster(m1)
+
+            this.monstersToSpawn.push(0)
+            this.addMonsterId(monstersId[i], hpMul)
+
+            //m1.visible = false
+            //ui.addChild(m1)
             // cc.log("\n\n=>>>>> time function addMonster = "+(Date.now() - date2))
         }
         // cc.log("\n\n=>>>>> time function addMonster = "+(Date.now() - date))
