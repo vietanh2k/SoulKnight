@@ -256,10 +256,7 @@ const Monster = AnimatedSprite.extend({
     logicUpdate: function (playerState, dt){
         if (this.health <= 0) {
             this.active = true;
-
-            cc.log('>>>>>>>>>>>>>>>>> ' + this.health)
             this.destroy();
-            cc.log('----------------- ' + this.health)
             return;
         }
         // if(this.timeHealBuff > 0) {
@@ -553,7 +550,6 @@ const Monster = AnimatedSprite.extend({
     },
     hurtUI: function () {
         this.healthUI.stopAllActions()
-        cc.log(this.health)
         let tmp = Math.floor(this.health / this.MaxHealth*100)
         var percen = tmp
         if(percen < 1 && percen > 100) {
