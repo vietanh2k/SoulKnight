@@ -1,6 +1,6 @@
 const ActivateMonsterAction = cc.Class.extend({
     ctor: function (card_type, uid) {
-        cc.log(' Client an dat tru tai frame = '+ GameStateManagerInstance.frameCount)
+
         this.card_type = card_type
         this.uid = uid
     },
@@ -20,6 +20,7 @@ const ActivateMonsterAction = cc.Class.extend({
     },
 
     activate: function (gameStateManager) {
+        cc.log(' Client tha quai tai frame = '+ GameStateManagerInstance.frameCount)
         GameUI.instance.activateCardMonster(this.card_type, this.uid);
     }
 })

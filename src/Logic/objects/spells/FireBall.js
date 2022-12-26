@@ -27,7 +27,7 @@ const FireBall = Spell.extend({
         const monsters = map.queryEnemiesCircle(this.castPosition,MAP_CONFIG.CELL_WIDTH*this.radius)
         cc.log('dem = '+monsters.length)
         for (let i = 0; i < monsters.length; i++) {
-            // monsters[i].takeDamage(playerState, this.dame);
+            monsters[i].takeDamage(playerState, this.dame);
             /*
             đẩy quái, càng gần tâm đẩy càng xa
              */

@@ -31,7 +31,8 @@ const ActivateCardAction = cc.Class.extend({
 
             if (this.uid === gv.gameClient._userId ){
                 let cardInfor = sharePlayerInfo.collection.find(element => element.type === this.card_type);
-                GameUI.instance.updateCardSlot(GameUI.instance.numSlotCardTower, cardInfor.energy);
+                let energy = Math.floor(cardInfor.energy/3)
+                GameUI.instance.updateCardSlot(GameUI.instance.numSlotCardTower, energy);
             }
 
             let arrayPkg = []

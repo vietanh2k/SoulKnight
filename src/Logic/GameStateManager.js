@@ -75,7 +75,8 @@ var GameStateManager = cc.Class.extend({
          */
         for (let i = 0; i < 8; i++) {
             if(deck[i].concept == 'potion'){
-                this.addSpellConfig(deck[i].type)
+                this.addSpellConfig(deck[i].type);
+                cc.log("deck[i].type + "+deck[i].type)
             }
         }
 
