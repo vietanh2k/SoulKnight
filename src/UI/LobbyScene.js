@@ -8,7 +8,7 @@ var LobbyScene = cc.Scene.extend({
     tabTexts: null,
     tabUIs: null,
 
-    activeTab: 2, // default active tab is Home (0-based)
+    activeTab: cf.LOBBY_TAB_HOME, // default active tab is Home (0-based)
     activeTabBtnWidth: null,
     inactiveTabBtnWidth: null,
     tabBtnHeight: null,
@@ -117,21 +117,23 @@ var LobbyScene = cc.Scene.extend({
     },
 
     changeToTab: function (newTab) {
-        if(newTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
-            // fr.view(ShopUI);
-            this.requestOffer()
-        }else{
-            LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
-        }
-        if (newTab === this.activeTab) {
-            return;
-        }
-        this.activeTab = newTab;
-        this.resizeTabs();
-        this.updateTabUIsVisibility();
-        if (this.activeTab === cf.LOBBY_TAB_CARDS) {
-            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
-        }
+        // if(newTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
+        //     // fr.view(ShopUI);
+        //     this.requestOffer()
+        // }else{
+        //     LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
+        // }
+        // if (newTab === this.activeTab) {
+        //     return;
+        // }
+        // this.activeTab = newTab;
+        // this.resizeTabs();
+        // this.updateTabUIsVisibility();
+        // if (this.activeTab === cf.LOBBY_TAB_CARDS) {
+        //     this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+        // }
+
+        this.animateHorizontalSlideToTab(newTab);
     },
 
     resizeTabs: function () {
@@ -156,9 +158,7 @@ var LobbyScene = cc.Scene.extend({
 
     initTabUIs: function (localZOrder) {
         this.tabUIs = [];
-        cc.log('cf.LOBBY_TAB_SHOP')
         this.tabUIs[cf.LOBBY_TAB_SHOP] = new ShopUI();
-        cc.log('cf.LOBBY_TAB_CARDS')
         this.tabUIs[cf.LOBBY_TAB_CARDS] = new CardsUI();
         this.tabUIs[cf.LOBBY_TAB_HOME] = new HomeUI();
         for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
@@ -244,32 +244,53 @@ var LobbyScene = cc.Scene.extend({
         let sequence = cc.sequence(
             cc.callFunc(() => {
                 let record = cf.WIDTH * 10;
+                let tab = -1;
                 for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
-                    if (this.tabUIs[i] !== undefined && Math.abs(this.tabUIs[i].x) < record) {
-                        record = Math.abs(this.tabUIs[i].x);
-                        this.activeTab = i;
+                    if (Math.abs(this.getXOfTabUI(i)) < record) {
+                        record = Math.abs(this.getXOfTabUI(i));
+                        tab = i;
                     }
                 }
-                if(this.activeTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
-                    // fr.view(ShopUI);
-                    this.requestOffer()
-                }else{
-                    LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
-                }
-                if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
-                    this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
-                }
-                this.resizeTabs();
-                let distance = this.tabUIs[this.activeTab].x;
-                for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
-                    if (this.tabUIs[i] !== undefined) {
-                        this.tabUIs[i].runAction(new cc.moveBy(0.25, cc.p(-distance, 0)));
-                    }
-                }
+                this.animateHorizontalSlideToTab(tab);
             }),
             cc.DelayTime(0.25)
         );
         this.runAction(sequence);
+    },
+
+    /**
+     * Use this function to get x of a tab, even undefined one.
+     *
+     * @param tab
+     * @returns {*}
+     */
+    getXOfTabUI: function (tab) {
+        return this.tabUIs[cf.LOBBY_TAB_HOME].x + cf.WIDTH * (tab - cf.LOBBY_TAB_HOME);
+    },
+
+    animateHorizontalSlideToTab: function (tab) {
+        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+            if (this.tabUIs[i] !== undefined) {
+                this.tabUIs[i].stopAllActions();
+            }
+        }
+        this.activeTab = tab;
+        if(this.activeTab === cf.LOBBY_TAB_SHOP && LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].checkLoadSuccess === false) {
+            // fr.view(ShopUI);
+            this.requestOffer()
+        }else{
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_SHOP].destroyPopup();
+        }
+        if (this.activeTab !== cf.LOBBY_TAB_CARDS) {
+            this.tabUIs[cf.LOBBY_TAB_CARDS].resetCardsUIState();
+        }
+        this.resizeTabs();
+        let distance = this.getXOfTabUI(this.activeTab);
+        for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
+            if (this.tabUIs[i] !== undefined) {
+                this.tabUIs[i].runAction(new cc.moveBy(0.25, cc.p(-distance, 0)));
+            }
+        }
     },
 
     requestOffer: function () {
