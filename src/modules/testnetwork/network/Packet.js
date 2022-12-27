@@ -838,7 +838,7 @@ testnetwork.packetMap[gv.CMD.BATTLE_SEND_CUR_FRAME] = fr.InPacket.extend({
         readData: function () {
 
             FrameMaxForUpdate = this.getInt();
-            cc.log("============================frame=================="+FrameMaxForUpdate)
+            // cc.log("============================frame=================="+FrameMaxForUpdate)
         }
     }
 );
