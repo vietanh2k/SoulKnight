@@ -231,4 +231,7 @@ var asset = {
     targetLowHP_png: 'res/battle/UI/ui_target_low_HP.png',
     targetFurthest_png: 'res/battle/UI/ui_target_furthest.png',
     targetNearest_png: 'res/battle/UI/ui_target_nearest.png',
+
+    effectStun_atlas: 'res/tower/fx/effect_stun.atlas',
+    effectStun_json: 'res/tower/fx/effect_stun.json',
 };

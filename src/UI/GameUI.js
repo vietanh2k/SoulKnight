@@ -1083,7 +1083,6 @@ var GameUI = cc.Layer.extend({
         return rangePreview;
     },
 
-
     generatePreviewObject: function (target) {
         let towerPreview = new TowerUI(target, 0);
         let card = new Card(target.type, 1, 0);
@@ -1129,7 +1128,7 @@ var GameUI = cc.Layer.extend({
         if(this._gameStateManager.playerA.energy >= numEnergy) {
             // this._gameStateManager.playerA.energy -= numEnergy
             this.hidemapCanCastSpell1()
-            this._gameStateManager.playerA.energy -= 0
+            // this._gameStateManager.playerA.energy -= 0
             this.cardInQueue.push(this.listCard[numSlot - 1].type)
             this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
             this.cardInQueue.shift()
