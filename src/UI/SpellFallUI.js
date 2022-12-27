@@ -41,8 +41,7 @@ const SpellFallUI = cc.Node.extend({
         if(this.time === 1) {
             this.runAction(cc.sequence(cc.delayTime(1.5), cc.callFunc(() => {
                 this.anim.setAnimation(0, "animation_top", true);
-                this.fadeOut(0.5);
-            })))
+            }), cc.fadeOut(0.5)))
         }
         this.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(()=>{
             this.destroy();

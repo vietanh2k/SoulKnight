@@ -77,7 +77,7 @@ var GameStateManager = cc.Class.extend({
         for (let i = 0; i < 8; i++) {
             if(deck[i].concept == 'potion'){
                 this.addSpellConfigA(deck[i].type);
-                cc.log("deck[i].type + "+deck[i].type)
+                cc.log("deck[1].type + "+deck[i].type)
             }
         }
 
@@ -89,7 +89,7 @@ var GameStateManager = cc.Class.extend({
         for (let i = 0; i < 8; i++) {
             if(deck2[i].concept == 'potion'){
                 this.addSpellConfigB(deck2[i].type);
-                cc.log("deck[i].type + "+deck2[i].type)
+                cc.log("deck[2].type+ "+deck2[i].type)
             }
         }
 
