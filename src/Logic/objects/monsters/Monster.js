@@ -220,46 +220,11 @@ const Monster = AnimatedSprite.extend({
         return false;
     },
 
-    // updateHealDuration:function (dt){
-    //     this.sumHealDt += dt;
-    //     while (this.sumHealDt > TIME_PER_HEAL) {
-    //         this.sumHealDt -= TIME_PER_HEAL
-    //         if(this.timeHealBuff > 0){
-    //             this.timeHealBuff -= TIME_PER_HEAL;
-    //             this.recoverHp(this.numHealBuff)
-    //             this.hurtUI()
-    //         }
-    //     }
-    // },
-    //
-    //
-    // getHealBuffState:function (timeHealBuff, numHealBuff){
-    //     this.timeHealBuff = timeHealBuff;
-    //     this.numHealBuff = numHealBuff;
-    // },
-    //
-    // updateSpeedUpDuration:function (dt){
-    //
-    //     if(this.timeSpeedUpBuff > 0){
-    //         this.timeSpeedUpBuff -= dt;
-    //     }else {
-    //         this.rateSpeedUpBuff = 1;
-    //     }
-    //
-    // },
-    //
-    // getSpeedUpState:function (timeSpeedUpBuff, rateSpeedUpBuff){
-    //     this.timeSpeedUpBuff = timeSpeedUpBuff;
-    //     this.rateSpeedUpBuff = rateSpeedUpBuff;
-    // },
 
     logicUpdate: function (playerState, dt){
         if (this.health <= 0) {
             this.active = true;
-
-            cc.log('>>>>>>>>>>>>>>>>> ' + this.health)
             this.destroy();
-            cc.log('----------------- ' + this.health)
             return;
         }
         // if(this.timeHealBuff > 0) {
@@ -553,7 +518,6 @@ const Monster = AnimatedSprite.extend({
     },
     hurtUI: function () {
         this.healthUI.stopAllActions()
-        cc.log(this.health)
         let tmp = Math.floor(this.health / this.MaxHealth*100)
         var percen = tmp
         if(percen < 1 && percen > 100) {
@@ -572,7 +536,9 @@ const Monster = AnimatedSprite.extend({
         // cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
         this._playerState.addCountDestroyFrame(GameStateManagerInstance.frameCount);
         if(this.getParent() != null){
-            this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
+            if(this.energyFromDestroy > 0) {
+                this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
+            }
             var ex = new Explosion(cc.p(this.x, this.y))
             var soul = new SoulFly(cc.p(this.x, this.y))
             this.getParent().addChild(ex)

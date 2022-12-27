@@ -10,7 +10,8 @@ const Spell = cc.Node.extend({
 
         this.concept="spell"
         this.isDestroy = false
-
+        const totalTowersLv = MonsterWaveHandler.getTotalTowersLv(playerState.getMap());
+        this.hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
 
         return true;
     },

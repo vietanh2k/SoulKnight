@@ -14,11 +14,13 @@ var GameUI = cc.Layer.extend({
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
+        this.resMonster = []
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.numSlotCardTower = 1;
         this.canTouchCard = true;
         this.mapCanCastSpell1 = null;
+        this.UItimer = null;
         this.init();
         this.scheduleUpdate();
 
@@ -38,7 +40,7 @@ var GameUI = cc.Layer.extend({
         winSize = cc.director.getWinSize();
         this.initDeckCard();
         this.initBackGround();
-
+        this.initResMonster()
         this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, GAME_CONFIG.RULE_A)
         this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, GAME_CONFIG.RULE_B)
         this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, GAME_CONFIG.RULE_A)
@@ -59,12 +61,21 @@ var GameUI = cc.Layer.extend({
         for (let i = 0; i < 4; i++) {
             this.cardInQueue[i] = deck[i + 4].type;
         }
-        /*for (let i = 0; i < 4; i++) {
-            this.cardPlayable[i] = i;
-        }
-        for (let i = 0; i < 4; i++) {
-            this.cardInQueue[i] = i;
-        }*/
+        // for (let i = 0; i < 4; i++) {
+        //     this.cardPlayable[i] = 19;
+        // }
+        // for (let i = 0; i < 4; i++) {
+        //     this.cardInQueue[i] = 18;
+        // }
+    },
+
+    initResMonster: function () {
+        this.resMonster.push("miniature_monster_swordsman");
+        this.resMonster.push("miniature_monster_assassin");
+        this.resMonster.push("miniature_monster_giant");
+        this.resMonster.push("miniature_monster_bat");
+        this.resMonster.push("miniature_monster_ninja");
+
     },
 
     /**
@@ -351,6 +362,26 @@ var GameUI = cc.Layer.extend({
         }
     },
 
+    activateCardMonster: function (card_type, uid) {
+        let monsterID = getIdMonsterByTypeCard(card_type);
+        let numBase = getBaseMonsterByID(monsterID);
+        if (uid == gv.gameClient._userId ) {
+            let totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this._gameStateManager.playerA.getMap());
+            let hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
+            let numMonster = getMulByLvlTower(totalTowersLv)*numBase;
+            for(var i=0; i<numMonster; i++) {
+                this._gameStateManager.playerB.addMonsterId(monsterID, hpMul, true);
+            }
+        } else {
+            let totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this._gameStateManager.playerB.getMap());
+            let hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
+            let numMonster = getMulByLvlTower(totalTowersLv)*numBase;
+            for(var i=0; i<numMonster; i++) {
+                this._gameStateManager.playerA.addMonsterId(monsterID, hpMul, true);
+            }
+        }
+    },
+
 
     /**Convert Screen location in gridXY into logical position (game object position)
      * @param {cc.p} loc
@@ -508,13 +539,13 @@ var GameUI = cc.Layer.extend({
         timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
         timeBar.setBarChangeRate(cc.p(1, 0));
         timeBar.setMidpoint(cc.p(0.5, 0.5))
-        timeBar.setScale(WIDTHSIZE / timeBar.getContentSize().width * 0.9 / 8)
+        timeBar.setScale(WIDTHSIZE / timeBar.getContentSize().width * 0.95 / 8)
         timeBar.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15);
         this.addChild(timeBar, 0, 'timeBar');
 
 
 
-        var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
+        var time3 = this.addObjectBackground(res.timerBorder_png, 0.92 / 8, 0, 0, 1 / 15)
         time3.visible = false
         var numTime = new ccui.Text(GAME_CONFIG.TIME_WAVE, res.font_magic, 24)
         numTime.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
@@ -723,18 +754,25 @@ var GameUI = cc.Layer.extend({
 
     addListCardUI: function () {
         let move = false;
+        let distan = 0;
         var listener1 = cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: (touch, event) => {
+                distan = 0;
                 var target = event.getCurrentTarget();
                 var locationInNode = target.convertToNodeSpace(touch.getLocation());
                 cc.log('a')
                 var s = target.getContentSize();
                 var rect = cc.rect(0, 0, s.width, s.height);
                 let checkTouchRight = !!cc.rectContainsPoint(rect, locationInNode);
-                if(checkTouchRight && target.concept == 'potion') {
-                    this.showMapCanCastSpell(getRule(target));
+                if(checkTouchRight ) {
+                    if(target.concept == 'potion') {
+                        this.showMapCanCastSpell(getRule(target));
+                    }
+                    if(target.concept == 'monster') {
+                        this.showMapCanCastSpell(2);
+                    }
                 }
                 return (checkTouchRight && this.canTouchCard);
             },
@@ -744,8 +782,13 @@ var GameUI = cc.Layer.extend({
             onTouchMoved: (touch, event) => {
                 let target = event.getCurrentTarget();
                 if(this.cardTouchSlot === -1) {
-                    move = true;
-                    this.touchMoveCard(target,touch.getLocation());
+                    let delta = touch.getDelta();
+                    let del = new Vec2(delta.x, delta.y);
+                    distan += del.length();
+                    if(distan > 20) {
+                        move = true;
+                        this.touchMoveCard(target, touch.getLocation());
+                    }
                 }
             },
 
@@ -773,8 +816,10 @@ var GameUI = cc.Layer.extend({
 
                         target.getParent().getChildByName('btnRemoveCard'+target.getParent().cardTouchSlot).visible = true
                         target.getParent().getChildByName('cancelCard'+target.getParent().cardTouchSlot).visible = true
-                        if( target.concept == 'potion') {
+                        if( target.concept === 'potion') {
                             this.showMapCanCastSpell(getRule(target));
+                        }else if( target.concept === 'monster') {
+                            this.showMapCanCastSpell(2);
                         }
                     }else if(target.onTouch == true){
                         target.y -= CELLWIDTH * 0.5
@@ -844,7 +889,7 @@ var GameUI = cc.Layer.extend({
                 this.touchMoveTower(target, posUI);
                 break;
             case 'monster':
-                this.touchMoveMonster(target);
+                this.touchMoveMonster(target, posUI);
                 break;
             case 'potion':
                 this.touchMovePotion(target,posUI);
@@ -867,8 +912,12 @@ var GameUI = cc.Layer.extend({
         this.previewObject.visible = isPosInMap(this.previewObject, rule);
     },
 
-    touchMoveMonster: function (target) {
-
+    touchMoveMonster: function (target,posUI) {
+        if (this.previewObject === undefined) {
+            this.previewObject = this.generatePreviewMonster(target);
+            this.addChild(this.previewObject);
+        }
+        this.previewObject.setPosition(posUI);
     },
 
     touchMovePotion: function (target,posUI) {
@@ -905,6 +954,7 @@ var GameUI = cc.Layer.extend({
                 this.activeCardTower(target, posUI);
                 break;
             case 'monster':
+                cc.log('bbbbbbbbbbbbbbb')
                 this.activeCardMonster(target, posUI);
                 break;
             case 'potion':
@@ -932,8 +982,8 @@ var GameUI = cc.Layer.extend({
                 }
                 let posLogic = this.screenLoc2Position(intIndex);
                 if (this.checkCanDeployTowerMapA(posLogic) && GameStateManagerInstance.playerA._map._mapController.isExistPath()) {
-
-                    if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, posLogic)) {
+                    let card = sharePlayerInfo.deck.find(element => element.type === this.cardPlayable[target.numSlot - 1]);
+                    if (GameStateManagerInstance.playerA.getMap().checkUpgradableTower(target.type, card, posLogic)) {
                         let loc = convertLogicalPosToIndex(posLogic, 1);
                         this.addTimerBeforeCreateTower(convertIndexToPos(loc.x, loc.y, 1));
                         testnetwork.connector.sendActions([[new ActivateCardAction(target.type, posLogic.x, posLogic.y,
@@ -959,6 +1009,13 @@ var GameUI = cc.Layer.extend({
     },
 
     activeCardMonster: function (target, posUI) {
+        let canActive = isPosInMap(posUI, 2);
+        if(canActive) {
+            this.hidemapCanCastSpell1();
+            testnetwork.connector.sendActions([[new ActivateMonsterAction(target.type,
+                gv.gameClient._userId),0]]);
+            this.updateCardSlot(target.numSlot, target.energy);
+        }
 
     },
 
@@ -976,7 +1033,7 @@ var GameUI = cc.Layer.extend({
             let mapCastAt = getMapCastAt(posUI) ;
             let indexFloat = convertPosUIToLocLogic(posUI, mapCastAt)
             let posLogic = this.screenLoc2Position(indexFloat)
-            this.addSpellUIBeforeExplose(target.type, posUI)
+            this.addSpellUIBeforeExplose(target.type, posUI, 1);
             testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
                 gv.gameClient._userId, mapCastAt),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
@@ -995,37 +1052,43 @@ var GameUI = cc.Layer.extend({
         // }
     },
 
-    addSpellUIBeforeExplose: function (cardType, posUI) {
+    addSpellUIBeforeExplose: function (cardType, posUI, rule) {
         let spell;
         switch (cardType) {
             case 0:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
+                spell = new SpellFallUI( posUI, 2 , 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0, rule));
                 break;
             case 1:
-                spell = new SpellFallUI(posUI, 'effect_atk_ice', 'animation_ice_ball', GameStateManagerInstance.getSpellConfig(1));
+                spell = new SpellFallUI(posUI,1 , 'effect_atk_ice', 'animation_ice_ball', GameStateManagerInstance.getSpellConfig(1, rule));
                 break;
             case 2:
-                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4, GameStateManagerInstance.getSpellConfig(2)[0]);
+                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4, GameStateManagerInstance.getSpellConfig(2, rule)[0]);
                 break;
             case 3:
-                spell = new SpellFieldUI(posUI, 'effect_buff_speed', (GameStateManagerInstance.getSpellConfig(3)[1]/1000), GameStateManagerInstance.getSpellConfig(3)[0]);
+                spell = new SpellFieldUI(posUI, 'effect_buff_speed', (GameStateManagerInstance.getSpellConfig(3, rule)[1]/1000), GameStateManagerInstance.getSpellConfig(3, rule)[0]);
                 break;
             default:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
+                spell = new SpellFallUI( posUI,2 , 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0, rule));
                 break;
         }
         this.addChild(spell);
     },
 
+    generatePreviewMonster: function (target) {
+        let monsterID = getIdMonsterByTypeCard(target.type);
+        let monsterPreview = cc.Sprite('res/card/'+this.resMonster[monsterID]+'.png');
+        monsterPreview.setScale(0.45)
+        return monsterPreview;
+    },
+
     generatePreviewPotion: function (target) {
         // let radius = card.spellInfo.radius;
-        let radius =GameStateManagerInstance.getSpellConfig(target.type)[0]
+        let radius =GameStateManagerInstance.getSpellConfig(target.type, 1)[0]
         let rangePreview = cc.Sprite('res/battle/battle_potion_range.png');
         rangePreview.setScale(2.3*CELLWIDTH/rangePreview.getContentSize().width*radius)
 
         return rangePreview;
     },
-
 
     generatePreviewObject: function (target) {
         let towerPreview = new TowerUI(target, 0);
@@ -1069,16 +1132,18 @@ var GameUI = cc.Layer.extend({
      * @param slot (1,2,3,4), numEnergy
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
-        // this._gameStateManager.playerA.energy -= numEnergy
-        this.hidemapCanCastSpell1()
-        this._gameStateManager.playerA.energy -= 0
-        this.cardInQueue.push(this.listCard[numSlot - 1].type)
-        this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
-        this.cardInQueue.shift()
-        this.getChildByName('cardNext').updateNewCard(this.cardInQueue[0])
-        this.cardPlayable[numSlot - 1] = this.listCard[numSlot - 1].type
+        if(this._gameStateManager.playerA.energy >= numEnergy) {
+            // this._gameStateManager.playerA.energy -= numEnergy
+            this.hidemapCanCastSpell1()
+            // this._gameStateManager.playerA.energy -= 0
+            this.cardInQueue.push(this.listCard[numSlot - 1].type)
+            this.listCard[numSlot - 1].updateNewCard(this.cardInQueue[0])
+            this.cardInQueue.shift()
+            this.getChildByName('cardNext').updateNewCard(this.cardInQueue[0])
+            this.cardPlayable[numSlot - 1] = this.listCard[numSlot - 1].type
 
-        this.resetCardTouchState()
+            this.resetCardTouchState()
+        }
 
 
 
@@ -1125,8 +1190,15 @@ var GameUI = cc.Layer.extend({
         this.getChildByName('time').setString(time)
         var percen = 100 - this._gameStateManager._timer.curTime / GAME_CONFIG.TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
-        if (this._gameStateManager.canTouchNewWave) {
+        if (this._gameStateManager.canTouchNewWave && this.UItimer == null) {
             this.getChildByName(res.timerBorder_png).visible = true
+            this.UItimer = new cc.Sprite(res.timerBorder_png)
+            this.addChild(this.UItimer);
+            this.UItimer.setScale(WIDTHSIZE / this.UItimer.getContentSize().width * 0.92/8)
+            this.UItimer.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1/15)
+            this.UItimer.setScale(0.95)
+            let seq = cc.sequence(cc.scaleBy(0.5,(1/0.95)), cc.scaleBy(0.5,0.95)).repeatForever()
+            this.UItimer.runAction(seq)
         }
     },
 
@@ -1134,6 +1206,10 @@ var GameUI = cc.Layer.extend({
         * reset trạng thái wave mới
         * */
     getNewWave: function () {
+        if(this.UItimer !== null ) {
+            this.UItimer.removeFromParent(true);
+            this.UItimer = null;
+        }
         this.getChildByName(res.timerBorder_png).visible = false
         var strNumWave = this._gameStateManager.curWave + '/' + GAME_CONFIG.MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)

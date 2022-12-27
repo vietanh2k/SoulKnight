@@ -12,6 +12,7 @@ testnetwork.Connector = cc.Class.extend({
         this.checkDelay = 0;
         this.countDelay = 12;
         this.countCorrect = 20;
+        this.timeCheck1 = Date.now()
         gameClient.packetFactory.addPacketMap(testnetwork.packetMap);
         gameClient.receivePacketSignal.add(this.onReceivedPacket, this);
         this._userName = "username";
@@ -53,8 +54,17 @@ testnetwork.Connector = cc.Class.extend({
                 cc.log('matching succeededddddddddddd')
                 cc.log(packet.x)
                 this.getOpponentInfor(packet.x)
+
+                break;
+            case gv.CMD.USER_INFOR_FROM_UID:
                 try{
                     fr.getCurrentScreen().requestConfirmMatch()
+                    let time = Date.now();
+                    setTimeout(()=>{
+                        if(time >= this.timeCheck1 ){
+                            this.sendMatchRequest();
+                        }
+                    }, 50000)
                 } catch (e){
                     cc.log(e);
                     cc.log(e.stack)
@@ -63,6 +73,7 @@ testnetwork.Connector = cc.Class.extend({
                 break;
             case gv.CMD.BATTLE_START:
                 cc.log('battle start succeededddddddddddd')
+                this.timeCheck1 = Date.now();
                 try{
                     fr.getCurrentScreen().updateJoinUI()
                 } catch (e){

@@ -408,18 +408,26 @@ var MapView = cc.Class.extend({
     /**
      * Kiểm tra thẻ trụ có dùng được trên ô hay không
      * @param cardType
+     * @param card
      * @param position
      * @returns {boolean} true nếu dùng được và ngược lại
      */
-    checkUpgradableTower: function (cardType, position) {
+    checkUpgradableTower: function (cardType, card, position) {
         let cell = this.getCellAtPosition(position);
-        if (cell.getObjectOn() && cf.CARD_TYPE[cardType].instance !== cell.getObjectOn().instance) {
+        let tower = cell.getObjectOn();
+        if (tower && cf.CARD_TYPE[cardType].instance !== tower.instance) {
             Utils.addToastToRunningScene('Không thể nâng cấp bằng trụ khác loại!');
             return false;
         }
-        if (cell.getObjectOn() && cell.getObjectOn().level === 3) {
-            Utils.addToastToRunningScene('Trụ đã tiến hóa tối đa!');
-            return false;
+        if (tower && tower.level === card.getMaxUpgradeableLevel()) {
+            if (tower.level === 3) {
+                Utils.addToastToRunningScene('Trụ đã tiến hóa tối đa!');
+                return false;
+            } else {
+                // Utils.addToastToRunningScene('Cấp thẻ không đủ để nâng cấp trụ!');
+                // return false;
+                return true; // fixme hiện tại để như này để có thể test nâng cấp trụ
+            }
         }
         return true;
     },
@@ -472,22 +480,26 @@ var MapView = cc.Class.extend({
     },
 
     deploySpell: function (card_type, position, uid, mapCast){
-        var spell;
+        let rule =1;
+        if(uid !== gv.gameClient._userId){
+            rule = 2;
+        }
+        let spell;
         switch (card_type){
             case 0:
-                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0));
+                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0, rule));
                 break;
             case 1:
-                spell = new IceBall(this._playerState, position, mapCast, GameStateManagerInstance.getSpellConfig(1));
+                spell = new IceBall(this._playerState, position, mapCast, GameStateManagerInstance.getSpellConfig(1, rule));
                 break;
             case 2:
-                spell = new Heal(this._playerState, position, GameStateManagerInstance.getSpellConfig(2));
+                spell = new Heal(this._playerState, position, GameStateManagerInstance.getSpellConfig(2, rule));
                 break;
             case 3:
-                spell = new SpeedUp(this._playerState, position, GameStateManagerInstance.getSpellConfig(3));
+                spell = new SpeedUp(this._playerState, position, GameStateManagerInstance.getSpellConfig(3, rule));
                 break;
             default:
-                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0));
+                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0, rule));
         }
         spell.mapId = this.spells.add(spell);
         GameUI.instance.addChild(spell);
@@ -743,6 +755,14 @@ var MapView = cc.Class.extend({
 
     getMapController:function (){
         return this._mapController;
-    }
+    },
 
+    getTotalTowersLv: function () {
+        let sum = 0;
+        const towers = this.towers;
+        towers.forEach((v, i, list) => {
+            sum += v.level;
+        });
+        return sum;
+    },
 });

@@ -7,7 +7,8 @@ const Heal = Spell.extend({
          */
         this.timeCast = 4
         this.radius = stat[0];
-        this.numEachHeal = stat[1];
+        this.numEachHeal = Math.floor(stat[1]*this.hpMul);
+        cc.log("numEachHeal = "+this.numEachHeal)
         return true;
     },
 

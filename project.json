@@ -150,6 +150,7 @@
         "src/Logic/actions/AppearTowerAction.js",
         "src/Logic/actions/ActivateCardAction.js",
         "src/Logic/actions/ActivateSpellAction.js",
+        "src/Logic/actions/ActivateMonsterAction.js",
         "src/Logic/actions/NextWaveAction.js",
         "src/Logic/actions/ChangePrioritizedTargetAction.js",
         "src/Logic/actions/DestroyTowerAction.js",

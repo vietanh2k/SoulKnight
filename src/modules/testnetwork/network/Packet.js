@@ -855,10 +855,46 @@ testnetwork.packetMap[gv.CMD.USER_INFOR_FROM_UID] = fr.InPacket.extend({
             let gold = this.getInt();
             let gem = this.getInt();
             let trophy = this.getInt();
+            let collectionSize = this.getInt();
             let collection = [];
+            for (let i = 0; i < collectionSize; i++) {
+                collection.push(this.readCardData());
+            }
+            let chestListSize = this.getInt();
             let chestList = [];
+            for (let i = 0; i < chestListSize; i++) {
+                chestList.push(this.readChestData());
+            }
+            let deckSize = this.getInt();
             let deck = [];
+            for (let i = 0; i < deckSize; i++) {
+                deck.push(this.readCardTypeData(collection));
+            }
             shareOpponentInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
+        },
+    readCardData: function () {
+        let type = this.getByte();
+        let level = this.getInt();
+        let fragment = this.getInt();
+        return new Card(type, level, fragment);
+    },
+
+    readChestData: function () {
+        let id = this.getInt();
+        let type = this.getByte();
+        let openOnServerTimestamp = this.getLong();
+        return new Chest(id, type, openOnServerTimestamp);
+    },
+
+    readCardTypeData: function (collection) {
+        let type = this.getByte();
+        for (let i = 0; i < collection.length; i++) {
+            if (collection[i].type === type) {
+                return collection[i];
+            }
         }
+        cc.log('Cannot find card type ' + type + ' in collection.');
+        return null;
+    },
     }
 );

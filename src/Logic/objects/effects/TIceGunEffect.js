@@ -12,10 +12,18 @@ const TIceGunEffect = FreezeEffect.extend({
         if (this.target.isVulnerableByTIceGun) {
             this.target.isVulnerableByTIceGun = false;
         }
-        this.target.inactiveSourceCounter--;
-        this.target.setColor(cc.color(255, 255, 255));
-        if (this.target.concept === 'monster' && !this.target.isDestroy) {
-            this.target.play(0);
+        this.target.setColor(cc.color(255, 255, 255))
+        if(this.target instanceof Monster && !this.target.isDestroy) {
+            this.target.play(0)
+            if ((--this.target.inactiveSourceCounter) === 0) {
+                this.target.active = true;
+            }
+        }else {
+            this.target.active = true;
+        }
+        if(this.target.UIfreeze !== null) {
+            this.target.UIfreeze.removeFromParent(true);
+            this.target.UIfreeze = null;
         }
         this.target.tIceGunEffect = undefined;
         this.target.release();

@@ -1,12 +1,13 @@
 SPELL_FALL_WIDTH = 180
 
 const SpellFallUI = cc.Node.extend({
-    ctor: function ( posUI , resSpell, aniSpell, stat) {
+    ctor: function ( posUI ,time , resSpell, aniSpell, stat) {
         this._super();
         this.castPosition = posUI
         this.initPosStart(posUI)
         this.initAnimation(resSpell, aniSpell)
         this.radius = stat[0]
+        this.time = time
         this.setScale(2*CELLWIDTH/SPELL_FALL_WIDTH*this.radius)
         this.isCast = false
         this.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + winSize.height)
@@ -36,6 +37,11 @@ const SpellFallUI = cc.Node.extend({
             this.isCast = true;
             this.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE)
             this.anim.setAnimation(0, "animation_full", true);
+        }
+        if(this.time === 1) {
+            this.runAction(cc.sequence(cc.delayTime(1.5), cc.callFunc(() => {
+                this.anim.setAnimation(0, "animation_top", true);
+            }), cc.fadeOut(0.5)))
         }
         this.runAction(cc.sequence(cc.delayTime(time),cc.callFunc(()=>{
             this.destroy();
