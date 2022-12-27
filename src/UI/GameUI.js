@@ -1082,7 +1082,6 @@ var GameUI = cc.Layer.extend({
         return rangePreview;
     },
 
-
     generatePreviewObject: function (target) {
         let towerPreview = new TowerUI(target, 0);
         let card = new Card(target.type, 1, 0);

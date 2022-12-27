@@ -50,7 +50,7 @@ var TowerUI = cc.Sprite.extend({
         this.pedestal.attr({
             x: this.width / 2,
             y: this.height / 2,
-            scale: 0.8 / this.scale / ((this instanceof TWizard) ? 1.4 : 1),
+            scale: 0.8 / this.scale / ((this.card.type === 17 || this instanceof TWizard) ? 1.4 : 1),
         });
         this.addChild(this.pedestal, -1);
 
