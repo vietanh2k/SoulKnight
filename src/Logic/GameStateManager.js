@@ -34,6 +34,7 @@ var GameStateManager = cc.Class.extend({
         ActionListInstance = [];
         indAction = 0;
         FrameMaxForUpdate = 15;
+        FrameDelayPosible = 15;
         PreDate = Date.now();
         this.spellConfigA = {}
         this.spellConfigB = {}
