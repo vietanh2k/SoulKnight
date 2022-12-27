@@ -648,6 +648,10 @@ const Monster = AnimatedSprite.extend({
             return;
         }
 
+        if (AB.dot(anotherMonster.movingDirection) < -MONSTER_COS_THRESHOLD) {
+            return
+        }
+
         if (this.speed === anotherMonster.speed) {
             this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
             return
@@ -671,9 +675,6 @@ const Monster = AnimatedSprite.extend({
             return
         }
 
-        if (AB.dot(anotherMonster.movingDirection) < -MONSTER_COS_THRESHOLD) {
-            return
-        }
 
         if (this.impactMonsters.indexOf(anotherMonster) === -1) {
             this.impactMonsters.add(anotherMonster)
