@@ -125,6 +125,7 @@ var ShopUI = cc.Layer.extend({
         if(numSlot != null){
             this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).getChildByTag(numSlot).getChildByName('button').visible = false
             this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).getChildByTag(numSlot).getChildByName('numCost').visible = false
+            this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).getChildByTag(numSlot).getChildByName('touchLayer').setTouchEnabled(false)
             this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).getChildByTag(numSlot).setOpacity(180)
             var updateBuy = ccs.load(res.updateBuy, "").node;
             this.getChildByName('scene').getChildByName( 'nodeItem' +numSlot).addChild(updateBuy)
