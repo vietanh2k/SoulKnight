@@ -155,7 +155,8 @@ var PlayerState = cc.Class.extend({
     },
 
     activateNextWave: function (ui, monsterFactory, monstersId) {
-        const totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this.getMap());
+        const other = (this === this.gameStateManager.playerA ? this.gameStateManager.playerB : this.gameStateManager.playerA)
+        const totalTowersLv = MonsterWaveHandler.getTotalTowersLv(other.getMap());
         // cc.log('+++++++++++>    ' + totalTowersLv)
         const hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
         // cc.log('===========>    ' + hpMul)
