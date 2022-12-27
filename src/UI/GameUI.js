@@ -754,10 +754,12 @@ var GameUI = cc.Layer.extend({
 
     addListCardUI: function () {
         let move = false;
+        let distan = 0;
         var listener1 = cc.EventListener.create({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             swallowTouches: true,
             onTouchBegan: (touch, event) => {
+                distan = 0;
                 var target = event.getCurrentTarget();
                 var locationInNode = target.convertToNodeSpace(touch.getLocation());
                 cc.log('a')
@@ -780,8 +782,13 @@ var GameUI = cc.Layer.extend({
             onTouchMoved: (touch, event) => {
                 let target = event.getCurrentTarget();
                 if(this.cardTouchSlot === -1) {
-                    move = true;
-                    this.touchMoveCard(target,touch.getLocation());
+                    let delta = touch.getDelta();
+                    let del = new Vec2(delta.x, delta.y);
+                    distan += del.length();
+                    if(distan > 20) {
+                        move = true;
+                        this.touchMoveCard(target, touch.getLocation());
+                    }
                 }
             },
 
