@@ -480,22 +480,26 @@ var MapView = cc.Class.extend({
     },
 
     deploySpell: function (card_type, position, uid, mapCast){
-        var spell;
+        let rule =1;
+        if(uid !== gv.gameClient._userId){
+            rule = 2;
+        }
+        let spell;
         switch (card_type){
             case 0:
-                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0));
+                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0, rule));
                 break;
             case 1:
-                spell = new IceBall(this._playerState, position, mapCast, GameStateManagerInstance.getSpellConfig(1));
+                spell = new IceBall(this._playerState, position, mapCast, GameStateManagerInstance.getSpellConfig(1, rule));
                 break;
             case 2:
-                spell = new Heal(this._playerState, position, GameStateManagerInstance.getSpellConfig(2));
+                spell = new Heal(this._playerState, position, GameStateManagerInstance.getSpellConfig(2, rule));
                 break;
             case 3:
-                spell = new SpeedUp(this._playerState, position, GameStateManagerInstance.getSpellConfig(3));
+                spell = new SpeedUp(this._playerState, position, GameStateManagerInstance.getSpellConfig(3, rule));
                 break;
             default:
-                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0));
+                spell = new FireBall(this._playerState, position, GameStateManagerInstance.getSpellConfig(0, rule));
         }
         spell.mapId = this.spells.add(spell);
         GameUI.instance.addChild(spell);

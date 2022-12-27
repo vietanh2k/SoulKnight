@@ -27,6 +27,7 @@ var PlayerState = cc.Class.extend({
         this.monstersToSpawn = []
         this.monstersIdToSpawn = []
         this.monstersHpMulToSpawn = []
+        this.isCardMonsters = []
 
         this.gameStateManager = gameState
         /*
@@ -110,11 +111,17 @@ var PlayerState = cc.Class.extend({
 
     spawnNextMonster: function () {
         this.monstersToSpawn.shift()
+        const isCardMonster = this.isCardMonsters.shift()
         const id = this.monstersIdToSpawn.shift()
         const hpMul = this.monstersHpMulToSpawn.shift()
         const m1 = this.gameStateManager.monsterFactory.getMonster(this, id)
         m1.health = m1.health * hpMul
         m1.MaxHealth = m1.MaxHealth * hpMul
+
+        if (isCardMonster) {
+            m1.energyFromDestroy = 0
+        }
+
         this._map.addMonster(m1)
         GameUI.instance.addChild(m1)
     },
@@ -145,11 +152,12 @@ var PlayerState = cc.Class.extend({
 
     //},
 
-    addMonsterId: function (monsterId, hpMul) {
+    addMonsterId: function (monsterId, hpMul, isCreateFromCard = false) {
         cc.log('ccccccccccccccccccccccccccc')
         this.monstersToSpawn.push(0)
         this.monstersIdToSpawn.push(monsterId)
         this.monstersHpMulToSpawn.push(hpMul)
+        this.isCardMonsters.push(isCreateFromCard)
     },
 
     isClearWave: function () {

@@ -35,7 +35,7 @@ const ActivateSpellAction = cc.Class.extend({
 ActivateSpellAction.deserializer = function (pkg) {
     let tmp = []
     const card_type = pkg.getByte(), x = pkg.getInt(), y = pkg.getInt(), uid = pkg.getInt(), mapCast = pkg.getInt();
-    if (uid != gv.gameClient._userId ){
+    if (uid !== gv.gameClient._userId ){
         let otherMap;
         if(mapCast == 1){
             otherMap = 2;
@@ -43,7 +43,7 @@ ActivateSpellAction.deserializer = function (pkg) {
             otherMap = 1;
         }
         let posUI = convertPosLogicToPosUI(new Vec2(x,y), otherMap);
-        GameUI.instance.addSpellUIBeforeExplose(card_type, posUI);
+        GameUI.instance.addSpellUIBeforeExplose(card_type, posUI, 2);
     }
     tmp.push(card_type)
     tmp.push(x)

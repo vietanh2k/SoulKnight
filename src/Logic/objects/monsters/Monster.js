@@ -536,7 +536,9 @@ const Monster = AnimatedSprite.extend({
         // cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
         this._playerState.addCountDestroyFrame(GameStateManagerInstance.frameCount);
         if(this.getParent() != null){
-            this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
+            if(this.energyFromDestroy > 0) {
+                this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
+            }
             var ex = new Explosion(cc.p(this.x, this.y))
             var soul = new SoulFly(cc.p(this.x, this.y))
             this.getParent().addChild(ex)

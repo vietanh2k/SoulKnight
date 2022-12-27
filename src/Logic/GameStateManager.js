@@ -35,7 +35,8 @@ var GameStateManager = cc.Class.extend({
         indAction = 0;
         FrameMaxForUpdate = 15;
         PreDate = Date.now();
-        this.spellConfig = {}
+        this.spellConfigA = {}
+        this.spellConfigB = {}
         this.init();
 
         this.playerA = new PlayerState(1, this)
@@ -75,8 +76,20 @@ var GameStateManager = cc.Class.extend({
          */
         for (let i = 0; i < 8; i++) {
             if(deck[i].concept == 'potion'){
-                this.addSpellConfig(deck[i].type);
+                this.addSpellConfigA(deck[i].type);
                 cc.log("deck[i].type + "+deck[i].type)
+            }
+        }
+
+        let deck2 = shareOpponentInfo.deck;
+        cc.log('deack2 = '+deck2.length)
+        /*
+        lấy stat cho các card spell trong deck
+         */
+        for (let i = 0; i < 8; i++) {
+            if(deck2[i].concept == 'potion'){
+                this.addSpellConfigB(deck2[i].type);
+                cc.log("deck[i].type + "+deck2[i].type)
             }
         }
 
@@ -267,7 +280,7 @@ var GameStateManager = cc.Class.extend({
         return this.curWave;
     },
 
-    addSpellConfig: function (typeCard) {
+    addSpellConfigA: function (typeCard) {
         const cardInfor = sharePlayerInfo.collection.find(element => element.type === typeCard);
         const lvl =cardInfor.level;
         const bac = Math.floor((lvl-1)/5 +1);
@@ -276,19 +289,19 @@ var GameStateManager = cc.Class.extend({
         switch (typeCard) {
             case 0:
                 value = cf.POTION2.potion[SPELL_ID.FIREBALL].statPerLevel.damage[lvl];
-                this.spellConfig[0] = [radius, value];
+                this.spellConfigA[0] = [radius, value];
                 break;
             case 1:
                 value = cf.POTION2.potion[SPELL_ID.FROZEN].statPerLevel.damage[lvl];
-                this.spellConfig[1] = [radius, value];
+                this.spellConfigA[1] = [radius, value];
                 break;
             case 2:
                 value = cf.POTION2.potion[SPELL_ID.HEAL].statPerLevel.healthUp[lvl];
-                this.spellConfig[2] = [radius, value];
+                this.spellConfigA[2] = [radius, value];
                 break;
             case 3:
                 value = cf.POTION2.potion[SPELL_ID.SPEED_UP].statPerLevel.duration[lvl];
-                this.spellConfig[3] = [radius, value];
+                this.spellConfigA[3] = [radius, value];
                 break;
             default:
                 cc.log('Card typeCard \"' + typeCard + '\" not found in config.')
@@ -296,8 +309,42 @@ var GameStateManager = cc.Class.extend({
         }
         cc.log('add spell = '+ radius+ ' ' + value)
     },
-    getSpellConfig: function (typeCard) {
-        return this.spellConfig[typeCard];
+
+    addSpellConfigB: function (typeCard) {
+        const cardInfor = shareOpponentInfo.collection.find(element => element.type === typeCard);
+        const lvl =cardInfor.level;
+        const bac = Math.floor((lvl-1)/5 +1);
+        const radius = cf.POTION2.radius[bac];
+        let value = 0;
+        switch (typeCard) {
+            case 0:
+                value = cf.POTION2.potion[SPELL_ID.FIREBALL].statPerLevel.damage[lvl];
+                this.spellConfigB[0] = [radius, value];
+                break;
+            case 1:
+                value = cf.POTION2.potion[SPELL_ID.FROZEN].statPerLevel.damage[lvl];
+                this.spellConfigB[1] = [radius, value];
+                break;
+            case 2:
+                value = cf.POTION2.potion[SPELL_ID.HEAL].statPerLevel.healthUp[lvl];
+                this.spellConfigB[2] = [radius, value];
+                break;
+            case 3:
+                value = cf.POTION2.potion[SPELL_ID.SPEED_UP].statPerLevel.duration[lvl];
+                this.spellConfigB[3] = [radius, value];
+                break;
+            default:
+                cc.log('Card typeCard \"' + typeCard + '\" not found in config.')
+                break;
+        }
+        cc.log('add spell = '+ radius+ ' ' + value)
+    },
+    getSpellConfig: function (typeCard, rule) {
+        if(rule === 1) {
+            return this.spellConfigA[typeCard];
+        }else{
+            return this.spellConfigB[typeCard];
+        }
 
     },
     /*

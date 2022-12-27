@@ -20,6 +20,7 @@ var GameUI = cc.Layer.extend({
         this.numSlotCardTower = 1;
         this.canTouchCard = true;
         this.mapCanCastSpell1 = null;
+        this.UItimer = null;
         this.init();
         this.scheduleUpdate();
 
@@ -369,14 +370,14 @@ var GameUI = cc.Layer.extend({
             let hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
             let numMonster = getMulByLvlTower(totalTowersLv)*numBase;
             for(var i=0; i<numMonster; i++) {
-                this._gameStateManager.playerB.addMonsterId(monsterID, hpMul);
+                this._gameStateManager.playerB.addMonsterId(monsterID, hpMul, true);
             }
         } else {
             let totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this._gameStateManager.playerB.getMap());
             let hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
             let numMonster = getMulByLvlTower(totalTowersLv)*numBase;
             for(var i=0; i<numMonster; i++) {
-                this._gameStateManager.playerA.addMonsterId(monsterID, hpMul);
+                this._gameStateManager.playerA.addMonsterId(monsterID, hpMul, true);
             }
         }
     },
@@ -538,13 +539,13 @@ var GameUI = cc.Layer.extend({
         timeBar.setType(cc.ProgressTimer.TYPE_RADIAL);
         timeBar.setBarChangeRate(cc.p(1, 0));
         timeBar.setMidpoint(cc.p(0.5, 0.5))
-        timeBar.setScale(WIDTHSIZE / timeBar.getContentSize().width * 0.9 / 8)
+        timeBar.setScale(WIDTHSIZE / timeBar.getContentSize().width * 0.95 / 8)
         timeBar.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15);
         this.addChild(timeBar, 0, 'timeBar');
 
 
 
-        var time3 = this.addObjectBackground(res.timerBorder_png, 0.9 / 8, 0, 0, 1 / 15)
+        var time3 = this.addObjectBackground(res.timerBorder_png, 0.92 / 8, 0, 0, 1 / 15)
         time3.visible = false
         var numTime = new ccui.Text(GAME_CONFIG.TIME_WAVE, res.font_magic, 24)
         numTime.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1 / 15)
@@ -1025,7 +1026,7 @@ var GameUI = cc.Layer.extend({
             let mapCastAt = getMapCastAt(posUI) ;
             let indexFloat = convertPosUIToLocLogic(posUI, mapCastAt)
             let posLogic = this.screenLoc2Position(indexFloat)
-            this.addSpellUIBeforeExplose(target.type, posUI)
+            this.addSpellUIBeforeExplose(target.type, posUI, 1);
             testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
                 gv.gameClient._userId, mapCastAt),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
@@ -1044,23 +1045,23 @@ var GameUI = cc.Layer.extend({
         // }
     },
 
-    addSpellUIBeforeExplose: function (cardType, posUI) {
+    addSpellUIBeforeExplose: function (cardType, posUI, rule) {
         let spell;
         switch (cardType) {
             case 0:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
+                spell = new SpellFallUI( posUI, 2 , 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0, rule));
                 break;
             case 1:
-                spell = new SpellFallUI(posUI, 'effect_atk_ice', 'animation_ice_ball', GameStateManagerInstance.getSpellConfig(1));
+                spell = new SpellFallUI(posUI,1 , 'effect_atk_ice', 'animation_ice_ball', GameStateManagerInstance.getSpellConfig(1, rule));
                 break;
             case 2:
-                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4, GameStateManagerInstance.getSpellConfig(2)[0]);
+                spell = new SpellFieldUI(posUI, 'effect_buff_heal', 4, GameStateManagerInstance.getSpellConfig(2, rule)[0]);
                 break;
             case 3:
-                spell = new SpellFieldUI(posUI, 'effect_buff_speed', (GameStateManagerInstance.getSpellConfig(3)[1]/1000), GameStateManagerInstance.getSpellConfig(3)[0]);
+                spell = new SpellFieldUI(posUI, 'effect_buff_speed', (GameStateManagerInstance.getSpellConfig(3, rule)[1]/1000), GameStateManagerInstance.getSpellConfig(3, rule)[0]);
                 break;
             default:
-                spell = new SpellFallUI( posUI, 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0));
+                spell = new SpellFallUI( posUI,2 , 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0, rule));
                 break;
         }
         this.addChild(spell);
@@ -1075,7 +1076,7 @@ var GameUI = cc.Layer.extend({
 
     generatePreviewPotion: function (target) {
         // let radius = card.spellInfo.radius;
-        let radius =GameStateManagerInstance.getSpellConfig(target.type)[0]
+        let radius =GameStateManagerInstance.getSpellConfig(target.type, 1)[0]
         let rangePreview = cc.Sprite('res/battle/battle_potion_range.png');
         rangePreview.setScale(2.3*CELLWIDTH/rangePreview.getContentSize().width*radius)
 
@@ -1126,7 +1127,7 @@ var GameUI = cc.Layer.extend({
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
         if(this._gameStateManager.playerA.energy >= numEnergy) {
-            this._gameStateManager.playerA.energy -= numEnergy
+            // this._gameStateManager.playerA.energy -= numEnergy
             this.hidemapCanCastSpell1()
             this._gameStateManager.playerA.energy -= 0
             this.cardInQueue.push(this.listCard[numSlot - 1].type)
@@ -1183,8 +1184,15 @@ var GameUI = cc.Layer.extend({
         this.getChildByName('time').setString(time)
         var percen = 100 - this._gameStateManager._timer.curTime / GAME_CONFIG.TIME_WAVE * 100
         this.getChildByName('timeBar').setPercentage(percen)
-        if (this._gameStateManager.canTouchNewWave) {
+        if (this._gameStateManager.canTouchNewWave && this.UItimer == null) {
             this.getChildByName(res.timerBorder_png).visible = true
+            this.UItimer = new cc.Sprite(res.timerBorder_png)
+            this.addChild(this.UItimer);
+            this.UItimer.setScale(WIDTHSIZE / this.UItimer.getContentSize().width * 0.92/8)
+            this.UItimer.setPosition(winSize.width / 2, winSize.height / 2 + HEIGHTSIZE * 1/15)
+            this.UItimer.setScale(0.95)
+            let seq = cc.sequence(cc.scaleBy(0.5,(1/0.95)), cc.scaleBy(0.5,0.95)).repeatForever()
+            this.UItimer.runAction(seq)
         }
     },
 
@@ -1192,6 +1200,10 @@ var GameUI = cc.Layer.extend({
         * reset trạng thái wave mới
         * */
     getNewWave: function () {
+        if(this.UItimer !== null ) {
+            this.UItimer.removeFromParent(true);
+            this.UItimer = null;
+        }
         this.getChildByName(res.timerBorder_png).visible = false
         var strNumWave = this._gameStateManager.curWave + '/' + GAME_CONFIG.MAX_WAVE
         this.getChildByName('lbNumWave').setString(strNumWave)
