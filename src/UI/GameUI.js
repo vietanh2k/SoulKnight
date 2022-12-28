@@ -55,11 +55,12 @@ var GameUI = cc.Layer.extend({
         this.cardPlayable = [];
         this.cardInQueue = [];
         let deck = sharePlayerInfo.deck;
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < deck.length-4; i++) {
             this.cardPlayable[i] = deck[i].type;
+            this.cardInQueue[i] = deck[i].type;
         }
-        for (let i = 0; i < 4; i++) {
-            this.cardInQueue[i] = deck[i + 4].type;
+        for (let i = 4; i < deck.length; i++) {
+            this.cardInQueue[i-4] = deck[i].type;
         }
         // for (let i = 0; i < 4; i++) {
         //     this.cardPlayable[i] = 19;

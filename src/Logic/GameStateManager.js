@@ -75,7 +75,7 @@ var GameStateManager = cc.Class.extend({
         /*
         lấy stat cho các card spell trong deck
          */
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < deck.length; i++) {
             if(deck[i].concept == 'potion'){
                 this.addSpellConfigA(deck[i].type);
                 cc.log("deck[1].type + "+deck[i].type)
@@ -87,7 +87,7 @@ var GameStateManager = cc.Class.extend({
         /*
         lấy stat cho các card spell trong deck
          */
-        for (let i = 0; i < 8; i++) {
+        for (let i = 0; i < deck2.length; i++) {
             if(deck2[i].concept == 'potion'){
                 this.addSpellConfigB(deck2[i].type);
                 cc.log("deck[2].type+ "+deck2[i].type)
