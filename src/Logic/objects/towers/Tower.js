@@ -1,11 +1,14 @@
 var Tower = TowerUI.extend({
 
-    ctor: function (card, evolution) {
+    ctor: function (rule, card, evolution) {
         this._super(card, evolution);
         this.inactiveSourceCounter = 0;
 
-        // fixme lấy deck của mình, đúng ra phải xem lấy từ deck của mình hay của đội bạn
-        this.correspondingCard = sharePlayerInfo.deck.find(element => element.type === card);
+        if (rule === 1) {
+            this.correspondingCard = sharePlayerInfo.deck.find(element => element.type === card);
+        } else if (rule === 2) {
+            this.correspondingCard = shareOpponentInfo.deck.find(element => element.type === card);
+        }
     },
 
     render: function (playerState) {

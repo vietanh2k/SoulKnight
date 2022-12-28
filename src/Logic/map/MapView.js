@@ -435,7 +435,7 @@ var MapView = cc.Class.extend({
         return true;
     },
 
-    deployOrUpgradeTower: function (cardType, position) {
+    deployOrUpgradeTower: function (cardType, position, rule) {
         cc.log("Deploy or upgrade tower with card type " + JSON.stringify(cardType) + " at position " + JSON.stringify(position));
         let cell = this.getCellAtPosition(position);
 
@@ -453,25 +453,25 @@ var MapView = cc.Class.extend({
         let tower;
         switch (cardType) {
             case 16:
-                tower = new TCannon(cardType, this._playerState, position, this);
+                tower = new TCannon(rule, cardType, this._playerState, position, this);
                 break;
             case 17:
-                tower = new TWizard(cardType, this._playerState, position, this);
+                tower = new TWizard(rule, cardType, this._playerState, position, this);
                 break;
             case 18:
-                tower = new TBoomerang(cardType, this._playerState, position, this);
+                tower = new TBoomerang(rule, cardType, this._playerState, position, this);
                 break;
             case 19:
-                tower = new TOilGun(cardType, this._playerState, position, this);
+                tower = new TOilGun(rule, cardType, this._playerState, position, this);
                 break;
             case 20:
-                tower = new TIceGun(cardType, this._playerState, position, this);
+                tower = new TIceGun(rule, cardType, this._playerState, position, this);
                 break;
             case 21:
-                tower = new TDamage(cardType, this._playerState, position, this);
+                tower = new TDamage(rule, cardType, this._playerState, position, this);
                 break;
             default:
-                tower = new TCannon(cardType, this._playerState, position, this);
+                tower = new TCannon(rule, cardType, this._playerState, position, this);
                 cc.log('Default case of switch cardType to create tower!');
                 break;
         }

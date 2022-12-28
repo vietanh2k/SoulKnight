@@ -1,7 +1,7 @@
 var TOilGun = Tower.extend({
 
-    ctor: function (card, playerState, position, map) {
-        this._super(card, 0);
+    ctor: function (rule, card, playerState, position, map) {
+        this._super(rule, card, 0);
 
         this._playerState = playerState;
         this.active = true;

@@ -1,11 +1,11 @@
 var Bullet = cc.Sprite.extend({
     fx: null,
     concept: "bullet",
-    ctor: function (res, target, speed, damage, radius, position, fromTower, targetType, level) {
+    ctor: function (res, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard) {
         this._super(res);
 
         this.mapId = -1;
-        this.reset(target, speed, damage, radius, position, fromTower, targetType, level);
+        this.reset(target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
     },
 
     reset: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard) {
