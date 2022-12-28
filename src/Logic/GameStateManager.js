@@ -284,25 +284,25 @@ var GameStateManager = cc.Class.extend({
     addSpellConfigA: function (typeCard) {
         const cardInfor = sharePlayerInfo.collection.find(element => element.type === typeCard);
         const lvl =cardInfor.level;
-        const bac = Math.floor((lvl-1)/5 +1);
+        const bac = cardInfor.rarity+1;
         const radius = cf.POTION2.radius[bac];
         let value = 0;
         switch (typeCard) {
             case 0:
                 value = cf.POTION2.potion[SPELL_ID.FIREBALL].statPerLevel.damage[lvl];
-                this.spellConfigA[0] = [radius, value];
+                this.spellConfigA[0] = [radius, value, lvl];
                 break;
             case 1:
                 value = cf.POTION2.potion[SPELL_ID.FROZEN].statPerLevel.damage[lvl];
-                this.spellConfigA[1] = [radius, value];
+                this.spellConfigA[1] = [radius, value, lvl];
                 break;
             case 2:
                 value = cf.POTION2.potion[SPELL_ID.HEAL].statPerLevel.healthUp[lvl];
-                this.spellConfigA[2] = [radius, value];
+                this.spellConfigA[2] = [radius, value, lvl];
                 break;
             case 3:
                 value = cf.POTION2.potion[SPELL_ID.SPEED_UP].statPerLevel.duration[lvl];
-                this.spellConfigA[3] = [radius, value];
+                this.spellConfigA[3] = [radius, value, lvl];
                 break;
             default:
                 cc.log('Card typeCard \"' + typeCard + '\" not found in config.')
@@ -314,25 +314,25 @@ var GameStateManager = cc.Class.extend({
     addSpellConfigB: function (typeCard) {
         const cardInfor = shareOpponentInfo.collection.find(element => element.type === typeCard);
         const lvl =cardInfor.level;
-        const bac = Math.floor((lvl-1)/5 +1);
+        const bac = cardInfor.rarity+1;
         const radius = cf.POTION2.radius[bac];
         let value = 0;
         switch (typeCard) {
             case 0:
                 value = cf.POTION2.potion[SPELL_ID.FIREBALL].statPerLevel.damage[lvl];
-                this.spellConfigB[0] = [radius, value];
+                this.spellConfigB[0] = [radius, value, lvl];
                 break;
             case 1:
                 value = cf.POTION2.potion[SPELL_ID.FROZEN].statPerLevel.damage[lvl];
-                this.spellConfigB[1] = [radius, value];
+                this.spellConfigB[1] = [radius, value, lvl];
                 break;
             case 2:
                 value = cf.POTION2.potion[SPELL_ID.HEAL].statPerLevel.healthUp[lvl];
-                this.spellConfigB[2] = [radius, value];
+                this.spellConfigB[2] = [radius, value, lvl];
                 break;
             case 3:
                 value = cf.POTION2.potion[SPELL_ID.SPEED_UP].statPerLevel.duration[lvl];
-                this.spellConfigB[3] = [radius, value];
+                this.spellConfigB[3] = [radius, value, lvl];
                 break;
             default:
                 cc.log('Card typeCard \"' + typeCard + '\" not found in config.')

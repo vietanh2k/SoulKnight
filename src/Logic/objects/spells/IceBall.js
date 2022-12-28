@@ -5,6 +5,7 @@ const IceBall = Spell.extend({
         this.mapCast = mapCast;
         this.radius = stat[0];
         this.dame = Math.floor(stat[1]*this.hpMul);
+        this.mulDuration = Math.pow(cf.STAT_MULTIPLIER_PER_LEVEL, stat[2] - 1);
         cc.log("dame = "+this.dame)
         this.canCast = true;
         return true;
@@ -43,7 +44,7 @@ const IceBall = Spell.extend({
                 if (monster.___freezeEffect) {
                     monster.___freezeEffect.reset()
                 } else {
-                    monster.___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_MONSTER_TIME, monster)
+                    monster.___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_MONSTER_TIME*this.mulDuration, monster)
                     playerState.getMap().addEffect(monster.___freezeEffect)
                 }
                 // monsters[i].hurtUI()
@@ -54,7 +55,7 @@ const IceBall = Spell.extend({
                 if (objects[i].___freezeEffect) {
                     objects[i].___freezeEffect.reset()
                 } else {
-                    objects[i].___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_TOWER_TIME, objects[i])
+                    objects[i].___freezeEffect = new FreezeEffect(SPELL_CONFIG.ICEBALL_FREEZE_TOWER_TIME*this.mulDuration, objects[i])
                     playerState.getMap().addEffect(objects[i].___freezeEffect)
                 }
 
