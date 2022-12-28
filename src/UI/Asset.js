@@ -57,6 +57,8 @@ var asset = {
     panelBtnClose_png: 'res/common/common_panel_btn_close.png',
     panelBtnBack_png: 'res/skill/common_panel_btn_back.png',
 
+    commonBtnInfo_png: 'res/common/common_btn_info.png',
+
     iconSkillLocked_png: 'res/skill/lobby_card_skill_locked.png',
     iconSkillSeparator_png: 'res/skill/lobby_card_skill_separator.png',
     iconSkillResonance_png: 'res/skill/icon_skill_05.png',

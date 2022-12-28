@@ -67,6 +67,20 @@ var CardInfoUI = cc.Layer.extend({
         });
         topPanelBackground.addChild(closeBtn, 0);
 
+        let cheatFragmentBtn = new ccui.Button(asset.commonBtnInfo_png);
+        cheatFragmentBtn.attr({
+            x: topPanelBackground.width * 0.86,
+            y: topPanelBackground.height * 0.86,
+            scale: topPanelBackground.width * 0.062 / cheatFragmentBtn.width,
+        });
+        cheatFragmentBtn.addClickEventListener(() => {
+            if (!this.skillInfoUIIsActive) {
+                testnetwork.connector.sendCheatFragmentRequest(card.type, cf.CHEAT_AMOUNT.FRAGMENT);
+                this.destroy(false);
+            }
+        });
+        topPanelBackground.addChild(cheatFragmentBtn, 0);
+
         if (!this.card.isSpell()) {
             this.miniatureGlow = cc.Sprite(asset.cardPanelMiniatureGlows_png[card.rarity]);
             this.miniatureGlow.attr({

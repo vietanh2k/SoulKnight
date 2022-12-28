@@ -20,6 +20,7 @@ gv.CMD.BUY_CHEST = 3007;
 gv.CMD.SWAP_CARD_INTO_DECK = 3008;
 gv.CMD.OFFER_REQUEST = 3009;
 gv.CMD.OFFER_RESPONSE = 3009;
+gv.CMD.CHEAT_FRAGMENT = 3010;
 gv.CMD.MATCH_REQUEST = 4001;
 gv.CMD.MATCH_REPONSE = 4002;
 gv.CMD.MATCH_CONFIRM = 4003;
@@ -85,6 +86,22 @@ CmdSendOpenChest = fr.OutPacket.extend(
         }
     }
 );
+
+CmdSendCheatFragment = fr.OutPacket.extend({
+
+    ctor: function () {
+        this._super();
+        this.initData(100);
+        this.setCmdId(gv.CMD.CHEAT_FRAGMENT);
+    },
+
+    putData: function (cardType, fragment) {
+        this.packHeader();
+        this.putByte(cardType);
+        this.putInt(fragment);
+        this.updateSize();
+    },
+});
 
 // START_COOLDOWN
 CmdSendStartCooldownChest = fr.OutPacket.extend({
@@ -816,6 +833,50 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
                 }
             }
             LobbyInstant.runUpgradeCardAnimation(oldCard, newCard);
+            LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
+        } else {
+            Utils.addToastToRunningScene(status);
+        }
+    },
+
+    readCardData: function () {
+        let type = this.getByte();
+        let level = this.getInt();
+        let fragment = this.getInt();
+        return new Card(type, level, fragment);
+    },
+});
+
+testnetwork.packetMap[gv.CMD.CHEAT_FRAGMENT] = fr.InPacket.extend({
+    ctor: function () {
+        this._super();
+    },
+
+    readData: function () {
+        let type = this.getByte();
+        let status = this.getString();
+        let newCard = this.readCardData();
+
+        cc.log('Get cheat fragment response from server. Status: ' + status + ', type: ' + type + ', card after cheat: ' + JSON.stringify(newCard) + '.');
+
+        let serverNow = this.getLong();
+        Utils.updateTimeDiff(serverNow);
+
+        if (status === "Success") {
+            let oldCard = undefined;
+            for (let i = 0; i < sharePlayerInfo.collection.length; i++) {
+                if (sharePlayerInfo.collection[i].type === type) {
+                    oldCard = sharePlayerInfo.collection[i];
+                    sharePlayerInfo.collection[i] = newCard;
+                    break;
+                }
+            }
+            for (let i = 0; i < sharePlayerInfo.deck.length; i++) {
+                if (sharePlayerInfo.deck[i].type === type) {
+                    sharePlayerInfo.deck[i] = newCard;
+                    break;
+                }
+            }
             LobbyInstant.tabUIs[cf.LOBBY_TAB_CARDS].updateCardSlotWithType(type);
         } else {
             Utils.addToastToRunningScene(status);
