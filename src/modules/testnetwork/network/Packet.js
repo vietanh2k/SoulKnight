@@ -535,7 +535,7 @@ testnetwork.packetMap[gv.CMD.BATTLE_START] = fr.InPacket.extend(
             this._super();
         },
         readData: function () {
-            fr.view_with_args(GameUI, this, 1.2);
+            fr.view_with_args(GameUI, this, 0.8);
             cc.log('=================')
         }
     }

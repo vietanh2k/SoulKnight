@@ -4,12 +4,13 @@ efect đẩy quái
 const PushEffect = Effect.extend({
     ctor: function (vecPush , timePush, monster) {
         this.monster = monster;
-        let time = timePush* 2.5/Math.sqrt(Math.sqrt(this.monster.weight));
+        let time = timePush* 3/Math.sqrt(Math.sqrt(this.monster.weight));
         this._super(time)
 
         this.monster.inactiveSourceCounter++
         this.monster.play(-1)
         this.vecPush = vecPush;
+        this.posHole = new Vec2(0,0);
         /*
         tốc độ bay
          */
@@ -18,6 +19,17 @@ const PushEffect = Effect.extend({
     },
 
     update: function (playerState, dt) {
+        if(this.countDownTime <= dt && this.monster.concept == 111){
+            this.monster.takeDamage(playerState,999999, null);
+        }
+
+        if(this.monster.concept == 111){
+            let vecHole = this.posHole.sub(this.monster.position)
+            // let vecHole = new Vec2(100,200);
+            let tmp = this.monster.position.add(vecHole.mul(dt*2));
+            this.monster.position.set(tmp.x, tmp.y);
+            return;
+        }
         let map = playerState.getMap();
         let tmp = this.monster.position.add(this.vecPush.mul(this.pushSpeed*dt));
         let tmpCell = map.getCellAtPosition(tmp)
@@ -26,8 +38,23 @@ const PushEffect = Effect.extend({
         chạm vật cản thì dừng lại
          */
         if(tmpCell && !tmpCell.getNextCell() && map.getMapController().getCellValueAtLocation(tmpCell.getLocation()) === cf.MAP_CELL.HOLE){
-            this.monster.takeDamage(playerState,999999, null);
-            this.countDownTime= 0;
+            /*
+            animation xuong hole
+             */
+            this.monster.concept = 111;
+            let rotateAct = cc.RotateBy(0.3,-360).repeatForever()
+            let scaleAct = cc.ScaleBy(1,0.1)
+            let tmpLocCell = new Vec2(tmpCell.getLocation().x, tmpCell.getLocation().y+1)
+            let tmpPosHole = convertIndexToPosLogic(tmpLocCell);
+            this.posHole.set(tmpPosHole.x, tmpPosHole.y+1);
+            // let posHole = convertPosLogicToPosUI(tmpCell.getLocation(), 2);
+            // let moveAct = cc.MoveTo(0.3, cc.p(200, 300 + CELLWIDTH * 0.5))
+            this.monster.runAction(rotateAct)
+            this.monster.runAction(scaleAct)
+            this.monster.healthUI.visible = false
+            // this.monster.runAction(cc.MoveTo(0.3, cc.p(200, 300 + CELLWIDTH * 0.5)))
+            // this.monster.takeDamage(playerState,999999, null);
+            this.countDownTime= 1;
             return true;
         }
         if(!tmpCell || !tmpCell.getNextCell()){

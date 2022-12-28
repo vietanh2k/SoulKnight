@@ -160,6 +160,10 @@ const convertLogicalPosToIndex = function (pos, rule) {
 
 };
 
+const convertIndexToPosLogic = function (loc) {
+    return new Vec2((loc.x) * MAP_CONFIG.CELL_WIDTH + MAP_CONFIG.CELL_WIDTH / 2.0, (loc.y - 1) * MAP_CONFIG.CELL_HEIGHT + MAP_CONFIG.CELL_HEIGHT / 2.0)
+};
+
 const convertPosUIToLocLogic = function (pos, rule) {
     if(rule === 1) {
         var corX = (pos.x - winSize.width / 2 + WIDTHSIZE / 2) / CELLWIDTH - 1
