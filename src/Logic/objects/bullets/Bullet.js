@@ -8,7 +8,7 @@ var Bullet = cc.Sprite.extend({
         this.reset(target, speed, damage, radius, position, fromTower, targetType, level);
     },
 
-    reset: function (target, speed, damage, radius, position, fromTower, targetType, level) {
+    reset: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard) {
         this.target = target;
         this.speed = speed;
         this.damage = damage;
@@ -17,6 +17,7 @@ var Bullet = cc.Sprite.extend({
         this.position = position;
         this.targetType = targetType;
         this.level = level;
+        this.correspondingCard = correspondingCard;
         this.active = true;
         this.lastLoc = new Vec2(position.x, position.y);
         this.activate = true;

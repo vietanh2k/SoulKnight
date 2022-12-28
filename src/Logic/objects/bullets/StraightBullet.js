@@ -2,8 +2,8 @@ let TWizardBullet = Bullet.extend({
     name: 'wizard',
     concept: "bullet",
     type: 'straight',
-    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, bulletFx) {
-        this._super(res.Wizard_Bullet, target, speed, damage, radius, position, fromTower, targetType, level);
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard, bulletFx) {
+        this._super(res.Wizard_Bullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
         this.bulletFx = bulletFx;
     },
 
@@ -20,7 +20,7 @@ let TWizardBullet = Bullet.extend({
         let objectList = map.queryEnemiesCircle(pos, this.radius * MAP_CONFIG.CELL_WIDTH);
 
         let damage = this.damage;
-        if (this.level === 3 && objectList.length > 5) {
+        if (this.level === 3 && this.correspondingCard.isUnlockSkill() && objectList.length > 5) {
             damage += 10;
         }
 
@@ -49,8 +49,8 @@ let TOilGunBullet = Bullet.extend({
     concept: 'bullet',
     type: 'straight',
 
-    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, bulletFx) {
-        this._super(res.TOilGunBullet, target, speed, damage, radius, position, fromTower, targetType, level);
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard, bulletFx) {
+        this._super(res.TOilGunBullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
         this.bulletFx = bulletFx;
 
         this.runBulletAnimation();
@@ -83,7 +83,7 @@ let TOilGunBullet = Bullet.extend({
                     playerState.getMap().addEffect(object.slowEffectFromTOilGun);
                 }
 
-                if (this.level === 3) {
+                if (this.level === 3 && this.correspondingCard.isUnlockSkill()) {
                     if (object.poisonEffect !== undefined) {
                         object.poisonEffect.reset();
                     } else {
@@ -109,6 +109,6 @@ let TOilGunBullet = Bullet.extend({
     },
 
     getSlowDuration: function () {
-        return 1;
+        return Math.pow(cf.STAT_MULTIPLIER_PER_LEVEL, this.correspondingCard.level - 1);
     },
 });

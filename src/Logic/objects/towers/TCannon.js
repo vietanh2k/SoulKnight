@@ -60,7 +60,7 @@ var TCannon = Tower.extend({
         this.counter++;
         cc.log("Shoot bullet number " + this.counter + ', speed: ' + this.getBulletSpeed() + " to target with position " + object.position)
 
-        let newBullet = new TCannonBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level);
+        let newBullet = new TCannonBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, this.correspondingCard);
 
         // const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
         // newBullet.position.x += gunCenterFromCellCenter.x;

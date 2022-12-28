@@ -4,6 +4,7 @@ var Tower = TowerUI.extend({
         this._super(card, evolution);
         this.inactiveSourceCounter = 0;
 
+        // fixme lấy deck của mình, đúng ra phải xem lấy từ deck của mình hay của đội bạn
         this.correspondingCard = sharePlayerInfo.deck.find(element => element.type === card);
     },
 
@@ -88,6 +89,7 @@ var Tower = TowerUI.extend({
 
     getDamage: function () {
         let damage = cf.TOWER.tower[this.instance].stat[this.level].damage;
+        damage *= Math.pow(cf.STAT_MULTIPLIER_PER_LEVEL, this.correspondingCard.level - 1);
         if (this._playerState.rule === 1 && GameStateManagerInstance.playerA._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL || this._playerState.rule === 2 && GameStateManagerInstance.playerB._map._mapController.intArray[this.mapPos.x][this.mapPos.y] === cf.MAP_CELL.BUFF_DAMAGE + cf.MAP_CELL.TOWER_ADDITIONAL) {
             damage *= cf.MAP_BUFF.DAMAGE;
         }

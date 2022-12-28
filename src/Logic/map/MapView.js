@@ -419,15 +419,17 @@ var MapView = cc.Class.extend({
             Utils.addToastToRunningScene('Không thể nâng cấp bằng trụ khác loại!');
             return false;
         }
-        // fixme chỗ dưới này phải là === thay vì >=; hiện tại để như vậy vì chưa giới hạn cấp trụ theo cấp thẻ
-        if (tower && tower.level >= card.getMaxUpgradeableLevel()) {
+        if (tower && tower.level > card.getMaxUpgradeableLevel()) {
+            Utils.addToastToRunningScene('Trụ đã tiến hóa cao hơn cả cấp tối đa!');
+            return false;
+        }
+        if (tower && tower.level === card.getMaxUpgradeableLevel()) {
             if (tower.level === 3) {
                 Utils.addToastToRunningScene('Trụ đã tiến hóa tối đa!');
                 return false;
             } else {
-                // Utils.addToastToRunningScene('Cấp thẻ không đủ để nâng cấp trụ!');
-                // return false;
-                return true; // fixme hiện tại để như này để có thể test nâng cấp trụ
+                Utils.addToastToRunningScene('Cấp thẻ không đủ để nâng cấp trụ!');
+                return false;
             }
         }
         return true;
