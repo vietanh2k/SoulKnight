@@ -1,7 +1,7 @@
 var TBoomerang = Tower.extend({
 
-    ctor: function (card, playerState, position, map) {
-        this._super(card, 0);
+    ctor: function (rule, card, playerState, position, map) {
+        this._super(rule, card, 0);
 
         this._playerState = playerState;
         this.active = true;
@@ -57,7 +57,7 @@ var TBoomerang = Tower.extend({
         }
         let id = this._playerState.boomerangBulletCounter++;
 
-        let newBullet = new TBoomerangBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, id);
+        let newBullet = new TBoomerangBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, this.correspondingCard, id);
 
         // const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.3 * Math.pow(-1, this.renderRule));
         // newBullet.position.x += gunCenterFromCellCenter.x;

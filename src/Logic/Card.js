@@ -68,12 +68,12 @@ var Card = cc.Class.extend({
         }
 
         if (this.isMonster()) {
-            this.hp = cardConfig.hp * Math.pow(1.1, this.level - 1);
+            this.hp = cardConfig.hp * Math.pow(cf.STAT_MULTIPLIER_PER_LEVEL, this.level - 1);
             this.speed = cardConfig.speed;
             if (this.rarity === 3) this.speed += 1;
             this.maxNumberMonsters = cardConfig.maxNumberMonsters[this.rarity];
         } else if (this.isTower()) {
-            this.damage = this.towerInfo.stat[this.evolution + 1].damage * Math.pow(1.1, this.level - 1);
+            this.damage = this.towerInfo.stat[this.evolution + 1].damage * Math.pow(cf.STAT_MULTIPLIER_PER_LEVEL, this.level - 1);
         } else if (this.isSpell()) {
             if (typeof cardConfig.potionRange === 'object') {
                 this.potionRange = cardConfig.potionRange[this.rarity];
@@ -127,6 +127,10 @@ var Card = cc.Class.extend({
     isInDeck: function () {
         let inDeck = sharePlayerInfo.deck.find(element => element.type === this.type);
         return inDeck !== undefined;
+    },
+
+    isUnlockSkill: function () {
+        return this.isTower() && this.rarity === 3;
     },
 
     getTextType: function () {

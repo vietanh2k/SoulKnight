@@ -324,7 +324,7 @@ var GameUI = cc.Layer.extend({
             // }
             // this._gameStateManager.playerA._map.updatePathForCells()
             // this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
-            this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
+            this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position, 1);
         } else {
             // let loc = convertLogicalPosToIndex(position, 2);
             //
@@ -339,7 +339,7 @@ var GameUI = cc.Layer.extend({
             // }
             // this._gameStateManager.playerB._map.updatePathForCells()
             // this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
-            this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
+            this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position, 2);
         }
     },
 

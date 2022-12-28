@@ -164,6 +164,14 @@ testnetwork.Connector = cc.Class.extend({
         pk.putData(chest, gemSpent);
         this.gameClient.sendPacket(pk);
     },
+
+    sendCheatFragmentRequest: function (cardType, fragment) {
+        cc.log('Send cheat fragment request for card type ' + cardType + ', number of fragments: ' + fragment + '.');
+        let pk = this.gameClient.getOutPacket(CmdSendCheatFragment);
+        pk.putData(cardType, fragment);
+        this.gameClient.sendPacket(pk);
+    },
+
     sendMatchRequest: function () {
         cc.log("MatchRequest:");
         var pk = this.gameClient.getOutPacket(CmdMatchRequest);

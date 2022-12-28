@@ -1,7 +1,7 @@
 let TDamage = Tower.extend({
 
-    ctor: function (card, playerState, position, map) {
-        this._super(card, 0);
+    ctor: function (rule, card, playerState, position, map) {
+        this._super(rule, card, 0);
 
         this._playerState = playerState;
         this.active = true;
@@ -54,7 +54,7 @@ let TDamage = Tower.extend({
                 }
             });
 
-            if (this.level === 3) {
+            if (this.level === 3 && this.correspondingCard.isUnlockSkill()) {
                 this.findTargetsIgnoreTaunt(playerState);
                 if (this.target.length > 0) {
                     this.slowAllTargets(playerState, dt);
@@ -64,14 +64,23 @@ let TDamage = Tower.extend({
     },
 
     getDamageAdjustment: function () {
+        let damageAdjustment = 0;
         switch (this.level) {
             case 1:
-                return 0.2;
+                damageAdjustment = 0.2;
+                break;
             case 2:
-                return 0.25;
+                damageAdjustment = 0.25;
+                break;
             case 3:
-                return 0.35;
+                damageAdjustment = 0.35;
+                break;
+            default:
+                Utils.addToastToRunningScene('Level đạn không tồn tại');
+                break;
         }
+        damageAdjustment *= Math.pow(cf.STAT_MULTIPLIER_PER_LEVEL, this.correspondingCard.level - 1);
+        return damageAdjustment;
     },
 
     findTargetsIgnoreTaunt: function (playerState) {

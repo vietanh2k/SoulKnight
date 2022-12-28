@@ -1,7 +1,7 @@
 var TOilGun = Tower.extend({
 
-    ctor: function (card, playerState, position, map) {
-        this._super(card, 0);
+    ctor: function (rule, card, playerState, position, map) {
+        this._super(rule, card, 0);
 
         this._playerState = playerState;
         this.active = true;
@@ -56,7 +56,7 @@ var TOilGun = Tower.extend({
         let radius = this.getBulletRadius();
         let position = new Vec2(this.position.x, this.position.y);
 
-        let newBullet = new TOilGunBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, this.bulletFx);
+        let newBullet = new TOilGunBullet(object, speed, damage, radius, position, this, this.getTargetType(), this.level, this.correspondingCard, this.bulletFx);
 
         // const gunCenterFromCellCenter = new Vec2(0, MAP_CONFIG.CELL_HEIGHT * 0.2 * Math.pow(-1, this.renderRule));
         // newBullet.position.x += gunCenterFromCellCenter.x;

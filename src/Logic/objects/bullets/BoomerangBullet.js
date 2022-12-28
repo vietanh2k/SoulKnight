@@ -3,8 +3,8 @@ let TBoomerangBullet = Bullet.extend({
     concept: 'bullet',
     type: 'boomerang',
 
-    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, id) {
-        this._super(res.TBoomerangBullet, target, speed, damage, radius, position, fromTower, targetType, level);
+    ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard, id) {
+        this._super(res.TBoomerangBullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
         this.originalPosition = new Vec2(position.x, position.y);
         this.range = this.fromTower.getRange();
         this.bulletRadius = 0.5;
@@ -86,7 +86,7 @@ let TBoomerangBullet = Bullet.extend({
                     }
                     object.isDamagedInPhaseOne[this.id] = true;
                     let damage = this.damage;
-                    if (this.level === 3) {
+                    if (this.level === 3 && this.correspondingCard.isUnlockSkill()) {
                         damage *= 1.5;
                         damage = Math.floor(damage);
                     }
