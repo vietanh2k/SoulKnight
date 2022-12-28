@@ -10,7 +10,7 @@ let TCannonBullet = Bullet.extend({
     explose: function (playerState, pos) {
         if (this.canAttack(this.target) && (this.targetType === 'all' || this.targetType === this.target.class)) {
             this.target.takeDamage(playerState, this.damage, this.fromTower);
-            cc.log('Monster HP: ' + this.target.health + ', position: ' + this.target.position + ', frame: ' + GameStateManagerInstance.frameCount)
+            // cc.log('Monster HP: ' + this.target.health + ', position: ' + this.target.position + ', frame: ' + GameStateManagerInstance.frameCount)
             if (this.level === 3 && this.correspondingCard.isUnlockSkill()) {
                 if (this.target.stunEffect !== undefined) {
                     this.target.stunEffect.reset();

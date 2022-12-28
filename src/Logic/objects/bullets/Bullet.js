@@ -37,7 +37,10 @@ var Bullet = cc.Sprite.extend({
     },
 
     getTargetPosition: function () {
-        if (this.targetIsLocked || this.target == null || this.target.isDestroy) {
+        if (this.target == null || this.target.isDestroy) {
+            return null;
+        }
+        if (this.targetIsLocked) {
             return this.lastLoc;
         }
         if (this.target.hasOwnProperty("position")) {
@@ -84,8 +87,8 @@ var Bullet = cc.Sprite.extend({
     logicUpdate: function (playerState, dt) {
         if (this.active) {
             let pos = this.getTargetPosition();
-            if (!pos || this.target.isDestroy) {
-                this.explose(playerState, this.lastLoc);
+            if (!pos) {
+                this.vanish();
                 return;
             }
             if (euclid_distance(this.position, pos) > this.speed * dt) {
@@ -108,10 +111,14 @@ var Bullet = cc.Sprite.extend({
                 object.hurtUI();
             }
         }
+        this.vanish();
+    },
+
+    vanish: function () {
         this.isDestroy = true;
         this.active = false;
-        this.visible = false;
 
+        this.visible = false;
         GameUI.instance.removeChild(this);
         if (this.target && this.target.release) {
             this.target.release();
@@ -119,5 +126,5 @@ var Bullet = cc.Sprite.extend({
         if (this.fromTower && this.fromTower.release) {
             this.fromTower.release();
         }
-    }
+    },
 })
