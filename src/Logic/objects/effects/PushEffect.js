@@ -4,11 +4,17 @@ efect đẩy quái
 const PushEffect = Effect.extend({
     ctor: function (vecPush , timePush, monster) {
         this.monster = monster;
-        let time = timePush* 3/Math.sqrt(Math.sqrt(this.monster.weight));
+        let time = timePush* 3.5/Math.sqrt(Math.sqrt(this.monster.weight));
         this._super(time)
+        /*
+        khi effect thi monster active = false
+         */
+        if(!this.monster.isDestroy) {
+            this.monster.inactiveSourceCounter++;
+            this.monster.play(-1);
+            this.monster.active = false;
+        }
 
-        this.monster.inactiveSourceCounter++
-        this.monster.play(-1)
         this.vecPush = vecPush;
         this.posHole = new Vec2(0,0);
         /*
@@ -19,11 +25,11 @@ const PushEffect = Effect.extend({
     },
 
     update: function (playerState, dt) {
-        if(this.countDownTime <= dt && this.monster.concept == 111){
+        if(this.countDownTime <= dt && this.monster.concept === "hole"){
             this.monster.takeDamage(playerState,999999, null);
         }
 
-        if(this.monster.concept == 111){
+        if(this.monster.concept === "hole"){
             let vecHole = this.posHole.sub(this.monster.position)
             // let vecHole = new Vec2(100,200);
             let tmp = this.monster.position.add(vecHole.mul(dt*2));
@@ -41,11 +47,13 @@ const PushEffect = Effect.extend({
             /*
             animation xuong hole
              */
-            this.monster.concept = 111;
+            this.monster.concept = "hole";
             let rotateAct = cc.RotateBy(0.3,-360).repeatForever()
             let scaleAct = cc.ScaleBy(1,0.1)
             let tmpLocCell = new Vec2(tmpCell.getLocation().x, tmpCell.getLocation().y+1)
             let tmpPosHole = convertIndexToPosLogic(tmpLocCell);
+            cc.log("tmpLocCell   "+tmpLocCell.x+"  "+tmpLocCell.y)
+            cc.log("tmpPosHole   "+tmpPosHole.x+"  "+tmpPosHole.y)
             this.posHole.set(tmpPosHole.x, tmpPosHole.y+1);
             // let posHole = convertPosLogicToPosUI(tmpCell.getLocation(), 2);
             // let moveAct = cc.MoveTo(0.3, cc.p(200, 300 + CELLWIDTH * 0.5))
@@ -66,10 +74,13 @@ const PushEffect = Effect.extend({
 
     destroy: function (playerState) {
         if( !this.monster.isDestroy) {
-            this.monster.play(0)
+            if ((--this.monster.inactiveSourceCounter) === 0) {
+                this.monster.active = true;
+                this.monster.play(0)
+            }
         }
+
         this.monster.___pushEffect = null;
-        this.monster.inactiveSourceCounter--;
         this.monster.release()
     }
 })

@@ -1,12 +1,12 @@
 const ActivateMonsterAction = cc.Class.extend({
-    ctor: function (card_type, uid) {
+    ctor: function (monsterID, uid) {
 
-        this.card_type = card_type
+        this.monsterID = monsterID
         this.uid = uid
     },
 
     writeTo: function (pkg) {
-        pkg.putByte(this.card_type)
+        pkg.putByte(this.monsterID)
         pkg.putInt(this.uid)
         cc.log("ActivateCardAction " + this.uid)
     },
@@ -21,20 +21,20 @@ const ActivateMonsterAction = cc.Class.extend({
 
     activate: function (gameStateManager) {
         cc.log(' Client tha quai tai frame = '+ GameStateManagerInstance.frameCount)
-        GameUI.instance.activateCardMonster(this.card_type, this.uid);
+        GameUI.instance.activateCardMonster(this.monsterID, this.uid);
     }
 })
 
 ActivateMonsterAction.deserializer = function (pkg) {
     let tmp = []
-    const card_type = pkg.getByte(), uid = pkg.getInt();
+    const monsterID = pkg.getByte(), uid = pkg.getInt();
 
-    tmp.push(card_type)
+    tmp.push(monsterID)
     tmp.push(uid)
     return tmp
 }
 
 ActivateMonsterAction.deserializerArr = function (pkgArr) {
-    const card_type = pkgArr[0], uid = pkgArr[1];
-    return new ActivateMonsterAction(card_type, uid);
+    const monsterID = pkgArr[0], uid = pkgArr[1];
+    return new ActivateMonsterAction(monsterID, uid);
 }

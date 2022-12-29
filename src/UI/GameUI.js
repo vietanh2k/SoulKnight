@@ -55,12 +55,19 @@ var GameUI = cc.Layer.extend({
         this.cardPlayable = [];
         this.cardInQueue = [];
         let deck = sharePlayerInfo.deck;
-        for (let i = 0; i < deck.length-4; i++) {
+        for (let i = 0; i < 4; i++) {
             this.cardPlayable[i] = deck[i].type;
             this.cardInQueue[i] = deck[i].type;
         }
         for (let i = 4; i < deck.length; i++) {
             this.cardInQueue[i-4] = deck[i].type;
+        }
+        for (let i = 0; i < 4; i++) {
+            cc.log("this.cardPlayable "+i+"  "+this.cardPlayable[i])
+        }
+
+        for (let i = 0; i < 4; i++) {
+            cc.log("this.cardInQueue "+i+"  "+this.cardInQueue[i])
         }
         // for (let i = 0; i < 4; i++) {
         //     this.cardPlayable[i] = 19;
@@ -363,8 +370,7 @@ var GameUI = cc.Layer.extend({
         }
     },
 
-    activateCardMonster: function (card_type, uid) {
-        let monsterID = getIdMonsterByTypeCard(card_type);
+    activateCardMonster: function (monsterID, uid) {
         let numBase = getBaseMonsterByID(monsterID);
         if (uid == gv.gameClient._userId ) {
             let totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this._gameStateManager.playerA.getMap());
@@ -1013,7 +1019,8 @@ var GameUI = cc.Layer.extend({
         let canActive = isPosInMap(posUI, 2);
         if(canActive) {
             this.hidemapCanCastSpell1();
-            testnetwork.connector.sendActions([[new ActivateMonsterAction(target.type,
+            let monsterID = getIdMonsterByTypeCard(target.type);
+            testnetwork.connector.sendActions([[new ActivateMonsterAction(monsterID,
                 gv.gameClient._userId),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
         }

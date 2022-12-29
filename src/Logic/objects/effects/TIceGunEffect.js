@@ -14,8 +14,8 @@ const TIceGunEffect = FreezeEffect.extend({
         }
         this.target.setColor(cc.color(255, 255, 255))
         if(this.target instanceof Monster && !this.target.isDestroy) {
-            this.target.play(0)
             if ((--this.target.inactiveSourceCounter) === 0) {
+                this.target.play(0)
                 this.target.active = true;
             }
         }else {

@@ -29,8 +29,8 @@ const StunEffect = Effect.extend({
 
     destroy: function (playerState) {
         if (this.target instanceof Monster && !this.target.isDestroy) {
-            this.target.play(0);
             if ((--this.target.inactiveSourceCounter) === 0) {
+                this.target.play(0);
                 this.target.active = true;
             }
         } else {
