@@ -194,7 +194,7 @@ var MapView = cc.Class.extend({
                 for (let i = 0; i < monsters.length; i++) {
                     const m = monsters[i]
 
-                    if (m !== monster && m.class === 'land') {
+                    if (m !== monster && m.class === 'land' && m.concept) {
                         monster.onImpact(this._playerState, m)
                     }
                 }
