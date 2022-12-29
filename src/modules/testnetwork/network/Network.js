@@ -64,7 +64,7 @@ testnetwork.Connector = cc.Class.extend({
                         if(time >= this.timeCheck1 ){
                             this.sendMatchRequest();
                         }
-                    }, 50000)
+                    }, 5000)
                 } catch (e){
                     cc.log(e);
                     cc.log(e.stack)

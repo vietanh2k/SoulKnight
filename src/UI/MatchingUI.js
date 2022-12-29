@@ -16,7 +16,7 @@ var MatchingUI = cc.Layer.extend({
 
 
         this.initBackGround();
-        this.runAction(cc.sequence(cc.delayTime(3), cc.callFunc(()=>this.onMatching())))
+        this.runAction(cc.sequence(cc.delayTime(2), cc.callFunc(()=>this.onMatching())))
         // this.schedule(this.joinGame,7)
 
 
