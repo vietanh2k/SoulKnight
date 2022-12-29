@@ -39,6 +39,10 @@ const FreezeEffect = Effect.extend({
             }
         }else {
             this.target.active = true;
+            if(this.target.UIfreeze !== null) {
+                this.target.UIfreeze.removeFromParent(true);
+                this.target.UIfreeze = null;
+            }
         }
 
         this.target.___freezeEffect = null
