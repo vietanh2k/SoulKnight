@@ -32,14 +32,15 @@ const FreezeEffect = Effect.extend({
             if ((--this.target.inactiveSourceCounter) === 0) {
                 this.target.active = true;
                 this.target.play(0)
+                if(this.target.UIfreeze !== null) {
+                    this.target.UIfreeze.removeFromParent(true);
+                    this.target.UIfreeze = null;
+                }
             }
         }else {
             this.target.active = true;
         }
-        if(this.target.UIfreeze !== null) {
-            this.target.UIfreeze.removeFromParent(true);
-            this.target.UIfreeze = null;
-        }
+
         this.target.___freezeEffect = null
         this.target.release()
     }

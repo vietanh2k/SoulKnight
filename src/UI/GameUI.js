@@ -370,7 +370,8 @@ var GameUI = cc.Layer.extend({
         }
     },
 
-    activateCardMonster: function (monsterID, uid) {
+    activateCardMonster: function (typeCard, monsterID, uid) {
+        cc.log("tha quai id = " +monsterID)
         let numBase = getBaseMonsterByID(monsterID);
         if (uid == gv.gameClient._userId ) {
             let totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this._gameStateManager.playerA.getMap());
@@ -1020,7 +1021,7 @@ var GameUI = cc.Layer.extend({
         if(canActive) {
             this.hidemapCanCastSpell1();
             let monsterID = getIdMonsterByTypeCard(target.type);
-            testnetwork.connector.sendActions([[new ActivateMonsterAction(monsterID,
+            testnetwork.connector.sendActions([[new ActivateMonsterAction(target.type, monsterID,
                 gv.gameClient._userId),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
         }
