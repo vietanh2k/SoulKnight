@@ -259,7 +259,7 @@ var GameUI = cc.Layer.extend({
 
             const playerAMap = this._gameStateManager.playerA._map
             let cellA = playerAMap.getCellAtPosition(position);
-            if (!cellA._objectOn && cellA.monsters.length !== 0) {
+            if (!cellA._objectOn && cellA.monsters.length !== 0 && !this.allMonstersIsBat(cellA.monsters)) {
                 Utils.addToastToRunningScene(TOAST_CONFIG.CANT_DEPLOY_TOWER);
                 cc.log('player '+uid+' Check duong di koooooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
                 return false;
@@ -277,7 +277,7 @@ var GameUI = cc.Layer.extend({
 
             const playerBMap = this._gameStateManager.playerB._map
             let cellB = playerBMap.getCellAtPosition(position);
-            if (!cellB._objectOn && cellB.monsters.length !== 0) {
+            if (!cellB._objectOn && cellB.monsters.length !== 0 && !this.allMonstersIsBat(cellB.monsters)) {
                 cc.log('player '+uid+' Check duong di koooooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
                 return false;
             }
@@ -404,10 +404,19 @@ var GameUI = cc.Layer.extend({
     checkCanDeployTowerMapA: function (posLogic) {
         const playerAMap = this._gameStateManager.playerA._map;
         let cellA = playerAMap.getCellAtPosition(posLogic);
-        if (!cellA._objectOn && cellA.monsters.length !== 0) {
+        if (!cellA._objectOn && cellA.monsters.length !== 0 && !this.allMonstersIsBat(cellA.monsters)) {
             return false;
         }
 
+        return true;
+    },
+
+    allMonstersIsBat: function (monsters) {
+        monsters.forEach(monster => {
+            if (!(monster instanceof Bat)) {
+                return false;
+            }
+        });
         return true;
     },
 
