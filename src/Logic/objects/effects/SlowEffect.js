@@ -11,6 +11,12 @@ const SlowEffect = Effect.extend({
         this.target.retain();
     },
 
+    resetWithAttr: function (playerState, newTime, newSlowValue) {
+        this.time = newTime;
+        this.countDownTime = newTime;
+        this.slowValue = newSlowValue;
+    },
+
     destroy: function (playerState) {
         // todo animation slow
         switch (this.source) {

@@ -27,6 +27,11 @@ const StunEffect = Effect.extend({
         this.target.retain();
     },
 
+    resetWithAttr: function (playerState, newTime) {
+        this.time = newTime;
+        this.countDownTime = newTime;
+    },
+
     destroy: function (playerState) {
         if (this.target instanceof Monster && !this.target.isDestroy) {
             if ((--this.target.inactiveSourceCounter) === 0) {

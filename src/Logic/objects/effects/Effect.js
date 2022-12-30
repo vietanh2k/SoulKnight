@@ -22,7 +22,11 @@ const Effect = cc.Class.extend({
         this.countDownTime = this.time
     },
 
+    resetWithAttr: function (playerState) {
+
+    },
+
     destroy: function (playerState) {
 
-    }
+    },
 })

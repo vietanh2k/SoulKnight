@@ -77,7 +77,7 @@ let TOilGunBullet = Bullet.extend({
             if (this.canAttack(object) && (this.targetType === 'all' || this.targetType === object.class)) {
                 object.takeDamage(playerState, this.damage, this.fromTower);
                 if (object.slowEffectFromTOilGun !== undefined) {
-                    object.slowEffectFromTOilGun.reset();
+                    object.slowEffectFromTOilGun.resetWithAttr(playerState, this.getSlowDuration(), this.getSpeedReduced());
                 } else {
                     object.slowEffectFromTOilGun = new SlowEffect(this.getSlowDuration(), object, cf.SLOW_TYPE.RATIO, this.getSpeedReduced(), cf.SLOW_SOURCE.TOILGUN);
                     playerState.getMap().addEffect(object.slowEffectFromTOilGun);

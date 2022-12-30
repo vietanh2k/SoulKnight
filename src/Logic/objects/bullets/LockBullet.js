@@ -13,7 +13,7 @@ let TCannonBullet = Bullet.extend({
             // cc.log('Monster HP: ' + this.target.health + ', position: ' + this.target.position + ', frame: ' + GameStateManagerInstance.frameCount)
             if (this.level === 3 && this.correspondingCard.isUnlockSkill()) {
                 if (this.target.stunEffect !== undefined) {
-                    this.target.stunEffect.reset();
+                    this.target.stunEffect.resetWithAttr(playerState, this.getStunDuration());
                 } else {
                     this.target.stunEffect = new StunEffect(this.getStunDuration(), this.target);
                     playerState.getMap().addEffect(this.target.stunEffect);
@@ -49,9 +49,13 @@ let TIceGunBullet = Bullet.extend({
     explose: function (playerState, pos) {
         if (this.canAttack(this.target) && (this.targetType === 'all' || this.targetType === this.target.class)) {
             this.target.takeDamage(playerState, this.damage, this.fromTower);
-            this.target.tIceGunEffect = new TIceGunEffect(this.getFreezeDuration(), this.target, (this.level === 3 && this.correspondingCard.isUnlockSkill()));
-            playerState.getMap().addEffect(this.target.tIceGunEffect);
-            this.target.hurtUI();
+
+            if (this.target.tIceGunEffect !== undefined) {
+                this.target.tIceGunEffect.resetWithAttr(playerState, this.getFreezeDuration(), (this.level === 3 && this.correspondingCard.isUnlockSkill()));
+            } else {
+                this.target.tIceGunEffect = new TIceGunEffect(this.getFreezeDuration(), this.target, (this.level === 3 && this.correspondingCard.isUnlockSkill()));
+                playerState.getMap().addEffect(this.target.tIceGunEffect);
+            }
         }
 
         this.isDestroy = true;

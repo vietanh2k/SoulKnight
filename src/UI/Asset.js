@@ -236,4 +236,7 @@ var asset = {
 
     effectStun_atlas: 'res/tower/fx/effect_stun.atlas',
     effectStun_json: 'res/tower/fx/effect_stun.json',
+    iconShield_atlas: 'res/tower/fx/icon_shield.atlas',
+    iconShield_json: 'res/tower/fx/icon_shield.json',
+    iconShield_png: 'res/tower/fx/icon_shield.png',
 };
