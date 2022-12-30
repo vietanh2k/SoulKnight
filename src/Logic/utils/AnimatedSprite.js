@@ -1,14 +1,14 @@
 var utils = utils || {}
 
 const AnimatedSprite = cc.Sprite.extend({
-    animations: null,
-    animates: null,
-    animateActions: null,
-    currentAnimationId: null,
+    //animations: null,
+    //animates: null,
+    //animateActions: null,
+    //currentAnimationId: null,
 
     // playTime != 0 => play repeat, ow => play once
-    playTime: null,
-    prevAnimationId: null,
+    //playTime: null,
+    //prevAnimationId: null,
 
     ctor: function (p) {
         this._super()
@@ -17,6 +17,8 @@ const AnimatedSprite = cc.Sprite.extend({
         this.animates = []
         this.animateActions = []
         this.currentAnimationId = -1
+        this.currentAnimationDuration = 1
+        this.durationScale = 1
         this.playTime = 0
         this.prevAnimationId = -1
 
@@ -129,20 +131,36 @@ const AnimatedSprite = cc.Sprite.extend({
 
         if (this.currentAnimationId !== animationId) {
             if (this.currentAnimationId !== -1) {
+                this.animates[this.currentAnimationId].setDuration(this.currentAnimationDuration)
                 this.stopAction(this.animateActions[this.currentAnimationId])
             }
 
             this.runAction(this.animateActions[animationId])
             this.currentAnimationId = animationId
+
+            this.currentAnimationDuration = this.animates[this.currentAnimationId].getDuration()
+            this.animates[this.currentAnimationId].setDuration(this.durationScale * this.currentAnimationDuration)
         }
     },
 
     // stop current animation
     stop: function () {
         if (this.currentAnimationId !== -1) {
+            this.animates[this.currentAnimationId].setDuration(this.currentAnimationDuration)
             this.stopAction(this.animateActions[this.currentAnimationId])
             this.currentAnimationId = -1
         }
+    },
+
+    setDurationScale: function (scale) {
+        this.durationScale = scale
+        this.animates[this.currentAnimationId].setDuration(this.durationScale * this.currentAnimationDuration)
+        //this.stopAction(this.animateActions[this.currentAnimationId])
+        //this.runAction(this.animateActions[this.currentAnimationId])
+    },
+
+    getDurationScale: function () {
+        return this.durationScale
     },
 
     playForDuration: function (animationId, duration = -1) {

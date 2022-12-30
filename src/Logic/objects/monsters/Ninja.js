@@ -145,7 +145,8 @@ const Ninja = Monster.extend({
         //this.health -= many
         this._super(playerState, many, from)
 
-        if (many && this.concept === 'monster' && !(from instanceof IceBall)) {
+        many = Math.floor(many)
+        if (this.health > 0 && (many > this.MaxHealth / 3.0) && this.concept === 'monster' && !(from instanceof IceBall)) {
             //this.setColor(cc.color(255,0,0,255))
             this.concept = null
             this.abilityDistance = this.defaultAbilityDistance

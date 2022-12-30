@@ -571,13 +571,39 @@ const Monster = AnimatedSprite.extend({
         }
         // cc.log("health ====" + this.health)
         // cc.log('Monster HP: ' + this.health + ', position: ' + this.position + ', frame: ' + GameStateManagerInstance.frameCount)
+
+        if (!this.takingDameFx) {
+            this.takingDameFx = 1
+            this.setColor(cc.color(255, 0, 0))
+
+            const self = this
+            const takeDameFx = ()=> {
+                self.takingDameFx = (self.takingDameFx + 1) % 7;
+
+                if (self.takingDameFx === 0) {
+                    self.setColor(cc.color(255, 255, 255))
+                    self.release()
+                    return
+                }
+
+                if (self.takingDameFx % 2 === 0) {
+                    self.setColor(cc.color(255, 255, 255))
+                } else {
+                    this.setColor(cc.color(255, 0, 0))
+                }
+
+                setTimeout(takeDameFx, 200)
+            }
+            setTimeout(takeDameFx, 200)
+            this.retain()
+        }
     },
 
     recoverHp: function (many) {
         many = Math.floor(many)
         this.health = Math.min(this.health + many, this.MaxHealth)
 
-        if (this.recoverHpFx.visible === false) {
+        if (this.health !== this.MaxHealth && this.recoverHpFx.visible === false) {
             const self = this
             this.recoverHpFx.visible = true
             this.recoverHpFx.setAnimation(0, 'fx_heal', false)
