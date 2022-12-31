@@ -570,7 +570,7 @@ const Monster = AnimatedSprite.extend({
             this.health = this.MaxHealth;
         }
         // cc.log("health ====" + this.health)
-        // cc.log('Monster HP: ' + this.health + ', position: ' + this.position + ', frame: ' + GameStateManagerInstance.frameCount)
+        cc.log('Monster HP: ' + this.health + ', position: ' + this.position + ', frame: ' + GameStateManagerInstance.frameCount)
 
         if (!this.takingDameFx) {
             this.takingDameFx = 1

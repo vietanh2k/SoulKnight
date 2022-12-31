@@ -141,7 +141,7 @@ var Tower = TowerUI.extend({
     },
 
     chooseTarget: function () {
-        if (this.currentTarget != null && !this.currentTarget.isDestroy && Circle.isCirclesOverlapped(this.currentTarget.position, this.currentTarget.hitRadius, this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)) {
+        if (this.currentTarget != null && !this.currentTarget.isDestroy && this.target.indexOf(this.currentTarget) !== -1 && "monster" === this.currentTarget.concept) {
             return this.currentTarget;
         }
         if (this.prioritizedTarget === undefined) {
@@ -157,7 +157,7 @@ var Tower = TowerUI.extend({
                 record = -1;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
-                    if (this.target[i].health > record) {
+                    if ("monster" === this.target[i].concept && this.target[i].health > record) {
                         record = this.target[i].health;
                         index = i;
                     }
@@ -168,7 +168,7 @@ var Tower = TowerUI.extend({
                 record = 4000000000;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
-                    if (this.target[i].health < record) {
+                    if ("monster" === this.target[i].concept && this.target[i].health < record) {
                         record = this.target[i].health;
                         index = i;
                     }
@@ -179,7 +179,7 @@ var Tower = TowerUI.extend({
                 record = -1;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
-                    if (this.target[i].position.sub(this.position).length() > record) {
+                    if ("monster" === this.target[i].concept && this.target[i].position.sub(this.position).length() > record) {
                         record = this.target[i].position.sub(this.position).length();
                         index = i;
                     }
@@ -190,7 +190,7 @@ var Tower = TowerUI.extend({
                 record = 4000000000;
                 index = -1;
                 for (let i = 0; i < this.target.length; i++) {
-                    if (this.target[i].position.sub(this.position).length() < record) {
+                    if ("monster" === this.target[i].concept && this.target[i].position.sub(this.position).length() < record) {
                         record = this.target[i].position.sub(this.position).length();
                         index = i;
                     }
@@ -275,9 +275,14 @@ var Tower = TowerUI.extend({
             if (this.attackCooldown <= 0) {
                 this.findTargets(playerState)
                 if (this.target.length > 0) {
-                    this.fire();
-                    this.status = 'cooldowning';
-                    this.attackCooldown = self.getAttackSpeed();
+                    for (let i = 0; i < this.target.length; i++) {
+                        if ("monster" === this.target[i].concept) {
+                            this.fire();
+                            this.status = 'cooldowning';
+                            this.attackCooldown = self.getAttackSpeed();
+                            break;
+                        }
+                    }
                 }
             } else {
                 this.attackCooldown -= dt;
