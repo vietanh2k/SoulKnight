@@ -16,7 +16,6 @@ const darkGiantFakeFindTargets = function (playerState) {
     })
 
     if (darkGiant.length !== 0) {
-        this.currentTarget = darkGiant[0]
         this.target.length = 0
         this.target = [...darkGiant]
     }
