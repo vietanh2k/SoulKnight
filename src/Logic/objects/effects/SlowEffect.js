@@ -7,7 +7,10 @@ const SlowEffect = Effect.extend({
         this.slowType = slowType;
         this.slowValue = slowValue;
         this.source = source;
+
         // todo animation slow
+        this.target.setDurationScale(1 / (1 - this.slowValue));
+
         this.target.retain();
     },
 
@@ -15,10 +18,13 @@ const SlowEffect = Effect.extend({
         this.time = newTime;
         this.countDownTime = newTime;
         this.slowValue = newSlowValue;
+        this.target.setDurationScale(1 / (1 - this.slowValue));
     },
 
     destroy: function (playerState) {
         // todo animation slow
+        this.target.setDurationScale(1);
+
         switch (this.source) {
             case cf.SLOW_SOURCE.TOILGUN:
                 this.target.slowEffectFromTOilGun = undefined;
