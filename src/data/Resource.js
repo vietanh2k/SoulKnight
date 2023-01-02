@@ -97,6 +97,9 @@ var res = {
     iconArrow: 'res/battle/UI/ui_icon_arrow.png',
 
 
+    oval_grey: 'res/oval-grey-50.png',
+    oval_red: 'res/oval-red-50.png',
+    oval_green: 'res/oval-green-50.png',
     Swordman_plist:'res/swordsman.plist',
     Swordman_png:'res/swordsman.png',
     assassin_plist:'res/assassin.plist',

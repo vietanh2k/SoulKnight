@@ -122,8 +122,28 @@ var PlayerState = cc.Class.extend({
             m1.energyFromDestroy = 0
         }
 
+        let monsterShadow = null
+        if (isCardMonster) {
+            const playerA = this.gameStateManager.playerA
+            if (playerA === this) {
+                monsterShadow = new cc.Sprite(res.oval_red)
+            } else {
+                monsterShadow = new cc.Sprite(res.oval_green)
+            }
+        } else {
+            monsterShadow = new cc.Sprite(res.oval_grey)
+        }
+
+        //monsterShadow.scale.x = 0.8
+        //monsterShadow.scale.y = 0.8
+
+        //monsterShadow.setScale(0.8, 0.8)
+        monsterShadow.opacity = 128
+        m1.shadowSprite = monsterShadow
+
         this._map.addMonster(m1)
         GameUI.instance.addChild(m1)
+        GameUI.instance.addChild(monsterShadow)
     },
 
     update: function (dt) {

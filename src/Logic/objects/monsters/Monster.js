@@ -60,6 +60,8 @@ const Monster = AnimatedSprite.extend({
         this.impactDirection = null
         this.pushingTime = 0
 
+        this.shadowSprite = null
+
         return true;
     },
 
@@ -477,8 +479,12 @@ const Monster = AnimatedSprite.extend({
             let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
             let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
 
-            this.x = dx + x
-            this.y = height - y
+            x = dx + x
+            y = height - y
+
+            this.setPosition(x, y)
+
+            this.shadowSprite.setPosition(x, y)
         } else {
             dir.set(-dir.x, dir.y)
             let dx = winSize.width / 2 - WIDTHSIZE / 2 + CELLWIDTH / 2
@@ -489,11 +495,21 @@ const Monster = AnimatedSprite.extend({
             let x = this.position.x / MAP_CONFIG.CELL_WIDTH * CELLWIDTH
             let y = this.position.y / MAP_CONFIG.CELL_HEIGHT * CELLWIDTH
 
-            this.setPosition(width - x, height + y)
+            x = width - x
+            y = height + y
+
+            this.setPosition(x, y)
+
+            this.shadowSprite.setPosition(x, y)
         }
 
-            this.healthUI.setPosition(this.width / 2.0, this.height * 1.0)
+        const scale = 0.4 * this.width / this.shadowSprite.width
+        this.shadowSprite.setScale(
+            scale,
+            scale
+        )
 
+        this.healthUI.setPosition(this.width / 2.0, this.height * 1.0)
 
         if (dir && this.currentAnimationId !== -1) {
             const v = this.animationIds[dir.y +1]
@@ -548,6 +564,7 @@ const Monster = AnimatedSprite.extend({
         // var ex = new Explosion()
         // ex.setPosition(300, 500)
         // this.addChild(ex, 5000)
+        this.shadowSprite.removeFromParent(true)
         this.removeFromParent(true)
         this.animationCleanup()
     },
