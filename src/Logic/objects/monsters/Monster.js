@@ -15,7 +15,7 @@ const Monster = AnimatedSprite.extend({
         this.setScale(1.2)
         this.active = true
         this.visible = true
-
+        this.circle = null;
         this.mapId = -1
         this.isChosen = false
         this.timeHealBuff = 0
@@ -519,6 +519,11 @@ const Monster = AnimatedSprite.extend({
         if (this.recoverHpFx.visible === true) {
             this.recoverHpFx.setPosition(this.width / 2.0, this.height / 2.0)
         }
+
+        if(this.circle !== null){
+            this.circle.setPosition(this.width / 2.0, this.height / 2.0);
+            this.circle.opacity = 255;
+        }
     },
 
     addHealthUI: function () {
@@ -532,6 +537,30 @@ const Monster = AnimatedSprite.extend({
         // this.healthUI.setScale(0.3)
         this.addChild(this.healthUI)
     },
+
+    addCircleUI: function () {
+        this.circle = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+            "res/battle/fx/enemy_circle.atlas")
+        this.circle.setScale(0.5)
+        if(this.renderRule === 1) {
+            // var resultAnimation = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+            //     "res/battle/fx/enemy_circle.atlas")
+
+            this.circle.setAnimation(0, "enemy_circle", true)
+            // resultAnimation.setScaleX(winSize.width/WIDTHSIZE)
+            // resultAnimation.setScaleY(1.2)
+            // this.mapCanCastSpell1.setScaleY(winSize.height /HEIGHTSIZE/5.5*15)
+            // LobbyInstant.addChild(resultAnimation,99999,99999)
+        }else{
+            this.circle.setAnimation(0, "monster_circle", true)
+        }
+        // this.healthUI.opacity = 0
+
+        // this.healthUI.setScale(0.3)
+        this.circle.opacity = 0;
+        this.addChild(this.circle, -1)
+    },
+
     hurtUI: function () {
         this.healthUI.stopAllActions()
         let tmp = Math.floor(this.health / this.MaxHealth*100)
@@ -595,7 +624,7 @@ const Monster = AnimatedSprite.extend({
 
             const self = this
             const takeDameFx = ()=> {
-                self.takingDameFx = (self.takingDameFx + 1) % 7;
+                self.takingDameFx = (self.takingDameFx + 1) % 2;
 
                 if (self.takingDameFx === 0) {
                     self.setColor(cc.color(255, 255, 255))
