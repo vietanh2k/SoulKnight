@@ -53,6 +53,14 @@ var ShopUI = cc.Layer.extend({
     showPopupGold:function (itemNode){
         this.popup = new PopupGold(itemNode)
         this.addChild(this.popup,0,'popup')
+        var resultAnimation = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+            "res/battle/fx/enemy_circle.atlas")
+        resultAnimation.setPosition(winSize.width / 2, winSize.height / 2.5)
+        resultAnimation.setAnimation(0, "enemy_circle", true)
+        // resultAnimation.setScaleX(winSize.width/WIDTHSIZE)
+        resultAnimation.setScaleY(1.2)
+        // this.mapCanCastSpell1.setScaleY(winSize.height /HEIGHTSIZE/5.5*15)
+        LobbyInstant.addChild(resultAnimation,99999,99999)
 
     },
 

@@ -69,6 +69,19 @@ var GameUI = cc.Layer.extend({
         for (let i = 0; i < 4; i++) {
             cc.log("this.cardInQueue "+i+"  "+this.cardInQueue[i])
         }
+        for (let i = 0; i < 4; i++) {
+            let ran = Math.floor(Math.random()*4);
+            if(ran !== 0){
+                let tmp1, tmp2;
+                tmp1 = this.cardPlayable[ran];
+                this.cardPlayable[ran] = this.cardPlayable[0];
+                this.cardPlayable[0] = tmp1;
+
+                tmp2 = this.cardInQueue[ran];
+                this.cardInQueue[ran] = this.cardInQueue[0];
+                this.cardInQueue[0] = tmp2;
+            }
+        }
         // for (let i = 0; i < 4; i++) {
         //     this.cardPlayable[i] = 19;
         // }
@@ -1033,6 +1046,8 @@ var GameUI = cc.Layer.extend({
             testnetwork.connector.sendActions([[new ActivateMonsterAction(target.type, monsterID,
                 gv.gameClient._userId),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
+        }else{
+            Utils.addToastToRunningScene(TOAST_CONFIG.CANT_DEPLOY_MONSTER);
         }
 
     },
@@ -1055,6 +1070,8 @@ var GameUI = cc.Layer.extend({
             testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
                 gv.gameClient._userId, mapCastAt),0]]);
             this.updateCardSlot(target.numSlot, target.energy);
+        }else{
+            Utils.addToastToRunningScene(TOAST_CONFIG.CANT_DEPLOY_POTION);
         }
 
         // if(isPosInMap(posUI, 1) || isPosInMap(posUI, 2) ) {

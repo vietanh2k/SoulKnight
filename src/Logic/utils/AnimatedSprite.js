@@ -154,9 +154,12 @@ const AnimatedSprite = cc.Sprite.extend({
 
     setDurationScale: function (scale) {
         this.durationScale = scale
-        this.animates[this.currentAnimationId].setDuration(this.durationScale * this.currentAnimationDuration)
-        //this.stopAction(this.animateActions[this.currentAnimationId])
-        //this.runAction(this.animateActions[this.currentAnimationId])
+        
+        if (this.currentAnimationId !== -1) {
+            this.animates[this.currentAnimationId].setDuration(this.durationScale * this.currentAnimationDuration)
+            //this.stopAction(this.animateActions[this.currentAnimationId])
+            //this.runAction(this.animateActions[this.currentAnimationId])
+        }
     },
 
     getDurationScale: function () {

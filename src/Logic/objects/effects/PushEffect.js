@@ -60,6 +60,13 @@ const PushEffect = Effect.extend({
             this.monster.runAction(rotateAct)
             this.monster.runAction(scaleAct)
             this.monster.healthUI.visible = false
+            if(this.monster.circle != null) {
+                this.monster.circle.visible = false
+            }
+
+            if(this.monster.shadowSprite != null) {
+                this.monster.shadowSprite.visible = false
+            }
             // this.monster.runAction(cc.MoveTo(0.3, cc.p(200, 300 + CELLWIDTH * 0.5)))
             // this.monster.takeDamage(playerState,999999, null);
             this.countDownTime= 1;

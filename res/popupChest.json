@@ -938,7 +938,7 @@
               "ScaleY": 0.5
             },
             "Position": {
-              "X": 152.88,
+              "X": 160.88,
               "Y": 28.83
             },
             "Scale": {
@@ -958,14 +958,14 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": 62.38,
-            "RightMargin": -243.38,
+            "LeftMargin": 59.38,
+            "RightMargin": -262.38,
             "TopMargin": -44.83,
             "BottomMargin": 12.83,
             "Tag": 150,
             "ActionTag": 995453402,
             "Size": {
-              "X": 181.0,
+              "X": 203.0,
               "Y": 32.0
             },
             "Name": "numCardGet",

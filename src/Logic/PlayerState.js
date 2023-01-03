@@ -37,6 +37,7 @@ var PlayerState = cc.Class.extend({
         this.countHP = 0;
         this.countDestroy = 0;
 
+
     },
     init: function () {
 
@@ -73,7 +74,32 @@ var PlayerState = cc.Class.extend({
         return this.countDestroy;
     },
 
+    showHouseGetDameUI:function () {
+
+        if(this.houseGetDameUI == null) {
+            this.houseGetDameUI = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
+                "res/battle/fx/enemy_circle.atlas");
+            this.houseGetDameUI.setPosition(winSize.width / 2, winSize.height / 2.5);
+            this.houseGetDameUI.setScaleY(1.2);
+            this.houseGetDameUI.setAnimation(0, "tower_get_hit_fx", false);
+            GameUI.instance.addChild(this.houseGetDameUI, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE+winSize.height);
+        }else {
+            this.houseGetDameUI.stopAllActions();
+            this.houseGetDameUI.clearTracks();
+            this.houseGetDameUI.opacity = 255;
+            this.houseGetDameUI.setAnimation(0, "tower_get_hit_fx", false);
+            let seq = cc.sequence(cc.delayTime(0.8), cc.fadeOut(0));
+            this.houseGetDameUI.runAction(seq);
+        }
+
+
+    },
+
     updateHealth:function (amount) {
+        if(this.rule === 1) {
+            this.showHouseGetDameUI()
+        }
+        // this.houseGetDameUI.setAnimation(0, "field_red", false)
         this.health += amount
         if (this.health < 0) {
             this.health = 0
@@ -120,10 +146,31 @@ var PlayerState = cc.Class.extend({
 
         if (isCardMonster) {
             m1.energyFromDestroy = 0
+            m1.addCircleUI()
         }
+
+        let monsterShadow = null
+        if (isCardMonster) {
+            const playerA = this.gameStateManager.playerA
+            if (playerA === this) {
+                monsterShadow = new cc.Sprite(res.oval_grey)
+            } else {
+                monsterShadow = new cc.Sprite(res.oval_grey)
+            }
+        } else {
+            monsterShadow = new cc.Sprite(res.oval_grey)
+        }
+
+        //monsterShadow.scale.x = 0.8
+        //monsterShadow.scale.y = 0.8
+
+        //monsterShadow.setScale(0.8, 0.8)
+        monsterShadow.opacity = 128
+        m1.shadowSprite = monsterShadow
 
         this._map.addMonster(m1)
         GameUI.instance.addChild(m1)
+        GameUI.instance.addChild(monsterShadow)
     },
 
     update: function (dt) {
