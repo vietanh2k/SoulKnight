@@ -657,33 +657,58 @@ const Monster = AnimatedSprite.extend({
     },
 
     pushAnotherMonster: function (map, anotherMonster, AB, dt) {
-        const d = AB.mul(this.hitRadius + anotherMonster.hitRadius + MONSTER_PUSH_D * dt * this.weight / anotherMonster.weight)
+        if (!this.active) return
+
+        let pushD = MONSTER_PUSH_D * dt * this.weight / anotherMonster.weight
+        const d = AB.mul(this.hitRadius + anotherMonster.hitRadius + pushD)
         const p = this.position.add(d)
 
+        const position = anotherMonster.position
         const anotherMonsterCell = map.getCellAtPosition(p)
         //cc.log('======================== ' + p + ' --- ' + anotherMonsterCell)
         if (anotherMonsterCell && anotherMonsterCell.nextCell != null) {
             //cc.log('=================================================================')
-            anotherMonster.position.set(p.x, p.y)
+            position.set(p.x, p.y)
+            return
         } else {
-            if (anotherMonsterCell) {
-                const position = anotherMonster.position
+            //if (anotherMonsterCell) {
                 const tempX = p.x
                 p.x = position.x
 
                 let testCell = map.getCellAtPosition(p)
                 if (testCell && testCell.nextCell != null) {
                     anotherMonster.position.set(p.x, p.y)
+                    return
                 } else {
                     p.x = tempX
                     p.y = position.y
                     testCell = map.getCellAtPosition(p)
                     if (testCell && testCell.nextCell != null) {
                         anotherMonster.position.set(p.x, p.y)
+                        return
                     }
                 }
-            }
+            //}
         }
+
+        while (pushD !== 0) {
+            p.set(position.x + pushD, position.y)
+            let testCell = map.getCellAtPosition(p)
+            if (testCell && testCell.nextCell != null) {
+                anotherMonster.position.set(p.x, p.y)
+                return
+            }
+
+            p.set(position.x, position.y + pushD)
+            testCell = map.getCellAtPosition(p)
+            if (testCell && testCell.nextCell != null) {
+                anotherMonster.position.set(p.x, p.y)
+                return
+            }
+
+            pushD /= 2.0;
+        }
+
     },
 
     onImpact: function (playerState, anotherMonster) {
@@ -708,16 +733,17 @@ const Monster = AnimatedSprite.extend({
 
         if (this.speed === anotherMonster.speed) {
             this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
+            this.pushingTime = MONSTER_PUSH_TIME;
             return
         }
-
-        if (this.speed <= anotherMonster.speed) return
 
         const BA = this.position.sub(anotherMonster.position).normalize()
 
         if (this.pushingTime > 0) {
             this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
         }
+
+        if (this.speed <= anotherMonster.speed) return
 
         const pos = anotherMonster.position.add(BA.mul(this.hitRadius + anotherMonster.hitRadius))
         const cell = map.getCellAtPosition(pos)
