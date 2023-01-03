@@ -36,7 +36,9 @@ const SlowEffect = Effect.extend({
             this.target.slowUI = undefined;
         }
 
-        this.target.setDurationScale(1);
+        if (!this.target.isDestroy) {
+            this.target.setDurationScale(1);
+        }
 
         switch (this.source) {
             case cf.SLOW_SOURCE.TOILGUN:
