@@ -8,7 +8,16 @@ const SlowEffect = Effect.extend({
         this.slowValue = slowValue;
         this.source = source;
 
-        // todo animation slow
+        if (this.target.slowUI === undefined) {
+            this.target.slowUI = new sp.SkeletonAnimation('res/tower/fx/tower_oil_fx.json', 'res/tower/fx/tower_oil_fx.atlas');
+            this.target.slowUI.attr({
+                x: this.target.width * 0.5,
+                y: this.target.height * 0.5,
+            });
+            this.target.addChild(this.target.slowUI);
+            this.target.slowUI.setAnimation(0, 'hit_target_bullet', true);
+        }
+
         this.target.setDurationScale(1 / (1 - this.slowValue));
 
         this.target.retain();
@@ -22,8 +31,14 @@ const SlowEffect = Effect.extend({
     },
 
     destroy: function (playerState) {
-        // todo animation slow
-        this.target.setDurationScale(1);
+        if (this.target.slowUI !== undefined) {
+            this.target.slowUI.removeFromParent(true);
+            this.target.slowUI = undefined;
+        }
+
+        if (!this.target.isDestroy) {
+            this.target.setDurationScale(1);
+        }
 
         switch (this.source) {
             case cf.SLOW_SOURCE.TOILGUN:

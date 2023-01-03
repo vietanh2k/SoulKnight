@@ -272,6 +272,7 @@ var GameUI = cc.Layer.extend({
 
             const playerAMap = this._gameStateManager.playerA._map
             let cellA = playerAMap.getCellAtPosition(position);
+
             if (!cellA._objectOn && cellA.monsters.length !== 0 && !this.allMonstersIsBat(cellA.monsters)) {
                 Utils.addToastToRunningScene(TOAST_CONFIG.CANT_DEPLOY_TOWER);
                 cc.log('player '+uid+' Check duong di koooooo thanh cong tai frame = '+ GameStateManagerInstance.frameCount)
@@ -425,12 +426,14 @@ var GameUI = cc.Layer.extend({
     },
 
     allMonstersIsBat: function (monsters) {
-        monsters.forEach(monster => {
+        let ret = true;
+        monsters.every(monster => {
             if (!(monster instanceof Bat)) {
-                return false;
+                ret = false;
             }
+            return true;
         });
-        return true;
+        return ret;
     },
 
     showPathUI: function (path, rule) {

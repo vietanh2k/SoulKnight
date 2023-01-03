@@ -6,6 +6,7 @@ const IceBall = Spell.extend({
         this.radius = stat[0];
         this.dame = Math.floor(stat[1]*this.hpMul);
         this.mulDuration = Math.pow(cf.STAT_MULTIPLIER_PER_LEVEL, stat[2] - 1);
+        cc.log("hpMul = "+this.hpMul)
         cc.log("dame = "+this.dame)
         this.canCast = true;
         return true;
