@@ -733,16 +733,17 @@ const Monster = AnimatedSprite.extend({
 
         if (this.speed === anotherMonster.speed) {
             this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
+            this.pushingTime = MONSTER_PUSH_TIME;
             return
         }
-
-        if (this.speed <= anotherMonster.speed) return
 
         const BA = this.position.sub(anotherMonster.position).normalize()
 
         if (this.pushingTime > 0) {
             this.pushAnotherMonster(map, anotherMonster, AB, playerState.gameStateManager.dt)
         }
+
+        if (this.speed <= anotherMonster.speed) return
 
         const pos = anotherMonster.position.add(BA.mul(this.hitRadius + anotherMonster.hitRadius))
         const cell = map.getCellAtPosition(pos)
