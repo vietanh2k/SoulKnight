@@ -43,7 +43,7 @@ const PushEffect = Effect.extend({
         chạm hố thì trừ 999999hp
         chạm vật cản thì dừng lại
          */
-        if(tmpCell && !tmpCell.getNextCell() && map.getMapController().getCellValueAtLocation(tmpCell.getLocation()) === cf.MAP_CELL.HOLE){
+        if(tmpCell && !tmpCell.getNextCell() && map.getMapController().getCellValueAtLocation(tmpCell.getLocation()) === cf.MAP_CELL.HOLE  && !this.monster.isDestroy){
             /*
             animation xuong hole
              */
@@ -64,7 +64,7 @@ const PushEffect = Effect.extend({
                 this.monster.circle.visible = false
             }
 
-            if(this.monster.shadowSprite != null) {
+            if(this.monster.shadowSprite != null  && !this.monster.isDestroy) {
                 this.monster.shadowSprite.visible = false
             }
             // this.monster.runAction(cc.MoveTo(0.3, cc.p(200, 300 + CELLWIDTH * 0.5)))

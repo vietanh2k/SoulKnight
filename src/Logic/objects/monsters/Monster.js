@@ -224,11 +224,6 @@ const Monster = AnimatedSprite.extend({
 
 
     logicUpdate: function (playerState, dt){
-        if (this.health <= 0) {
-            this.active = true;
-            this.destroy();
-            return;
-        }
         // if(this.timeHealBuff > 0) {
         //     this.updateHealDuration(dt);
         // }
@@ -619,6 +614,7 @@ const Monster = AnimatedSprite.extend({
         // cc.log('Monster HP: ' + this.health + ', position: ' + this.position + ', frame: ' + GameStateManagerInstance.frameCount)
 
         if (!this.takingDameFx) {
+            cc.log("assssssssssasssssssssssssssss"+ this.takingDameFx)
             this.takingDameFx = 1
             this.setColor(cc.color(255, 0, 0))
 
