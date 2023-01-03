@@ -657,13 +657,32 @@ const Monster = AnimatedSprite.extend({
     },
 
     pushAnotherMonster: function (map, anotherMonster, AB, dt) {
-        const p = this.position.add(AB.mul(this.hitRadius + anotherMonster.hitRadius + MONSTER_PUSH_D * dt * this.weight / anotherMonster.weight))
+        const d = AB.mul(this.hitRadius + anotherMonster.hitRadius + MONSTER_PUSH_D * dt * this.weight / anotherMonster.weight)
+        const p = this.position.add(d)
 
         const anotherMonsterCell = map.getCellAtPosition(p)
         //cc.log('======================== ' + p + ' --- ' + anotherMonsterCell)
         if (anotherMonsterCell && anotherMonsterCell.nextCell != null) {
             //cc.log('=================================================================')
             anotherMonster.position.set(p.x, p.y)
+        } else {
+            if (anotherMonsterCell) {
+                const position = anotherMonster.position
+                const tempX = p.x
+                p.x = position.x
+
+                let testCell = map.getCellAtPosition(p)
+                if (testCell && testCell.nextCell != null) {
+                    anotherMonster.position.set(p.x, p.y)
+                } else {
+                    p.x = tempX
+                    p.y = position.y
+                    testCell = map.getCellAtPosition(p)
+                    if (testCell && testCell.nextCell != null) {
+                        anotherMonster.position.set(p.x, p.y)
+                    }
+                }
+            }
         }
     },
 
