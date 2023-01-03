@@ -65,6 +65,7 @@ testnetwork.Connector = cc.Class.extend({
                             this.sendMatchRequest();
                         }
                     }, 5000)
+
                 } catch (e){
                     cc.log(e);
                     cc.log(e.stack)

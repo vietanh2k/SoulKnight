@@ -36,6 +36,7 @@ const FreezeEffect = Effect.extend({
                     this.target.UIfreeze.removeFromParent(true);
                     this.target.UIfreeze = null;
                 }
+                this.target.takingDameFx = 0;
             }
         }else {
             this.target.active = true;

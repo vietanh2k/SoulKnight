@@ -33,6 +33,7 @@ const IceBall = Spell.extend({
             cc.log('dem = '+objects.length)
             for (let i = 0; i < objects.length; i++) {
                 const monster = objects[i]
+                monster.takingDameFx = 1;
                 monster.takeDamage(playerState, this.dame, this)
                 monster.hurtUI()
                 if (monster instanceof Ninja) {
