@@ -1,0 +1,200 @@
+{
+  "ID": "828647c4-204a-4154-82e4-b8a5e1579cd6",
+  "Version": "3.10.0.0",
+  "Name": "nameCard",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 20,
+        "Children": [
+          {
+            "IsCustomSize": true,
+            "FontSize": 22,
+            "LabelText": "Xạ Thủ Bão Táp",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 50,
+              "G": 18,
+              "B": 5
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 155,
+              "G": 129,
+              "B": 66
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": -1.0,
+            "ShadowEnabled": true,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 15.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "G": 243,
+              "B": 107
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -168.0,
+            "RightMargin": -168.0,
+            "TopMargin": -33.5,
+            "BottomMargin": -3.5,
+            "Tag": 22,
+            "ActionTag": 866443633,
+            "Size": {
+              "X": 336.0,
+              "Y": 37.0
+            },
+            "Name": "name",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "lobby/lobby_card_panel_box.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 52,
+            "Scale9OriginY": 14,
+            "Scale9Width": 56,
+            "Scale9Height": 17,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": -15.5
+            },
+            "Scale": {
+              "ScaleX": 0.6,
+              "ScaleY": 0.6
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -80.0,
+            "RightMargin": -80.0,
+            "TopMargin": -7.0,
+            "BottomMargin": -38.0,
+            "Tag": 25,
+            "ActionTag": -365066927,
+            "Size": {
+              "X": 160.0,
+              "Y": 45.0
+            },
+            "Name": "box",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 18,
+            "LabelText": "Lv.10",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineSize": 2,
+            "OutlineColor": {
+              "R": 50,
+              "G": 18,
+              "B": 5
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 155,
+              "G": 129,
+              "B": 66
+            },
+            "ShadowOffsetX": 0.0,
+            "ShadowOffsetY": -1.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": -16.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -49.5,
+            "RightMargin": -49.5,
+            "TopMargin": 0.5,
+            "BottomMargin": -31.5,
+            "Tag": 24,
+            "ActionTag": -1259283175,
+            "Size": {
+              "X": 99.0,
+              "Y": 31.0
+            },
+            "Name": "level",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "font/SVN-Supercell Magic.ttf",
+        "lobby/lobby_card_panel_box.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}

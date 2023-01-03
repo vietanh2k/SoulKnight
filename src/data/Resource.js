@@ -40,6 +40,8 @@ var res = {
     backgroundBattle2: "backgroundBattle2.json",
     healthRed: "healthRed.json",
     healthGreen: "healthGreen.json",
+    nameCard: "nameCard.json",
+    dovan: "dovan.json",
 
     font_magic: 'res/font/SVN-Supercell Magic.ttf',
     font_normal: 'res/font/SVN-Avo bold.ttf',

@@ -34,6 +34,39 @@ var GameUI = cc.Layer.extend({
         }
 
         GameUI.instance = this;
+        // let seq = cc.sequence(cc.delayTime(5),cc.scaleBy(0.6, 0.9))
+        // let seq2 = cc.sequence(cc.delayTime(5),cc.scaleBy(0.6, 1/0.9))
+        // this.runAction(seq);
+        // let a = new cc.Layer();
+        // let b = new cc.Sprite(res.decorate)
+        // b.setPosition(200,300)
+        // // a.addChild(b)
+        // // a.setAnchorPoint(0.5,0.5)
+        // // a.setPosition(100,200)
+        // // //this.setCas
+        // // this.addChild(a,9999)
+        // // a.runAction(seq2)
+        // this.addChild(b)
+        // let tmp = new Vec2(b.x - winSize.width/2, b.y - winSize.height/2)
+        // let tmp2 = tmp.mul(1/0.9)
+        // let tmp3 = new Vec2(winSize.width/2 +tmp2.x, winSize.height/2 +tmp2.y)
+        // let seq3 = cc.sequence(cc.delayTime(5),cc.MoveTo(0.6, tmp3))
+        // b.runAction(seq3)
+        // b.runAction(seq2)
+        // this.getChildByTag(99999).runAction(seq2)
+
+        // const translate = new Vec2(winSize.width/2,winSize.height/2)
+        // let childPosition = new Vec2(-a.x, -a.y)
+        //
+        // const tempMat = new Mat3()
+        // tempMat.setScale(1/0.9, 1/0.9)
+        // let mat = new Mat3()
+        // mat.setTranslation(translate)
+        // mat = tempMat.mul(mat)
+        // childPosition = mat.mul(childPosition)
+        //
+        // a.setPosition(childPosition.x, childPosition.y)
+
 
     },
     init: function () {
@@ -267,6 +300,7 @@ var GameUI = cc.Layer.extend({
     },
 
     checkCanDeployCardTower: function (card_type, position, uid) {
+        let posUI;
         if (uid === gv.gameClient._userId) {
             let loc = convertLogicalPosToIndex(position, 1);
 
@@ -285,6 +319,9 @@ var GameUI = cc.Layer.extend({
             }
             this._gameStateManager.playerA._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, 1)
+            posUI = convertPosLogicToPosUI(position, 1);
+            let posUI2 = new Vec2(posUI.x, posUI.y+CELLWIDTH/4);
+            this.addNameCardWhenUsing(card_type, posUI2, 1);
             // this._gameStateManager.playerA._map.deployOrUpgradeTower(cardType, position);
         } else {
             let loc = convertLogicalPosToIndex(position, 2);
@@ -302,8 +339,13 @@ var GameUI = cc.Layer.extend({
             }
             this._gameStateManager.playerB._map.updatePathForCells()
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, 2)
+            posUI = convertPosLogicToPosUI(position, 2);
+            let posUI2 = new Vec2(posUI.x, posUI.y+CELLWIDTH/4);
+            this.addNameCardWhenUsing(card_type, posUI2, 2);
             // this._gameStateManager.playerB._map.deployOrUpgradeTower(cardType, position);
         }
+
+
         return true;
     },
 
@@ -387,6 +429,8 @@ var GameUI = cc.Layer.extend({
     activateCardMonster: function (typeCard, monsterID, uid) {
         cc.log("tha quai id = " +monsterID)
         let numBase = getBaseMonsterByID(monsterID);
+        let posUI;
+
         if (uid == gv.gameClient._userId ) {
             let totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this._gameStateManager.playerA.getMap());
             let hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
@@ -394,6 +438,8 @@ var GameUI = cc.Layer.extend({
             for(var i=0; i<numMonster; i++) {
                 this._gameStateManager.playerB.addMonsterId(monsterID, hpMul, true);
             }
+            posUI = convertIndexToPos(1,0, 2);
+            this.addNameCardWhenUsing(typeCard, posUI, 1);
         } else {
             let totalTowersLv = MonsterWaveHandler.getTotalTowersLv(this._gameStateManager.playerB.getMap());
             let hpMul = MonsterWaveHandler.getMonsterHpMultiplier(totalTowersLv);
@@ -401,7 +447,10 @@ var GameUI = cc.Layer.extend({
             for(var i=0; i<numMonster; i++) {
                 this._gameStateManager.playerA.addMonsterId(monsterID, hpMul, true);
             }
+            posUI = convertIndexToPos(1,2, 1);
+            this.addNameCardWhenUsing(typeCard, posUI, 2);
         }
+
     },
 
 
@@ -475,9 +524,9 @@ var GameUI = cc.Layer.extend({
 
     initBackGround: function () {
         var backg0 = new cc.Sprite(res.mapbackground00);
-        backg0.setAnchorPoint(0, 0)
-        backg0.setScaleY(winSize.height / backg0.getContentSize().height)
-        backg0.setScaleX(winSize.width / backg0.getContentSize().width)
+        backg0.setPosition(winSize.width/2, winSize.height/2)
+        backg0.setScaleY(2*winSize.height / backg0.getContentSize().height)
+        backg0.setScaleX(2*winSize.width / backg0.getContentSize().width)
         this.addChild(backg0);
         this.addObjectBackground(res.mapbackground03, 0, 5.65 / 15, 0.01, -2.35 / 15)
         this.addObjectBackground(res.mapbackground02, 0, 5.65 / 15, 0, 4.55 / 15)
@@ -640,8 +689,8 @@ var GameUI = cc.Layer.extend({
         healthB.enableShadow()
         healthB.setTextColor(redColor)
 
-        this.addChild(houseBox)
-        this.addChild(houseIcon)
+        this.addChild(houseBox,0, 99991)
+        this.addChild(houseIcon, 0 , 99992)
         this.addChild(healthA, 0, 'healthA2')
         this.addChild(healthB, 0, 'healthB2')
 
@@ -668,8 +717,8 @@ var GameUI = cc.Layer.extend({
         lbNumWave.enableShadow()
         lbNumWave.setTextColor(blueColor)
 
-        this.addChild(waveBox)
-        this.addChild(lbWave)
+        this.addChild(waveBox, 0 , 99971)
+        this.addChild(lbWave, 0 , 99972)
         this.addChild(lbNumWave, 0, 'lbNumWave')
 
     },
@@ -711,19 +760,21 @@ var GameUI = cc.Layer.extend({
 
     addInforBoxUI: function () {
         var OpponentInfor = ccs.load(res.scene, "").node;
+        OpponentInfor.setAnchorPoint(0.5,0.5)
+        OpponentInfor.setPosition(winSize.width/2, winSize.height/2)
         OpponentInfor.getChildByName('name').setString(shareOpponentInfo.name)
-        this.addChild(OpponentInfor);
+        this.addChild(OpponentInfor, 0, 99999);
 
     },
 
     addDeckUI:function (){
-        this.addObjectBackground(res.deck,0,2.65/15,0,-6.15/15)
+        let deck = this.addObjectBackground(res.deck,0,2.65/15,0,-6.15/15)
         this.addListCardUI()
         this.addEnergyBarUI()
         var btnChat = ccui.Button('res/battle/battle_btn_chat.png');
         btnChat.setScale(CELLWIDTH/btnChat.getNormalTextureSize().width*0.85)
         btnChat.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*0.53, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*2.5)
-        this.addChild(btnChat,0);
+        this.addChild(btnChat,0, 99993);
 
         var lbWave = new ccui.Text('Tiếp theo:', res.font_magic, 30)
         lbWave.setScale(CELLWIDTH/lbWave.getContentSize().height*0.21)
@@ -733,7 +784,7 @@ var GameUI = cc.Layer.extend({
         lbWave.setTextColor(whiteColor)
         lbWave.enableShadow()
         lbWave.enableOutline(blackColor,1)
-        this.addChild(lbWave,0);
+        this.addChild(lbWave,0, 99994);
 
     },
 
@@ -873,7 +924,8 @@ var GameUI = cc.Layer.extend({
             var cardBox = new cc.Sprite('res/battle/battle_card_box.png')
             cardBox.setScale(CELLWIDTH / cardBox.getContentSize().width * 1.43)
             cardBox.setPosition(winSize.width/2-WIDTHSIZE/2+CELLWIDTH*2.1+(i-1)*CELLWIDTH*1.7, winSize.height /2-HEIGHTSIZE/2+CELLWIDTH*1.55)
-            this.addChild(cardBox)
+            let tmp = 99980+i
+            this.addChild(cardBox,0,tmp)
             var arr = this.cardPlayable
             var card = new MCard(arr[i-1])
             card.setScale(CELLWIDTH / card.getContentSize().width * 1.15)
@@ -1084,6 +1136,7 @@ var GameUI = cc.Layer.extend({
         //     // this._gameStateManager.playerA._map.deploySpell(target.type, posLogic)
         //     // var a = new SpellFallUI(target.type, posUI)
         //     // this.addChild(a);
+        // let spell;
         //     testnetwork.connector.sendActions([[new ActivateSpellAction(target.type, posLogic.x, posLogic.y,
         //         gv.gameClient._userId),0]]);
         //     this.updateCardSlot(target.numSlot, target.energy);
@@ -1091,7 +1144,6 @@ var GameUI = cc.Layer.extend({
     },
 
     addSpellUIBeforeExplose: function (cardType, posUI, rule) {
-        let spell;
         switch (cardType) {
             case 0:
                 spell = new SpellFallUI( posUI, 2 , 'effect_atk_fire', 'animation_fireball', GameStateManagerInstance.getSpellConfig(0, rule));
@@ -1110,6 +1162,8 @@ var GameUI = cc.Layer.extend({
                 break;
         }
         this.addChild(spell);
+        let tmpPosUI = new Vec2(posUI.x, posUI.y + CELLWIDTH/3);
+        this.addNameCardWhenUsing(cardType, tmpPosUI, rule)
     },
 
     generatePreviewMonster: function (target) {
@@ -1163,6 +1217,29 @@ var GameUI = cc.Layer.extend({
         let pos = this._gameStateManager.playerA.convertCordinateToPos(corX, corY);
         towerUI.setPosition(pos);
         return towerUI;
+    },
+
+    addNameCardWhenUsing: function (typeCard, posUI, rule) {
+        let cardInfor;
+        let nameCard = ccs.load(res.nameCard, "").node;
+        nameCard.setPosition(posUI.x, posUI.y+CELLWIDTH);
+        if(rule === 1) {
+            cardInfor = sharePlayerInfo.collection.find(element => element.type === typeCard);
+        }else{
+            cardInfor = shareOpponentInfo.collection.find(element => element.type === typeCard);
+        }
+        nameCard.getChildByName('name').setString(cardInfor.name);
+        let rarity = cardInfor.rarity;
+        let level = cardInfor.level;
+        nameCard.getChildByName('level').setString("Lv."+level);
+        nameCard.getChildByName('level').setColor(cf.COLOR_RARITIES[rarity]);
+        let seq = cc.sequence(cc.delayTime(2), cc.fadeOut(0.5))
+        let seq2 = cc.sequence(cc.delayTime(3), cc.callFunc(()=>{
+            nameCard.removeFromParent(true);
+        }))
+        nameCard.runAction(seq)
+        nameCard.runAction(seq2)
+        this.addChild(nameCard, GAME_CONFIG.RENDER_START_Z_ORDER_VALUE+winSize.height*2);
     },
 
 
@@ -1386,7 +1463,7 @@ var GameUI = cc.Layer.extend({
         blockLayer.setPosition(winSize.width / 2, winSize.height / 2)
         this.addChild(blockLayer, 4000)
         blockLayer.setOpacity(0)
-        let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.15))
+        let seq = cc.sequence(cc.delayTime(3.5), cc.fadeIn(0.15))
         blockLayer.runAction(seq)
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -1400,9 +1477,76 @@ var GameUI = cc.Layer.extend({
 
     },
     showResultBattleUI: function (resultString, numTrophy) {
+
         var end = new EndBattleUI(resultString,numTrophy)
-        this.addChild(end, 4000)
+        this.addChild(end, 9000)
+        this.addTextEndBattle();
+        this.animationEnd()
+
     },
+
+    addTextEndBattle: function (resultString, numTrophy) {
+
+        let dovan = ccs.load(res.dovan, "").node;
+        dovan.setPosition(winSize.width/2, winSize.height/15*8.5);
+        dovan.opacity = 0;
+        let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.6))
+        dovan.runAction(seq)
+        this.addChild(dovan, 3900, 99970)
+    },
+
+    animationEnd: function () {
+        let seq = cc.sequence(cc.delayTime(1.5),cc.scaleBy(0.6, 0.9));
+        this.runAction(seq);
+        this.animationEndForEachObject(this.getChildByTag(99970));
+        this.animationEndForEachObject(this.getChildByTag(99999));
+        this.animationEndForEachObject(this.getChildByTag(99991));
+        this.animationEndForEachObject(this.getChildByTag(99992));
+        this.animationEndForEachObject(this.getChildByTag(99993));
+        this.animationEndForEachObject(this.getChildByTag(99994));
+        this.animationEndForEachObject(this.getChildByName('healthA2'));
+        this.animationEndForEachObject(this.getChildByName('healthB2'));
+        this.animationEndForEachObject(this.getChildByName(res.deck));
+        for (let i = 1; i <= GAME_CONFIG.NUM_CARD_PLAYABLE; i++) {
+            let tmp = 99980 +i;
+            this.animationEndForEachObject(this.getChildByTag(tmp));
+            this.animationEndForEachObject(this.getChildByName('cardPlayable'+i));
+            this.animationEndForEachObject(this.getChildByName('btnRemoveCard'+i));
+            this.animationEndForEachObject(this.getChildByName('cancelCard'+i));
+        }
+        this.animationEndForEachObject(this.getChildByName('cardNext'));
+        this.animationEndForEachObject(this.getChildByName('energyBar'));
+        this.animationEndForEachObject(this.getChildByName('iconEnergyBar'));
+        this.animationEndForEachObject(this.getChildByTag(99971));
+        this.animationEndForEachObject(this.getChildByTag(99972));
+        this.animationEndForEachObject(this.getChildByName('lbNumWave'));
+        this.stopAnimationAllMonster()
+
+    },
+
+    stopAnimationAllMonster: function () {
+        let monstersA = this._gameStateManager.playerA.getMap().getMonsters();
+        monstersA.forEach(monster => {
+            monster.play(-1);
+        });
+        let monstersB = this._gameStateManager.playerB.getMap().getMonsters();
+        monstersB.forEach(monster => {
+            monster.play(-1);
+        });
+
+    },
+
+    animationEndForEachObject: function (obj) {
+        let seq1 = cc.sequence(cc.delayTime(1.5),cc.scaleBy(0.6, 1/0.9))
+
+        let tmp = new Vec2(obj.x - winSize.width/2, obj.y - winSize.height/2)
+        let tmp2 = tmp.mul(1/0.9)
+        let tmp3 = new Vec2(winSize.width/2 +tmp2.x, winSize.height/2 +tmp2.y)
+        let seq2 = cc.sequence(cc.delayTime(1.5),cc.MoveTo(0.6, tmp3))
+        obj.runAction(seq1)
+        obj.runAction(seq2)
+    },
+
 
     backToLobby:function () {
         fr.view(LobbyScene)

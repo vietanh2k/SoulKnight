@@ -115,6 +115,18 @@ const Mat3 = function (arr) {
         return this;
     }
 
+    this.setScale = function (x, y) {
+        this.set(
+            x, 0, 0,
+            0, y, 0,
+            0, 0, 1
+
+        );
+
+        return this;
+    }
+
+
     this.getColumn = function (i) {
         const e = this.m;
         const c = i * 3

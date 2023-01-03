@@ -12,7 +12,7 @@ let EndBattleUI = cc.Layer.extend({
     init:function (resultString, numTrophy) {
         winSize = cc.director.getWinSize();
         let delayT = numTrophy*0.05+0.5;
-        let seq1 = cc.sequence(cc.delayTime(0.7), cc.callFunc(()=>this.addAtlasEndBattle(resultString)),
+        let seq1 = cc.sequence(cc.delayTime(4.5), cc.callFunc(()=>this.addAtlasEndBattle(resultString)),
             cc.delayTime(1.7), cc.callFunc(()=>this.addInforEndBattle(resultString)),
             cc.delayTime(1.7), cc.callFunc(()=>this.addTrophyEndBattle(numTrophy)),
             cc.delayTime(delayT), cc.callFunc(()=>this.addBtnBackEndBattle(resultString)))

@@ -538,14 +538,7 @@ const Monster = AnimatedSprite.extend({
             "res/battle/fx/enemy_circle.atlas")
         this.circle.setScale(0.5)
         if(this.renderRule === 1) {
-            // var resultAnimation = new sp.SkeletonAnimation("res/battle/fx/enemy_circle.json",
-            //     "res/battle/fx/enemy_circle.atlas")
-
             this.circle.setAnimation(0, "enemy_circle", true)
-            // resultAnimation.setScaleX(winSize.width/WIDTHSIZE)
-            // resultAnimation.setScaleY(1.2)
-            // this.mapCanCastSpell1.setScaleY(winSize.height /HEIGHTSIZE/5.5*15)
-            // LobbyInstant.addChild(resultAnimation,99999,99999)
         }else{
             this.circle.setAnimation(0, "monster_circle", true)
         }
@@ -666,7 +659,7 @@ const Monster = AnimatedSprite.extend({
             //cc.log('=================================================================')
             anotherMonster.position.set(p.x, p.y)
         } else {
-            if (anotherMonsterCell) {
+            //if (anotherMonsterCell) {
                 const position = anotherMonster.position
                 const tempX = p.x
                 p.x = position.x
@@ -683,7 +676,7 @@ const Monster = AnimatedSprite.extend({
                     }
                 }
             }
-        }
+        //}
     },
 
     onImpact: function (playerState, anotherMonster) {
