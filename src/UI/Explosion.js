@@ -22,7 +22,7 @@ var Explosion = cc.Sprite.extend({
             }
             framelist.push(frame);
         }
-        var animation = new cc.Animation(framelist, 0.03);
+        var animation = new cc.Animation(framelist, 0.04);
         var animate = cc.animate(animation);
         this.runAction(animate);
     },

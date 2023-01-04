@@ -562,17 +562,17 @@ var GameUI = cc.Layer.extend({
         this.addObjectBackground('#map/map_decoration_0001.png', 0, 2.3 / 15, -8.15 / 15, 1.25 / 15)
         var backgroundBattle2 = ccs.load(res.backgroundBattle2, "").node;
         this.addChild(backgroundBattle2);
-        let resultAnimation = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
-            "res/map/fx/as_duoi.atlas")
+        let resultAnimation = new sp.SkeletonAnimation("res/map/fx/as_tren.json",
+            "res/map/fx/as_tren.atlas")
         resultAnimation.setScale(CELLWIDTH/50)
         resultAnimation.setPosition(winSize.width / 2 + WIDTHSIZE * 6.2 / 8, winSize.height / 2 + HEIGHTSIZE * -4.4 / 15)
-        resultAnimation.setAnimation(0, "slots", true)
+        resultAnimation.setAnimation(0, "animation", true)
         this.addChild(resultAnimation)
         let resultAnimation2 = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
             "res/map/fx/as_duoi.atlas")
         resultAnimation2.setScale(CELLWIDTH/50)
         resultAnimation2.setPosition(winSize.width / 2 + WIDTHSIZE * -1.55 / 8, winSize.height / 2 + HEIGHTSIZE * 5.6/ 15)
-        resultAnimation2.setAnimation(0, "slots", true)
+        resultAnimation2.setAnimation(0, "animation", true)
         this.addChild(resultAnimation2)
         // this.addObjectBackground(res.grass1, 1 / 11, 0, -8 / 15, -1.5 / 15)
         // this.addObjectBackground(res.tree0, 1 / 4, 0, -8.5 / 15, -0.5 / 15)
