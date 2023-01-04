@@ -1,3 +1,26 @@
+const PathFinder = {
+    HORIZONTAL      : 2,
+    VERTICAL        : 4,
+    CHILD_OFFSET_X  : [0, 0, 1, -1],
+    CHILD_OFFSET_Y  : [1, -1, 0, 0],
+}
+
+var PathNode = /** @class */ (function () {
+    function PathNode(priority, location, parent, dir) {
+        if (dir === void 0) { dir = PathFinder.HORIZONTAL; }
+        this.priority = 0;
+        this.location = null;
+        this.parent = null;
+        // dir to parent
+        this.dir = PathFinder.HORIZONTAL;
+        this.priority = priority;
+        this.location = location;
+        this.parent = parent;
+        this.dir = dir;
+    }
+    return PathNode;
+}());
+
 var MapController = cc.Class.extend({
     mapArray: null,
     path: null,
@@ -45,6 +68,12 @@ var MapController = cc.Class.extend({
                 this.intArray[i][j + 1] = arr[i][j];
             }
         }
+
+        this.queue = new PriorityQueue(1024, function (v1, v2) {
+            if (v1.priority == v2.priority) return 0
+            if (v1.priority > v2.priority) return 1
+            return -1
+        });
     },
 
     init:function () {
@@ -150,32 +179,92 @@ var MapController = cc.Class.extend({
                 else arr[i][j] = 1
             }
         }
-        var offsetX = [1, 0,-1, 0]
-        var offsetY = [0, 1, 0,-1]
-        var queue = []
-        var des = new Vec2(MAP_CONFIG.MAP_WIDTH,MAP_CONFIG.MAP_HEIGHT)
-        listPath[des.x][des.y] = des
-        queue.push(des)
-
-        while (queue.length >0){
-            var node = queue.shift()
-            for(var i=0; i<4;i++){
-                var direc= new Vec2(offsetX[i], offsetY[i])
-                var adj = node.add(direc)
-                if (adj.x >= 0 && adj.y >= 0 && adj.x <= MAP_CONFIG.MAP_WIDTH && adj.y <= MAP_CONFIG.MAP_HEIGHT && arr[adj.x][adj.y] == 0 && listPath[adj.x][adj.y] == undefined) {
-                    listPath[adj.x][adj.y] = node
-                    queue.push(adj)
-                }
-            }
-        }
-
-        this.listPath = listPath
+        //var offsetX = [1, 0,-1, 0]
+        //var offsetY = [0, 1, 0,-1]
+        //var queue = []
+        //var des = new Vec2(MAP_CONFIG.MAP_WIDTH,MAP_CONFIG.MAP_HEIGHT)
+        // listPath[des.x][des.y] = des
+        // queue.push(des)
+        //
+        // while (queue.length >0){
+        //     var node = queue.shift()
+        //     for(var i=0; i<4;i++){
+        //         var direc= new Vec2(offsetX[i], offsetY[i])
+        //         var adj = node.add(direc)
+        //         if (adj.x >= 0 && adj.y >= 0 && adj.x <= MAP_CONFIG.MAP_WIDTH && adj.y <= MAP_CONFIG.MAP_HEIGHT && arr[adj.x][adj.y] == 0 && listPath[adj.x][adj.y] == undefined) {
+        //             listPath[adj.x][adj.y] = node
+        //             queue.push(adj)
+        //         }
+        //     }
+        // }
+        //
+        // this.listPath = listPath
         // for(var i=0;i<=MAP_CONFIG.MAP_WIDTH;i++){
         //     for(j=0; j<= MAP_CONFIG.MAP_HEIGHT; j++){
         //         if(listPath[i][j] != undefined)
         //         cc.log(i+'_'+j+'=='+listPath[i][j].x+'_'+listPath[i][j].y)
         //     }
         // }
+
+        //this.reset();
+
+        const dir = PathFinder.HORIZONTAL
+        const map = arr
+        const parents = listPath
+        const end = new Vec2(MAP_CONFIG.MAP_WIDTH,MAP_CONFIG.MAP_HEIGHT)
+        const queue = this.queue
+        queue.add(new PathNode(0, end, end, dir));
+
+        while (!queue.empty()) {
+            var node = queue.poll();
+            var cur = node.location;
+            if (parents[cur.x][cur.y] != null) {
+                continue;
+            }
+            parents[cur.x][cur.y] = node.parent;
+            for (var i = 0; i < PathFinder.CHILD_OFFSET_X.length; i++) {
+                var childX = cur.x + PathFinder.CHILD_OFFSET_X[i];
+                var childY = cur.y + PathFinder.CHILD_OFFSET_Y[i];
+                if (childX >= 0 && childX <= MAP_CONFIG.MAP_WIDTH && childY >= 0 && childY <= MAP_CONFIG.MAP_HEIGHT) {
+                    if (parents[childX][childY] == null && map[childX][childY] == 0) {
+                        var externalPriority = 1;
+                        if (node.dir == PathFinder.VERTICAL && i < 2) {
+                            externalPriority = 1;
+                        }
+                        else if (node.dir == PathFinder.HORIZONTAL && i >= 2) {
+                            externalPriority = 1;
+                        }
+                        else {
+                            externalPriority = 2;
+                        }
+                        var dir_1 = PathFinder.HORIZONTAL;
+                        if (i < 2) {
+                            dir_1 = PathFinder.VERTICAL;
+                        }
+                        else {
+                            dir_1 = PathFinder.HORIZONTAL;
+                        }
+                        queue.add(new PathNode(node.priority + externalPriority, new Vec2(childX, childY), cur, dir_1));
+                    }
+                }
+            }
+        }
+
+        this.listPath = listPath
+
+        // let str = '\n'
+        // for (let y = 0; y <= MAP_CONFIG.MAP_HEIGHT; y++) {
+        //     for (let x = 0; x <= MAP_CONFIG.MAP_WIDTH; x++) {
+        //         const parent = parents[x][y]
+        //         if (parent) {
+        //             str += parent.x + " - " + parent.y + "\t"
+        //         } else {
+        //             str += "null  \t"
+        //         }
+        //     }
+        //     str += '\n'
+        // }
+        // cc.log(str)
     },
 
     getParents: function () {

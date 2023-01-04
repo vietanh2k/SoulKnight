@@ -2,16 +2,14 @@ const darkGiantFakeFindTargets = function (playerState) {
     const darkGiant = []
     this.target = [];
     const self = this;
-    const map = playerState.getMap()
 
-    const enemies = map.queryEnemiesCircle(this.position, this.getRange() * MAP_CONFIG.CELL_WIDTH)
+    this.___originalFindTarget(playerState)
+    const enemies = this.target
     enemies.forEach((monster, id, list) => {
         if (monster.constructor === DarkGiant) {
             darkGiant.push(monster)
             //cc.log("=================================DARK_GIANT===================================================")
         }
-
-        self.target.push(monster)
         //cc.log("=================================MONSTERS===================================================")
     })
 
@@ -27,7 +25,6 @@ const DarkGiant = Monster.extend({
         this.initFromConfig(playerState, config)
 
         this.towers = []
-        this.towersFindTargets = []
     },
 
     initAnimation: function (playerState) {
@@ -54,18 +51,22 @@ const DarkGiant = Monster.extend({
         const self = this
 
         this.towers.forEach((tower, i, list) => {
-            tower.findTargets = self.towersFindTargets[i]
+            if (tower.findTargets === darkGiantFakeFindTargets) {
+                tower.findTargets = tower.___originalFindTarget
+            }
+
             tower.release()
         })
         this.towers.length = 0
-        this.towersFindTargets.length = 0
 
         const allTowers = playerState.getMap().towers
         allTowers.forEach((tower, i, list) => {
             tower.retain()
             self.towers.push(tower)
-            self.towersFindTargets.push(tower.findTargets)
-            tower.findTargets = darkGiantFakeFindTargets
+            if (tower.findTargets !== darkGiantFakeFindTargets) {
+                tower.___originalFindTarget = tower.findTargets
+                tower.findTargets = darkGiantFakeFindTargets
+            }
         })
 
         this._super(playerState, dt)
@@ -75,11 +76,12 @@ const DarkGiant = Monster.extend({
         const self = this
 
         this.towers.forEach((tower, i, list) => {
-            tower.findTargets = self.towersFindTargets[i]
+            if (tower.findTargets === darkGiantFakeFindTargets) {
+                tower.findTargets = tower.___originalFindTarget
+            }
             tower.release()
         })
         this.towers.length = 0
-        this.towersFindTargets.length = 0
 
         this._super()
     },
