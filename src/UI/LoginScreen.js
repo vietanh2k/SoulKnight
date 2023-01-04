@@ -16,6 +16,7 @@ var SignInScreen = cc.Layer.extend({
         this.login_button.addChild(lbLogIn);
 
         this.textField = mainscene.getChildByName("IdField");
+        this.textField.setString(cc.sys.localStorage.getItem('userID'));
         this.notification = mainscene.getChildByName("Notification");
         // this.notification.visible = false;
         this.notification.setOpacity(0);
@@ -30,6 +31,7 @@ var SignInScreen = cc.Layer.extend({
      */
     onSelectLogin: function (sender) {
         cc.log("current test is :" + this.textField.getString())
+        cc.sys.localStorage.setItem('userID', this.textField.getString());
         cc.log("sendLoginRequest");
 
         gv.gameClient._userId = parseInt(this.textField.getString());

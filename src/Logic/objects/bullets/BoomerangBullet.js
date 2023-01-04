@@ -55,8 +55,10 @@ let TBoomerangBullet = Bullet.extend({
             }
             if (euclid_distance(this.position, pos) <= this.speed * dt) {
                 if (this.boomerangPhase === 0) {
+                    // cc.log("change phase at frame " + GameStateManagerInstance.frameCount);
                     this.boomerangPhase = 1;
                 } else if (this.boomerangPhase === 1) {
+                    // cc.log("destroy at frame " + GameStateManagerInstance.frameCount);
                     this.vanish();
                 }
                 return;

@@ -16,6 +16,7 @@ let TWizardBullet = Bullet.extend({
     },
 
     explose: function (playerState, pos) {
+        // cc.log("Target: " + pos + ", explode at: " + this.position + ", frame: " + GameStateManagerInstance.frameCount);
         const map = playerState.getMap();
         let objectList = map.queryEnemiesCircle(pos, this.radius * MAP_CONFIG.CELL_WIDTH);
 
@@ -71,6 +72,7 @@ let TOilGunBullet = Bullet.extend({
     },
 
     explose: function (playerState, pos) {
+        // cc.log("Target: " + pos + ", explode at: " + this.position + ", frame: " + GameStateManagerInstance.frameCount);
         const map = playerState.getMap();
         let objectList = map.queryEnemiesCircle(pos, this.radius * MAP_CONFIG.CELL_WIDTH);
         for (let object of objectList) {
