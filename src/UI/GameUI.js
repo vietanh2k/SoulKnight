@@ -11,6 +11,7 @@ var GameUI = cc.Layer.extend({
     ctor: function (pkg) {
         cc.spriteFrameCache.addSpriteFrames(res.explosion2_plist, res.explosion2_png);
         cc.spriteFrameCache.addSpriteFrames(res.mapSheet_plist, res.mapSheet_png);
+        cc.spriteFrameCache.addSpriteFrames(res.mapSheet_plist, res.mapSheet_png);
         this.delayTouch = false
         this.cardTouchSlot = -1
         this.listCard = []
@@ -1440,17 +1441,31 @@ var GameUI = cc.Layer.extend({
     },
 
     checkEndBattle: function () {
-        if (this._gameStateManager.winner == 1) {
+        if (this._gameStateManager.winner === 1) {
+            if(this._gameStateManager.isKnockDown) {
+                this.addTextWin("THẮNG ĐO VÁN");
+            }else{
+                this.addTextWin("CHIẾN THẮNG");
+            }
             this.blockEndBattleLayer()
             this.showResultBattleUI('win', 10)
+
         }
-        if (this._gameStateManager.winner == 2) {
+        if (this._gameStateManager.winner === 2) {
+            if(this._gameStateManager.isKnockDown) {
+                this.addTextLose("THUA ĐO VÁN");
+            }else{
+                this.addTextLose("THẤT BẠI");
+            }
             this.blockEndBattleLayer()
             this.showResultBattleUI('lose', 10)
+
         }
-        if (this._gameStateManager.winner == 0) {
+        if (this._gameStateManager.winner === 0) {
+            this.addTextWin("HÒA");
             this.blockEndBattleLayer()
             this.showResultBattleUI('draw', 0)
+
         }
 
     },
@@ -1463,7 +1478,7 @@ var GameUI = cc.Layer.extend({
         blockLayer.setPosition(winSize.width / 2, winSize.height / 2)
         this.addChild(blockLayer, 4000)
         blockLayer.setOpacity(0)
-        let seq = cc.sequence(cc.delayTime(3.5), cc.fadeIn(0.15))
+        let seq = cc.sequence(cc.delayTime(3.5), cc.fadeIn(0.25))
         blockLayer.runAction(seq)
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
@@ -1480,25 +1495,47 @@ var GameUI = cc.Layer.extend({
 
         var end = new EndBattleUI(resultString,numTrophy)
         this.addChild(end, 9000)
-        this.addTextEndBattle();
         this.animationEnd()
 
     },
 
-    addTextEndBattle: function (resultString, numTrophy) {
+    /*
+    text đo ván
+     */
+    addTextLose: function (text) {
 
         let dovan = ccs.load(res.dovan, "").node;
+        dovan.getChildByName('text').setString(text);
+        dovan.getChildByName('textBackground').setString(text);
         dovan.setPosition(winSize.width/2, winSize.height/15*8.5);
         dovan.opacity = 0;
         let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.6))
         dovan.runAction(seq)
         this.addChild(dovan, 3900, 99970)
+        this.animationEndForEachObject(dovan);
     },
 
+    addTextWin: function (text) {
+
+        let dovan = ccs.load(res.textWin, "").node;
+        dovan.getChildByName('text').setString(text);
+        dovan.getChildByName('textBackground').setString(text);
+        dovan.setPosition(winSize.width/2, winSize.height/15*8.5);
+        dovan.opacity = 0;
+        let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.6))
+        dovan.runAction(seq)
+        this.addChild(dovan, 3900, 99971)
+        this.animationEndForEachObject(dovan);
+    },
+
+    /*
+    thu nhỏ game ui
+     */
     animationEnd: function () {
-        let seq = cc.sequence(cc.delayTime(1.5),cc.scaleBy(0.6, 0.9));
+        let seq = cc.sequence(cc.delayTime(2.5),cc.scaleBy(0.5, 0.9));
         this.runAction(seq);
-        this.animationEndForEachObject(this.getChildByTag(99970));
+
+
         this.animationEndForEachObject(this.getChildByTag(99999));
         this.animationEndForEachObject(this.getChildByTag(99991));
         this.animationEndForEachObject(this.getChildByTag(99992));
@@ -1537,12 +1574,12 @@ var GameUI = cc.Layer.extend({
     },
 
     animationEndForEachObject: function (obj) {
-        let seq1 = cc.sequence(cc.delayTime(1.5),cc.scaleBy(0.6, 1/0.9))
+        let seq1 = cc.sequence(cc.delayTime(2.5),cc.scaleBy(0.5, 1/0.9))
 
         let tmp = new Vec2(obj.x - winSize.width/2, obj.y - winSize.height/2)
         let tmp2 = tmp.mul(1/0.9)
         let tmp3 = new Vec2(winSize.width/2 +tmp2.x, winSize.height/2 +tmp2.y)
-        let seq2 = cc.sequence(cc.delayTime(1.5),cc.MoveTo(0.6, tmp3))
+        let seq2 = cc.sequence(cc.delayTime(2.5),cc.MoveTo(0.5, tmp3))
         obj.runAction(seq1)
         obj.runAction(seq2)
     },

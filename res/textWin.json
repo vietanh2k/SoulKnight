@@ -1,7 +1,7 @@
 {
-  "ID": "8c6f2d53-c654-4c09-ae52-efe20954b230",
+  "ID": "7ea4ac14-fad3-41d1-95e3-5a5d8a86cac4",
   "Version": "3.10.0.0",
-  "Name": "dovan",
+  "Name": "textWin",
   "Content": {
     "Content": {
       "Animation": {
@@ -12,12 +12,12 @@
       },
       "AnimationList": [],
       "ObjectData": {
-        "Tag": 264,
+        "Tag": 216,
         "Children": [
           {
             "FileData": {
               "Type": "Normal",
-              "Path": "lobby/lobby_card_panel_miniature_glow_common.png",
+              "Path": "lobby/lobby_card_panel_miniature_glow_epic.png",
               "Plist": ""
             },
             "Scale9OriginX": 130,
@@ -33,8 +33,8 @@
               "Y": 0.0
             },
             "Scale": {
-              "ScaleX": 0.86,
-              "ScaleY": 0.51
+              "ScaleX": 1.05,
+              "ScaleY": 0.6227
             },
             "CColor": {},
             "IconVisible": false,
@@ -46,41 +46,41 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -197.0,
-            "RightMargin": -197.0,
-            "TopMargin": -197.0,
-            "BottomMargin": -197.0,
-            "Tag": 268,
-            "ActionTag": 868023872,
+            "LeftMargin": -243.5,
+            "RightMargin": -243.5,
+            "TopMargin": -188.5,
+            "BottomMargin": -188.5,
+            "Tag": 220,
+            "ActionTag": 1201455067,
             "Size": {
-              "X": 394.0,
-              "Y": 394.0
+              "X": 487.0,
+              "Y": 377.0
             },
-            "Alpha": 76,
+            "Alpha": 81,
             "Name": "Image_2",
             "ctype": "ImageViewObjectData"
           },
           {
             "FileData": {
               "Type": "Normal",
-              "Path": "lobby/lobby_home_arena_glow.png",
+              "Path": "lobby/lobby_card_panel_miniature_glow_epic.png",
               "Plist": ""
             },
             "Scale9OriginX": 181,
             "Scale9OriginY": 181,
-            "Scale9Width": 187,
-            "Scale9Height": 187,
+            "Scale9Width": 32,
+            "Scale9Height": 32,
             "AnchorPoint": {
               "ScaleX": 0.5,
               "ScaleY": 0.5
             },
             "Position": {
-              "X": -3.2474,
-              "Y": -34.6688
+              "X": -13.006,
+              "Y": -8.6447
             },
             "Scale": {
-              "ScaleX": 1.0,
-              "ScaleY": 0.82
+              "ScaleX": 1.54,
+              "ScaleY": 1.2628
             },
             "CColor": {},
             "IconVisible": false,
@@ -92,24 +92,24 @@
               "X": 0.0,
               "Y": 0.0
             },
-            "LeftMargin": -277.7474,
-            "RightMargin": -271.2526,
-            "TopMargin": -239.8312,
-            "BottomMargin": -309.1688,
-            "Tag": 269,
-            "ActionTag": -795370021,
+            "LeftMargin": -210.006,
+            "RightMargin": -183.994,
+            "TopMargin": -188.3553,
+            "BottomMargin": -205.6447,
+            "Tag": 219,
+            "ActionTag": -234674370,
             "Size": {
-              "X": 549.0,
-              "Y": 549.0
+              "X": 394.0,
+              "Y": 394.0
             },
-            "Alpha": 38,
+            "Alpha": 63,
             "Name": "Image_3",
             "ctype": "ImageViewObjectData"
           },
           {
             "IsCustomSize": true,
             "FontSize": 32,
-            "LabelText": "THUA ĐO VÁN",
+            "LabelText": "THẮNG ĐO VÁN",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Supercell Magic.ttf",
@@ -118,15 +118,15 @@
             "HorizontalAlignmentType": "HT_Center",
             "OutlineSize": 5,
             "OutlineColor": {
-              "R": 99,
-              "G": 187,
-              "B": 148
+              "R": 199,
+              "G": 98,
+              "B": 0
             },
             "OutlineEnabled": true,
             "ShadowColor": {
-              "R": 99,
-              "G": 187,
-              "B": 148
+              "R": 199,
+              "G": 98,
+              "B": 0
             },
             "ShadowOffsetX": 0.0,
             "ShadowOffsetY": -2.0,
@@ -161,8 +161,8 @@
             "RightMargin": -176.5842,
             "TopMargin": -25.9169,
             "BottomMargin": -28.0831,
-            "Tag": 270,
-            "ActionTag": -816878833,
+            "Tag": 218,
+            "ActionTag": -1999836710,
             "Size": {
               "X": 351.0,
               "Y": 54.0
@@ -173,7 +173,7 @@
           {
             "IsCustomSize": true,
             "FontSize": 32,
-            "LabelText": "THUA ĐO VÁN",
+            "LabelText": "THẮNG ĐO VÁN",
             "FontResource": {
               "Type": "Normal",
               "Path": "font/SVN-Supercell Magic.ttf",
@@ -208,9 +208,9 @@
               "ScaleY": 1.0
             },
             "CColor": {
-              "R": 179,
-              "G": 207,
-              "B": 214
+              "R": 248,
+              "G": 209,
+              "B": 0
             },
             "IconVisible": false,
             "PrePosition": {
@@ -225,8 +225,8 @@
             "RightMargin": -175.5,
             "TopMargin": -24.0,
             "BottomMargin": -24.0,
-            "Tag": 266,
-            "ActionTag": -1477089083,
+            "Tag": 217,
+            "ActionTag": -24111882,
             "Size": {
               "X": 351.0,
               "Y": 48.0
@@ -244,8 +244,7 @@
       },
       "UsedResources": [
         "font/SVN-Supercell Magic.ttf",
-        "lobby/lobby_card_panel_miniature_glow_common.png",
-        "lobby/lobby_home_arena_glow.png"
+        "lobby/lobby_card_panel_miniature_glow_epic.png"
       ],
       "ctype": "GameFileData"
     }

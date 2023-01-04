@@ -190,6 +190,12 @@ cf.COLOR_RARITIES = [
     cc.color(237, 103, 253),
 ];
 
+cf.COLOR_END_BATTLE = [
+    cc.color(179, 207, 214),
+    cc.color(83, 178, 244),
+    cc.color(179, 207, 214),
+];
+
 cf.BULLET_TYPES_LOCALIZE = {
     'boomerang': 'Boomerang',
     'straight': 'Lan',

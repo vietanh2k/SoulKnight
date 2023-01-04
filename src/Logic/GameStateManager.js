@@ -51,7 +51,8 @@ var GameStateManager = cc.Class.extend({
         this._timer = new Timer(this)
         this.canTouchNewWave = false
         this.curWave = 0
-        this.winner = null
+        this.winner = -1;
+        this.isKnockDown = false;
         this.isLastWave = false
         this.dem = 0
         this.sumDt = 0;
@@ -163,11 +164,13 @@ var GameStateManager = cc.Class.extend({
 
         if(this.playerA.health <= 0){
             this.winner = 2;
+            this.isKnockDown = true;
             return true;
         }
 
         if(this.playerB.health <= 0){
             this.winner = 1;
+            this.isKnockDown = true;
             return true;
         }
 
