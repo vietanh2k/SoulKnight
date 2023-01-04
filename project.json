@@ -114,6 +114,7 @@
         "src/Logic/utils/Random.js",
         "src/Logic/utils/Mat3.js",
         "src/Logic/utils/Vec2.js",
+        "src/Logic/utils/PriorityQueue.js",
 
         "src/Logic/objects/effects/Effect.js",
         "src/Logic/objects/effects/FreezeEffect.js",
