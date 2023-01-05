@@ -4,7 +4,7 @@ lưu list action để chờ activate
  */
 let ActionListInstance = []
 let indAction = 0
-let FrameMaxForUpdate = 15
+let FrameMaxForUpdate = 0
 let PreDate = 0;
 /*
 frame mà client có thể delay với server
@@ -40,7 +40,7 @@ var GameStateManager = cc.Class.extend({
         this.spellConfigA = {}
         this.spellConfigB = {}
         this.init();
-
+        this.isStart = false;
         this.playerA = new PlayerState(1, this)
         this.playerB = new PlayerState(2, this)
         this.orderedPlayerA = null
@@ -227,6 +227,10 @@ var GameStateManager = cc.Class.extend({
 
     },
     frameUpdateNormal: function () {
+        if(this.frameCount === 60){
+            GameUI.instance.animationTextStart()
+        }
+
         if(indAction < ActionListInstance.length) {
             /*
             khi tới frame trigger action thì trigger
@@ -241,7 +245,9 @@ var GameStateManager = cc.Class.extend({
 
         this.orderedPlayerA.update(this.dt);
         this.orderedPlayerB.update(this.dt);
-        this._timer.updateRealTime(this.dt);
+        if(this.isStart) {
+            this._timer.updateRealTime(this.dt);
+        }
 
         this.frameCount++;
 
@@ -252,7 +258,7 @@ var GameStateManager = cc.Class.extend({
             this.playerB.countAllMonster();
         }
 
-        this.logState.logToFile(this, this.frameCount)
+        // this.logState.logToFile(this, this.frameCount)
         // if(indAction >0) {
         //     cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
         // }

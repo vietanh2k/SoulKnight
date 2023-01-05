@@ -43,6 +43,8 @@ var res = {
     nameCard: "nameCard.json",
     dovan: "dovan.json",
     textWin: "textWin.json",
+    textStart: "textStart.json",
+    textStart2: "textStart2.json",
     endBattle_plist: "endBattle.plist",
 
     font_magic: 'res/font/SVN-Supercell Magic.ttf',

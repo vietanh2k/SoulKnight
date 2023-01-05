@@ -16,6 +16,7 @@ var GameUI = cc.Layer.extend({
         this.cardTouchSlot = -1
         this.listCard = []
         this.resMonster = []
+
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
         this.numSlotCardTower = 1;
@@ -35,6 +36,7 @@ var GameUI = cc.Layer.extend({
         }
 
         GameUI.instance = this;
+        this.addTextStart()
         // let seq = cc.sequence(cc.delayTime(5),cc.scaleBy(0.6, 0.9))
         // let seq2 = cc.sequence(cc.delayTime(5),cc.scaleBy(0.6, 1/0.9))
         // this.runAction(seq);
@@ -77,8 +79,8 @@ var GameUI = cc.Layer.extend({
         this.initResMonster()
         this.initCellSlot(this._gameStateManager.playerA._map._mapController.intArray, GAME_CONFIG.RULE_A)
         this.initCellSlot(this._gameStateManager.playerB._map._mapController.intArray, GAME_CONFIG.RULE_B)
-        this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, GAME_CONFIG.RULE_A)
-        this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, GAME_CONFIG.RULE_B)
+        // this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, GAME_CONFIG.RULE_A)
+        // this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, GAME_CONFIG.RULE_B)
 
         this.addTouchListener()
 
@@ -562,36 +564,18 @@ var GameUI = cc.Layer.extend({
         this.addObjectBackground('#map/map_decoration_0001.png', 0, 2.3 / 15, -8.15 / 15, 1.25 / 15)
         var backgroundBattle2 = ccs.load(res.backgroundBattle2, "").node;
         this.addChild(backgroundBattle2);
-        let resultAnimation = new sp.SkeletonAnimation("res/map/fx/as_tren.json",
-            "res/map/fx/as_tren.atlas")
-        // resultAnimation.setScale(CELLWIDTH/50)
-        resultAnimation.setPosition(winSize.width / 2 + WIDTHSIZE * 6.2 / 8, winSize.height / 2 + HEIGHTSIZE * -4.4 / 15)
-        resultAnimation.setAnimation(0, "animation", true)
-        this.addChild(resultAnimation)
-        let resultAnimation2 = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
+
+        let anhsang1 = new sp.SkeletonAnimation("res/map/fx/as_duoi.json",
             "res/map/fx/as_duoi.atlas")
-        // resultAnimation2.setScale(CELLWIDTH/50)
-        resultAnimation2.setPosition(winSize.width / 2 + WIDTHSIZE * -4 / 8, winSize.height / 2 + HEIGHTSIZE * 5.6/ 15)
-        resultAnimation2.setAnimation(0, "animation", true)
-        this.addChild(resultAnimation2)
-        // this.addObjectBackground(res.grass1, 1 / 11, 0, -8 / 15, -1.5 / 15)
-        // this.addObjectBackground(res.tree0, 1 / 4, 0, -8.5 / 15, -0.5 / 15)
-        //
-        // this.addObjectBackground(res.rock3, 1 / 8, 0, -8.5 / 15, -2 / 15)
-        // this.addObjectBackground(res.tree1, 1 / 5, 0, -8.5 / 15, -2.6 / 15)
-        //
-        //
-        // this.addObjectBackground(res.grass1, 1 / 10, 0, 3.5 / 15, -5 / 15)
-        // this.addObjectBackground(res.grass1, 1 / 10, 0, -7.5 / 15, -4.5 / 15)
-        // this.addObjectBackground(res.tree2, 1 / 5, 0, -8 / 15, -5 / 15)
-        // this.addObjectBackground(res.grass1, 1 / 11, 0, 8 / 15, 0.1 / 15)
-        // this.addObjectBackground(res.tree1, 1 / 5, 0, 8.5 / 15, -0.5 / 15)
-        // this.addObjectBackground(res.grass0, 1 / 10, 0, 8 / 15, -2.8 / 15)
-        // this.addObjectBackground(res.rock3, 1 / 6, 0, 9 / 15, -3.3 / 15)
-        // this.addObjectBackground(res.tree2, 1 / 5, 0, 8.5 / 15, -1.5 / 15)
-        // this.addObjectBackground(res.rock4, 1 / 7, 0, -8.5 / 15, -4 / 15)
-        // this.addObjectBackground(res.tree2, 1 / 3.5, 0, 8.8 / 15, -4.5 / 15)
-        // this.addObjectBackground(res.tree1, 1 / 3.7, 0, -6 / 15, -5.6 / 15)
+        anhsang1.setPosition(winSize.width / 2, winSize.height / 2)
+        anhsang1.setAnimation(0, "animation", true)
+        this.addChild(anhsang1)
+        let anhsang2 = new sp.SkeletonAnimation("res/map/fx/as_tren.json",
+            "res/map/fx/as_tren.atlas")
+        anhsang2.setPosition(winSize.width / 2 +CELLWIDTH, winSize.height / 2 -CELLWIDTH)
+        anhsang2.setAnimation(0, "animation", true)
+        this.addChild(anhsang2)
+
 
 
         // this.healthA = new ccui.Text(this._gameStateManager.playerA.health, res.font_magic, 30)
@@ -1507,7 +1491,7 @@ var GameUI = cc.Layer.extend({
         let dovan = ccs.load(res.dovan, "").node;
         dovan.getChildByName('text').setString(text);
         dovan.getChildByName('textBackground').setString(text);
-        dovan.setPosition(winSize.width/2, winSize.height/15*8.5);
+        dovan.setPosition(winSize.width/2, winSize.height/2 + HEIGHTSIZE/15*1.5);
         dovan.opacity = 0;
         let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.6))
         dovan.runAction(seq)
@@ -1520,7 +1504,7 @@ var GameUI = cc.Layer.extend({
         let dovan = ccs.load(res.textWin, "").node;
         dovan.getChildByName('text').setString(text);
         dovan.getChildByName('textBackground').setString(text);
-        dovan.setPosition(winSize.width/2, winSize.height/15*8.5);
+        dovan.setPosition(winSize.width/2, winSize.height/2 + HEIGHTSIZE/15*1.5);
         dovan.opacity = 0;
         let seq = cc.sequence(cc.delayTime(0.5), cc.fadeIn(0.6))
         dovan.runAction(seq)
@@ -1584,6 +1568,56 @@ var GameUI = cc.Layer.extend({
         obj.runAction(seq2)
     },
 
+    addTextStart: function () {
+
+        let buttonLayer = ccui.Button(res.house_box);
+        buttonLayer.setPosition(winSize.width/2, winSize.height/2);
+        buttonLayer.setScale(2*winSize.height / CELLWIDTH)
+        buttonLayer.opacity = 200;
+        this.addChild(buttonLayer, 5000, 'buttonLayer')
+
+        let textStart = ccs.load(res.textStart, "").node;
+        textStart.setPosition(winSize.width/2, winSize.height/2 + CELLWIDTH);
+        this.addChild(textStart, 5000, 'textStart')
+    },
+
+    animationTextStart: function () {
+
+        let textStart = this.getChildByName('textStart');
+        if(textStart != null){
+
+            textStart.getChildByName('node').runAction(cc.MoveTo(1,new Vec2(-winSize.width,textStart.getChildByName('node').y)));
+            textStart.getChildByName('node').runAction(cc.fadeOut(0.5));
+            textStart.getChildByName('text2').runAction(cc.MoveTo(1,new Vec2(winSize.width,textStart.getChildByName('text2').y)));
+            textStart.getChildByName('text2').runAction(cc.fadeOut(0.5));
+            let seq = cc.sequence(cc.delayTime(1.5), cc.callFunc(()=> {
+                textStart.removeFromParent(true);
+            }))
+            textStart.runAction(seq);
+        }
+
+        let textStart2 = ccs.load(res.textStart2, "").node;
+        textStart2.setPosition(winSize.width/2, winSize.height/2 + CELLWIDTH);
+        textStart2.setScale(0.7);
+        textStart2.opacity = 0;
+        let seq2 = cc.sequence(cc.delayTime(0.4),cc.fadeIn(0),cc.ScaleBy(0.5, 1/0.7), cc.delayTime(0.5), cc.fadeOut(0.7))
+        let seq3 = cc.sequence(cc.delayTime(2.4), cc.callFunc(()=> {
+            textStart2.removeFromParent(true);
+        }))
+        textStart2.runAction(seq2);
+        textStart2.runAction(seq3);
+        this.addChild(textStart2, 5001, 'textStart2')
+
+
+        let seq4 = cc.sequence(cc.delayTime(3), cc.callFunc(()=>{
+            this.getChildByName('buttonLayer').removeFromParent(true);
+            this._gameStateManager.isStart = true;
+            this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, GAME_CONFIG.RULE_A)
+            this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, GAME_CONFIG.RULE_B)
+        }))
+        this.runAction(seq4);
+
+    },
 
     backToLobby:function () {
         fr.view(LobbyScene)
