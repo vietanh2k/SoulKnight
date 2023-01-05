@@ -156,7 +156,7 @@ var CardSlot = ccui.Button.extend({
         if (this.inDeck) {
             this.addClickEventListener(() => {
                 if (!this.parent.parent.isScrolling) {
-                    if (this.parent.parent.parent.allBtnIsActive) {
+                    if (this.parent.parent.parent.allBtnIsActive && !this.parent.parent.parent.isChangingTabAfterHorizontalScroll()) {
                         this.parent.parent.parent.addChild(new CardInfoUI(this.card), 4, cf.TAG_CARDINFOUI);
                         this.parent.parent.parent.allBtnIsActive = false;
                     } else if (this.parent.parent.isShowingAddCardToDeck) {
@@ -176,7 +176,7 @@ var CardSlot = ccui.Button.extend({
         } else {
             this.addClickEventListener(() => {
                 if (!this.parent.isScrolling) {
-                    if (this.parent.parent.allBtnIsActive) {
+                    if (this.parent.parent.allBtnIsActive && !this.parent.parent.isChangingTabAfterHorizontalScroll()) {
                         this.parent.parent.addChild(new CardInfoUI(this.card), 4, cf.TAG_CARDINFOUI);
                         this.parent.parent.allBtnIsActive = false;
                     } else {

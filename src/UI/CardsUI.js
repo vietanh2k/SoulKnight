@@ -1,6 +1,6 @@
 // this.parent: LobbyScene
 var CardsUI = cc.Layer.extend({
-    currentScroll: 0,
+    currentScrollY: 0,
     lowerbound: 0,
     upperbound: 0,
     scrollTouching: false,
@@ -354,7 +354,7 @@ var CardsUI = cc.Layer.extend({
     },
 
     setUpperboundBasedOnTheLowestItem: function (itemY) {
-        this.upperbound = this.currentScroll + cf.WIDTH / (123 / 110 * 4 + 164 / 122) + cf.WIDTH / (4 + 5 * 0.3) * (186 / 138) - itemY;
+        this.upperbound = this.currentScrollY + cf.WIDTH / (123 / 110 * 4 + 164 / 122) + cf.WIDTH / (4 + 5 * 0.3) * (186 / 138) - itemY;
         if (this.upperbound < 0) {
             this.upperbound = 0;
         }
@@ -362,8 +362,8 @@ var CardsUI = cc.Layer.extend({
     },
 
     scrollToTop: function () {
-        let distance = -this.currentScroll;
-        this.currentScroll += distance;
+        let distance = -this.currentScrollY;
+        this.currentScrollY += distance;
         this.getChildren().forEach(child => child.y += distance);
     },
 
@@ -392,7 +392,9 @@ var CardsUI = cc.Layer.extend({
                 }
 
                 let delta = touch.getDelta();
-                this.currentScroll += delta.y;
+                delta.x *= cf.SCROLL_SPEED_MULTIPLIER;
+                delta.y *= cf.SCROLL_SPEED_MULTIPLIER;
+                this.currentScrollY += delta.y;
                 this.getChildren().forEach(child => child.y += delta.y);
                 if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.DISTANCE_SCROLL_ACCEPT) {
                     this.isScrolling = true;
@@ -418,16 +420,16 @@ var CardsUI = cc.Layer.extend({
         cc.log("Final delta y: " + this.finalDeltaY);
         // todo chuyển động chậm dần đều?
         this.scrollTouching = false;
-        if (this.currentScroll < this.lowerbound) {
+        if (this.currentScrollY < this.lowerbound) {
             this.getChildren().forEach(child => {
-                child.runAction(new cc.MoveBy(0.5, cc.p(0, this.lowerbound - this.currentScroll)));
+                child.runAction(new cc.MoveBy(0.5, cc.p(0, this.lowerbound - this.currentScrollY)));
             });
-            this.currentScroll = this.lowerbound;
-        } else if (this.currentScroll > this.upperbound) {
+            this.currentScrollY = this.lowerbound;
+        } else if (this.currentScrollY > this.upperbound) {
             this.getChildren().forEach(child => {
-                child.runAction(new cc.MoveBy(0.5, cc.p(0, this.upperbound - this.currentScroll)));
+                child.runAction(new cc.MoveBy(0.5, cc.p(0, this.upperbound - this.currentScrollY)));
             });
-            this.currentScroll = this.upperbound;
+            this.currentScrollY = this.upperbound;
         }
         return true;
     },
