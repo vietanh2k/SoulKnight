@@ -2,6 +2,8 @@ let TWizardBullet = Bullet.extend({
     name: 'wizard',
     concept: "bullet",
     type: 'straight',
+    id: 2,
+
     ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard, bulletFx) {
         this._super(res.Wizard_Bullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
         this.bulletFx = bulletFx;
@@ -49,6 +51,7 @@ let TOilGunBullet = Bullet.extend({
     name: 'oil',
     concept: 'bullet',
     type: 'straight',
+    id: 4,
 
     ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard, bulletFx) {
         this._super(res.TOilGunBullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
