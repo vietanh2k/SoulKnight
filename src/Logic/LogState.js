@@ -1,7 +1,7 @@
 var LogState = cc.Class.extend({
 
     ctor: function () {
-        this.flag = false;
+        this.isERROR = false;
         this.dirState = "../logClient/logState/user" + gv.gameClient._userId + "/"
         this.dirSumState = "../logClient/logSumState/user" + gv.gameClient._userId + "/"
         jsb.fileUtils.createDirectory(this.dirState)
@@ -48,7 +48,7 @@ var LogState = cc.Class.extend({
 
 
         // Log tower
-        content += "\n\n\n===>>>>> TOWER:    [x - y - evolution]"
+        content += "\n\n\n===>>>>> TOWER:    [x - y]"
         var sumTower = 0
 
         content += "\nNumber of tower map A: " + game.playerA.getMap().towers.size()
@@ -74,7 +74,7 @@ var LogState = cc.Class.extend({
         });
 
         // Log bullet
-        content += "\n\n\n===>>>>> BULLET:    [x - y - damage - speed]"
+        content += "\n\n\n===>>>>> BULLET:    [x - y - damage - bulletID]"
         var sumBullet = 0
 
         content += "\nNumber of bullet map A: " + game.playerA.getMap().bullets.size()
@@ -106,24 +106,21 @@ var LogState = cc.Class.extend({
         // Get path
         var pathState = this.dirState + "/"+ countLoop +"-client-stateFrame.txt"
         var pathSumState = this.dirSumState + "/"+ countLoop +"-client-sumStateFrame.txt"
-        //
-        // this.dirSumStateServer = "../logServer/logSumState/user" + gv.gameClient._userId + "/"
-        // var pathSumStateServer = this.dirSumStateServer + "/"+ countLoop +"-server-sumStateFrame.txt"
-        //
-        // // Compare with server state
-        // var sumStateServer = jsb.fileUtils.getStringFromFile(pathSumStateServer)
-        // var sum = sumStateServer.split("\n");
-        // var svSumMonster = Number(sum[0])
-        // var svSumTree = Number(sum[1])
-        // var svSumTower = Number(sum[2])
-        // var svSumBullet = Number(sum[3])
-        // var svEnergy = Number(sum[4])
-        //
-        // this.logError(sumMonster, svSumMonster, countLoop, "Monster", this.deltaMonster)
-        // this.logError(sumTree, svSumTree, countLoop, "Tree", this.deltaTree)
-        // this.logError(sumTower, svSumTower, countLoop, "Tower", this.deltaTower)
-        // this.logError(sumBullet, svSumBullet, countLoop, "Bullet", this.deltaBullet)
-        // this.logError(energy, svEnergy, countLoop, "Energy", this.deltaEnergy)
+
+        this.dirSumStateServer = "../logServer/logSumState/user" + gv.gameClient._userId + "/"
+        var pathSumStateServer = this.dirSumStateServer + "/"+ countLoop +"-server-sumStateFrame.txt"
+
+        // Compare with server state
+        var sumStateServer = jsb.fileUtils.getStringFromFile(pathSumStateServer)
+        var sum = sumStateServer.split("\n");
+        var svSumMonster = Number(sum[0])
+        var svSumTower = Number(sum[1])
+        var svSumBullet = Number(sum[2])
+
+
+        this.logError(sumMonster, svSumMonster, countLoop, "Monster", 0.1)
+        this.logError(sumTower, svSumTower, countLoop, "Tower", 0.1)
+        this.logError(sumBullet, svSumBullet, countLoop, "Bullet", 0.1)
 
 
         var contentSum = sumMonster + "\n" +  sumTower + "\n" + sumBullet + "\n";
@@ -134,8 +131,17 @@ var LogState = cc.Class.extend({
     },
 
     logError: function (client, server, countLoop, txt, delta) {
-        if (Math.abs(client - server) > delta) {
-            cc.log("\n" + txt + " - USER " + gv.gameClient._userId + " - ERROR STATE AT FRAME: " + countLoop + ", " + Math.abs(client - server) + "\n")
+        if (Math.abs(client - server) > delta && !this.isERROR) {
+            cc.log("\n\n==================================="
+                +"\n==================================="
+                +"\n==================================="
+                +"\n===================================\n\n"
+                + txt + " - USER " + gv.gameClient._userId + " - ERROR STATE AT FRAME: " + countLoop + "\n"
+            + "\n\n==================================="
+            +"\n==================================="
+            +"\n==================================="
+            +"\n===================================\n\n")
+            this.isERROR = true;
 
             // switch (txt) {
             //     case "Monster": {
