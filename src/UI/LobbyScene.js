@@ -17,6 +17,7 @@ var LobbyScene = cc.Scene.extend({
 
     SCROLL_X_ACCEPT: 10,
     SCROLL_Y_ACCEPT: 10,
+    SCROLL_X_TO_CHANGE_TAB: 50,
 
     ctor: function () {
         this._super();
@@ -208,6 +209,7 @@ var LobbyScene = cc.Scene.extend({
                 this.scrollTouching = true;
                 this.startLoc = touch.getLocation();
                 this.acceptHorizontalScroll = false;
+                this.currentScroll = 0;
                 return true;
             },
             onTouchMoved: (touch) => {
@@ -215,8 +217,10 @@ var LobbyScene = cc.Scene.extend({
                     return false;
                 }
                 let delta = touch.getDelta();
-                this.currentScroll += delta.x;
+                delta.x *= cf.SCROLL_SPEED_MULTIPLIER;
+                delta.y *= cf.SCROLL_SPEED_MULTIPLIER;
                 this.tabUIs.forEach(tab => tab.x += delta.x);
+                this.currentScroll += delta.x;
 
                 let currLoc = touch.getLocation();
                 if (!this.acceptHorizontalScroll && Math.abs(currLoc.x - this.startLoc.x) > this.SCROLL_X_ACCEPT) {
@@ -226,7 +230,6 @@ var LobbyScene = cc.Scene.extend({
                         this.acceptHorizontalScroll = true;
                     }
                 }
-
                 return true;
             },
             onTouchEnded: () => {
@@ -241,17 +244,15 @@ var LobbyScene = cc.Scene.extend({
 
     endHorizontalScroll: function () {
         this.scrollTouching = false;
+        let destinationTab = this.activeTab;
+        if (this.currentScroll > this.SCROLL_X_TO_CHANGE_TAB) {
+            destinationTab = Math.max(destinationTab - 1, 0);
+        } else if (this.currentScroll < -this.SCROLL_X_TO_CHANGE_TAB) {
+            destinationTab = Math.min(destinationTab + 1, cf.LOBBY_MAX_TAB - 1);
+        }
         let sequence = cc.sequence(
             cc.callFunc(() => {
-                let record = cf.WIDTH * 10;
-                let tab = -1;
-                for (let i = 0; i < cf.LOBBY_MAX_TAB; i++) {
-                    if (Math.abs(this.getXOfTabUI(i)) < record) {
-                        record = Math.abs(this.getXOfTabUI(i));
-                        tab = i;
-                    }
-                }
-                this.animateHorizontalSlideToTab(tab);
+                this.animateHorizontalSlideToTab(destinationTab);
             }),
             cc.DelayTime(0.25)
         );

@@ -392,6 +392,8 @@ var CardsUI = cc.Layer.extend({
                 }
 
                 let delta = touch.getDelta();
+                delta.x *= cf.SCROLL_SPEED_MULTIPLIER;
+                delta.y *= cf.SCROLL_SPEED_MULTIPLIER;
                 this.currentScroll += delta.y;
                 this.getChildren().forEach(child => child.y += delta.y);
                 if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.DISTANCE_SCROLL_ACCEPT) {
