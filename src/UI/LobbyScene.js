@@ -201,7 +201,6 @@ var LobbyScene = cc.Scene.extend({
     addHorizontalScrollByTouchListener: function () {
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
-            swallowTouches: false,
             onTouchBegan: (touch) => {
                 if (!this.allBtnIsActive) {
                     return false;
@@ -242,17 +241,25 @@ var LobbyScene = cc.Scene.extend({
         }, this);
     },
 
-    endHorizontalScroll: function () {
-        this.scrollTouching = false;
+    getDestinationTabAfterHorizontalScroll: function () {
         let destinationTab = this.activeTab;
         if (this.currentScrollX > this.SCROLL_X_TO_CHANGE_TAB) {
             destinationTab = Math.max(destinationTab - 1, 0);
         } else if (this.currentScrollX < -this.SCROLL_X_TO_CHANGE_TAB) {
             destinationTab = Math.min(destinationTab + 1, cf.LOBBY_MAX_TAB - 1);
         }
+        return destinationTab;
+    },
+
+    isChangingTabAfterHorizontalScroll: function () {
+        return this.getDestinationTabAfterHorizontalScroll() !== this.activeTab;
+    },
+
+    endHorizontalScroll: function () {
+        this.scrollTouching = false;
         let sequence = cc.sequence(
             cc.callFunc(() => {
-                this.animateHorizontalSlideToTab(destinationTab);
+                this.animateHorizontalSlideToTab(this.getDestinationTabAfterHorizontalScroll());
             }),
             cc.DelayTime(0.25)
         );
