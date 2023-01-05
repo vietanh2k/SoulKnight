@@ -181,8 +181,9 @@ var HomeUI = cc.Layer.extend({
             y: -10,
             scale: this.arena.width * 0.9 / this.btnBattle.width,
         });
+        this.btnBattle.setSwallowTouches(false);
         this.btnBattle.addClickEventListener(() => {
-            if (this.parent.allBtnIsActive) {
+            if (this.parent.allBtnIsActive && !this.parent.isChangingTabAfterHorizontalScroll()) {
                 // // hiện tại đang dùng nút này để debug
                 // Utils.addToastToRunningScene('Opening chest counter: ' + this.openingChestCounter);
                 // cc.log("User data: " + JSON.stringify(sharePlayerInfo));
