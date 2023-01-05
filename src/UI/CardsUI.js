@@ -403,7 +403,6 @@ var CardsUI = cc.Layer.extend({
                 if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.SPEED_SCROLL_ACCEPT) {
                     this.isScrolling = true;
                 }
-                this.finalDeltaY = delta.y;
                 return true;
             },
             onTouchEnded: (touch) => {
@@ -424,7 +423,6 @@ var CardsUI = cc.Layer.extend({
     },
 
     endVerticalScroll: function () {
-        cc.log("Final delta y: " + this.finalDeltaY);
         // todo chuyển động chậm dần đều?
         this.scrollTouching = false;
         if (this.currentScrollY < this.lowerbound) {
