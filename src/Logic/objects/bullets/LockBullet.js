@@ -2,7 +2,7 @@ let TCannonBullet = Bullet.extend({
     name: 'cannon',
     concept: "bullet",
     type: 'chasing',
-    id: 1,
+    bulletID: 1,
 
     ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard) {
         this._super(res.TCannon_Bullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
@@ -42,7 +42,7 @@ let TIceGunBullet = Bullet.extend({
     name: 'cannon',
     concept: "bullet",
     type: 'chasing',
-    id: 5,
+    bulletID: 5,
 
     ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard) {
         this._super(res.TIceGun_Bullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);

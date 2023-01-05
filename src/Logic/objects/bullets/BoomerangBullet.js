@@ -2,7 +2,7 @@ let TBoomerangBullet = Bullet.extend({
     name: 'boomerang',
     concept: 'bullet',
     type: 'boomerang',
-    id: 3,
+    bulletID: 3,
 
     ctor: function (target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard, id) {
         this._super(res.TBoomerangBullet, target, speed, damage, radius, position, fromTower, targetType, level, correspondingCard);
