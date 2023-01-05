@@ -36,6 +36,7 @@ var GameStateManager = cc.Class.extend({
         FrameMaxForUpdate = 15;
         FrameDelayPosible = 15;
         PreDate = Date.now();
+        this.logState = new LogState();
         this.spellConfigA = {}
         this.spellConfigB = {}
         this.init();
@@ -250,6 +251,8 @@ var GameStateManager = cc.Class.extend({
             this.playerA.countAllMonster();
             this.playerB.countAllMonster();
         }
+
+        this.logState.logToFile(this, this.frameCount)
         // if(indAction >0) {
         //     cc.log(this.frameCount + '  ' + ActionListInstance[indAction - 1][0] + '  ' + indAction)
         // }

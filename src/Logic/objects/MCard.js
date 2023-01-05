@@ -35,7 +35,6 @@ var MCard = cc.Sprite.extend({
         var whiteColor = new cc.Color(255, 255, 255, 255);
         var blackColor = new cc.Color(0, 0, 0, 255);
         this.energy = cardInfor.energy
-        this.energy = Math.floor(cardInfor.energy/3)
         var lbNumEnergy = new ccui.Text(this.energy, res.font_magic, 40)
         lbNumEnergy.setPosition(energy.getContentSize().width * 0.5, energy.getContentSize().height / 2)
         lbNumEnergy.enableShadow()
@@ -78,7 +77,6 @@ var MCard = cc.Sprite.extend({
         let levelConfig = cf.CARD_LEVEL.find(element => element.level === cardInfor.level);
         this.concept = cardInfor.concept
         this.energy = cardInfor.energy
-        this.energy = Math.floor(cardInfor.energy/3)
         if (levelConfig === undefined) {
             cc.log('WARNING: levelConfig is undefined');
         } else {

@@ -30,6 +30,8 @@
         "src/config/FakeData.js",
         "src/config/GameConfig.js",
 
+        "src/Logic/LogState.js",
+
         "src/data/Resource.js",
         "src/data/ResourceAnimation.js",
         "src/framework/AnimationMgr.js",
