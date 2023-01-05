@@ -17,7 +17,7 @@ var CardsUI = cc.Layer.extend({
 
     isShowingAddCardToDeck: false,
     isScrolling: false,
-    DISTANCE_SCROLL_ACCEPT: 5,
+    SPEED_SCROLL_ACCEPT: 5,
 
     ctor: function () {
         this._super();
@@ -379,13 +379,17 @@ var CardsUI = cc.Layer.extend({
         cc.eventManager.addListener({
             event: cc.EventListener.TOUCH_ONE_BY_ONE,
             onTouchBegan: () => {
-                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
+                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) {
+                    return false;
+                }
                 this.isScrolling = false;
                 this.scrollTouching = true;
                 return true;
             },
             onTouchMoved: (touch) => {
-                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck) || !this.scrollTouching) return;
+                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck) || !this.scrollTouching) {
+                    return false;
+                }
 
                 if (this.parent.acceptHorizontalScroll) {
                     this.endVerticalScroll();
@@ -396,7 +400,7 @@ var CardsUI = cc.Layer.extend({
                 delta.y *= cf.SCROLL_SPEED_MULTIPLIER;
                 this.currentScrollY += delta.y;
                 this.getChildren().forEach(child => child.y += delta.y);
-                if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.DISTANCE_SCROLL_ACCEPT) {
+                if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.SPEED_SCROLL_ACCEPT) {
                     this.isScrolling = true;
                 }
                 this.finalDeltaY = delta.y;
@@ -410,8 +414,11 @@ var CardsUI = cc.Layer.extend({
                     this.resetCardsUIState();
                     return true;
                 }
-                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) return false;
+                if (this.parent.activeTab !== cf.LOBBY_TAB_CARDS || (!this.parent.allBtnIsActive && !this.isShowingAddCardToDeck)) {
+                    return false;
+                }
                 this.endVerticalScroll();
+                return true;
             },
         }, this);
     },
