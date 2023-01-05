@@ -209,7 +209,7 @@ var LobbyScene = cc.Scene.extend({
                 this.scrollTouching = true;
                 this.startLoc = touch.getLocation();
                 this.acceptHorizontalScroll = false;
-                this.currentScroll = 0;
+                this.currentScrollX = 0;
                 return true;
             },
             onTouchMoved: (touch) => {
@@ -220,7 +220,7 @@ var LobbyScene = cc.Scene.extend({
                 delta.x *= cf.SCROLL_SPEED_MULTIPLIER;
                 delta.y *= cf.SCROLL_SPEED_MULTIPLIER;
                 this.tabUIs.forEach(tab => tab.x += delta.x);
-                this.currentScroll += delta.x;
+                this.currentScrollX += delta.x;
 
                 let currLoc = touch.getLocation();
                 if (!this.acceptHorizontalScroll && Math.abs(currLoc.x - this.startLoc.x) > this.SCROLL_X_ACCEPT) {
@@ -245,9 +245,9 @@ var LobbyScene = cc.Scene.extend({
     endHorizontalScroll: function () {
         this.scrollTouching = false;
         let destinationTab = this.activeTab;
-        if (this.currentScroll > this.SCROLL_X_TO_CHANGE_TAB) {
+        if (this.currentScrollX > this.SCROLL_X_TO_CHANGE_TAB) {
             destinationTab = Math.max(destinationTab - 1, 0);
-        } else if (this.currentScroll < -this.SCROLL_X_TO_CHANGE_TAB) {
+        } else if (this.currentScrollX < -this.SCROLL_X_TO_CHANGE_TAB) {
             destinationTab = Math.min(destinationTab + 1, cf.LOBBY_MAX_TAB - 1);
         }
         let sequence = cc.sequence(
