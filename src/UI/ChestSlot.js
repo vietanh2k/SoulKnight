@@ -11,7 +11,7 @@ var ChestSlot = ccui.Button.extend({
         if (chest.openTimeStarted === null) {
             this._super(asset.treasureEmpty_png);
             this.addClickEventListener(() => {
-                if (this.parent.parent.allBtnIsActive && !this.parent.parent.acceptHorizontalScroll) {
+                if (this.parent.parent.allBtnIsActive && !this.parent.parent.isChangingTabAfterHorizontalScroll()) {
                     this.parent.parent.addChild(new ChestInfoUI(chest, this.parent.openingChestCounter, slot), 4);
                     this.parent.parent.allBtnIsActive = false;
                 } else {
@@ -32,7 +32,7 @@ var ChestSlot = ccui.Button.extend({
             if (openTimePassed < chest.openTimeRequired) {
                 this._super(asset.treasureOpening_png);
                 this.addClickEventListener(() => {
-                    if (this.parent.parent.allBtnIsActive && !this.parent.parent.acceptHorizontalScroll) {
+                    if (this.parent.parent.allBtnIsActive && !this.parent.parent.isChangingTabAfterHorizontalScroll()) {
                         this.parent.parent.addChild(new ChestInfoUI(chest, this.parent.openingChestCounter, slot), 4);
                         this.parent.parent.allBtnIsActive = false;
                     } else {
@@ -90,7 +90,7 @@ var ChestSlot = ccui.Button.extend({
             } else {
                 this._super(asset.treasureFinished_png);
                 this.addClickEventListener(() => {
-                    if (this.parent.parent.allBtnIsActive && !this.parent.parent.acceptHorizontalScroll) {
+                    if (this.parent.parent.allBtnIsActive && !this.parent.parent.isChangingTabAfterHorizontalScroll()) {
                         this.parent.sendRequestOpenChestSlot(slot);
                     } else {
                         cc.log('allBtnIsActive is false');
