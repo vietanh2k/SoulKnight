@@ -21,7 +21,7 @@ const DestroyTowerAction = cc.Class.extend({
     },
 
     activate: function (gameStateManager) {
-        if (this.uid === gv.gameClient._userId ) {
+        if (this.uid === gv.gameClient._userId) {
             let tower = GameStateManagerInstance.playerA.getMap().getTowerAtPosition(new cc.p(this.x, this.y));
             if (tower === undefined) {
                 return false;
