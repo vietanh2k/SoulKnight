@@ -333,22 +333,26 @@ var CardsUI = cc.Layer.extend({
         }
         for (let i = 0; i < this.deckSlots.length; i++) {
             if (this.deckSlots[i].card.type === type) {
+                // update gold
+                sharePlayerInfo.gold -= this.deckSlots[i].card.reqGold;
+                this.parent.currencyPanel.updateLabels();
                 this.deckSlots[i].removeFromParent(true);
                 this.addCardSlotToDeckPanel(card, i);
-                break;
+                return;
             }
         }
+        // card không thể nằm trong cả collection và deck
         for (let i = 0; i < this.collectionSlots.length; i++) {
             if (this.collectionSlots[i].card.type === type) {
                 // update gold
                 sharePlayerInfo.gold -= this.collectionSlots[i].card.reqGold;
                 this.parent.currencyPanel.updateLabels();
-                if (!card.isInDeck()) {
+                if (!card.isInDeck()) { // luôn đúng
                     this.collectionSlots[i].removeFromParent(true);
                     this.collectionSlots[i] = undefined;
                     this.addCardSlotToCollection(card, this.findEmptySlotInCollectionSlots());
                 }
-                break;
+                return;
             }
         }
     },
