@@ -1609,13 +1609,16 @@ var GameUI = cc.Layer.extend({
         this.addChild(textStart2, 5001, 'textStart2')
 
 
-        let seq4 = cc.sequence(cc.delayTime(3), cc.callFunc(()=>{
+        let seq4 = cc.sequence(cc.delayTime(2.4), cc.callFunc(()=>{
             this.getChildByName('buttonLayer').removeFromParent(true);
             this._gameStateManager.isStart = true;
+        }))
+        let seq5 = cc.sequence(cc.delayTime(3), cc.callFunc(()=>{
             this.showPathUI(this._gameStateManager.playerA._map._mapController.listPath, GAME_CONFIG.RULE_A)
             this.showPathUI(this._gameStateManager.playerB._map._mapController.listPath, GAME_CONFIG.RULE_B)
         }))
         this.runAction(seq4);
+        this.runAction(seq5);
 
     },
 
