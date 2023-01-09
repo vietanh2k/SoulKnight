@@ -45,6 +45,7 @@ cc.game.onStart = function () {
 
         Utils.loadCardConfig();
 
+        // cc.director.setDisplayStats(false);
 
         // The game will be resized when browser size change
         cc.view.resizeWithBrowserSize(true);

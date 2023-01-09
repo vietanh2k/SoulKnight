@@ -434,12 +434,17 @@ var CardsUI = cc.Layer.extend({
     },
 
     moveByMomentum: function () {
+        const ACCELERATION = 0.5;
         let intervalID = setInterval(() => {
-            if (this.finalDeltaY > 0) {
+            if (this.finalDeltaY !== 0) {
                 let scrollPixels = Math.round(this.finalDeltaY);
                 this.currentScrollY += scrollPixels;
                 this.getChildren().forEach(child => child.y += scrollPixels);
-                this.finalDeltaY -= 1;
+                if (this.finalDeltaY > 0) {
+                    this.finalDeltaY = Math.max(0, this.finalDeltaY - ACCELERATION);
+                } else {
+                    this.finalDeltaY = Math.min(0, this.finalDeltaY + ACCELERATION);
+                }
             } else {
                 clearInterval(intervalID);
                 this.fitIntoBound();
