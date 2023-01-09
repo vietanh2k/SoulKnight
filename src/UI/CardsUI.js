@@ -388,6 +388,7 @@ var CardsUI = cc.Layer.extend({
                 }
                 this.isScrolling = false;
                 this.scrollTouching = true;
+                this.finalDeltaY = 0;
                 return true;
             },
             onTouchMoved: (touch) => {
@@ -403,6 +404,7 @@ var CardsUI = cc.Layer.extend({
                 delta.x *= cf.SCROLL_SPEED_MULTIPLIER;
                 delta.y *= cf.SCROLL_SPEED_MULTIPLIER;
                 this.currentScrollY += delta.y;
+                this.finalDeltaY = delta.y;
                 this.getChildren().forEach(child => child.y += delta.y);
                 if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.SPEED_SCROLL_ACCEPT) {
                     this.isScrolling = true;
@@ -427,8 +429,25 @@ var CardsUI = cc.Layer.extend({
     },
 
     endVerticalScroll: function () {
-        // todo chuyển động chậm dần đều?
         this.scrollTouching = false;
+        this.moveByMomentum();
+    },
+
+    moveByMomentum: function () {
+        let intervalID = setInterval(() => {
+            if (this.finalDeltaY > 0) {
+                let scrollPixels = Math.round(this.finalDeltaY);
+                this.currentScrollY += scrollPixels;
+                this.getChildren().forEach(child => child.y += scrollPixels);
+                this.finalDeltaY -= 1;
+            } else {
+                clearInterval(intervalID);
+                this.fitIntoBound();
+            }
+        }, GAME_CONFIG.DEFAULT_DELTA_TIME * 1000);
+    },
+
+    fitIntoBound: function () {
         if (this.currentScrollY < this.lowerbound) {
             this.getChildren().forEach(child => {
                 child.runAction(new cc.MoveBy(0.5, cc.p(0, this.lowerbound - this.currentScrollY)));
@@ -440,6 +459,5 @@ var CardsUI = cc.Layer.extend({
             });
             this.currentScrollY = this.upperbound;
         }
-        return true;
     },
 });
