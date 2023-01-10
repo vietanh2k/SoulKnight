@@ -43,13 +43,13 @@ let TDamage = Tower.extend({
             towers.forEach(tower => {
                 if (tower.damageBuffEffect !== undefined) {
                     if (tower.damageBuffEffect.damageAdjustment < self.getDamageAdjustment()) {
-                        tower.damageBuffEffect = new DamageBuffEffect(dt, tower, self.getDamageAdjustment());
+                        tower.damageBuffEffect = new DamageBuffEffect(dt * 2, tower, self.getDamageAdjustment());
                         playerState.getMap().addEffect(tower.damageBuffEffect);
                     } else if (tower.damageBuffEffect.damageAdjustment === self.getDamageAdjustment()) {
                         tower.damageBuffEffect.reset();
                     }
                 } else {
-                    tower.damageBuffEffect = new DamageBuffEffect(dt, tower, self.getDamageAdjustment());
+                    tower.damageBuffEffect = new DamageBuffEffect(dt * 2, tower, self.getDamageAdjustment());
                     playerState.getMap().addEffect(tower.damageBuffEffect);
                 }
             });
