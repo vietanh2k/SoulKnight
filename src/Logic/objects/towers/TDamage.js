@@ -100,8 +100,12 @@ let TDamage = Tower.extend({
         for (let i = 0; i < this.target.length; i++) {
             // this.target[i].slowDuration = dt;
             // this.target[i].speedReduced = 0.8 * this.target[i].speed;
-            this.target[i].slowEffectFromTDamage = new SlowEffect(dt, this.target[i], cf.SLOW_TYPE.RATIO, this.getSpeedReduced(), cf.SLOW_SOURCE.TDAMAGE);
-            playerState.getMap().addEffect(this.target[i].slowEffectFromTDamage);
+            if (this.target[i].slowEffectFromTDamage !== undefined) {
+                this.target[i].slowEffectFromTDamage.resetWithAttr(playerState, dt * 2, this.getSpeedReduced());
+            } else {
+                this.target[i].slowEffectFromTDamage = new SlowEffect(dt * 2, this.target[i], cf.SLOW_TYPE.RATIO, this.getSpeedReduced(), cf.SLOW_SOURCE.TDAMAGE);
+                playerState.getMap().addEffect(this.target[i].slowEffectFromTDamage);
+            }
         }
     },
 

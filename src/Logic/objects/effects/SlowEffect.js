@@ -8,7 +8,7 @@ const SlowEffect = Effect.extend({
         this.slowValue = slowValue;
         this.source = source;
 
-        if (this.target.slowUI === undefined) {
+        if (this.source === cf.SLOW_SOURCE.TOILGUN && this.target.slowUI === undefined) {
             this.target.slowUI = new sp.SkeletonAnimation('res/tower/fx/tower_oil_fx.json', 'res/tower/fx/tower_oil_fx.atlas');
             this.target.slowUI.attr({
                 x: this.target.width * 0.5,
