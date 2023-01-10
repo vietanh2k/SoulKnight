@@ -19,6 +19,8 @@ const Ninja = Monster.extend({
 
         this.diggingDownTime = 0;
         this.diggingUpTime = 0;
+
+        this.sumDamage = 0
     },
 
     initAnimation: function () {
@@ -146,7 +148,9 @@ const Ninja = Monster.extend({
         this._super(playerState, many, from)
 
         many = Math.floor(many)
-        if (this.health > 0 && (many > this.MaxHealth / 3.0) && this.concept === 'monster' && !(from instanceof IceBall)) {
+        this.sumDamage += many
+        if (this.health > 0 && (this.sumDamage > this.MaxHealth / 3.0) && this.concept === 'monster' && !(from instanceof IceBall)) {
+            this.sumDamage = 0
             //this.setColor(cc.color(255,0,0,255))
             this.concept = null
             this.abilityDistance = this.defaultAbilityDistance
