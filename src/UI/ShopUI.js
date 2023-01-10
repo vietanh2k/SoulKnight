@@ -86,9 +86,7 @@ var ShopUI = cc.Layer.extend({
     updateBuyCard:function (packet){
         sharePlayerInfo.gold -= parseInt(packet.cost)
         LobbyInstant.currencyPanel.updateLabelsGold(Math.floor(packet.cost/50)+1)
-        cc.log(parseInt(packet.cost))
-        cc.log(sharePlayerInfo.gold)
-        cc.log(LobbyInstant.currencyPanel.tmpGold)
+
         // this.removeChild(this.popup)
         this.updateCanBuyUI()
         this.updateBuySlot(this.numSlot)
@@ -213,7 +211,6 @@ var ShopUI = cc.Layer.extend({
             // var cardInfor1 = sharePlayerInfo.collection[cardID1]
             let cardInfor1 = sharePlayerInfo.collection.find(element => element.type === cardID1);
 
-            cc.log(cardInfor1.texture)
             card1.getChildByName('item').setTexture(cardInfor1.texture)
             card1.getChildByName('numCost').setString(pkg.cardOffers[0][2])
             card1.getChildByName('touchLayer').addClickEventListener(() => this.showPopupCard(cardID1, pkg.cardOffers[0][2],pkg.cardOffers[0][1], 2))

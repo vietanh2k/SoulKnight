@@ -16,9 +16,16 @@ var GameUI = cc.Layer.extend({
         this.cardTouchSlot = -1
         this.listCard = []
         this.resMonster = []
-
+        this.isURF = false;
+        if(gv.gameClient._userId %2 === 0 && shareOpponentInfo.id % 2 === 0){
+            this.isURF = true;
+        }
         this._super();
         this._gameStateManager = new GameStateManager(pkg)
+        if(this.isURF){
+            this._gameStateManager.playerA.health = 200;
+            this._gameStateManager.playerB.health = 200;
+        }
         this.numSlotCardTower = 1;
         this.canTouchCard = true;
         this.mapCanCastSpell1 = null;
@@ -106,24 +113,14 @@ var GameUI = cc.Layer.extend({
             cc.log("this.cardInQueue "+i+"  "+this.cardInQueue[i])
         }
         for (let i = 0; i < 4; i++) {
-            let ran = Math.floor(Math.random()*4);
-            if(ran !== 0){
-                let tmp1, tmp2;
-                tmp1 = this.cardPlayable[ran];
-                this.cardPlayable[ran] = this.cardPlayable[0];
-                this.cardPlayable[0] = tmp1;
+            let ran1 = Math.floor(Math.random()*4);
+            let ran2 = Math.floor(Math.random()*4);
 
-                tmp2 = this.cardInQueue[ran];
-                this.cardInQueue[ran] = this.cardInQueue[0];
-                this.cardInQueue[0] = tmp2;
-            }
+            let tmp = this.cardPlayable[ran1];
+            this.cardPlayable[ran1] = this.cardInQueue[ran2];
+            this.cardInQueue[ran2] = tmp;
         }
-        // for (let i = 0; i < 4; i++) {
-        //     this.cardPlayable[i] = 19;
-        // }
-        // for (let i = 0; i < 4; i++) {
-        //     this.cardInQueue[i] = 18;
-        // }
+
     },
 
     initResMonster: function () {
@@ -830,8 +827,7 @@ var GameUI = cc.Layer.extend({
             onTouchBegan: (touch, event) => {
                 distan = 0;
                 var target = event.getCurrentTarget();
-                var locationInNode = target.convertToNodeSpace(touch.getLocation());
-                cc.log('a')
+                var locationInNode = target.convertToNodeSpace(touch.getLocation())
                 var s = target.getContentSize();
                 var rect = cc.rect(0, 0, s.width, s.height);
                 let checkTouchRight = !!cc.rectContainsPoint(rect, locationInNode);
@@ -1233,6 +1229,9 @@ var GameUI = cc.Layer.extend({
      * @return */
     updateCardSlot: function (numSlot, numEnergy) {
         if(this._gameStateManager.playerA.energy >= numEnergy) {
+            if(!this.isURF){
+                this._gameStateManager.playerA.energy -= numEnergy;
+            }
             // this._gameStateManager.playerA.energy -= numEnergy
             this.hidemapCanCastSpell1()
             // this._gameStateManager.playerA.energy -= 0
@@ -1265,6 +1264,7 @@ var GameUI = cc.Layer.extend({
             }
         }
         this.cardTouchSlot = -1
+        this.hidemapCanCastSpell1();
     },
 
 
@@ -1406,7 +1406,7 @@ var GameUI = cc.Layer.extend({
         lbAddIcon.setTextColor(blueColor2)
 
         var lbNumEnergy = new ccui.Text(numEnergy, res.font_magic, 70)
-        lbNumEnergy.setPosition(energy.getContentSize().width * 1.3, energy.getContentSize().height / 2)
+        lbNumEnergy.setPosition(energy.getContentSize().width * 1.45, energy.getContentSize().height / 2)
         lbNumEnergy.enableShadow()
         lbNumEnergy.setTextColor(blueColor2)
 

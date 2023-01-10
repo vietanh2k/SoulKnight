@@ -308,7 +308,7 @@ CmdBuyChest = fr.OutPacket.extend(
             this.putInt(cost)
 
             this.updateSize();
-            cc.log('send buy chest:'+ JSON.stringify(buyList[0][0]))
+            // cc.log('send buy chest:'+ JSON.stringify(buyList[0][0]))
         }
     }
 )
@@ -428,7 +428,7 @@ testnetwork.packetMap[gv.CMD.USER_INFO] = fr.InPacket.extend({
         chestList.forEach(chest => chest.updateClientTime());
 
         sharePlayerInfo = new PlayerInfo(id, name, gold, gem, trophy, collection, chestList, deck);
-        cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo.collection));
+        // cc.log("Received user data from server: " + JSON.stringify(sharePlayerInfo.collection));
     },
 
     readCardData: function () {
@@ -472,9 +472,9 @@ testnetwork.packetMap[gv.CMD.OPEN_CHEST] = fr.InPacket.extend({
             for (let i = 0; i < newCardsSize; i++) {
                 newCards.push(this.readCardData());
             }
-            cc.log('New cards: ' + JSON.stringify(newCards));
+            // cc.log('New cards: ' + JSON.stringify(newCards));
             goldReceived = this.getInt();
-            cc.log('goldReceived: ' + JSON.stringify(goldReceived));
+            // cc.log('goldReceived: ' + JSON.stringify(goldReceived));
             serverNow = this.getLong();
             Utils.updateTimeDiff(serverNow);
             if(chestID != -1) {
@@ -630,7 +630,7 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
         readData: function () {
             this.status = this.getString()
             this.numChest = this.getInt()
-            cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
+            // cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
             this.chestOffers = []
             for (var i = 0; i < this.numChest; i++) {
                 var chestType = this.getByte(),
@@ -639,7 +639,7 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
                 this.chestOffers.push([chestType, chestCost])
 
             }
-            cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
+            // cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
             this.numCard = this.getInt()
             this.cardOffers = []
             for (var i = 0; i < this.numCard; i++) {
@@ -649,7 +649,7 @@ testnetwork.packetMap[gv.CMD.OFFER_RESPONSE] = fr.InPacket.extend(
                 cc.log('card:  ' + cardType + ' ' + cardCost)
                 this.cardOffers.push([cardType,fragment, cardCost])
             }
-            cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
+            // cc.log("OFFER_RESPONSE: " + JSON.stringify(this))
             // this.numCard = this.getInt()
             // this.cardOffers = []
             // for(var i=0; i<this.numCard; i++){
@@ -812,7 +812,7 @@ testnetwork.packetMap[gv.CMD.UPGRADE_CARD] = fr.InPacket.extend({
         let status = this.getString();
         let newCard = this.readCardData();
 
-        cc.log('Get upgrade card response from server. Status: ' + status + ', type: ' + type + ', card: ' + JSON.stringify(newCard) + '.');
+        // cc.log('Get upgrade card response from server. Status: ' + status + ', type: ' + type + ', card: ' + JSON.stringify(newCard) + '.');
 
         let serverNow = this.getLong();
         Utils.updateTimeDiff(serverNow);
@@ -857,7 +857,7 @@ testnetwork.packetMap[gv.CMD.CHEAT_FRAGMENT] = fr.InPacket.extend({
         let status = this.getString();
         let newCard = this.readCardData();
 
-        cc.log('Get cheat fragment response from server. Status: ' + status + ', type: ' + type + ', card after cheat: ' + JSON.stringify(newCard) + '.');
+        // cc.log('Get cheat fragment response from server. Status: ' + status + ', type: ' + type + ', card after cheat: ' + JSON.stringify(newCard) + '.');
 
         let serverNow = this.getLong();
         Utils.updateTimeDiff(serverNow);

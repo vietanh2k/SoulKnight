@@ -196,7 +196,7 @@ const Monster = AnimatedSprite.extend({
             // cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
             // cc.log('destroy hp house = '+GameStateManagerInstance.frameCount)
             // cc.log('Remaining health is ' + this._playerState.health + ' at frame ' + GameStateManagerInstance.frameCount)
-            this.destroy()
+            this.destroy(true)
 
 
             /*while (true) {
@@ -563,15 +563,22 @@ const Monster = AnimatedSprite.extend({
         this.healthUI.runAction(seq)
     },
 
-    destroy: function () {
+    destroy: function (isImpactMainTower) {
         // cc.log('Monster is destroyed at frame ' + GameStateManagerInstance.frameCount)
-        this._playerState.updateEnergy(this.energyFromDestroy)
+        let tmp = this.energyFromDestroy;
+        if (isImpactMainTower) {
+            this._playerState.updateEnergy(this.energyWhileImpactMainTower * 10)
+            tmp = this.energyWhileImpactMainTower * 10;
+        } else {
+            this._playerState.updateEnergy(this.energyFromDestroy)
+        }
+
         this.isDestroy = true
         // cc.log('destroy tai frame = '+GameStateManagerInstance.frameCount)
         this._playerState.addCountDestroyFrame(GameStateManagerInstance.frameCount);
         if(this.getParent() != null){
-            if(this.energyFromDestroy > 0) {
-                this.getParent().getEnergyUI(cc.p(this.x, this.y), this.energyFromDestroy)
+            if(tmp > 0) {
+                this.getParent().getEnergyUI(cc.p(this.x, this.y), tmp)
             }
             var ex = new Explosion(cc.p(this.x, this.y))
             var soul = new SoulFly(cc.p(this.x, this.y))
@@ -608,7 +615,6 @@ const Monster = AnimatedSprite.extend({
         // cc.log('Monster HP: ' + this.health + ', position: ' + this.position + ', frame: ' + GameStateManagerInstance.frameCount)
 
         if (!this.takingDameFx) {
-            cc.log("assssssssssasssssssssssssssss"+ this.takingDameFx)
             this.takingDameFx = 1
             this.setColor(cc.color(255, 0, 0))
 

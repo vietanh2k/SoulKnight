@@ -64,7 +64,7 @@ let TIceGunBullet = Bullet.extend({
         this.active = false;
         this.visible = false;
 
-        cc.log('exlose frame: ' + GameStateManagerInstance.frameCount)
+        // cc.log('exlose frame: ' + GameStateManagerInstance.frameCount)
 
         GameUI.instance.removeChild(this);
         if (this.target && this.target.release) {

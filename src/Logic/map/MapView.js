@@ -443,7 +443,7 @@ var MapView = cc.Class.extend({
     },
 
     deployOrUpgradeTower: function (cardType, position, rule) {
-        cc.log("Deploy or upgrade tower with card type " + JSON.stringify(cardType) + " at position " + JSON.stringify(position));
+        // cc.log("Deploy or upgrade tower with card type " + JSON.stringify(cardType) + " at position " + JSON.stringify(position));
         let cell = this.getCellAtPosition(position);
 
         if (cell.getObjectOn()) {
@@ -584,7 +584,7 @@ var MapView = cc.Class.extend({
         let result = undefined;
         this.towers.forEach(tower => {
             if (tower.position.x === position.x && tower.position.y === position.y) {
-                cc.log('founded tower position: ' + JSON.stringify(tower.position))
+                // cc.log('founded tower position: ' + JSON.stringify(tower.position))
                 result = tower;
             }
         });

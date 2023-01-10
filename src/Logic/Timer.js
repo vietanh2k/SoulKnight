@@ -29,7 +29,6 @@ var Timer = cc.Class.extend({
             if(!GameStateManagerInstance.isMaxWave()) {
                 testnetwork.connector.sendActions([[new NextWaveAction(this._gameStateManager.waveCount), 0]]); //this.addMonsterToBoth()
                 // this.resetTime(GAME_CONFIG.TIME_WAVE)
-                cc.log('touch2222222222222222222222')
             }
         }
     },
