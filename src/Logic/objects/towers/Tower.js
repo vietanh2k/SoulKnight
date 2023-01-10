@@ -3,6 +3,7 @@ var Tower = TowerUI.extend({
     ctor: function (rule, card, evolution) {
         this._super(card, evolution);
         this.inactiveSourceCounter = 0;
+        this.attackCooldown = 0;
 
         if (rule === 1) {
             this.correspondingCard = sharePlayerInfo.deck.find(element => element.type === card);
@@ -268,27 +269,29 @@ var Tower = TowerUI.extend({
         }
         this.status = 'readyToFire';
 
-        if (this.getPending() > 0) {
-            this.updatePending(dt);
-        } else {
-            this.visible = true;
-            if (this.attackCooldown <= 0) {
-                this.findTargets(playerState)
-                if (this.target.length > 0) {
-                    for (let i = 0; i < this.target.length; i++) {
-                        if ("monster" === this.target[i].concept) {
-                            this.fire();
-                            this.status = 'cooldowning';
-                            this.attackCooldown = self.getAttackSpeed();
-                            break;
+        if (this.active) {
+            if (this.getPending() > 0) {
+                this.updatePending(dt);
+            } else {
+                this.visible = true;
+                if (this.attackCooldown <= 0) {
+                    this.findTargets(playerState);
+
+                    if (this.target.length > 0) {
+                        for (let i = 0; i < this.target.length; i++) {
+                            if ("monster" === this.target[i].concept) {
+                                this.fire();
+                                this.status = 'cooldowning';
+                                this.attackCooldown = self.getAttackSpeed();
+                                break;
+                            }
                         }
                     }
+                } else {
+                    this.attackCooldown -= dt;
                 }
-            } else {
-                this.attackCooldown -= dt;
             }
         }
-
     },
 
     checkIsTarget: function (another) {

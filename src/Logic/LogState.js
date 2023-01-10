@@ -132,6 +132,7 @@ var LogState = cc.Class.extend({
 
     logError: function (client, server, countLoop, txt, delta) {
         if (Math.abs(client - server) > delta && !this.isERROR) {
+            // Utils.addToastToRunningScene('LỖI');
             cc.log("\n\n==================================="
                 +"\n==================================="
                 +"\n==================================="

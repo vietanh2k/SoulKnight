@@ -333,22 +333,26 @@ var CardsUI = cc.Layer.extend({
         }
         for (let i = 0; i < this.deckSlots.length; i++) {
             if (this.deckSlots[i].card.type === type) {
+                // update gold
+                sharePlayerInfo.gold -= this.deckSlots[i].card.reqGold;
+                this.parent.currencyPanel.updateLabels();
                 this.deckSlots[i].removeFromParent(true);
                 this.addCardSlotToDeckPanel(card, i);
-                break;
+                return;
             }
         }
+        // card không thể nằm trong cả collection và deck
         for (let i = 0; i < this.collectionSlots.length; i++) {
             if (this.collectionSlots[i].card.type === type) {
                 // update gold
                 sharePlayerInfo.gold -= this.collectionSlots[i].card.reqGold;
                 this.parent.currencyPanel.updateLabels();
-                if (!card.isInDeck()) {
+                if (!card.isInDeck()) { // luôn đúng
                     this.collectionSlots[i].removeFromParent(true);
                     this.collectionSlots[i] = undefined;
                     this.addCardSlotToCollection(card, this.findEmptySlotInCollectionSlots());
                 }
-                break;
+                return;
             }
         }
     },
@@ -384,6 +388,7 @@ var CardsUI = cc.Layer.extend({
                 }
                 this.isScrolling = false;
                 this.scrollTouching = true;
+                this.finalDeltaY = 0;
                 return true;
             },
             onTouchMoved: (touch) => {
@@ -399,11 +404,11 @@ var CardsUI = cc.Layer.extend({
                 delta.x *= cf.SCROLL_SPEED_MULTIPLIER;
                 delta.y *= cf.SCROLL_SPEED_MULTIPLIER;
                 this.currentScrollY += delta.y;
+                this.finalDeltaY = delta.y;
                 this.getChildren().forEach(child => child.y += delta.y);
                 if (Math.sqrt(delta.x * delta.x + delta.y * delta.y) > this.SPEED_SCROLL_ACCEPT) {
                     this.isScrolling = true;
                 }
-                this.finalDeltaY = delta.y;
                 return true;
             },
             onTouchEnded: (touch) => {
@@ -424,9 +429,30 @@ var CardsUI = cc.Layer.extend({
     },
 
     endVerticalScroll: function () {
-        cc.log("Final delta y: " + this.finalDeltaY);
-        // todo chuyển động chậm dần đều?
         this.scrollTouching = false;
+        this.moveByMomentum();
+    },
+
+    moveByMomentum: function () {
+        const ACCELERATION = 0.5;
+        let intervalID = setInterval(() => {
+            if (this.finalDeltaY !== 0) {
+                let scrollPixels = Math.round(this.finalDeltaY);
+                this.currentScrollY += scrollPixels;
+                this.getChildren().forEach(child => child.y += scrollPixels);
+                if (this.finalDeltaY > 0) {
+                    this.finalDeltaY = Math.max(0, this.finalDeltaY - ACCELERATION);
+                } else {
+                    this.finalDeltaY = Math.min(0, this.finalDeltaY + ACCELERATION);
+                }
+            } else {
+                clearInterval(intervalID);
+                this.fitIntoBound();
+            }
+        }, GAME_CONFIG.DEFAULT_DELTA_TIME * 1000);
+    },
+
+    fitIntoBound: function () {
         if (this.currentScrollY < this.lowerbound) {
             this.getChildren().forEach(child => {
                 child.runAction(new cc.MoveBy(0.5, cc.p(0, this.lowerbound - this.currentScrollY)));
@@ -438,6 +464,5 @@ var CardsUI = cc.Layer.extend({
             });
             this.currentScrollY = this.upperbound;
         }
-        return true;
     },
 });
