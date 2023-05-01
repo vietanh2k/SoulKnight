@@ -7,7 +7,7 @@
             <key>monster_ninja_run_0000.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{185,182},{55,51}}</string>
+                <string>{{118,129},{55,51}}</string>
                 <key>offset</key>
                 <string>{-1,-8}</string>
                 <key>rotated</key>
@@ -20,7 +20,7 @@
             <key>monster_ninja_run_0001.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{441,206},{55,53}}</string>
+                <string>{{2,135},{55,53}}</string>
                 <key>offset</key>
                 <string>{-1,-9}</string>
                 <key>rotated</key>
@@ -33,20 +33,7 @@
             <key>monster_ninja_run_0002.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,435},{53,45}}</string>
-                <key>offset</key>
-                <string>{0,-6}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{21,41},{53,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0003.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{114,345},{53,41}}</string>
+                <string>{{57,304},{53,41}}</string>
                 <key>offset</key>
                 <string>{0,-3}</string>
                 <key>rotated</key>
@@ -56,10 +43,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0004.png</key>
+            <key>monster_ninja_run_0003.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{325,139},{57,39}}</string>
+                <string>{{2,94},{57,39}}</string>
                 <key>offset</key>
                 <string>{-1,-3}</string>
                 <key>rotated</key>
@@ -69,36 +56,23 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0005.png</key>
+            <key>monster_ninja_run_0004.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{126,145},{57,47}}</string>
-                <key>offset</key>
-                <string>{0,-6}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{19,40},{57,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0006.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{461,2},{57,49}}</string>
+                <string>{{197,2},{57,49}}</string>
                 <key>offset</key>
                 <string>{-1,-7}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{18,40},{57,49}}</string>
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0007.png</key>
+            <key>monster_ninja_run_0005.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,245},{55,45}}</string>
+                <string>{{116,182},{55,45}}</string>
                 <key>offset</key>
                 <string>{-2,-5}</string>
                 <key>rotated</key>
@@ -108,23 +82,23 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0008.png</key>
+            <key>monster_ninja_run_0006.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{139,435},{53,39}}</string>
+                <string>{{167,312},{53,39}}</string>
                 <key>offset</key>
                 <string>{-3,-2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{18,40},{53,39}}</string>
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0009.png</key>
+            <key>monster_ninja_run_0007.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{63,151},{57,43}}</string>
+                <string>{{65,53},{57,43}}</string>
                 <key>offset</key>
                 <string>{0,-3}</string>
                 <key>rotated</key>
@@ -137,7 +111,7 @@
             <key>monster_ninja_run_0010.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{203,2},{65,41}}</string>
+                <string>{{2,2},{65,41}}</string>
                 <key>offset</key>
                 <string>{14,-1}</string>
                 <key>rotated</key>
@@ -150,7 +124,7 @@
             <key>monster_ninja_run_0011.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{201,92},{61,39}}</string>
+                <string>{{134,49},{61,39}}</string>
                 <key>offset</key>
                 <string>{14,0}</string>
                 <key>rotated</key>
@@ -163,7 +137,7 @@
             <key>monster_ninja_run_0012.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{443,167},{57,37}}</string>
+                <string>{{124,90},{57,37}}</string>
                 <key>offset</key>
                 <string>{11,0}</string>
                 <key>rotated</key>
@@ -176,11 +150,11 @@
             <key>monster_ninja_run_0013.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{354,233},{49,33}}</string>
+                <string>{{57,347},{49,33}}</string>
                 <key>offset</key>
                 <string>{9,2}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{32,39},{49,33}}</string>
                 <key>sourceSize</key>
@@ -189,7 +163,7 @@
             <key>monster_ninja_run_0014.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{381,319},{41,45}}</string>
+                <string>{{108,372},{41,45}}</string>
                 <key>offset</key>
                 <string>{8,-2}</string>
                 <key>rotated</key>
@@ -202,11 +176,11 @@
             <key>monster_ninja_run_0015.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{278,435},{41,51}}</string>
+                <string>{{112,329},{41,51}}</string>
                 <key>offset</key>
                 <string>{8,-5}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{35,37},{41,51}}</string>
                 <key>sourceSize</key>
@@ -215,72 +189,7 @@
             <key>monster_ninja_run_0016.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,292},{43,55}}</string>
-                <key>offset</key>
-                <string>{6,-5}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{32,35},{43,55}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0017.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{310,337},{41,49}}</string>
-                <key>offset</key>
-                <string>{5,-5}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{32,38},{41,49}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0018.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{249,388},{43,45}}</string>
-                <key>offset</key>
-                <string>{5,-3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{31,38},{43,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0019.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{398,49},{61,41}}</string>
-                <key>offset</key>
-                <string>{12,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{29,39},{61,41}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0020.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{69,2},{65,49}}</string>
-                <key>offset</key>
-                <string>{13,3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{28,30},{65,49}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0021.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{136,45},{63,49}}</string>
+                <string>{{69,2},{63,49}}</string>
                 <key>offset</key>
                 <string>{13,3}</string>
                 <key>rotated</key>
@@ -290,10 +199,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0022.png</key>
+            <key>monster_ninja_run_0017.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{191,133},{57,47}}</string>
+                <string>{{197,53},{57,47}}</string>
                 <key>offset</key>
                 <string>{8,4}</string>
                 <key>rotated</key>
@@ -303,23 +212,23 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0023.png</key>
+            <key>monster_ninja_run_0018.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{94,435},{53,43}}</string>
+                <string>{{112,284},{53,43}}</string>
                 <key>offset</key>
                 <string>{6,6}</string>
                 <key>rotated</key>
-                <true/>
+                <false/>
                 <key>sourceColorRect</key>
                 <string>{{27,30},{53,43}}</string>
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0024.png</key>
+            <key>monster_ninja_run_0019.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{116,247},{55,43}}</string>
+                <string>{{59,206},{55,43}}</string>
                 <key>offset</key>
                 <string>{6,7}</string>
                 <key>rotated</key>
@@ -329,10 +238,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0025.png</key>
+            <key>monster_ninja_run_0020.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{398,2},{61,45}}</string>
+                <string>{{134,2},{61,45}}</string>
                 <key>offset</key>
                 <string>{14,5}</string>
                 <key>rotated</key>
@@ -342,23 +251,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0026.png</key>
+            <key>monster_ninja_run_0021.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{65,102},{59,47}}</string>
-                <key>offset</key>
-                <string>{11,4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{29,30},{59,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0027.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{179,235},{55,49}}</string>
+                <string>{{2,190},{55,49}}</string>
                 <key>offset</key>
                 <string>{8,4}</string>
                 <key>rotated</key>
@@ -368,10 +264,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0028.png</key>
+            <key>monster_ninja_run_0022.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,386},{53,47}}</string>
+                <string>{{171,263},{53,47}}</string>
                 <key>offset</key>
                 <string>{5,3}</string>
                 <key>rotated</key>
@@ -381,10 +277,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0029.png</key>
+            <key>monster_ninja_run_0023.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{2,100},{61,47}}</string>
+                <string>{{2,45},{61,47}}</string>
                 <key>offset</key>
                 <string>{8,3}</string>
                 <key>rotated</key>
@@ -397,7 +293,7 @@
             <key>monster_ninja_run_0030.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{438,304},{41,47}}</string>
+                <string>{{165,353},{41,47}}</string>
                 <key>offset</key>
                 <string>{8,11}</string>
                 <key>rotated</key>
@@ -410,7 +306,7 @@
             <key>monster_ninja_run_0031.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{389,276},{41,47}}</string>
+                <string>{{2,349},{41,47}}</string>
                 <key>offset</key>
                 <string>{6,11}</string>
                 <key>rotated</key>
@@ -423,150 +319,33 @@
             <key>monster_ninja_run_0032.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{336,288},{43,47}}</string>
+                <string>{{2,296},{51,53}}</string>
                 <key>offset</key>
-                <string>{4,12}</string>
+                <string>{2,13}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
-                <string>{{30,22},{43,47}}</string>
+                <string>{{24,18},{51,53}}</string>
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
             <key>monster_ninja_run_0033.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{106,388},{45,47}}</string>
+                <string>{{57,251},{51,53}}</string>
                 <key>offset</key>
-                <string>{3,13}</string>
+                <string>{2,13}</string>
                 <key>rotated</key>
                 <true/>
                 <key>sourceColorRect</key>
-                <string>{{28,21},{45,47}}</string>
+                <string>{{24,18},{51,53}}</string>
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
             <key>monster_ninja_run_0034.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{390,92},{59,45}}</string>
-                <key>offset</key>
-                <string>{9,14}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{27,21},{59,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0035.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,53},{63,45}}</string>
-                <key>offset</key>
-                <string>{12,15}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{28,20},{63,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0036.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{264,94},{59,45}}</string>
-                <key>offset</key>
-                <string>{13,14}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{31,21},{59,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0037.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{59,196},{55,47}}</string>
-                <key>offset</key>
-                <string>{11,13}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{31,21},{55,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0038.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{229,435},{51,47}}</string>
-                <key>offset</key>
-                <string>{8,12}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{30,22},{51,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0039.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{202,388},{45,45}}</string>
-                <key>offset</key>
-                <string>{7,12}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{32,23},{45,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0040.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{59,335},{51,53}}</string>
-                <key>offset</key>
-                <string>{2,13}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{24,18},{51,53}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0041.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{116,292},{51,53}}</string>
-                <key>offset</key>
-                <string>{2,13}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{24,18},{51,53}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0042.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{307,180},{51,55}}</string>
-                <key>offset</key>
-                <string>{1,12}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{23,18},{51,55}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_0043.png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{250,141},{53,55}}</string>
+                <string>{{183,102},{53,55}}</string>
                 <key>offset</key>
                 <string>{0,11}</string>
                 <key>rotated</key>
@@ -576,10 +355,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0044.png</key>
+            <key>monster_ninja_run_0035.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{173,286},{53,53}}</string>
+                <string>{{116,229},{53,53}}</string>
                 <key>offset</key>
                 <string>{0,12}</string>
                 <key>rotated</key>
@@ -589,10 +368,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0045.png</key>
+            <key>monster_ninja_run_0036.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{236,247},{53,53}}</string>
+                <string>{{173,208},{53,53}}</string>
                 <key>offset</key>
                 <string>{-1,14}</string>
                 <key>rotated</key>
@@ -602,10 +381,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0046.png</key>
+            <key>monster_ninja_run_0037.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{299,233},{53,53}}</string>
+                <string>{{2,241},{53,53}}</string>
                 <key>offset</key>
                 <string>{-1,13}</string>
                 <key>rotated</key>
@@ -615,10 +394,10 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0047.png</key>
+            <key>monster_ninja_run_0038.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{122,194},{51,55}}</string>
+                <string>{{59,153},{51,55}}</string>
                 <key>offset</key>
                 <string>{1,13}</string>
                 <key>rotated</key>
@@ -628,14 +407,14 @@
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
-            <key>monster_ninja_run_0048.png</key>
+            <key>monster_ninja_run_0039.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{461,61},{49,55}}</string>
+                <string>{{175,157},{49,55}}</string>
                 <key>offset</key>
                 <string>{1,12}</string>
                 <key>rotated</key>
-                <false/>
+                <true/>
                 <key>sourceColorRect</key>
                 <string>{{24,18},{49,55}}</string>
                 <key>sourceSize</key>
@@ -644,403 +423,13 @@
             <key>monster_ninja_run_0049.png</key>
             <dict>
                 <key>frame</key>
-                <string>{{384,178},{55,53}}</string>
+                <string>{{61,98},{55,53}}</string>
                 <key>offset</key>
                 <string>{0,13}</string>
                 <key>rotated</key>
                 <false/>
                 <key>sourceColorRect</key>
                 <string>{{20,18},{55,53}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (1).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{136,2},{65,41}}</string>
-                <key>offset</key>
-                <string>{-15,-1}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{0,38},{65,41}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (10).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{335,49},{61,41}}</string>
-                <key>offset</key>
-                <string>{-13,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{4,39},{61,41}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (11).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,2},{65,49}}</string>
-                <key>offset</key>
-                <string>{-13,3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{2,30},{65,49}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (12).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{270,2},{63,49}}</string>
-                <key>offset</key>
-                <string>{-13,3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{3,30},{63,49}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (13).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{451,118},{57,47}}</string>
-                <key>offset</key>
-                <string>{-9,4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{10,30},{57,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (14).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{49,435},{53,43}}</string>
-                <key>offset</key>
-                <string>{-6,6}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{15,30},{53,43}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (15).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{59,245},{55,43}}</string>
-                <key>offset</key>
-                <string>{-7,7}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{13,29},{55,43}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (16).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{335,2},{61,45}}</string>
-                <key>offset</key>
-                <string>{-14,5}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{3,30},{61,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (17).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{130,96},{59,47}}</string>
-                <key>offset</key>
-                <string>{-12,4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{6,30},{59,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (18).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{242,196},{55,49}}</string>
-                <key>offset</key>
-                <string>{-9,4}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{11,29},{55,49}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (19).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,337},{53,47}}</string>
-                <key>offset</key>
-                <string>{-6,3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{15,31},{53,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (2).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{266,53},{61,39}}</string>
-                <key>offset</key>
-                <string>{-14,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{3,38},{61,39}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (20).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{67,53},{61,47}}</string>
-                <key>offset</key>
-                <string>{-9,3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{8,31},{61,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (21).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{438,261},{41,47}}</string>
-                <key>offset</key>
-                <string>{-8,11}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{19,23},{41,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (22).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{389,233},{41,47}}</string>
-                <key>offset</key>
-                <string>{-6,11}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{21,23},{41,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (23).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{291,288},{43,47}}</string>
-                <key>offset</key>
-                <string>{-4,12}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{22,22},{43,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (24).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{57,388},{45,47}}</string>
-                <key>offset</key>
-                <string>{-4,13}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{21,21},{45,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (25).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{329,92},{59,45}}</string>
-                <key>offset</key>
-                <string>{-10,14}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{8,21},{59,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (26).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{201,45},{63,45}}</string>
-                <key>offset</key>
-                <string>{-13,15}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{3,20},{63,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (27).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,149},{59,45}}</string>
-                <key>offset</key>
-                <string>{-13,14}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{5,21},{59,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (28).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{2,196},{55,47}}</string>
-                <key>offset</key>
-                <string>{-11,13}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{9,21},{55,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (29).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{180,435},{51,47}}</string>
-                <key>offset</key>
-                <string>{-9,12}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{13,22},{51,47}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (3).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{384,139},{57,37}}</string>
-                <key>offset</key>
-                <string>{-12,0}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{7,39},{57,37}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (30).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{155,388},{45,45}}</string>
-                <key>offset</key>
-                <string>{-8,12}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{17,23},{45,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (4).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{228,302},{49,33}}</string>
-                <key>offset</key>
-                <string>{-9,2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{14,39},{49,33}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (5).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{294,388},{41,45}}</string>
-                <key>offset</key>
-                <string>{-9,-2}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{18,37},{41,45}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (6).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{169,345},{41,51}}</string>
-                <key>offset</key>
-                <string>{-8,-5}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{19,37},{41,51}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (7).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{59,290},{43,55}}</string>
-                <key>offset</key>
-                <string>{-7,-5}</string>
-                <key>rotated</key>
-                <true/>
-                <key>sourceColorRect</key>
-                <string>{{19,35},{43,55}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (8).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{267,337},{41,49}}</string>
-                <key>offset</key>
-                <string>{-5,-5}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{22,38},{41,49}}</string>
-                <key>sourceSize</key>
-                <string>{95,115}</string>
-            </dict>
-            <key>monster_ninja_run_flipped (9).png</key>
-            <dict>
-                <key>frame</key>
-                <string>{{222,341},{43,45}}</string>
-                <key>offset</key>
-                <string>{-5,-3}</string>
-                <key>rotated</key>
-                <false/>
-                <key>sourceColorRect</key>
-                <string>{{21,38},{43,45}}</string>
                 <key>sourceSize</key>
                 <string>{95,115}</string>
             </dict>
@@ -1052,9 +441,9 @@
             <key>realTextureFileName</key>
             <string>ninja.png</string>
             <key>size</key>
-            <string>{512,512}</string>
+            <string>{256,512}</string>
             <key>smartupdate</key>
-            <string>$TexturePacker:SmartUpdate:d6b3bdb0d3001bc70731527e22061464:1/1$</string>
+            <string>$TexturePacker:SmartUpdate:fec8f165465330e37ee06cc481553c4f:1/1$</string>
             <key>textureFileName</key>
             <string>ninja.png</string>
         </dict>

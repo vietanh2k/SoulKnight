@@ -1,0 +1,690 @@
+{
+  "ID": "23b50479-00ff-437d-b016-45c83b57fccd",
+  "Version": "3.10.0.0",
+  "Name": "healthPaddle",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 4,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/paddle.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 65,
+            "Scale9OriginY": 32,
+            "Scale9Width": 67,
+            "Scale9Height": 33,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -98.5,
+            "RightMargin": -98.5,
+            "TopMargin": -48.5,
+            "BottomMargin": -48.5,
+            "Tag": 11,
+            "ActionTag": -1704448201,
+            "Size": {
+              "X": 197.0,
+              "Y": 97.0
+            },
+            "Name": "paddle",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/backgroundBar.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 49,
+            "Scale9OriginY": 7,
+            "Scale9Width": 52,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 14.1192,
+              "Y": 28.2343
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -60.8808,
+            "RightMargin": -89.1192,
+            "TopMargin": -39.2343,
+            "BottomMargin": 17.2343,
+            "Tag": 14,
+            "ActionTag": 325173345,
+            "Size": {
+              "X": 150.0,
+              "Y": 22.0
+            },
+            "Name": "back1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/backgroundBar.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 49,
+            "Scale9OriginY": 7,
+            "Scale9Width": 52,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 14.12,
+              "Y": 2.5
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -60.88,
+            "RightMargin": -89.12,
+            "TopMargin": -13.5,
+            "BottomMargin": -8.5,
+            "Tag": 15,
+            "ActionTag": -234825663,
+            "Size": {
+              "X": 150.0,
+              "Y": 22.0
+            },
+            "Name": "back2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/backgroundBar.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 49,
+            "Scale9OriginY": 7,
+            "Scale9Width": 52,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 14.12,
+              "Y": -22.64
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -60.88,
+            "RightMargin": -89.12,
+            "TopMargin": 11.64,
+            "BottomMargin": -33.64,
+            "Tag": 16,
+            "ActionTag": -696934190,
+            "Size": {
+              "X": 150.0,
+              "Y": 22.0
+            },
+            "Name": "back3",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/enery.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 2,
+            "Scale9OriginY": 3,
+            "Scale9Width": 5,
+            "Scale9Height": 6,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -77.3277,
+              "Y": -23.1303
+            },
+            "Scale": {
+              "ScaleX": 1.7,
+              "ScaleY": 1.7
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -81.8277,
+            "RightMargin": 72.8277,
+            "TopMargin": 17.1303,
+            "BottomMargin": -29.1303,
+            "Tag": 17,
+            "ActionTag": 169274198,
+            "Size": {
+              "X": 9.0,
+              "Y": 12.0
+            },
+            "Name": "enery",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/getShield.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 7,
+            "Scale9OriginY": 7,
+            "Scale9Width": 44,
+            "Scale9Height": 47,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -78.9777,
+              "Y": 1.7807
+            },
+            "Scale": {
+              "ScaleX": 0.52,
+              "ScaleY": 0.52
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -107.9777,
+            "RightMargin": 49.9777,
+            "TopMargin": -32.2807,
+            "BottomMargin": -28.7193,
+            "Tag": 19,
+            "ActionTag": 321356203,
+            "Size": {
+              "X": 58.0,
+              "Y": 61.0
+            },
+            "Name": "shield",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/heart.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 5,
+            "Scale9OriginY": 4,
+            "Scale9Width": 6,
+            "Scale9Height": 7,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -76.8988,
+              "Y": 27.9087
+            },
+            "Scale": {
+              "ScaleX": 1.35,
+              "ScaleY": 1.35
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -84.8988,
+            "RightMargin": 68.8988,
+            "TopMargin": -35.4087,
+            "BottomMargin": 20.4087,
+            "Tag": 20,
+            "ActionTag": 1722919834,
+            "Size": {
+              "X": 16.0,
+              "Y": 15.0
+            },
+            "Name": "hp",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "ProgressInfo": 100,
+            "ImageFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/redBar.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 14.12,
+              "Y": 28.23
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -58.88,
+            "RightMargin": -87.12,
+            "TopMargin": -37.23,
+            "BottomMargin": 19.23,
+            "Tag": 21,
+            "ActionTag": -1943486548,
+            "Size": {
+              "X": 146.0,
+              "Y": 18.0
+            },
+            "Name": "hpBar",
+            "ctype": "LoadingBarObjectData"
+          },
+          {
+            "ProgressInfo": 100,
+            "ImageFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/xamBar.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 14.12,
+              "Y": 2.5
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -58.88,
+            "RightMargin": -87.12,
+            "TopMargin": -11.5,
+            "BottomMargin": -6.5,
+            "Tag": 22,
+            "ActionTag": 580143409,
+            "Size": {
+              "X": 146.0,
+              "Y": 18.0
+            },
+            "Name": "shieldBar",
+            "ctype": "LoadingBarObjectData"
+          },
+          {
+            "ProgressInfo": 100,
+            "ImageFileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/blueBar.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 14.12,
+              "Y": -22.64
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -58.88,
+            "RightMargin": -87.12,
+            "TopMargin": 13.64,
+            "BottomMargin": -31.64,
+            "Tag": 23,
+            "ActionTag": -594555604,
+            "Size": {
+              "X": 146.0,
+              "Y": 18.0
+            },
+            "Name": "eneryBar",
+            "ctype": "LoadingBarObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 16,
+            "LabelText": "5/6",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/AGoblinAppears-o2aV.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 10.09,
+              "Y": 28.23
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -39.91,
+            "RightMargin": -60.09,
+            "TopMargin": -36.23,
+            "BottomMargin": 20.23,
+            "Tag": 24,
+            "ActionTag": -267600932,
+            "Size": {
+              "X": 100.0,
+              "Y": 16.0
+            },
+            "Name": "hpNum",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 16,
+            "LabelText": "5/6",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/AGoblinAppears-o2aV.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 10.09,
+              "Y": 2.5
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -39.91,
+            "RightMargin": -60.09,
+            "TopMargin": -10.5,
+            "BottomMargin": -5.5,
+            "Tag": 25,
+            "ActionTag": -45613057,
+            "Size": {
+              "X": 100.0,
+              "Y": 16.0
+            },
+            "Name": "shieldNum",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 16,
+            "LabelText": "5/6",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/AGoblinAppears-o2aV.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 10.09,
+              "Y": -22.64
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -49.91,
+            "RightMargin": -70.09,
+            "TopMargin": 14.64,
+            "BottomMargin": -30.64,
+            "Tag": 26,
+            "ActionTag": 1828444534,
+            "Size": {
+              "X": 120.0,
+              "Y": 16.0
+            },
+            "Name": "eneryNum",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "Screenshot 2023-04-27 102210.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 212,
+            "Scale9OriginY": 105,
+            "Scale9Width": 220,
+            "Scale9Height": 109,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.9108,
+              "Y": 0.0597
+            },
+            "Scale": {
+              "ScaleX": 0.32,
+              "ScaleY": 0.32
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -321.0892,
+            "RightMargin": -322.9108,
+            "TopMargin": -159.5597,
+            "BottomMargin": -159.4403,
+            "Tag": 12,
+            "ActionTag": 659142577,
+            "Size": {
+              "X": 644.0,
+              "Y": 319.0
+            },
+            "Alpha": 127,
+            "Name": "Image_2",
+            "ctype": "ImageViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "../font/AGoblinAppears-o2aV.ttf",
+        "../Screenshot 2023-04-27 102210.png",
+        "paddle.plist",
+        "paddle.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}
