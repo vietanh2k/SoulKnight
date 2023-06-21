@@ -62,6 +62,7 @@
         "src/modules/testnetwork/ScreenNetwork.js",
 
         "src/GAME_CONFIG.js",
+        "src/utils/Utils.js",
 
         "src/logic/utils/UnorderedList.js",
         "src/logic/utils/Convert.js",
@@ -77,11 +78,26 @@
         "src/logic/objects/weapons/guns/ShortGun.js",
         "src/logic/objects/weapons/guns/DoubleGun.js",
 
+        "src/logic/objects/weapons/swords/Sword.js",
+        "src/logic/objects/weapons/swords/Spear.js",
+        "src/logic/objects/weapons/swords/Knife.js",
+
+        "src/logic/objects/weapons/bows/Bow.js",
+
         "src/logic/objects/ObjectView.js",
         "src/logic/objects/enemys/Enemy.js",
+        "src/logic/objects/enemys/Melee1.js",
+        "src/logic/objects/enemys/Melee2.js",
+        "src/logic/objects/enemys/Range1.js",
+        "src/logic/objects/enemys/Range2.js",
         "src/logic/objects/bullets/Bullet.js",
+        "src/logic/objects/bullets/Arrow.js",
+
+        "src/logic/objects/items/Item.js",
 
         "src/logic/objects/characters/Character.js",
+        "src/logic/objects/characters/Knight.js",
+        "src/logic/MapStatus.js",
 
         "src/UI/utils/UI.js",
 

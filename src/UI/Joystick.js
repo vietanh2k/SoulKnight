@@ -5,15 +5,15 @@ var Joystick = cc.Sprite.extend({
     gol: null,
 
     ctor: function() {
-        this._super(res.gold);
-        this.setScale(1.7)
+        this._super(res.cirBack);
+        this.setScale(0.55)
         this.radius = this.width / 2;
         this.direction = cc.p(0, 0);
         this.touchId = null;
-        this.gol = new cc.Sprite(res.gold);
+        this.gol = new cc.Sprite(res.cirInside);
         this.pos = cc.p(this.width/2, this.height/2)
         this.gol.setPosition(this.pos)
-        this.gol.setScale(0.5)
+        this.gol.setScale(0.35)
         this.addChild(this.gol);
 
         cc.eventManager.addListener({
@@ -40,7 +40,7 @@ var Joystick = cc.Sprite.extend({
             var touchPos = touch.getLocation();
             var angle = cc.pToAngle(cc.pSub(touchPos, this.getPosition()));
             var dir = cc.p(Math.cos(angle), Math.sin(angle));
-            var mul = Math.min(1, cc.pDistance(touchPos, this.getPosition())/this.radius/1.7)
+            var mul = Math.min(1, cc.pDistance(touchPos, this.getPosition())/this.radius/0.55)
             this.direction = cc.pMult(dir, mul);
             var a = cc.pMult(this.direction, this.radius);
             this.gol.setPosition(cc.pAdd(this.pos, a))

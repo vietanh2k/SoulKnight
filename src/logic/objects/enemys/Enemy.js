@@ -5,17 +5,32 @@ var Enemy = AnimatedSprite.extend({
     speed: 200,
     posLogic: null,
 
-    ctor: function(posLogic, map) {
-        this._super(res.celll);
+    ctor: function(_res, posLogic, map) {
+        this._super(_res);
         this.isDestroy = false
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
         this.posLogic = posLogic;
-        this.radius = this.width/3 *(GAME_CONFIG.CELLSIZE/ CELL_SIZE_UI*this.scale)
-        this.hp = 50;
-        this.dirMove = new cc.p(0,1);
-        this.isChangeDir = true;
-        this.isChangeDirByBlock = false;
+        this.radius = 20
+        this.hp = 1;
+        this.we = null;
+        this.dirMove = new cc.p(0,1);  // hướng di chuyển
+        this.isChangeDir = true;        // có đổi hướng
+        this.isChangeDirByBlock = false;        // đổi hướng khi đập tường
+        this.isInRange = true;          //trong pham vi tan cong
+        this.isCanSee = false;          // có nhìn thấy char
+        this.isStop = false;            // có tạm nghỉ
+        this.timeStop = 0;              // thời gian nghỉ
+        this.disStop = GAME_CONFIG.CELLSIZE*20;  //sau khi đi được từng này thì nghỉ
         this.disMove = GAME_CONFIG.CELLSIZE;
+        this.checkCol = 0;
+
+        this.timeDelayAtk = 5;          //thoi gian delay moi lan atk (s)
+        this.timeDelayAtkMax = 5;
+        this.rangeAtk = 13;         //Cell_size
+        this.timeBreak = 0;         //thoi gian nghi sau khi atk
+        this.timeBreakMax = 0.5;
+
+        this.dirMain = new cc.p(0,1);   // hướng mà nhắm đến
         // p.scale = 1.2 * CELL_SIZE_UI / p.getContentSize().width
         this.setAnchorPoint(0.5, 0.28)
         this.initAnimation()
@@ -27,8 +42,8 @@ var Enemy = AnimatedSprite.extend({
 
     initAnimation: function () {
         const duration = 0.6
-        const moveDownAnimId = this.load(res.assassin_plist, 'idle_%01d.png', 0, 3, duration)
-        const moveDownAnimId2 = this.load(res.assassin_plist, 'run_%01d.png', 0, 3, duration)
+        const moveDownAnimId = this.load(res.enemy1, '1idle_%01d.png', 0, 3, duration)
+        const moveDownAnimId2 = this.load(res.enemy1, '1run_%01d.png', 0, 3, duration)
 
         this.play(0)
     },
@@ -37,8 +52,6 @@ var Enemy = AnimatedSprite.extend({
         if(this.isDestroy) return ;
         this.hp = Math.max(this.hp - Math.floor(dame), 0);
         getNumDameUI(dame, cc.p(this.x, this.y))
-        cc.log(this.hp)
-        cc.log(dame)
         if(this.hp <= 0) {
             this.isDestroy = true;
             this.destroy();
@@ -50,54 +63,105 @@ var Enemy = AnimatedSprite.extend({
     },
 
     logicUpdate: function (dt) {
-        if(this.isChangeDir) {
-            this.isChangeDir = false;
-            var dir = cc.pSub(BackgroundLayerInstance.player.posLogic, this.posLogic);
-            let disRan = Math.floor(Math.random() * GAME_CONFIG.CELLSIZE*2) + GAME_CONFIG.CELLSIZE*2;
-            this.disMove = disRan;
-            let angleTotal = 145;
-            if(this.isChangeDirByBlock){
-                this.isChangeDirByBlock = false;
-                let temp = new cc.p(-this.dirMove.x, -this.dirMove.y);
-                this.disMove = GAME_CONFIG.CELLSIZE*3;
-
-                var diff = cc.pSub(dir,temp)         // Tính vector chênh lệch giữa hai vector
-                var diffNormalized = cc.pNormalize(diff) // Lấy vector đơn vị của vector chênh lệch
-                var projectionLength = cc.pDot(temp, diffNormalized) // Tính độ dài vector phân giác
-                var projection = cc.pMult(diffNormalized, projectionLength) // Tính vector phân giác và lưu kết quả vào biến projection
-                dir = cc.pAdd(temp, projection);
-                angleTotal=90
-                cc.log(dir.x+" "+dir.y)
-            }
-
-
-            let angle = Math.floor(Math.random() * angleTotal) - angleTotal / 2;
-            let radians = angle * Math.PI / 180;
-            let cos = Math.cos(radians);
-            let sin = Math.sin(radians);
-            let newX = dir.x * cos - dir.y * sin;
-            let newY = dir.x * sin + dir.y * cos;
-            let dirBullet = new cc.p(newX, newY);
-
-            this.dirMove = cc.pNormalize(dirBullet);
-
-
+        if(this.isDestroy) return;
+        if(this.timeDelayAtk > 0){
+            this.timeDelayAtk -= dt;
         }
-        this.updateMove(this.dirMove, dt)
+
+        if(this.timeBreak > 0){
+            this.timeBreak -= dt;
+        }
+
+        //attack neu trong range
+        let disWithChar = cc.pDistance(this.posLogic, BackgroundLayerInstance.player.posLogic);
+        if(disWithChar <= GAME_CONFIG.CELLSIZE*this.rangeAtk ){
+            this.dirMain = cc.pNormalize(cc.pSub(BackgroundLayerInstance.player.posLogic, this.posLogic));
+            if(this.timeDelayAtk <= 0) {
+                this.timeDelayAtk = this.timeDelayAtkMax;
+                this.activeAtk();
+                this.timeBreak = this.timeBreakMax;
+            }
+        }else{
+            this.dirMain = this.dirMove;
+        }
+        if(this.we != null){
+            this.we.updatePosLogic(this.posLogic)
+            this.we.updateDir(this.dirMain);
+        }
+
+        if(this.timeBreak > 0){
+
+            return;
+        }
+
+        this.isCanSee = this.isCanSeeChar();
+        if(this.isCanSee){
+            this.isStop = false;
+        }
+        // if(this.isCanSeeChar()){
+        //     cc.log("can see")
+        // }
+        if(!this.isStop) {
+            this.checkCol--;
+            if (this.checkCol <= 0) this.checkCol = 0;
+            this.getDirMoveByType()
+
+            this.updateMove(this.dirMove, dt)
+        }
+
+        if(this.isStop){
+            this.timeStop -= dt;
+            if(this.timeStop <=0){
+                this.isStop = false;
+            }
+        }
 
     },
 
+    getDirMoveByType: function () {
+
+    },
+
+    activeAtk: function () {
+        // if(this.we != null) {
+        //     this.we.activateWeapon(2);
+        // }
+    },
+
+    isCanSeeChar: function () {
+        let p0 = new cc.p(this.posLogic.x-this.radius, this.posLogic.y+this.radius)
+        let p1 = new cc.p(this.posLogic.x-this.radius, this.posLogic.y-this.radius)
+        let p2 = new cc.p(this.posLogic.x+this.radius, this.posLogic.y+this.radius)
+        let p3 = new cc.p(this.posLogic.x+this.radius, this.posLogic.y-this.radius)
+
+        let player = BackgroundLayerInstance.player;
+        let q0 = new cc.p(player.posLogic.x-player.radius, player.posLogic.y+player.radius)
+        let q1 = new cc.p(player.posLogic.x-player.radius, player.posLogic.y-player.radius)
+        let q2 = new cc.p(player.posLogic.x+player.radius, player.posLogic.y+player.radius)
+        let q3 = new cc.p(player.posLogic.x+player.radius, player.posLogic.y-player.radius)
+
+        let isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p0, q0)
+        if(isCol != null){
+            return false;
+        }
+        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, q1)
+        if(isCol != null){
+            return false;
+        }
+        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p2, q2)
+        if(isCol != null){
+            return false;
+        }
+        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p3, q3)
+        if(isCol != null){
+            return false;
+        }
+
+        return true;
+    },
+
     updateMove: function (direction, dt) {
-        if(this.isDestroy) return ;
-        if(direction.x === 0) this.play(0)
-        if(direction.x > 0) {
-            this.play(1)
-            this.setRotationY(0)
-        }
-        if(direction.x < 0) {
-            this.play(1)
-            this.setRotationY(180)
-        }
+        this.aniRun(this.dirMain)
 
         var displacement = cc.pMult(direction, this.speed * dt);
         let distan =Math.sqrt(Math.pow(displacement.x, 2) + Math.pow(displacement.y, 2));
@@ -109,6 +173,13 @@ var Enemy = AnimatedSprite.extend({
 
         this.disMove -= distan;
         if(this.disMove <= 0) this.isChangeDir = true;
+
+        this.disStop -= distan;
+        if(this.disStop <= 0){
+            this.disStop = GAME_CONFIG.CELLSIZE*20;
+            this.isStop = true;
+            this.timeStop = Math.random() + 0.8;
+        }
 
         return true;
     },
@@ -214,6 +285,24 @@ var Enemy = AnimatedSprite.extend({
         if(this.isDestroy) return ;
         var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
         this.setPosition(posUI)
+    },
+
+    aniStop: function (newPosX) {
+        if(this.isDestroy) return ;
+        this.play(0)
+    },
+
+    aniRun: function (direction) {
+        if(this.isDestroy) return ;
+        if(direction.x === 0) this.play(0)
+        if(direction.x > 0) {
+            this.play(1)
+            this.setRotationY(0)
+        }
+        if(direction.x < 0) {
+            this.play(1)
+            this.setRotationY(180)
+        }
     },
 
 

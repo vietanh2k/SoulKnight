@@ -2,7 +2,7 @@ var Weapon = cc.Sprite.extend({
     _map: null,
     direction: null,
     radius: 0,
-    speed: 300,
+    speed: 2000,
 
     ctor: function(_res,posLogic, map) {
         this._super(_res);
@@ -18,16 +18,18 @@ var Weapon = cc.Sprite.extend({
         this.critRate = 0.5;
         this.critDame = 1.5;
         this.lastFireTime = new Date().getTime();
+        this.energy = 0;
 
     },
 
-    updateStat: function (dame, rateSpeed, accuracy, critRate, critDame, rang) {
+    updateStat: function (dame, rateSpeed, accuracy, critRate, critDame, rang, speed) {
         this.rateSpeed = rateSpeed;
         this.rang = rang;
         this.dame = dame;
         this.accuracy = accuracy;
         this.critRate = critRate;
         this.critDame = critDame;
+        this.speed = speed;
     },
 
     updateDir: function (direction) {
@@ -57,16 +59,19 @@ var Weapon = cc.Sprite.extend({
 
         if(BackgroundLayerInstance.isTouchFire){
             let currentTime = new Date().getTime();
-            if (currentTime - this.lastFireTime >= (1/this.rateSpeed)*1000){
+            if (currentTime - this.lastFireTime >= (1/this.rateSpeed)*1000 && BackgroundLayerInstance.player.curMana >0){
                 //tinh goc lech accuracy
-                this.activateWeapon();
+                this.activateWeapon(1);
                 this.lastFireTime = currentTime;
+                BackgroundLayerInstance.player.curMana -= this.energy;
             }
 
         }
     },
 
-    activateWeapon: function () {
+    //rule =1 => team minh
+    //rule = 2 => team dich
+    activateWeapon: function (rule) {
 
     },
 
@@ -94,6 +99,13 @@ var Weapon = cc.Sprite.extend({
         }
         return dame;
     },
+
+    getClone: function () {
+    },
+
+    getId: function() {
+        return 0;
+    }
 
 
 });

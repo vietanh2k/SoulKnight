@@ -5,3 +5,9 @@ const convertIndexToPosLogic = function (corX, corY) {
 
     return new cc.p(x, y)
 };
+
+const getIntVector = function (p) {
+    let x = parseInt(p.x);
+    let y = parseInt(p.y);
+    return new cc.p(x, y)
+};

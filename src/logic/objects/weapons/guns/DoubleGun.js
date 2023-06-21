@@ -8,11 +8,13 @@ var DoubleGun = Weapon.extend({
         this.accuracy = 0.95;
         this.critRate = 0.5;
         this.critDame = 1.5;
-        this.updateStat(this.dame, this.rateSpeed, this.accuracy, this.critRate, this.critDame, this.rang)
+        this.speed = 800;
+        this.energy = 1;
+        this.updateStat(this.dame, this.rateSpeed, this.accuracy, this.critRate, this.critDame, this.rang, this.speed)
 
     },
 
-    activateWeapon: function () {
+    activateWeapon: function (rule) {
 
         //tinh goc lech accuracy
         let dirBullet = this.getDirBulletByAccu();
@@ -20,11 +22,11 @@ var DoubleGun = Weapon.extend({
         //tinh dame crit
         let dame = this.getDameByCrit();
 
-        this.createBullet(dame, dirBullet, this.rang);
+        this.createBullet(rule, dame, dirBullet, this.rang);
 
     },
 
-    createBullet: function (dame, dirBullet, rang) {
+    createBullet: function (rule, dame, dirBullet, rang) {
         //tinh pos dau sung
         var posLogic = new cc.p(this.posLogic.x,this.posLogic.y);
         var dir = new cc.p(this.curDir.x, this.curDir.y);
@@ -35,12 +37,21 @@ var DoubleGun = Weapon.extend({
         var pos2 = cc.pAdd(posLogic, cc.pMult(dir2, -10));
 
         posLogic = cc.pAdd(posLogic, cc.pMult(dir, this.width/2))
-        var bullet = new  Bullet(pos1, this._map, dirBullet,dame, rang)
+        var bullet = new  Bullet(rule, pos1, this._map, dirBullet,dame, rang, this.speed)
         var posLogic2 = new cc.p(this.posLogic.x,this.posLogic.y+5);
-        var bullet2 = new  Bullet(pos2, this._map, dirBullet, dame, rang)
+        var bullet2 = new  Bullet(rule, pos2, this._map, dirBullet, dame, rang, this.speed)
         BackgroundLayerInstance.objectView.addBullet(bullet)
         BackgroundLayerInstance.objectView.addBullet(bullet2)
     },
+
+    getClone: function (pos) {
+        let wp = new DoubleGun(pos, this._map);
+        return wp;
+    },
+
+    getId: function() {
+        return cf.WP_TYPE.DOUBLE_GUN;
+    }
 
 
 });

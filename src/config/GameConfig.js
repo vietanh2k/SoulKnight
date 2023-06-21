@@ -107,6 +107,77 @@ var cf = cf || {};
 
 // cf.WIDTH = WIDTHSIZE;
 // cf.HEIGHT = HEIGHTSIZE;
+cf.MAP_LEVEL = [
+    {
+        level: 10,
+        // enemy: [1,1,1,1,1],
+        enemy: [1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 15,
+        // enemy: [1,1,1,1,1,1],
+        enemy: [1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 20,
+        // enemy: [1,1,1,1,2,2],
+        enemy: [1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 25,
+        // enemy: [1,1,1,2,2,2],
+        enemy: [1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 30,
+        // enemy: [1,1,2,2,2,2],
+        enemy: [1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 35,
+        // enemy: [1,1,2,2,2,3],
+        enemy: [1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 40,
+        // enemy: [1,1,1,1,1,1],
+        enemy: [1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 45,
+        enemy: [1,1,1,1,1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 50,
+        enemy: [1,1,1,1,1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 55,
+        enemy: [1,1,1,1,1,1],
+        rareEnemy: 0,
+    },
+];
+
+cf.WP_TYPE = {
+    DOUBLE_GUN: 1,
+    SHORT_GUN: 2,
+};
+
+cf.POTION_TYPE = {
+    SMALL_HEAL: 1,
+    SMALL_MANA: 2,
+    BIG_HEAL: 3,
+    BIG_MANA: 4,
+};
 
 cf.TOAST_Z_ORDER = 1000000000;
 cf.BULLET_LOCAL_Z_ORDER = 10;

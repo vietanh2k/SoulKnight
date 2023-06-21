@@ -34,7 +34,7 @@ cc.game.onStart = function () {
         }
         winSize = cc.director.getWinSize();
         CELL_SIZE_UI = Math.round(winSize.height/12);
-
+        Utils.loadMapConfig();
         // cc.director.setDisplayStats(false);
 
         // The game will be resized when browser size change
@@ -45,7 +45,7 @@ cc.game.onStart = function () {
         // //modules
         // testnetwork.connector = new testnetwork.Connector(gv.gameClient);
         //SignInScreen
-        fr.view(GameLayer);
+        fr.view_with_args(GameLayer, true);
     }, this);
 };
 cc.game.run();

@@ -24,6 +24,10 @@ const checkColisionRectInMap = function (l, r, u , d, mapArr) {
 };
 
 const checkColision2DoanThang = function (p0, p1, q0, q1) {     //p0,p1 la 2 diem dau va cuoi cua doan thang
+    p0 = getIntVector(p0);
+    p1 = getIntVector(p1);
+    q0 = getIntVector(q0);
+    q1 = getIntVector(q1);
 
     var AB = cc.pSub(p1, p0); // vector AB
     var CD = cc.pSub(q1, q0); // vector CD
@@ -68,6 +72,8 @@ const checkColision2DoanThang = function (p0, p1, q0, q1) {     //p0,p1 la 2 die
 }
 
 const isPointInsideHCN= function (p0, tamHCN, w1, h1) {
+    p0 = getIntVector(p0);
+    tamHCN = getIntVector(tamHCN);
     let GiaoDiem = null;
     if(p0.x >= tamHCN.x-w1/2 && p0.x <= tamHCN.x +w1/2
         && p0.y >= tamHCN.y - h1/2 && p0.y <= tamHCN.y + h1/2){
@@ -77,9 +83,12 @@ const isPointInsideHCN= function (p0, tamHCN, w1, h1) {
 }
 
 const getColisionDoanThangVaHCN = function (p0, p1, tamHCN, w1, h1) {     //p0,p1 la 2 diem dau va cuoi cua doan thang
-    cc.log("start")
-    cc.log(p0.x+" "+p0.y+" "+p1.x+" "+p1.y)
-    cc.log(tamHCN.x+" "+tamHCN.y+" "+w1+" "+h1)
+    // cc.log("start")
+    // cc.log(p0.x+" "+p0.y+" "+p1.x+" "+p1.y)
+    // cc.log(tamHCN.x+" "+tamHCN.y+" "+w1+" "+h1)
+    p0 = getIntVector(p0);
+    p1 = getIntVector(p1);
+    tamHCN = getIntVector(tamHCN);
     let giaoDiem = null;
     let disMin = 99999;
     let p11 = new cc.p(p1.x, p1.y);
@@ -106,7 +115,7 @@ const getColisionDoanThangVaHCN = function (p0, p1, tamHCN, w1, h1) {     //p0,p
     if(d4 != null){
         giaoDiem = new cc.p(d4.x, d4.y);;
     }
-    if(giaoDiem != null) cc.log("trueeeeeeeeeeeeeee")
+    // if(giaoDiem != null) cc.log("trueeeeeeeeeeeeeee")
     return giaoDiem;
 
 }

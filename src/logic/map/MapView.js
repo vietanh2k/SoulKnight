@@ -3,6 +3,7 @@
  * */
 MAP_WIDTH = 20;
 MAP_HEIGHT= 15;
+MAP_BLOCK= 10;
 var MapView = cc.Class.extend({
     ctor:function (player) {
         this.listPath = Array.from(
@@ -18,7 +19,7 @@ var MapView = cc.Class.extend({
                 ()=>0
             )
         );
-        this.init();
+        // this.init();
         // this.initListPathForAllNode()
 
     },
@@ -53,6 +54,73 @@ var MapView = cc.Class.extend({
         return true;
     },
 
+    initFromJson:function (index) {
+        let map = cf.MAP[index];
+        MAP_WIDTH = map.mapWidth;
+        MAP_HEIGHT = map.mapHeight;
+        MAP_BLOCK = map.blockArr.length;
+        let blockArr = map.blockArr;
+        this.mapArray = Array.from(
+            {length: MAP_WIDTH + 1},
+            () => Array.from(
+                {length: MAP_HEIGHT + 1},
+                ()=>0
+            )
+        );
+        this.initWall();
+
+        for(var i=0; i<blockArr.length; i++){
+            let x = blockArr[i][0];
+            let y = blockArr[i][1];
+            if(x>=0 && x<= MAP_WIDTH && y>=0 && y<= MAP_HEIGHT){
+                this.mapArray[x][y] = 1;
+            }
+
+        }
+
+        return true;
+    },
+
+    initChestMap:function (index) {
+        MAP_WIDTH = 10;
+        MAP_HEIGHT = 10;
+        this.mapArray = Array.from(
+            {length: MAP_WIDTH + 1},
+            () => Array.from(
+                {length: MAP_HEIGHT + 1},
+                ()=>0
+            )
+        );
+        this.initWall();
+
+    },
+
+    initDesMap:function (index) {
+        MAP_WIDTH = 10;
+        MAP_HEIGHT = 10;
+        this.mapArray = Array.from(
+            {length: MAP_WIDTH + 1},
+            () => Array.from(
+                {length: MAP_HEIGHT + 1},
+                ()=>0
+            )
+        );
+        this.initWall();
+
+    },
+
+    initWall:function () {
+        for(var i =0; i<= MAP_WIDTH; i++){
+            this.mapArray[i][0] = 1;
+            this.mapArray[i][MAP_HEIGHT] = 1;
+        }
+        for(var i =0; i<= MAP_HEIGHT; i++){
+            this.mapArray[0][i] = 1;
+            this.mapArray[MAP_WIDTH][i] = 1;
+        }
+
+    },
+
     findPathBFS:function (startRow, startCol, maxDepth) {
         let time1 = Date.now();
         let path = Array.from(
@@ -76,9 +144,7 @@ var MapView = cc.Class.extend({
             const [currentRow, currentCol, depth] = queue.shift();
             // Nếu đến được đích thì trả về true
             if (depth > maxDepth) {
-                let time2 = Date.now();
-                cc.log(time2)
-                cc.log(time2-time1)
+
                 return path;
             }
 

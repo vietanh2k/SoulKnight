@@ -1,10 +1,10 @@
-var Bullet = cc.Sprite.extend({
+var Arrow = cc.Sprite.extend({
     _map: null,
-    speed: 300,
+    speed: 800,
 
 
-    ctor: function(rule, posLogic, map, direction, dame, rang, speed) {
-        this._super(res.bullet);
+    ctor: function(rule, posLogic, map, direction, dame, rang) {
+        this._super(res.arrow);
         this.setScale(2)
         this.radius = this.width/2;
         this.isDestroy = false
@@ -15,10 +15,17 @@ var Bullet = cc.Sprite.extend({
         this.direction = direction;
         this.dame = dame;
         this.rang = rang;
-        this.speed = speed;
         this.disMove = 0; //quang duong di chuyen
+        this.updateDirArrow()
+
 
     },
+
+    updateDirArrow: function ( ) {
+        var angle = cc.pToAngle(this.direction);
+        this.setRotation(-angle/Math.PI*180+90);
+    },
+
 
     updateMove: function ( dt) {
         var displacement = cc.pMult(this.direction, this.speed * dt);

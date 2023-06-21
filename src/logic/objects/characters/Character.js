@@ -7,28 +7,29 @@ var Character = AnimatedSprite.extend({
     otherWeapon: null,
     weapon2: null,
 
-    ctor: function(posLogic, map) {
-        this._super(res.celll);
+    ctor: function(_res, posLogic, map) {
+        this._super(_res);
         this.maxHp = 7;
         this.curHp = 5;
-        this.maxMana = 200;
-        this.curMana = 180;
+        this.maxMana = 5000;
+        this.curMana = 5000;
         this.maxS = 6;
         this.curS = 4;
         this.isDestroy = false
         this.dirEnemy = false;      // co dang tro den enemy
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
         this.posLogic = posLogic;
-        this.radius = this.width/3 *(GAME_CONFIG.CELLSIZE/ CELL_SIZE_UI*this.scale)
+        this.radius = 20
         cc.log("radius= "+this.radius)
         // p.scale = 1.2 * CELL_SIZE_UI / p.getContentSize().width
         this.setAnchorPoint(0.5, 0.28)
-        this.otherWeapon = new ShortGun(posLogic, map);
-        this.otherWeapon.setPosition(this.width/2, this.height/4)
-        this.otherWeapon.visible = false
-        this.addChild(this.otherWeapon);
+        this.otherWeapon = null;
+        // this.otherWeapon = new ShortGun(posLogic, map);
+        // this.otherWeapon.setPosition(this.width/2, this.height/4)
+        // this.otherWeapon.visible = false
+        // this.addChild(this.otherWeapon);
 
-        this.we = new DoubleGun(posLogic, map);
+        this.we = new ShortGun(posLogic, map);
         this.we.setPosition(this.width/2, this.height/4)
 
         this.addChild(this.we)
@@ -37,7 +38,17 @@ var Character = AnimatedSprite.extend({
         this.direction = new cc.p(1,0);
         // this.opacity = 0
         this._map = map;
-        this.switchWeapon()
+        this.timeShieldStart = 0; //s
+        this.timeShieldStartMax = 3;
+        this.timeShieldDelay = 1;
+        this.timeShieldDelayMax = 1;
+
+        this.cdSkill = 0;
+        this.cdSkillMax = 5;
+
+        this.energyWp = 0;
+
+
 
     },
 
@@ -50,6 +61,8 @@ var Character = AnimatedSprite.extend({
     },
 
     switchWeapon: function () {
+        if(this.otherWeapon === null) return;
+
         let tmp = this.we;
         this.we = this.otherWeapon;
         this.otherWeapon = tmp;
@@ -57,21 +70,51 @@ var Character = AnimatedSprite.extend({
         this.we.updateCurDir(this.direction);
         this.we.updateDir(this.direction);
         this.we.visible = true;
+        this.energyWp = this.we.energy;
         this.otherWeapon.visible = false
+
+        GamelayerInstance.updateSwitchWp(this.we.energy, this.we.getTexture())
     },
 
     logicUpdate: function (dt) {
-        this.we.updateActivate();
+
+        this.updateTimeLogic(dt);
+
+        if(this.timeShieldStart > 0){
+            this.timeShieldStart -= dt;
+        }
+
+        if(this.timeShieldStart <= 0){
+            if(this.timeShieldDelay > 0){
+                this.timeShieldDelay -= dt;
+            }
+
+            if(this.timeShieldDelay <= 0) {
+                this.increaShield();
+                this.timeShieldDelay = this.timeShieldDelayMax;
+            }
+        }
+
+        this.updateActivateWp();
+
         // this.updateDirByEnemy();
     },
 
+    updateActivateWp: function () {
+        this.we.updateActivate();
+    },
+
+    increaShield: function (dt) {
+        this.curS++;
+        this.curS = Math.min(this.curS, this.maxS);
+    },
+
     updateDirByEnemy: function (dt) {
-        let enemy = BackgroundLayerInstance.objectView.getClosestEnemy(500);
+        let enemy = BackgroundLayerInstance.objectView.getClosestEnemy(17000);
         if(enemy != null){
             this.dirEnemy = true;
             var dir = cc.pSub(enemy.posLogic, this.posLogic);
             this.direction = dir;
-            cc.log(this.direction.x+" "+this.direction.y)
         }else {
             this.dirEnemy = false;
         }
@@ -110,11 +153,14 @@ var Character = AnimatedSprite.extend({
         }
 
 
-
-        this.we.updatePosLogic(this.posLogic)
-        this.we.updateDir(this.direction);
+        this.updateMoveWp();
 
         return true;
+    },
+
+    updateMoveWp: function () {
+        this.we.updatePosLogic(this.posLogic)
+        this.we.updateDir(this.direction);
     },
 
     updateMoveX: function (newPosX) {
@@ -187,9 +233,9 @@ var Character = AnimatedSprite.extend({
 
     getCorrectPos: function (posVC, posPlayer) {
         if(posVC > posPlayer) {
-            return posVC - 30 - this.radius-1;
+            return posVC - 30 - this.radius-2;
         }else{
-            return posVC + 30 + this.radius+1;
+            return posVC + 30 + this.radius+2;
         }
     },
 
@@ -197,10 +243,81 @@ var Character = AnimatedSprite.extend({
         return this.we.createBullet()
     },
 
+    takeDame: function (dame) {
+        if(this.isDestroy) return ;
+        this.curS = this.curS - Math.floor(dame);
+        if(this.curS < 0){
+            this.curHp = Math.max(this.curHp + this.curS, 0);
+            this.curS = 0;
+        }
+
+        this.timeShieldStart = this.timeShieldStartMax;
+        // GamelayerInstance.newLvl();
+        this.timeShieldDelay = 0;
+        getNumDameUI(dame, cc.p(this.x, this.y))
+        if(this.hp <= 0) {
+            this.isDestroy = true;
+            this.destroy();
+        }
+    },
+
+    recoverHp: function (many) {
+        many = Math.floor(many)
+        this.curHp = Math.min(this.curHp + many, this.maxHp)
+
+    },
+
+    recoverMana: function (many) {
+        many = Math.floor(many)
+        this.curMana = Math.min(this.curMana + many, this.maxMana)
+
+    },
+
+    destroy: function () {
+    },
+
+    pressSkill: function () {
+        if(this.cdSkill <= 0){
+            this.activeSkill();
+            this.cdSkill = this.cdSkillMax;
+        }
+    },
+
+    activeSkill: function () {
+    },
+
+    updateTimeLogic: function (dt) {
+        if(this.cdSkill > 0){
+            this.cdSkill -= dt;
+        }
+    },
 
     render: function () {
         var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
         this.setPosition(posUI)
+    },
+
+    updateMana: function () {
+        this.curMana -= this.energyWp;
+        if(this.curMana < 0) this.curMana = 0;
+    },
+
+    pickWp: function (wp) {
+        if(this.otherWeapon === null){
+            this.otherWeapon = wp;
+            this.otherWeapon.setPosition(this.width/2, this.height/4)
+            this.otherWeapon.visible = false
+            this.addChild(this.otherWeapon);
+            this.switchWeapon();
+        }else{
+            let pos = new cc.p(this.posLogic.x, this.posLogic.y);
+            let item = new Item(GAME_CONFIG.ITEM_WEAPON, this.we.getId(), pos);
+            BackgroundLayerInstance.objectView.addItem(item)
+        }
+    },
+
+    removeSkill: function () {
+
     },
 
 

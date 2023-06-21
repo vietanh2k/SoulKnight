@@ -87,28 +87,20 @@ Utils.addScaleAnimation = function (obj) {
     obj.runAction(cc.sequence(cc.scaleBy(0.15, 5), cc.scaleBy(0.10, 0.94), cc.scaleBy(0.08, 1.06), cc.scaleBy(0.07, 0.96), cc.scaleBy(0.05, 1.04)));
 };
 
-Utils.loadCardConfig = function () {
-    cc.loader.load('json/CardTypeMap.json', (err, res) => {
-        cf.CARD_TYPE = res[0];
+Utils.loadMapConfig = function () {
+    cc.loader.load('json/Map.json', (err, res) => {
+        cf.MAP = res[0].map;
+        cc.log(JSON.stringify(cf.MAP))
+
+        cf.MAP2 =  res[0].map2;
+        cc.log(JSON.stringify(cf.MAP2))
     });
-    cc.loader.load('json/Monster.json', (err, res) => {
-        cf.MONSTER = res[0];
-    });
-    cc.loader.load('json/Tower.json', (err, res) => {
-        cf.TOWER = res[0];
-    });
-    cc.loader.load('json/Potion.json', (err, res) => {
-        cf.POTION = res[0];
-    });
-    cc.loader.load('json/Potion2.json', (err, res) => {
-        cf.POTION2 = res[0];
-    });
-    cc.loader.load('json/TowerBuff.json', (err, res) => {
-        cf.TOWER_BUFF = res[0];
-    });
-    cc.loader.load('json/TargetBuff.json', (err, res) => {
-        cf.TARGET_BUFF = res[0];
-    });
+    let map = cf.MAP[0];
+    MAP_WIDTH = map.mapWidth;
+    MAP_HEIGHT = map.mapHeight;
+
+
+
 };
 
 Utils.getAllObjectValues = function (object) {

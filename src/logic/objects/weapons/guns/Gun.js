@@ -12,7 +12,7 @@ var Gun = Weapon.extend({
 
     },
 
-    activateWeapon: function () {
+    activateWeapon: function (rule) {
 
         //tinh goc lech accuracy
         let dirBullet = this.getDirBulletByAccu();

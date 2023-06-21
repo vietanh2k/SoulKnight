@@ -1,15 +1,14 @@
-var ShortGun = Weapon.extend({
+var Bow = Weapon.extend({
 
     ctor: function(posLogic, map) {
-        this._super(res.gun, posLogic, map);
+        this._super(res.bow, posLogic, map);
         this.rateSpeed = 2;
-        this.rang = 900;    //range
+        this.rang = 1500;    //range
         this.dame = 2;
         this.accuracy = 1;
         this.critRate = 0.5;
         this.critDame = 1.5;
-        this.speed  = 500;
-        this.updateStat(this.dame, this.rateSpeed, this.accuracy, this.critRate, this.critDame, this.rang, this.speed)
+        this.updateStat(this.dame, this.rateSpeed, this.accuracy, this.critRate, this.critDame, this.rang)
 
     },
 
@@ -32,17 +31,9 @@ var ShortGun = Weapon.extend({
         dir = cc.pNormalize(dir)
         posLogic = cc.pAdd(posLogic, cc.pMult(dir, this.width/2))
 
-        var bullet = new  Bullet(rule, posLogic, this._map, dirBullet,dame, rang, this.speed)
+        var bullet = new  Arrow(rule, posLogic, this._map, dirBullet,dame, rang)
         BackgroundLayerInstance.objectView.addBullet(bullet)
     },
 
-    getClone: function (pos) {
-        let wp = new ShortGun(pos, this._map);
-        return wp;
-    },
-
-    getId: function() {
-        return cf.WP_TYPE.SHORT_GUN;
-    }
 
 });
