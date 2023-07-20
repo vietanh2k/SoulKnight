@@ -2,7 +2,7 @@ var DoubleGun = Weapon.extend({
 
     ctor: function(posLogic, map) {
         this._super(res.gun2, posLogic, map);
-        this.rateSpeed = 15;
+        this.rateSpeed = 30;
         this.rang = 800;    //range
         this.dame = 2;
         this.accuracy = 0.95;
@@ -37,9 +37,9 @@ var DoubleGun = Weapon.extend({
         var pos2 = cc.pAdd(posLogic, cc.pMult(dir2, -10));
 
         posLogic = cc.pAdd(posLogic, cc.pMult(dir, this.width/2))
-        var bullet = new  Bullet(rule, pos1, this._map, dirBullet,dame, rang, this.speed)
+        var bullet = new  NorBullet(rule, pos1, this._map, dirBullet,dame, rang, this.speed)
         var posLogic2 = new cc.p(this.posLogic.x,this.posLogic.y+5);
-        var bullet2 = new  Bullet(rule, pos2, this._map, dirBullet, dame, rang, this.speed)
+        var bullet2 = new  NorBullet(rule, pos2, this._map, dirBullet, dame, rang, this.speed)
         BackgroundLayerInstance.objectView.addBullet(bullet)
         BackgroundLayerInstance.objectView.addBullet(bullet2)
     },

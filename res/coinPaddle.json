@@ -1,0 +1,183 @@
+{
+  "ID": "4948e9cf-453f-445e-a9c3-2ed173d539df",
+  "Version": "3.10.0.0",
+  "Name": "coinPaddle",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 16,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/coinBack.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 30,
+            "Scale9OriginY": 12,
+            "Scale9Width": 31,
+            "Scale9Height": 13,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -45.5,
+            "RightMargin": -45.5,
+            "TopMargin": -18.5,
+            "BottomMargin": -18.5,
+            "Tag": 17,
+            "ActionTag": -1810612939,
+            "Size": {
+              "X": 91.0,
+              "Y": 37.0
+            },
+            "Alpha": 102,
+            "Name": "back",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FileData": {
+              "Type": "MarkedSubImage",
+              "Path": "battle/coin.png",
+              "Plist": "battle/paddle.plist"
+            },
+            "Scale9OriginX": 4,
+            "Scale9OriginY": 5,
+            "Scale9Width": 6,
+            "Scale9Height": 8,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": -31.5125,
+              "Y": 0.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -38.5125,
+            "RightMargin": 24.5125,
+            "TopMargin": -9.0,
+            "BottomMargin": -9.0,
+            "Tag": 18,
+            "ActionTag": 1479209044,
+            "Size": {
+              "X": 14.0,
+              "Y": 18.0
+            },
+            "Name": "coin",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 16,
+            "LabelText": "7",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "R": 0,
+              "G": 0,
+              "B": 0
+            },
+            "OutlineEnabled": true,
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 8.0,
+              "Y": 1.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "PreSize": {
+              "X": 0.0,
+              "Y": 0.0
+            },
+            "LeftMargin": -20.5,
+            "RightMargin": -36.5,
+            "TopMargin": -12.0,
+            "BottomMargin": -10.0,
+            "Tag": 19,
+            "ActionTag": 2074007494,
+            "Size": {
+              "X": 57.0,
+              "Y": 22.0
+            },
+            "Name": "num",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 0.0,
+          "Y": 0.0
+        },
+        "Name": "Node",
+        "ctype": "SingleNodeObjectData"
+      },
+      "UsedResources": [
+        "../font/SVN-Supercell Magic.ttf",
+        "paddle.plist",
+        "paddle.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Node"
+}

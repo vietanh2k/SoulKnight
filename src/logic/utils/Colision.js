@@ -82,7 +82,7 @@ const isPointInsideHCN= function (p0, tamHCN, w1, h1) {
     return GiaoDiem;
 }
 
-const getColisionDoanThangVaHCN = function (p0, p1, tamHCN, w1, h1) {     //p0,p1 la 2 diem dau va cuoi cua doan thang
+const getColisionDoanThangVaHCN2 = function (p0, p1, tamHCN, w1, h1) {     //p0,p1 la 2 diem dau va cuoi cua doan thang
     // cc.log("start")
     // cc.log(p0.x+" "+p0.y+" "+p1.x+" "+p1.y)
     // cc.log(tamHCN.x+" "+tamHCN.y+" "+w1+" "+h1)
@@ -119,6 +119,30 @@ const getColisionDoanThangVaHCN = function (p0, p1, tamHCN, w1, h1) {     //p0,p
     return giaoDiem;
 
 }
+
+const getColisionDoanThangVaHCN = function (p0, p1, tamHCN, w1, h1) {     //p0,p1 la 2 diem dau va cuoi cua doan thang
+    p0 = getIntVector(p0);
+    p1 = getIntVector(p1);
+    tamHCN = getIntVector(tamHCN);
+    let pSub = cc.pSub(p1, p0);
+    let giaoDiem = null;
+
+    let dis1 = cc.pDistance(p0, p1);
+    // for tu A den B voi khoang cachs DIS_CHECK_COLISION
+    for (let i = 0; i <= dis1+GAME_CONFIG.DIS_CHECK_COLISION; i += GAME_CONFIG.DIS_CHECK_COLISION){
+        let t = i/dis1;     // t tu 0 toi 1
+        let curP = new cc.p(p0.x + pSub.x*t, p0.y + pSub.y*t);
+        if(isPointInsideHCN(curP, tamHCN, w1, h1)){
+            giaoDiem = curP;
+            break;
+        }
+
+    }
+    return giaoDiem;
+
+}
+
+
 
 // const checkColisionWithWall = function (pos) {
 //     let ret = false;

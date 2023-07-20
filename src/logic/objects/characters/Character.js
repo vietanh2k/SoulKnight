@@ -9,17 +9,21 @@ var Character = AnimatedSprite.extend({
 
     ctor: function(_res, posLogic, map) {
         this._super(_res);
+        this.inactiveSourceCounter = 0;
         this.maxHp = 7;
         this.curHp = 5;
         this.maxMana = 5000;
         this.curMana = 5000;
         this.maxS = 6;
         this.curS = 4;
+        this.coin = 50;
         this.isDestroy = false
         this.dirEnemy = false;      // co dang tro den enemy
+        this.isCanDo = true;  //co the hoat dong
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
         this.posLogic = posLogic;
         this.radius = 20
+        this.isLeft = true; //quay trai
         cc.log("radius= "+this.radius)
         // p.scale = 1.2 * CELL_SIZE_UI / p.getContentSize().width
         this.setAnchorPoint(0.5, 0.28)
@@ -29,7 +33,7 @@ var Character = AnimatedSprite.extend({
         // this.otherWeapon.visible = false
         // this.addChild(this.otherWeapon);
 
-        this.we = new ShortGun(posLogic, map);
+        this.we = new WaterGun(posLogic, map);
         this.we.setPosition(this.width/2, this.height/4)
 
         this.addChild(this.we)
@@ -47,8 +51,6 @@ var Character = AnimatedSprite.extend({
         this.cdSkillMax = 5;
 
         this.energyWp = 0;
-
-
 
     },
 
@@ -76,6 +78,11 @@ var Character = AnimatedSprite.extend({
         GamelayerInstance.updateSwitchWp(this.we.energy, this.we.getTexture())
     },
 
+    updateCoin: function (many) {
+        this.coin = Math.max(0, this.coin + many);
+        GamelayerInstance.updateCoinPaddle();
+    },
+
     logicUpdate: function (dt) {
 
         this.updateTimeLogic(dt);
@@ -95,12 +102,15 @@ var Character = AnimatedSprite.extend({
             }
         }
 
-        this.updateActivateWp();
+
+        if(!this.isCanDo) return;
+        this.updateActivateWp(dt);
 
         // this.updateDirByEnemy();
     },
 
-    updateActivateWp: function () {
+    updateActivateWp: function (dt) {
+        this.we.logicUpdate(dt);
         this.we.updateActivate();
     },
 
@@ -121,6 +131,8 @@ var Character = AnimatedSprite.extend({
     },
 
     updateMove: function (direction2, dt) {
+        if(!this.isCanDo) return;
+
         let direction = new cc.p(direction2.x, direction2.y);
 
         var displacement = cc.pMult(direction, this.speed * dt);
@@ -131,13 +143,11 @@ var Character = AnimatedSprite.extend({
         this.updateMoveY(newPosY);
 
         //update dir cua char
-        if(direction.x === 0) this.play(0)
-        if(direction.x != 0) {
-            this.play(1)
-        }
+        if(direction.x === 0 && direction.y === 0) this.play(0)
+        else this.play(1)
 
 
-        let enemy = BackgroundLayerInstance.objectView.getClosestEnemy(300);
+        let enemy = BackgroundLayerInstance.objectView.getClosestEnemy(7*GAME_CONFIG.CELLSIZE);
         if(enemy != null){
             var dir = cc.pSub(enemy.posLogic, this.posLogic);
             direction = dir;
@@ -145,10 +155,15 @@ var Character = AnimatedSprite.extend({
 
         if(direction.x > 0) {
             this.setRotationY(0)
+            this.isLeft = true;
             this.direction = direction;
         }
-        if(direction.x < 0) {
+        else if(direction.x < 0) {
+            this.isLeft = false;
             this.setRotationY(180)
+            this.direction = direction;
+        }
+        else if(direction.x === 0 && direction.y !== 0) {
             this.direction = direction;
         }
 
@@ -179,21 +194,21 @@ var Character = AnimatedSprite.extend({
         var d = Math.floor((newPos.y - this.radius)/60);
 
         for(var i =l; i<= r; i++){
-            if(this._map.mapArray[i][u] === 1){
+            if(this._map.mapArray[i][u] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][u] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][u] > 0){
                 var tmp = convertIndexToPosLogic(i,u).x;
                 return this.getCorrectPos(tmp, this.posLogic.x);
             }
-            if(this._map.mapArray[i][d] === 1){
+            if(this._map.mapArray[i][d] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][d] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][d] > 0){
                 var tmp = convertIndexToPosLogic(i,d).x;
                 return this.getCorrectPos(tmp, this.posLogic.x);
             }
         }
         for(var i =d; i<= u; i++){
-            if(this._map.mapArray[l][i] === 1){
+            if(this._map.mapArray[l][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[l][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[l][i] > 0){
                 var tmp = convertIndexToPosLogic(l,i).x;
                 return this.getCorrectPos(tmp, this.posLogic.x);
             }
-            if(this._map.mapArray[r][i] === 1){
+            if(this._map.mapArray[r][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[r][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[r][i] > 0){
                 var tmp = convertIndexToPosLogic(r,i).x;
                 return this.getCorrectPos(tmp, this.posLogic.x);
             }
@@ -209,21 +224,21 @@ var Character = AnimatedSprite.extend({
         var d = Math.floor((newPos.y - this.radius)/60);
         
         for(var i =l; i<= r; i++){
-            if(this._map.mapArray[i][u] === 1){
+            if(this._map.mapArray[i][u] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][u] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][u] > 0){
                 var tmp = convertIndexToPosLogic(i,u).y;
                 return this.getCorrectPos(tmp, this.posLogic.y);
             }
-            if(this._map.mapArray[i][d] === 1){
+            if(this._map.mapArray[i][d] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][d] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][d] > 0){
                 var tmp = convertIndexToPosLogic(i,d).y;
                 return this.getCorrectPos(tmp, this.posLogic.y);
             }
         }
         for(var i =d; i<= u; i++){
-            if(this._map.mapArray[l][i] === 1){
+            if(this._map.mapArray[l][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[l][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[l][i] > 0){
                 var tmp = convertIndexToPosLogic(l,i).y;
                 return this.getCorrectPos(tmp, this.posLogic.y);
             }
-            if(this._map.mapArray[r][i] === 1){
+            if(this._map.mapArray[r][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[r][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[r][i] > 0){
                 var tmp = convertIndexToPosLogic(r,i).y;
                 return this.getCorrectPos(tmp, this.posLogic.y);
             }
@@ -245,6 +260,7 @@ var Character = AnimatedSprite.extend({
 
     takeDame: function (dame) {
         if(this.isDestroy) return ;
+
         this.curS = this.curS - Math.floor(dame);
         if(this.curS < 0){
             this.curHp = Math.max(this.curHp + this.curS, 0);
@@ -295,6 +311,7 @@ var Character = AnimatedSprite.extend({
     render: function () {
         var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
         this.setPosition(posUI)
+        this.setLocalZOrder(winSize.height - this.y + CELL_SIZE_UI);
     },
 
     updateMana: function () {
@@ -310,9 +327,16 @@ var Character = AnimatedSprite.extend({
             this.addChild(this.otherWeapon);
             this.switchWeapon();
         }else{
+
             let pos = new cc.p(this.posLogic.x, this.posLogic.y);
             let item = new Item(GAME_CONFIG.ITEM_WEAPON, this.we.getId(), pos);
             BackgroundLayerInstance.objectView.addItem(item)
+            this.we.removeFromParent(true);
+            this.we = wp;
+            this.we.setPosition(this.width/2, this.height/4)
+            this.we.visible = true
+            this.addChild(this.we);
+            GamelayerInstance.updateSwitchWp(this.we.energy, this.we.getTexture())
         }
     },
 

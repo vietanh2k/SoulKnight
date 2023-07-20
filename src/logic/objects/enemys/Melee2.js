@@ -77,6 +77,10 @@ var Melee2 = Enemy.extend({
 
     logicUpdate: function (dt) {
         if(this.isDestroy) return;
+        if(BackgroundLayerInstance.state === GAME_CONFIG.STATE_ONSTART){
+            return;
+        }
+
         if(this.timeDelayAtk > 0){
             this.timeDelayAtk -= dt;
         }
@@ -84,6 +88,8 @@ var Melee2 = Enemy.extend({
         if(this.timeBreak > 0){
             this.timeBreak -= dt;
         }
+
+        if(!this.isCanDo) return;
 
         if(this.timeDelayStartAtk > 0){
             this.timeDelayStartAtk -= dt;
@@ -169,7 +175,7 @@ var Melee2 = Enemy.extend({
         this.aniRun(dir)
         this.we.updatePosLogic(this.posLogic)
         this.we.updateDir(dir);
-        this.we.activateWeapon()
+        this.we.activateWeapon(2);
     },
 
     checkColision: function (newPos) {

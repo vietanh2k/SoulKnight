@@ -11,6 +11,8 @@ var Item = cc.Sprite.extend({
         this.isCanActive = false;
         this.isDestroy = false;
         this.gateId = null;
+        this.isRendered = false;
+
         this.init();
 
 
@@ -24,14 +26,27 @@ var Item = cc.Sprite.extend({
             this.initWeapon();
         }
 
-        if(this.type === GAME_CONFIG.ITEM_POTION){
+        else if(this.type === GAME_CONFIG.ITEM_POTION){
             this.initPotion();
         }
 
-        if(this.type === GAME_CONFIG.ITEM_GATE){
+        else if(this.type === GAME_CONFIG.ITEM_GATE){
             this.initGate();
         }
 
+        else if(this.type === GAME_CONFIG.ITEM_CHEST){
+            this.initChest();
+        }
+
+        else if(this.type === GAME_CONFIG.ITEM_SHOPBACK){
+            this.initShopBack();
+        }
+
+    },
+
+    initShopBack: function () {
+        this.setTexture(res.shopBack);
+        this.isNotActive = true;
     },
 
     initWeapon: function () {
@@ -44,6 +59,9 @@ var Item = cc.Sprite.extend({
             case cf.WP_TYPE.SHORT_GUN:
                 this.setTexture(res.gun);
                 break;
+            case cf.WP_TYPE.WATER_GUN:
+                this.setTexture(res.gun);
+                break;
 
         }
     },
@@ -52,17 +70,42 @@ var Item = cc.Sprite.extend({
         switch (this.id)
         {
             case cf.POTION_TYPE.SMALL_HEAL:
-                this.setTexture(res.gold);
+                this.setTexture(res.smallHp);
                 break;
             case cf.POTION_TYPE.SMALL_MANA:
-                this.setTexture(res.gold);
+                this.setTexture(res.smallMana);
                 break;
 
         }
     },
 
     initGate: function () {
-        this.setTexture(res.gold);
+        switch (this.id)
+        {
+            case cf.GATE_TYPE.NEXT_MAP:
+                this.setTexture(res.gateMap);
+                this.scale = 0.5
+                break;
+            case cf.GATE_TYPE.NEXT_CHAPTER:
+                this.setTexture(res.gateUI);
+                this.scale = 0.3
+
+        }
+
+    },
+
+    initChest: function () {
+        this.setTexture(res.chest0);
+        // const animationFrames = []
+        // animationFrames.push(cc.spriteFrameCache.getSpriteFrame("idle_0.png"));
+        // animationFrames.push(cc.spriteFrameCache.getSpriteFrame("idle_1.png"));
+        // let a = cc.SpriteFrame(res.chest0);
+        // cc.log(a)
+        // cc.log("a=")
+        // let animation = new cc.Animation(animationFrames,5);
+        // var animate = new cc.Animate(animation);
+        // this.runAction(animate)
+
     },
 
     logicUpdate: function (dt) {
@@ -76,13 +119,26 @@ var Item = cc.Sprite.extend({
         this.isCanActive = true;
         BackgroundLayerInstance.isItemCanActive = true;
         BackgroundLayerInstance.curItem = this
-        this.setColor(cc.color(0,0,220,255));
+        // this.setColor(cc.color(0,0,220,255));
+        if(this.arrowPick == null){
+            this.arrowPick = new cc.Sprite(res.arrowPick);
+            this.arrowPick.scale = 1/this.scale;
+            let pos = new cc.p(this.width/2, this.height+10);
+            this.arrowPick.setPosition(pos);
+            let seq = cc.sequence(cc.MoveTo(0.5, new cc.p(pos.x, pos.y+15)), cc.MoveTo(0.5, new cc.p(pos.x, pos.y))).repeatForever();
+            this.arrowPick.runAction(seq);
+            this.addChild(this.arrowPick);
+            this.arrowPick.setLocalZOrder(winSize.height - this.arrowPick.y + CELL_SIZE_UI*2);
+        }
     },
 
     hideActive: function () {
         this.isCanActive = false;
         BackgroundLayerInstance.isItemCanActive = false;
-        this.setColor(cc.color(255,255,220,255));
+        if(this.arrowPick != null){
+            this.arrowPick.removeFromParent(true);
+            this.arrowPick = null;
+        }
     },
 
 
@@ -99,21 +155,15 @@ var Item = cc.Sprite.extend({
         if(this.type === GAME_CONFIG.ITEM_GATE){
             this.activeItemGate();
         }
+
+        if(this.type === GAME_CONFIG.ITEM_CHEST){
+            this.activeItemChest();
+        }
     },
 
     activeItemWeapon: function() {
-        let wp = null;
+        let wp = Utils.getWpById(this.id);
         let player = BackgroundLayerInstance.player;
-        switch (this.id)
-        {
-            case cf.WP_TYPE.DOUBLE_GUN:
-                wp = new DoubleGun(player.posLogic, player._map)
-                break;
-            case cf.WP_TYPE.SHORT_GUN:
-                wp = new ShortGun(player.posLogic, player._map)
-                break;
-
-        }
         player.pickWp(wp);
         this.visible = false;
         this.isDestroy = true;
@@ -139,13 +189,50 @@ var Item = cc.Sprite.extend({
         GamelayerInstance.viewNewMap(this.gateId);
     },
 
+    activeItemChest: function() {
+
+
+        setTimeout(()=>{
+            this.setTexture(res.chest1)
+        },20)
+        setTimeout(()=>{
+            this.setTexture(res.chest2)
+        },70)
+        setTimeout(()=>{
+            this.setTexture(res.chest3)
+        },120)
+        setTimeout(()=>{
+            this.setTexture(res.chest4)
+        },170)
+        // this.setTexture(res.chest4);
+        this.isNotActive = true;
+        this.hideActive()
+        setTimeout(()=>{
+            let wpSize = Object.keys(cf.WP_TYPE).length;
+            let ran = Math.floor((Math.random() * wpSize) + 1);
+            var poss2 = new cc.p(this.posLogic.x, this.posLogic.y);
+            let m2 = new Item(GAME_CONFIG.ITEM_WEAPON, ran, poss2);
+            let pos = new cc.p(0, 15);
+            let seq = cc.sequence(cc.MoveTo(0.2, pos))
+
+            // this.addChild(m,999)
+            // this.objectView.addItem(m2)
+            BackgroundLayerInstance.objectView.addItem(m2)
+            m2.runAction(seq)
+        }, 150)
+
+    },
+
     updateGateId: function(id) {
         this.gateId = id;
     },
 
     render: function () {
+        if(this.isRendered) return;
+        this.isRendered = true;
         var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
         this.setPosition(posUI)
+        this.setLocalZOrder(winSize.height - this.y);
     },
 
 

@@ -62,7 +62,8 @@ var Arrow = cc.Sprite.extend({
 
         let tmp = false;
         //check colision voi Block
-        let gdBlock = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, p2);
+        let blockTmp = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, p2);
+        let gdBlock = blockTmp[0];
         if(gdBlock != null) {
             p2 = gdBlock;
             tmp = true;
@@ -92,6 +93,12 @@ var Arrow = cc.Sprite.extend({
         //neu colision voi block ma ko colision voi enemy
         if(tmp){
             this.posLogic = gdBlock;
+            let blockId = blockTmp[1];
+            let listBox = BackgroundLayerInstance.mapView.listBox;
+            let tag = blockId[0]+"-"+blockId[1];
+            if(listBox.hasOwnProperty(tag)){
+                listBox[tag].takeDame(this.dame);
+            }
             return true;
         }
 

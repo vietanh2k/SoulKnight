@@ -3,9 +3,8 @@ var Bullet = cc.Sprite.extend({
     speed: 300,
 
 
-    ctor: function(rule, posLogic, map, direction, dame, rang, speed) {
-        this._super(res.bullet);
-        this.setScale(2)
+    ctor: function(res, rule, posLogic, map, direction, dame, rang, speed) {
+        this._super(res);
         this.radius = this.width/2;
         this.isDestroy = false
         this.active = true;
@@ -55,7 +54,8 @@ var Bullet = cc.Sprite.extend({
 
         let tmp = false;
         //check colision voi Block
-        let gdBlock = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, p2);
+        let blockTmp = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, p2);
+        let gdBlock = blockTmp[0];
         if(gdBlock != null) {
             p2 = gdBlock;
             tmp = true;
@@ -85,6 +85,12 @@ var Bullet = cc.Sprite.extend({
         //neu colision voi block ma ko colision voi enemy
         if(tmp){
             this.posLogic = gdBlock;
+            let blockId = blockTmp[1];
+            let listBox = BackgroundLayerInstance.mapView.listBox;
+            let tag = blockId[0]+"-"+blockId[1];
+            if(listBox.hasOwnProperty(tag)){
+                listBox[tag].takeDame(this.dame);
+            }
             return true;
         }
 

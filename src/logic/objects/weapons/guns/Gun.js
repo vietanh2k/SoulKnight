@@ -35,9 +35,9 @@ var Gun = Weapon.extend({
         var pos2 = cc.pAdd(posLogic, cc.pMult(dir2, -10));
 
 
-        var bullet = new  Bullet(pos1, this._map, dirBullet, dame, rang)
+        var bullet = new  NorBullet(pos1, this._map, dirBullet, dame, rang)
         var posLogic2 = new cc.p(this.posLogic.x,this.posLogic.y+5);
-        var bullet2 = new  Bullet(pos2, this._map, dirBullet,dame, rang)
+        var bullet2 = new  NorBullet(pos2, this._map, dirBullet,dame, rang)
         BackgroundLayerInstance.objectView.addBullet(bullet)
         BackgroundLayerInstance.objectView.addBullet(bullet2)
     },

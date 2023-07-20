@@ -71,7 +71,11 @@ var Range2 = Enemy.extend({
 
     logicUpdate: function (dt) {
         if(this.isDestroy) return;
+        if(BackgroundLayerInstance.state === GAME_CONFIG.STATE_ONSTART){
+            return;
+        }
 
+        if(!this.isCanDo) return;
         if((this.timePerBullet -= dt) <= 0){
             if(this.numBullet > 0){
                 this.we.activateWeapon(2);

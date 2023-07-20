@@ -32,7 +32,7 @@ var ShortGun = Weapon.extend({
         dir = cc.pNormalize(dir)
         posLogic = cc.pAdd(posLogic, cc.pMult(dir, this.width/2))
 
-        var bullet = new  Bullet(rule, posLogic, this._map, dirBullet,dame, rang, this.speed)
+        var bullet = new  NorBullet(rule, posLogic, this._map, dirBullet,dame, rang, this.speed)
         BackgroundLayerInstance.objectView.addBullet(bullet)
     },
 

@@ -35,9 +35,11 @@ var Knight = Character.extend({
         }
     },
 
-    updateActivateWp: function () {
+    updateActivateWp: function (dt) {
+        this.we.logicUpdate(dt);
         this.we.updateActivate();
         if(this.skillWp != null){
+            this.skillWp.logicUpdate(dt);
             this.skillWp.updateActivate();
         }
     },
@@ -47,7 +49,7 @@ var Knight = Character.extend({
         this.we.updateDir(this.direction);
         if(this.skillWp != null){
             let pos = null;
-            if(this.direction.x >0) {
+            if(this.isLeft) {
                 pos = new cc.p(this.posLogic.x + 30, this.posLogic.y)
             }else{
                 pos = new cc.p(this.posLogic.x - 30, this.posLogic.y)

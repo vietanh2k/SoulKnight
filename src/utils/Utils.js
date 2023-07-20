@@ -15,6 +15,28 @@ Utils.toStringWithDots = function (number) {
     return res;
 };
 
+Utils.getWpById = function (id) {
+    let wp;
+    let player = BackgroundLayerInstance.player;
+    switch (id)
+    {
+        case cf.WP_TYPE.DOUBLE_GUN:
+            wp = new DoubleGun(player.posLogic, player._map)
+            break;
+        case cf.WP_TYPE.SHORT_GUN:
+            wp = new ShortGun(player.posLogic, player._map)
+            break;
+        case cf.WP_TYPE.WATER_GUN:
+            wp = new WaterGun(player.posLogic, player._map)
+            break;
+        default:
+            wp = new DoubleGun(player.posLogic, player._map)
+            break;
+
+    }
+    return wp;
+};
+
 Utils.fromStringDotToNum = function (str) {
     str = str.replace('.', '')
     let num = parseInt(str)

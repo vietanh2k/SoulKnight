@@ -2,12 +2,16 @@ var Enemy = AnimatedSprite.extend({
     _map: null,
     direction: null,
     radius: 0,
-    speed: 200,
     posLogic: null,
 
     ctor: function(_res, posLogic, map) {
         this._super(_res);
+        this.inactiveSourceCounter = 0;
+        this.isCanDo = true;  //co the hoat dong
         this.isDestroy = false
+        this.w1 = 50;
+        this.h1 = 80;
+        this.speed = 200;
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
         this.posLogic = posLogic;
         this.radius = 20
@@ -64,6 +68,10 @@ var Enemy = AnimatedSprite.extend({
 
     logicUpdate: function (dt) {
         if(this.isDestroy) return;
+        if(BackgroundLayerInstance.state === GAME_CONFIG.STATE_ONSTART){
+            return;
+        }
+
         if(this.timeDelayAtk > 0){
             this.timeDelayAtk -= dt;
         }
@@ -71,6 +79,8 @@ var Enemy = AnimatedSprite.extend({
         if(this.timeBreak > 0){
             this.timeBreak -= dt;
         }
+
+        if(!this.isCanDo) return;
 
         //attack neu trong range
         let disWithChar = cc.pDistance(this.posLogic, BackgroundLayerInstance.player.posLogic);
@@ -140,19 +150,19 @@ var Enemy = AnimatedSprite.extend({
         let q2 = new cc.p(player.posLogic.x+player.radius, player.posLogic.y+player.radius)
         let q3 = new cc.p(player.posLogic.x+player.radius, player.posLogic.y-player.radius)
 
-        let isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p0, q0)
+        let isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p0, q0)[0];
         if(isCol != null){
             return false;
         }
-        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, q1)
+        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, q1)[0];
         if(isCol != null){
             return false;
         }
-        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p2, q2)
+        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p2, q2)[0];
         if(isCol != null){
             return false;
         }
-        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p3, q3)
+        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p3, q3)[0];
         if(isCol != null){
             return false;
         }
@@ -162,7 +172,6 @@ var Enemy = AnimatedSprite.extend({
 
     updateMove: function (direction, dt) {
         this.aniRun(this.dirMain)
-
         var displacement = cc.pMult(direction, this.speed * dt);
         let distan =Math.sqrt(Math.pow(displacement.x, 2) + Math.pow(displacement.y, 2));
         var newPosX = cc.pAdd(this.posLogic, cc.p(displacement.x,0));
@@ -200,13 +209,13 @@ var Enemy = AnimatedSprite.extend({
         var d = Math.floor((newPos.y - this.radius)/60);
 
         for(var i =l; i<= r; i++){
-            if(this._map.mapArray[i][u] === 1){
+            if(this._map.mapArray[i][u] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][u] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][u] > 0){
                 var tmp = convertIndexToPosLogic(i,u).x;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;
                 return this.getCorrectPos(tmp, this.posLogic.x);
             }
-            if(this._map.mapArray[i][d] === 1){
+            if(this._map.mapArray[i][d] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][d] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][d] > 0){
                 var tmp = convertIndexToPosLogic(i,d).x;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;
@@ -214,13 +223,13 @@ var Enemy = AnimatedSprite.extend({
             }
         }
         for(var i =d; i<= u; i++){
-            if(this._map.mapArray[l][i] === 1){
+            if(this._map.mapArray[l][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[l][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[l][i] > 0){
                 var tmp = convertIndexToPosLogic(l,i).x;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;
                 return this.getCorrectPos(tmp, this.posLogic.x);
             }
-            if(this._map.mapArray[r][i] === 1){
+            if(this._map.mapArray[r][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[r][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[r][i] > 0){
                 var tmp = convertIndexToPosLogic(r,i).x;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;
@@ -238,13 +247,13 @@ var Enemy = AnimatedSprite.extend({
         var d = Math.floor((newPos.y - this.radius)/60);
 
         for(var i =l; i<= r; i++){
-            if(this._map.mapArray[i][u] === 1){
+            if(this._map.mapArray[i][u] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][u] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][u] > 0){
                 var tmp = convertIndexToPosLogic(i,u).y;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;
                 return this.getCorrectPos(tmp, this.posLogic.y);
             }
-            if(this._map.mapArray[i][d] === 1){
+            if(this._map.mapArray[i][d] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[i][d] === GAME_CONFIG.MAP_BOX || this._map.mapArray[i][d] > 0){
                 var tmp = convertIndexToPosLogic(i,d).y;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;
@@ -252,13 +261,13 @@ var Enemy = AnimatedSprite.extend({
             }
         }
         for(var i =d; i<= u; i++){
-            if(this._map.mapArray[l][i] === 1){
+            if(this._map.mapArray[l][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[l][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[l][i] > 0){
                 var tmp = convertIndexToPosLogic(l,i).y;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;
                 return this.getCorrectPos(tmp, this.posLogic.y);
             }
-            if(this._map.mapArray[r][i] === 1){
+            if(this._map.mapArray[r][i] === GAME_CONFIG.MAP_BLOCK || this._map.mapArray[r][i] === GAME_CONFIG.MAP_BOX || this._map.mapArray[r][i] > 0){
                 var tmp = convertIndexToPosLogic(r,i).y;
                 this.isChangeDir = true;
                 this.isChangeDirByBlock = true;

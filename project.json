@@ -71,12 +71,17 @@
         "src/logic/utils/Number.js",
         "src/logic/utils/Colision.js",
 
+        "src/logic/map/Box.js",
         "src/logic/map/MapView.js",
+        "src/logic/map/BoomBox.js",
+        "src/logic/map/IceBox.js",
+        "src/logic/map/PosionBox.js",
 
         "src/logic/objects/weapons/Weapon.js",
         "src/logic/objects/weapons/guns/Gun.js",
         "src/logic/objects/weapons/guns/ShortGun.js",
         "src/logic/objects/weapons/guns/DoubleGun.js",
+        "src/logic/objects/weapons/guns/WaterGun.js",
 
         "src/logic/objects/weapons/swords/Sword.js",
         "src/logic/objects/weapons/swords/Spear.js",
@@ -90,10 +95,23 @@
         "src/logic/objects/enemys/Melee2.js",
         "src/logic/objects/enemys/Range1.js",
         "src/logic/objects/enemys/Range2.js",
+
+        "src/logic/objects/enemys/bosses/Boss.js",
+
+
         "src/logic/objects/bullets/Bullet.js",
         "src/logic/objects/bullets/Arrow.js",
+        "src/logic/objects/bullets/IceBullet.js",
+        "src/logic/objects/bullets/NorBullet.js",
+        "src/logic/objects/bullets/WaterBullet.js",
+        "src/logic/objects/bullets/LongBullet.js",
 
         "src/logic/objects/items/Item.js",
+        "src/logic/objects/items/ItemShop.js",
+
+        "src/logic/objects/effects/Effect.js",
+        "src/logic/objects/effects/FreezeEffect.js",
+        "src/logic/objects/effects/PosionEffect.js",
 
         "src/logic/objects/characters/Character.js",
         "src/logic/objects/characters/Knight.js",
@@ -101,6 +119,8 @@
 
         "src/UI/utils/UI.js",
 
+        "src/UI/Explosion.js",
+        "src/UI/SmallMap.js",
         "src/UI/BackgroundLayer.js",
         "src/UI/GameLayer.js",
         "src/UI/Joystick.js"

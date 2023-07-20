@@ -111,25 +111,25 @@ cf.MAP_LEVEL = [
     {
         level: 10,
         // enemy: [1,1,1,1,1],
-        enemy: [1,1],
+        enemy: [1],
         rareEnemy: 0,
     },
     {
         level: 15,
         // enemy: [1,1,1,1,1,1],
-        enemy: [1,1],
+        enemy: [1],
         rareEnemy: 0,
     },
     {
         level: 20,
         // enemy: [1,1,1,1,2,2],
-        enemy: [1,1],
+        enemy: [1],
         rareEnemy: 0,
     },
     {
         level: 25,
         // enemy: [1,1,1,2,2,2],
-        enemy: [1,1],
+        enemy: [1],
         rareEnemy: 0,
     },
     {
@@ -170,6 +170,7 @@ cf.MAP_LEVEL = [
 cf.WP_TYPE = {
     DOUBLE_GUN: 1,
     SHORT_GUN: 2,
+    WATER_GUN:3,
 };
 
 cf.POTION_TYPE = {
@@ -177,6 +178,11 @@ cf.POTION_TYPE = {
     SMALL_MANA: 2,
     BIG_HEAL: 3,
     BIG_MANA: 4,
+};
+
+cf.GATE_TYPE = {
+    NEXT_CHAPTER: 2,
+    NEXT_MAP: 1,
 };
 
 cf.TOAST_Z_ORDER = 1000000000;

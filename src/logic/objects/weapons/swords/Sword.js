@@ -21,23 +21,35 @@ var Sword = Weapon.extend({
         //tinh dame crit
         let dame = this.getDameByCrit();
         this.animaTakeDame(dirBullet, this.rang)
-        this.takeDame(dame, dirBullet, this.rang, 1);
+        this.takeDame(dame, dirBullet, this.rang, rule);
 
     },
 
     takeDame: function (dame, dirBullet, rang, rule) {
+        let p2 = cc.pAdd(this.posLogic, cc.pMult(dirBullet, rang));
+        let listBlockId = BackgroundLayerInstance.objectView.getAllBlockColisionInMap(this.posLogic, p2);
+        let listBox = BackgroundLayerInstance.mapView.listBox;
+        for(var i=0; i<listBlockId.length; i++){
+            let tag = listBlockId[i][0]+"-"+listBlockId[i][1];
+            if(listBox.hasOwnProperty(tag)){
+                listBox[tag].takeDame(this.dame);
+            }
+        }
 
         //tinh pos dau sung
-        let player = BackgroundLayerInstance.player;
-        let p2 = cc.pAdd(this.posLogic, cc.pMult(dirBullet, rang));
-        let isColChar = isPointInsideHCN(p2, player.posLogic, 50, 80);
-        if(isColChar == null) {
-            isColChar = getColisionDoanThangVaHCN(this.posLogic, p2, player.posLogic, 50, 80);
-        }
-        if(isColChar != null){
-            this.posLogic = new cc.p(player.posLogic.x, player.posLogic.y);
-            player.takeDame(this.dame);
-            return true;
+        if(rule === 1){
+
+        }else if(rule === 2) {
+            let player = BackgroundLayerInstance.player;
+            let isColChar = isPointInsideHCN(p2, player.posLogic, 50, 80);
+            if (isColChar == null) {
+                isColChar = getColisionDoanThangVaHCN(this.posLogic, p2, player.posLogic, 50, 80);
+            }
+            if (isColChar != null) {
+                this.posLogic = new cc.p(player.posLogic.x, player.posLogic.y);
+                player.takeDame(this.dame);
+                return true;
+            }
         }
 
     },
@@ -61,6 +73,7 @@ var Sword = Weapon.extend({
 
     updateDir: function (direction) {
         // if(this.isTakeDame) return ;
+        if(direction == null || direction == undefined) return ;
         if(direction.x == 0 && direction.y == 0) return;
         var angle = cc.pToAngle(direction);
         this.curDir = direction;

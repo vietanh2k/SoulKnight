@@ -19,6 +19,7 @@ var MapView = cc.Class.extend({
                 ()=>0
             )
         );
+        this.listBox = {};
         // this.init();
         // this.initListPathForAllNode()
 
@@ -73,12 +74,81 @@ var MapView = cc.Class.extend({
             let x = blockArr[i][0];
             let y = blockArr[i][1];
             if(x>=0 && x<= MAP_WIDTH && y>=0 && y<= MAP_HEIGHT){
-                this.mapArray[x][y] = 1;
+                this.mapArray[x][y] = GAME_CONFIG.MAP_BLOCK;
             }
 
         }
 
+        let boxArr = map.boxArr;
+        for(var i=0; i<boxArr.length; i++){
+            let firstP = boxArr[i][0];
+            let secP = boxArr[i][1];
+            for(var m=firstP[0]; m <= secP[0]; m++){
+                for(var n=firstP[1]; n <= secP[1]; n++){
+                    if(m>=0 && m<= MAP_WIDTH && n>=0 && n<= MAP_HEIGHT){
+                        this.mapArray[m][n] = GAME_CONFIG.MAP_BOX;
+                        let tag = m+"-"+n;
+                        this.listBox[tag] = new Box(m,n);
+                    }
+                }
+            }
+        }
+
+        this.createRandomBoomBox();
+
         return true;
+    },
+
+    createRandomBoomBox:function () {
+        let ran = Math.floor(Math.random()*4)+6;
+        for(var i=0; i< ran; i++){
+            let ran1 = Math.floor(Math.random()*(MAP_WIDTH-6))+3;
+            let ran2 = Math.floor(Math.random()*(MAP_HEIGHT-6))+3;
+            if(this.mapArray[ran1][ran2] === 0){
+                let ranBoom = Math.floor(Math.random()*3)+GAME_CONFIG.MAP_BOOMM1;
+                this.mapArray[ran1][ran2] = ranBoom;
+                let tag = ran1+"-"+ran2;
+                if(ranBoom === GAME_CONFIG.MAP_BOOMM1) {
+                    this.listBox[tag] = new PosionBox(ran1, ran2);
+                }else if(ranBoom === GAME_CONFIG.MAP_BOOMM2){
+                    this.listBox[tag] = new PosionBox(ran1, ran2);
+                }else if(ranBoom === GAME_CONFIG.MAP_BOOMM3){
+                    this.listBox[tag] = new PosionBox(5, 6);
+                }
+            }
+        }
+        // for(var i=0; i<this.mapArray.length; i++){
+        //     for(var j=0; j<this.mapArray[0].length; j++){
+        //         if(this.mapArray)
+        //     }
+        // }
+
+    },
+
+    delBox:function (dx, dy) {
+        let tag = dx+"-"+dy;
+        delete this.listBox[tag];
+
+    },
+
+    isBlock:function (dx, dy) {
+        if(dx <0 || dx >= this.mapArray.length) return false;
+        if(dy <0 || dy >= this.mapArray[0].length) return false;
+        if(this.mapArray[dx][dy] > 0){
+            return true;
+        }
+
+        return  false;
+
+    },
+
+    getAllBox:function () {
+        // for(var i=0; i<this.mapArray.length; i++){
+        //     for(var j=0; j<this.mapArray[0].length; j++){
+        //         if(this.mapArray)
+        //     }
+        // }
+
     },
 
     initChestMap:function (index) {
@@ -97,6 +167,25 @@ var MapView = cc.Class.extend({
 
     initDesMap:function (index) {
         MAP_WIDTH = 10;
+        MAP_HEIGHT = 10;
+        this.mapArray = Array.from(
+            {length: MAP_WIDTH + 1},
+            () => Array.from(
+                {length: MAP_HEIGHT + 1},
+                ()=>0
+            )
+        );
+        this.initWall();
+
+    },
+
+    initBossMap:function () {
+        this.initFromJson(5);
+
+    },
+
+    initShopMap:function (index) {
+        MAP_WIDTH = 16;
         MAP_HEIGHT = 10;
         this.mapArray = Array.from(
             {length: MAP_WIDTH + 1},

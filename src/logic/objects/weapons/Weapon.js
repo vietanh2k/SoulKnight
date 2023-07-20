@@ -39,12 +39,19 @@ var Weapon = cc.Sprite.extend({
 
         if(direction.x > 0) {
             this.setRotation(-angle/Math.PI*180);
-        }
-        if(direction.x < 0) {
+        }else if(direction.x < 0) {
             this.setRotation(-180+angle/Math.PI*180);
+        }else if(direction.x === 0 && direction.y > 0) {
+            this.setRotation(-180+90);
+        }else if(direction.x === 0 && direction.y < 0) {
+            this.setRotation(-180-90);
         }
 
         return true;
+    },
+
+    logicUpdate: function (dt) {
+
     },
 
     updatePosLogic: function (posLogic) {
