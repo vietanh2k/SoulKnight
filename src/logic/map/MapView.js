@@ -109,11 +109,11 @@ var MapView = cc.Class.extend({
                 this.mapArray[ran1][ran2] = ranBoom;
                 let tag = ran1+"-"+ran2;
                 if(ranBoom === GAME_CONFIG.MAP_BOOMM1) {
-                    this.listBox[tag] = new PosionBox(ran1, ran2);
+                    this.listBox[tag] = new BoomBox(ran1, ran2);
                 }else if(ranBoom === GAME_CONFIG.MAP_BOOMM2){
-                    this.listBox[tag] = new PosionBox(ran1, ran2);
+                    this.listBox[tag] = new IceBox(ran1, ran2);
                 }else if(ranBoom === GAME_CONFIG.MAP_BOOMM3){
-                    this.listBox[tag] = new PosionBox(5, 6);
+                    this.listBox[tag] = new PosionBox(ran1, ran2);
                 }
             }
         }

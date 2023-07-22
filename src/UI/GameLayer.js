@@ -40,6 +40,10 @@ var GameLayer = cc.Layer.extend({
             cc.spriteFrameCache.addSpriteFrames(res.boss1Plist)
         }
 
+        if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.appearPlist)) {
+            cc.spriteFrameCache.addSpriteFrames(res.appearPlist)
+        }
+
         if(SMALL_MAP === null){
             SMALL_MAP = new SmallMap();
             SMALL_MAP.retain()

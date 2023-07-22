@@ -3,6 +3,7 @@ var Character = AnimatedSprite.extend({
     direction: null,
     radius: 0,
     speed: 300,
+    maxSpeed: 300,
     posLogic: null,
     otherWeapon: null,
     weapon2: null,

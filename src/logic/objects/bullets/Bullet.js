@@ -46,6 +46,7 @@ var Bullet = cc.Sprite.extend({
     render: function () {
         var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
         this.setPosition(posUI)
+        this.setLocalZOrder(winSize.height + CELL_SIZE_UI);
     },
 
     checkColision: function (newPos) {

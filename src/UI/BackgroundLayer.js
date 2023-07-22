@@ -232,7 +232,9 @@ var BackgroundLayer = cc.Layer.extend({
     },
 
     delBoxUi: function(dx, dy) {
-        this.getChildByName(dx+"-"+dy).removeFromParent(true);
+        if(this.getChildByName(dx+"-"+dy) != null) {
+            this.getChildByName(dx + "-" + dy).removeFromParent(true);
+        }
     },
 
     addObjectUI: function (_res, corX, corY, _scale) {
@@ -341,7 +343,12 @@ var BackgroundLayer = cc.Layer.extend({
         this.state = GAME_CONFIG.STATE_MOVING;
         this.mapView = new MapView();
         this.mapView.initChestMap();
-        this.initDoor();
+        setTimeout(()=>{
+            this.initAppear();
+        }, 500)
+        setTimeout(()=>{
+            this.initDoor();
+        }, 800)
     },
 
     createChestMap: function() {
@@ -352,7 +359,12 @@ var BackgroundLayer = cc.Layer.extend({
         var posMid = this.convertIndexToPosLogic(MAP_WIDTH/2, MAP_HEIGHT/2)
         let chest = new Item(GAME_CONFIG.ITEM_CHEST, 1, posMid);
         BackgroundLayerInstance.objectView.addItem(chest)
-        this.initDoor();
+        setTimeout(()=>{
+            this.initAppear();
+        }, 500)
+        setTimeout(()=>{
+            this.initDoor();
+        }, 800)
     },
 
     createDesMap: function() {
@@ -363,7 +375,12 @@ var BackgroundLayer = cc.Layer.extend({
         this.state = GAME_CONFIG.STATE_MOVING;
         this.mapView = new MapView();
         this.mapView.initDesMap();
-        this.initDoor();
+        setTimeout(()=>{
+            this.initAppear();
+        }, 500)
+        setTimeout(()=>{
+            this.initDoor();
+        }, 800)
         this.initDoorNewChap();
 
     },
@@ -403,7 +420,12 @@ var BackgroundLayer = cc.Layer.extend({
         let wp2 = new ItemShop(GAME_CONFIG.ITEM_WEAPON, 1, pos4, 10);
         BackgroundLayerInstance.objectView.addItemShop(wp2)
 
-        this.initDoor();
+        setTimeout(()=>{
+            this.initAppear();
+        }, 500)
+        setTimeout(()=>{
+            this.initDoor();
+        }, 800)
     },
 
     calculateLevelMap: function(lvl) {
@@ -415,6 +437,7 @@ var BackgroundLayer = cc.Layer.extend({
     },
 
     initDoor:function () {
+
         let tmp1 = new cc.p(CurMap[0], CurMap[1]);
         var posMid = this.convertIndexToPosLogic(MAP_WIDTH/2, MAP_HEIGHT/2)
         var tmpMid = this.convertIndexToPosLogic(MAP_WIDTH/2-2, MAP_HEIGHT/2-2)
@@ -432,6 +455,25 @@ var BackgroundLayer = cc.Layer.extend({
                 let item = new Item(GAME_CONFIG.ITEM_GATE, cf.GATE_TYPE.NEXT_MAP, posLogic);
                 item.updateGateId(gateId);
                 this.objectView.addItem(item);
+            }
+        }
+    },
+
+    initAppear:function () {
+        let tmp1 = new cc.p(CurMap[0], CurMap[1]);
+        var posMid = this.convertIndexToPosLogic(MAP_WIDTH/2, MAP_HEIGHT/2)
+        var tmpMid = this.convertIndexToPosLogic(MAP_WIDTH/2-2, MAP_HEIGHT/2-2)
+        for(var i =0;i <DX.length; i++){
+            let x = CurMap[0] + DX[i];
+            let y = CurMap[1] + DY[i];
+            if(ChapterMap[x][y] >= 0){
+                let tmp = new cc.p(tmpMid.x*DX[i], tmpMid.y*DY[i]);
+                let posLogic = cc.pAdd(posMid, tmp);
+                var posUI = cc.pMult(posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
+                let ap = new Appear(posUI, CELL_SIZE_UI);
+                BackgroundLayerInstance.addChild(ap, winSize.height);
+
+
             }
         }
     },

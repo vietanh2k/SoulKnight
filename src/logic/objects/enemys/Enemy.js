@@ -12,6 +12,7 @@ var Enemy = AnimatedSprite.extend({
         this.w1 = 50;
         this.h1 = 80;
         this.speed = 200;
+        this.maxSpeed = 200;
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
         this.posLogic = posLogic;
         this.radius = 20
@@ -294,6 +295,7 @@ var Enemy = AnimatedSprite.extend({
         if(this.isDestroy) return ;
         var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
         this.setPosition(posUI)
+        this.setLocalZOrder(winSize.height - this.y + CELL_SIZE_UI);
     },
 
     aniStop: function (newPosX) {

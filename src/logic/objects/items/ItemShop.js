@@ -67,7 +67,7 @@ var ItemShop = Item.extend({
         this.isRendered = true;
         var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
         this.setPosition(posUI)
-        this.setLocalZOrder(winSize.height - this.y);
+        this.setLocalZOrder(winSize.height - this.y+CELL_SIZE_UI*2);
     },
 
 

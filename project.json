@@ -119,6 +119,7 @@
 
         "src/UI/utils/UI.js",
 
+        "src/UI/Appear.js",
         "src/UI/Explosion.js",
         "src/UI/SmallMap.js",
         "src/UI/BackgroundLayer.js",

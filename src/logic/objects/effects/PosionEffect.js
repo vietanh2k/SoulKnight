@@ -6,7 +6,6 @@ const PosionEffect = Effect.extend({
 
         this._super(time)
         this.target = target
-        this.targetSpeed = target.speed;
 
         this.sumDt = 0;
         this.numDame = POSION_DAME;
@@ -34,7 +33,7 @@ const PosionEffect = Effect.extend({
 
         if(!this.target.isDestroy) {
             this.target.setColor(cc.color(255, 255, 255));
-            this.target.speed = this.targetSpeed;
+            this.target.speed = this.target.maxSpeed;
         }
 
 

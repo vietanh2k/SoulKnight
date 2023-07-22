@@ -496,7 +496,13 @@ var  ObjectView = cc.Class.extend({
                     if(this.enemys.size() === 0){
                         // GamelayerInstance.isStop = true;
                         BackgroundLayerInstance.state = GAME_CONFIG.STATE_MOVING;
-                        BackgroundLayerInstance.initDoor();
+                        setTimeout(()=>{
+                            BackgroundLayerInstance.initAppear();
+                        }, 500)
+                        setTimeout(()=>{
+                            BackgroundLayerInstance.initDoor();
+                        }, 800)
+
                     }
                 }
             })
