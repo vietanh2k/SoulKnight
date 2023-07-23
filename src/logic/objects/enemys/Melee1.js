@@ -131,15 +131,11 @@ var Melee1 = Enemy.extend({
             this.we.updateDir(this.dirMain);
         }
 
-
-
         this.isCanSee = this.isCanSeeChar();
         if(this.isCanSee){
             this.isStop = false;
         }
-        // if(this.isCanSeeChar()){
-        //     cc.log("can see")
-        // }
+
         if(!this.isStop) {
             this.checkCol--;
             if (this.checkCol <= 0) this.checkCol = 0;

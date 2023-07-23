@@ -15,7 +15,7 @@ var BackgroundLayer = cc.Layer.extend({
         BackgroundLayerInstance = this
         this.isItemCanActive = false;
         this.curItem = null;
-        this.timeOnStart = 3;
+        this.timeOnStart = 4.5;
 
         winSize = cc.director.getWinSize();
         var pos = this.convertIndexToPosLogic(2.1, 2.2)
@@ -29,7 +29,6 @@ var BackgroundLayer = cc.Layer.extend({
 
 
         if(SaveMap.hasOwnProperty(mapKey)){
-            cc.log('mmmmmmmmmmmmmmmm');
             let mapStatus = SaveMap[mapKey];
             MAP_WIDTH = mapStatus.mapW;
             MAP_HEIGHT = mapStatus.mapH;
@@ -163,40 +162,40 @@ var BackgroundLayer = cc.Layer.extend({
         this.addChild(ba, -99999)
         for(var i=0; i <= MAP_WIDTH; i++){
             let object = this.addObjectUI(res.brick, i,0, 1);
-            this.addChild(object, winSize.height - object.y, i+"-"+0);
+            this.addChild(object, winSize.height - object.y + CELL_SIZE_UI/2, i+"-"+0);
 
             let object2 = this.addObjectUI(res.brick, i,MAP_HEIGHT, 1);
-            this.addChild(object2, winSize.height - object2.y, i+"-"+MAP_HEIGHT);
+            this.addChild(object2, winSize.height - object2.y + CELL_SIZE_UI/2, i+"-"+MAP_HEIGHT);
         }
         for(var i=0; i <= MAP_HEIGHT; i++){
             let object = this.addObjectUI(res.brick, 0,i, 1);
-            this.addChild(object, winSize.height - object.y, 0+"-"+i);
+            this.addChild(object, winSize.height - object.y + CELL_SIZE_UI/2, 0+"-"+i);
 
             let object2 = this.addObjectUI(res.brick, MAP_WIDTH,i, 1);
-            this.addChild(object2, winSize.height - object2.y, MAP_WIDTH+"-"+i);
+            this.addChild(object2, winSize.height - object2.y + CELL_SIZE_UI/2, MAP_WIDTH+"-"+i);
         }
 
         for(var i=1; i < MAP_WIDTH; i++){
             for(var j=MAP_HEIGHT-1; j> 0; j--){
                 if(this.mapView.mapArray[i][j] == 1){
                     let object = this.addObjectUI(res.brick1, i,j, 1);
-                    this.addChild(object, winSize.height - object.y, i+"-"+j);
+                    this.addChild(object, winSize.height - object.y + CELL_SIZE_UI/2, i+"-"+j);
                     // continue;
                 }else if(this.mapView.mapArray[i][j] == GAME_CONFIG.MAP_BOX){
                     let object = this.addObjectUI(res.boxUI, i,j, 1);
-                    this.addChild(object, winSize.height - object.y, i+"-"+j);
+                    this.addChild(object, winSize.height - object.y + CELL_SIZE_UI/2, i+"-"+j);
                     // continue;
                 }else if(this.mapView.mapArray[i][j] == GAME_CONFIG.MAP_BOOMM1){
                     let object = this.addObjectUI(res.boomBox, i,j, 1);
-                    this.addChild(object, winSize.height - object.y, i+"-"+j);
+                    this.addChild(object, winSize.height - object.y + CELL_SIZE_UI/2, i+"-"+j);
                     // continue;
                 }else if(this.mapView.mapArray[i][j] == GAME_CONFIG.MAP_BOOMM2){
                     let object = this.addObjectUI(res.iceBox, i,j, 1);
-                    this.addChild(object, winSize.height - object.y, i+"-"+j);
+                    this.addChild(object, winSize.height - object.y + CELL_SIZE_UI/2, i+"-"+j);
                     // continue;
                 }else if(this.mapView.mapArray[i][j] == GAME_CONFIG.MAP_BOOMM3){
                     let object = this.addObjectUI(res.posionBox, i,j, 1);
-                    this.addChild(object, winSize.height - object.y, i+"-"+j);
+                    this.addChild(object, winSize.height - object.y + CELL_SIZE_UI/2, i+"-"+j);
                     // continue;
                 }
 
@@ -261,20 +260,51 @@ var BackgroundLayer = cc.Layer.extend({
         return new cc.p(x, y)
     },
 
+    initStartPos: function () {
+        if(!this.initStart) {
+            this.initStart = true;
+            var posMid = this.convertIndexToPosLogic(MAP_WIDTH / 2, MAP_HEIGHT / 2);
+            var posUI = cc.pMult(posMid, (CELL_SIZE_UI / GAME_CONFIG.CELLSIZE));
+            this.x = -(posUI.x - this.xx);
+            this.y = -(posUI.y - this.yy);
+        }
+    },
+
+    moveWindowToPosObj: function (speed, objX, objY) {
+        // cc.log("move==========")
+        if(isNaN(objX) || isNaN(objY)) return;
+        let p1 = cc.p(this.x, this.y);
+        let p2 = cc.p(-(objX - this.xx), -(objY - this.yy));
+        let pSub = cc.pSub(p2, p1);
+        let dis = cc.pDistance(p1, p2);
+        let t = 1
+        if(dis !== 0) {
+            t = Math.min(1, speed/dis);
+            // t = i / dis;     // t tu 0 toi 1
+
+        }
+        let curP = new cc.p(p1.x + pSub.x*t, p1.y + pSub.y*t);
+        this.x = curP.x;
+        this.y = curP.y;
+        if(t == 1) return true;
+
+        return false;
+    },
+
     update: function(dt) {
         if(this.state === GAME_CONFIG.STATE_ONSTART){
             this.timeOnStart -= dt;
             if(this.timeOnStart <= 0){
                 this.state = GAME_CONFIG.STATE_FIGHTING;
             }
+
         }
         this.objectView.update(dt);
-        // if(this.player.posLogic.x >=GAME_CONFIG.CELLSIZE*MAP_WIDTH/4 && this.player.posLogic.x <= GAME_CONFIG.CELLSIZE*MAP_WIDTH/4*3) {
-            this.x = -(this.player.x - this.xx);
-        // }
-        // if(this.player.posLogic.y >=GAME_CONFIG.CELLSIZE*MAP_HEIGHT/4 && this.player.posLogic.y <= GAME_CONFIG.CELLSIZE*MAP_HEIGHT/4*3) {
-            this.y = -(this.player.y - this.yy);
-        // }
+        if(this.state === GAME_CONFIG.STATE_ONSTART){
+            this.initStartPos();
+        }else{
+            this.moveWindowToPosObj(10, this.player.x, this.player.y)
+        }
     },
 
     fireBullet: function() {
@@ -308,34 +338,77 @@ var BackgroundLayer = cc.Layer.extend({
     },
 
     createEnemyMap: function(lvl) {
-        cc.log("curLvl ==== "+CurLvl)
         this.state = GAME_CONFIG.STATE_ONSTART;
         let lis = this.createMapByLvl(lvl);
 
+        let listPosNoneBlock = this.mapView.getListPosNoneBlock();
+
+        setTimeout(()=>{
+            let ready = new cc.Sprite(res.ready);
+            ready.setPosition(winSize.width/2, winSize.height/2);
+            GamelayerInstance.addChild(ready, 1);
+            ready.scale = 0.7
+            let seq = cc.sequence(cc.fadeIn(0.3));
+            let seq2 = cc.sequence(cc.scaleBy(0.4, 1/0.7), cc.delayTime(0.7), cc.callFunc(()=>{
+                ready.removeFromParent(true);
+            }));
+            ready.runAction(seq);
+            ready.runAction(seq2);
+
+            setTimeout(()=>{
+                let fight = new cc.Sprite(res.fight);
+                fight.setPosition(winSize.width/2, winSize.height/2);
+                GamelayerInstance.addChild(fight, 1);
+                fight.scale = 0.7
+                let seq3 = cc.sequence(cc.fadeIn(0.15), cc.delayTime(0.4), cc.fadeOut(0.3));
+                let seq4 = cc.sequence(cc.scaleBy(0.2, 1/0.7), cc.delayTime(0.5), cc.callFunc(()=>{
+                    fight.removeFromParent(true);
+                }));
+                fight.runAction(seq3)
+                fight.runAction(seq4)
+                }, 1000)
+        }, 1500 + lis.length*200)
+
+
+
         for(let i=0; i<lis.length; i++){
-            var pos2 = this.convertIndexToPosLogic(7, 9)
-            if(lis[i]===1){
-                let ran = Math.floor(Math.random()*2);
-                if(ran === 0){
-                    let enemy = new Melee1(pos2, this.mapView);
-                    this.objectView.addEnemy(enemy);
-                }
-                if(ran === 1){
-                    let enemy = new Range1(pos2, this.mapView);
-                    this.objectView.addEnemy(enemy);
-                }
-            }else{
-                let ran = Math.floor(Math.random()*2);
-                if(ran === 0){
-                    let enemy = new Range2(pos2, this.mapView);
-                    this.objectView.addEnemy(enemy);
-                }
-                if(ran === 1){
-                    let enemy = new Melee2(pos2, this.mapView);
-                    this.objectView.addEnemy(enemy);
-                }
-            }
+            if(listPosNoneBlock.length <= 0) return;
+
+            setTimeout(()=>{
+                let ran = Math.floor(Math.random()*listPosNoneBlock.length);
+                var pos2 = this.convertIndexToPosLogic(listPosNoneBlock[ran][0], listPosNoneBlock[ran][1]);
+                listPosNoneBlock.splice(ran, 1);
+                this.appearSmoke(pos2);
+
+                setTimeout(()=>{
+                    if(lis[i]===1){
+                        let ran = Math.floor(Math.random()*2);
+                        if(ran === 0){
+                            let enemy = new Melee1(pos2, this.mapView);
+                            this.objectView.addEnemy(enemy);
+                        }
+                        if(ran === 1){
+                            let enemy = new Range1(pos2, this.mapView);
+                            this.objectView.addEnemy(enemy);
+                        }
+                    }else{
+                        let ran = Math.floor(Math.random()*2);
+                        if(ran === 0){
+                            let enemy = new Range2(pos2, this.mapView);
+                            this.objectView.addEnemy(enemy);
+                        }
+                        if(ran === 1){
+                            let enemy = new Melee2(pos2, this.mapView);
+                            this.objectView.addEnemy(enemy);
+                        }
+                    }
+                }, 300)
+            }, 1000 + i*200);
+
+
+
         }
+
 
     },
 
@@ -476,6 +549,12 @@ var BackgroundLayer = cc.Layer.extend({
 
             }
         }
+    },
+
+    appearSmoke:function (posLogic) {
+        var posUI = cc.pMult(posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
+        let ap = new Appear(posUI, CELL_SIZE_UI);
+        BackgroundLayerInstance.addChild(ap, winSize.height);
     },
 
     initDoorNewChap:function () {

@@ -13,12 +13,8 @@ const PosionEffect = Effect.extend({
         if(!this.target.isDestroy) {
             this.target.setColor(cc.color(29, 145, 72))
             target.speed = target.speed*0.6;
+            this.target.retain()
         }
-
-
-
-
-        this.target.retain()
     },
 
     update: function (playerState, dt) {

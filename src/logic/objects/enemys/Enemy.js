@@ -14,7 +14,7 @@ var Enemy = AnimatedSprite.extend({
         this.speed = 200;
         this.maxSpeed = 200;
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
-        this.posLogic = posLogic;
+        this.posLogic = new cc.p(posLogic.x, posLogic.y);
         this.radius = 20
         this.hp = 1;
         this.we = null;
@@ -141,32 +141,27 @@ var Enemy = AnimatedSprite.extend({
 
     isCanSeeChar: function () {
         let p0 = new cc.p(this.posLogic.x-this.radius, this.posLogic.y+this.radius)
-        let p1 = new cc.p(this.posLogic.x-this.radius, this.posLogic.y-this.radius)
-        let p2 = new cc.p(this.posLogic.x+this.radius, this.posLogic.y+this.radius)
-        let p3 = new cc.p(this.posLogic.x+this.radius, this.posLogic.y-this.radius)
+
 
         let player = BackgroundLayerInstance.player;
         let q0 = new cc.p(player.posLogic.x-player.radius, player.posLogic.y+player.radius)
-        let q1 = new cc.p(player.posLogic.x-player.radius, player.posLogic.y-player.radius)
-        let q2 = new cc.p(player.posLogic.x+player.radius, player.posLogic.y+player.radius)
-        let q3 = new cc.p(player.posLogic.x+player.radius, player.posLogic.y-player.radius)
 
-        let isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p0, q0)[0];
+        let isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p0, q0, 10)[0];
         if(isCol != null){
             return false;
         }
-        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, q1)[0];
-        if(isCol != null){
-            return false;
-        }
-        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p2, q2)[0];
-        if(isCol != null){
-            return false;
-        }
-        isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p3, q3)[0];
-        if(isCol != null){
-            return false;
-        }
+        // isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p1, q1)[0];
+        // if(isCol != null){
+        //     return false;
+        // }
+        // isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p2, q2)[0];
+        // if(isCol != null){
+        //     return false;
+        // }
+        // isCol = BackgroundLayerInstance.objectView.getBlockColisionInMap(p3, q3)[0];
+        // if(isCol != null){
+        //     return false;
+        // }
 
         return true;
     },

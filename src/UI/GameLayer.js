@@ -293,7 +293,10 @@ var GameLayer = cc.Layer.extend({
 
     update: function(dt) {
             // this.bg.player.updateMove(this.joystick.direction, dt)
-        this.updateMoveDirection(dt);
+        if(BackgroundLayerInstance.state != GAME_CONFIG.STATE_ONSTART){
+            this.updateMoveDirection(dt);
+        }
+
             this.bg.update(dt);
             this.updateStatPaddle();
             // this.updateCoinPaddle();

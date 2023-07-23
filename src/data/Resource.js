@@ -42,6 +42,8 @@ var res = {
     paddle_png : 'res/paddle2.png',
     paddleX_png : 'res/paddleX.png',
     gold : 'res/common_icon_gold_small.png',
+    ready : 'res/ready.png',
+    fight : 'res/fight.png',
     appearPlist : 'res/appear.Plist',
     appearPNG : 'res/appear.png',
     boss1Plist : 'res/boss2.Plist',

@@ -133,7 +133,7 @@ var  ObjectView = cc.Class.extend({
         return [GiaoDiem, blockId];
     },
 
-    getBlockColisionInMap: function (p00, p11) {
+    getBlockColisionInMap: function (p00, p11, disCheck = 0) {
 
         let p0 = getIntVector(p00);
         let p1 = getIntVector(p11);
@@ -142,8 +142,12 @@ var  ObjectView = cc.Class.extend({
         let blockId = null;
         let GiaoDiem = null;
         let dis1 = cc.pDistance(p0, p1);
+        let disCheckCol = GAME_CONFIG.DIS_CHECK_COLISION;
+        if(disCheck > 0){
+            disCheckCol = disCheck;
+        }
         // for tu A den B voi khoang cachs DIS_CHECK_COLISION
-        for (let i = 0; i <= dis1+GAME_CONFIG.DIS_CHECK_COLISION; i += GAME_CONFIG.DIS_CHECK_COLISION){
+        for (let i = 0; i <= dis1+disCheckCol; i += disCheckCol){
             let t = 1
             if(dis1 !== 0) {
                 t = i / dis1;     // t tu 0 toi 1
@@ -329,11 +333,22 @@ var  ObjectView = cc.Class.extend({
     },
 
     update:function (dt) {
+        let t1 = Date.now();
         this.updateChar(dt)
+        let t2 = Date.now();
+        // cc.log("char== "+ (t2-t1));
         this.updateBullet(dt)
+        let t3 = Date.now();
+        // cc.log("bullet== "+ (t3-t2))
         this.updateEnemy(dt)
+        let t4 = Date.now();
+        // cc.log("enemy== "+ (t4-t3))
         this.updateItem(dt)
+        let t5 = Date.now();
+        // cc.log("item== "+ (t5-t4))
         this.updateEffect(dt);
+        let t6 = Date.now();
+        // cc.log("eff== "+ (t6-t5))
 
 
         this.renderChar(0)
@@ -563,6 +578,20 @@ var  ObjectView = cc.Class.extend({
         this.bullets.forEach((bullet, id, list) => {
             // bullet.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + bullet.posLogic.y)
             bullet.removeFromParent(true);
+            list.remove(id);
+
+        })
+
+        this.bullets.forEach((bullet, id, list) => {
+            // bullet.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + bullet.posLogic.y)
+            bullet.removeFromParent(true);
+            list.remove(id);
+
+        })
+
+        this.effects.forEach((effect, id, list) => {
+            // bullet.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + bullet.posLogic.y)
+            effect.destroy();
             list.remove(id);
 
         })

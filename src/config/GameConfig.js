@@ -110,20 +110,20 @@ var cf = cf || {};
 cf.MAP_LEVEL = [
     {
         level: 10,
-        // enemy: [1,1,1,1,1],
-        enemy: [1],
+        enemy: [1,1,1,1,1],
+        // enemy: [1],
         rareEnemy: 0,
     },
     {
         level: 15,
-        // enemy: [1,1,1,1,1,1],
-        enemy: [1],
+        enemy: [1,1,1,1,1,1],
+        // enemy: [1],
         rareEnemy: 0,
     },
     {
         level: 20,
-        // enemy: [1,1,1,1,2,2],
-        enemy: [1],
+        enemy: [1,1,1,1,2,2],
+        // enemy: [1],
         rareEnemy: 0,
     },
     {

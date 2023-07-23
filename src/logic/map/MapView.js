@@ -142,6 +142,19 @@ var MapView = cc.Class.extend({
 
     },
 
+    getListPosNoneBlock:function () {
+        let list = [];
+        for(var i =1; i< MAP_WIDTH; i++){
+            for(var j =1; j< MAP_HEIGHT; j++){
+                if(!this.isBlock(i, j)){
+                    list.push([i,j]);
+                }
+            }
+        }
+
+        return list;
+    },
+
     getAllBox:function () {
         // for(var i=0; i<this.mapArray.length; i++){
         //     for(var j=0; j<this.mapArray[0].length; j++){

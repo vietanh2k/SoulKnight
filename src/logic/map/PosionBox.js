@@ -21,8 +21,12 @@ var PosionBox = Box.extend({
 
         let obj = BackgroundLayerInstance.objectView.getAllPeopleInCircle(pos,this.radius)
         for (let i = 0; i < obj.length; i++) {
-            obj[i].___posionEffect = new PosionEffect(2.5, obj[i]);
-            BackgroundLayerInstance.objectView.addEffect(obj[i].___posionEffect)
+            if(obj[i].___posionEffect){
+                obj[i].___posionEffect.reset();
+            }else{
+                obj[i].___posionEffect = new PosionEffect(2.5, obj[i]);
+                BackgroundLayerInstance.objectView.addEffect(obj[i].___posionEffect)
+            }
         }
     },
 
