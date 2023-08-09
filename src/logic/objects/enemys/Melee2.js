@@ -20,7 +20,7 @@ var Melee2 = Enemy.extend({
         this.we.setAnchorPoint(0.5, 0.3)
         this.we.setPosition(this.width/2, this.height/4)
 
-        this.hp = 25;
+        this.hp = 20;
 
         this.addChild(this.we)
         this.setCascadeColorEnabled(false);

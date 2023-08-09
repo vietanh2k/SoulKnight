@@ -2,11 +2,11 @@ var DoubleGun = Weapon.extend({
 
     ctor: function(posLogic, map) {
         this._super(res.gun2, posLogic, map);
-        this.rateSpeed = 30;
+        this.rateSpeed = 10;
         this.rang = 800;    //range
         this.dame = 2;
         this.accuracy = 0.92;
-        this.critRate = 0.5;
+        this.critRate = 0.2;
         this.critDame = 1.5;
         this.speed = 800;
         this.energy = 1;

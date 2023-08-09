@@ -45,7 +45,7 @@ var BackgroundLayer = cc.Layer.extend({
 
         switch (typeMap) {
             case GAME_CONFIG.HOME_STATE:
-                this.createChestMap();
+                this.createHomeMap();
                 break;
             case GAME_CONFIG.ENEMY_STATE:
                 CurLvl = Math.min(5, CurLvl + 0.4);     //tang level khi sang map moi
@@ -90,7 +90,7 @@ var BackgroundLayer = cc.Layer.extend({
 
     randomSpecailMap: function(lvl) {
         let ran = Math.random();
-        if(ran <= 0){
+        if(ran <= 0.3){
             let lvl = Math.min(5, CurLvl*3)
             this.createEnemyMap(lvl);
         }else {
@@ -335,27 +335,35 @@ var BackgroundLayer = cc.Layer.extend({
                 this.appearSmoke(pos2);
 
                 setTimeout(()=>{
-                    if(lis[i]===1){
-                        let ran = Math.floor(Math.random()*2);
-                        if(ran === 0){
+                    // if(lis[i] == 1){
+                        let ran = Math.floor(Math.random()*4);
+                        if(ran == 0){
                             let enemy = new Melee1(pos2, this.mapView);
                             this.objectView.addEnemy(enemy);
                         }
-                        if(ran === 1){
+                        if(ran == 1){
                             let enemy = new Range1(pos2, this.mapView);
                             this.objectView.addEnemy(enemy);
                         }
-                    }else{
-                        let ran = Math.floor(Math.random()*2);
-                        if(ran === 0){
-                            let enemy = new Range2(pos2, this.mapView);
-                            this.objectView.addEnemy(enemy);
-                        }
-                        if(ran === 1){
+                        if(ran == 2){
                             let enemy = new Melee2(pos2, this.mapView);
                             this.objectView.addEnemy(enemy);
                         }
-                    }
+                        if(ran == 3){
+                            let enemy = new Range2(pos2, this.mapView);
+                            this.objectView.addEnemy(enemy);
+                        }
+                    // }else{
+                    //     let ran = Math.floor(Math.random()*2);
+                    //     if(ran === 0){
+                    //         let enemy = new Range2(pos2, this.mapView);
+                    //         this.objectView.addEnemy(enemy);
+                    //     }
+                    //     if(ran === 1){
+                    //         let enemy = new Melee2(pos2, this.mapView);
+                    //         this.objectView.addEnemy(enemy);
+                    //     }
+                    // }
                 }, 300)
             }, 1000 + i*200);
 
