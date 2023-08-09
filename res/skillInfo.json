@@ -1,0 +1,245 @@
+{
+  "ID": "b46a8eea-4a8d-46e4-8996-82b1f2fdfaf6",
+  "Version": "3.10.0.0",
+  "Name": "skillInfo",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 42,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "battle/skillUIBack.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 97,
+            "Scale9OriginY": 56,
+            "Scale9Width": 101,
+            "Scale9Height": 58,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 147.9832,
+              "Y": 85.0
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5016,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "LeftMargin": 0.4832,
+            "RightMargin": -0.4832,
+            "Tag": 43,
+            "ActionTag": 2040197387,
+            "Size": {
+              "X": 295.0,
+              "Y": 170.0
+            },
+            "Name": "Image_1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 11,
+            "LabelText": "đã sử dụng",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 123.1314,
+              "Y": 131.0238
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 83,
+              "G": 83,
+              "B": 245
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4174,
+              "Y": 0.7707
+            },
+            "PreSize": {
+              "X": 0.2949,
+              "Y": 0.0882
+            },
+            "LeftMargin": 79.6314,
+            "RightMargin": 128.3686,
+            "TopMargin": 31.4762,
+            "BottomMargin": 123.5238,
+            "Tag": 44,
+            "ActionTag": -1353778448,
+            "Size": {
+              "X": 87.0,
+              "Y": 15.0
+            },
+            "Name": "Text_1",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 11,
+            "LabelText": "Kỹ năng",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 112.837,
+              "Y": 146.6349
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3825,
+              "Y": 0.8626
+            },
+            "PreSize": {
+              "X": 0.2203,
+              "Y": 0.0882
+            },
+            "LeftMargin": 80.337,
+            "RightMargin": 149.6631,
+            "TopMargin": 15.8651,
+            "BottomMargin": 139.1349,
+            "Tag": 45,
+            "ActionTag": -1620981037,
+            "Size": {
+              "X": 65.0,
+              "Y": 15.0
+            },
+            "Name": "Text_1_0",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 11,
+            "LabelText": "Tạo một bản sao của vũ khí đang dùng trong một khoảng thời gian.",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 1.0
+            },
+            "Position": {
+              "X": 149.4164,
+              "Y": 114.1257
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.5065,
+              "Y": 0.6713
+            },
+            "PreSize": {
+              "X": 0.7458,
+              "Y": 0.5882
+            },
+            "LeftMargin": 39.4164,
+            "RightMargin": 35.5836,
+            "TopMargin": 55.8743,
+            "BottomMargin": 14.1257,
+            "Tag": 47,
+            "ActionTag": -1403478320,
+            "Size": {
+              "X": 220.0,
+              "Y": 100.0
+            },
+            "Name": "labelSkill",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 295.0,
+          "Y": 170.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "battle/skillUIBack.png",
+        "font/SVN-Supercell Magic.ttf"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

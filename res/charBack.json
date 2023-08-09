@@ -1,0 +1,127 @@
+{
+  "ID": "ca97c4ab-ba34-4993-97cf-2f23e4cbcdab",
+  "Version": "3.10.0.0",
+  "Name": "charBack",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 5,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "battle/charBack.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 46,
+            "Scale9OriginY": 61,
+            "Scale9Width": 50,
+            "Scale9Height": 65,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 71.0,
+              "Y": 93.5
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 7,
+            "ActionTag": 819914967,
+            "Size": {
+              "X": 142.0,
+              "Y": 187.0
+            },
+            "Name": "Image_2",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "InnerNodeSize": {
+              "Width": 125,
+              "Height": 166
+            },
+            "ScrollDirectionType": "Horizontal",
+            "ClipAble": true,
+            "BackColorAlpha": 102,
+            "SingleColor": {
+              "G": 150,
+              "B": 100
+            },
+            "FirstColor": {
+              "G": 150,
+              "B": 100
+            },
+            "EndColor": {},
+            "ColorVector": {
+              "ScaleY": 1.0
+            },
+            "AnchorPoint": {},
+            "Position": {
+              "X": 8.6604,
+              "Y": 10.17
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.061,
+              "Y": 0.0544
+            },
+            "PreSize": {
+              "X": 0.8803,
+              "Y": 0.8877
+            },
+            "LeftMargin": 8.6604,
+            "RightMargin": 8.3396,
+            "TopMargin": 10.83,
+            "BottomMargin": 10.17,
+            "Tag": 8,
+            "ActionTag": -1930456976,
+            "Size": {
+              "X": 125.0,
+              "Y": 166.0
+            },
+            "Name": "scroll",
+            "ctype": "ScrollViewObjectData"
+          }
+        ],
+        "Size": {
+          "X": 142.0,
+          "Y": 187.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "battle/charBack.png"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}

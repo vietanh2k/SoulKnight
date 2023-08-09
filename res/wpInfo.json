@@ -1,0 +1,358 @@
+{
+  "ID": "b72dc824-0e9b-436a-9b96-2e579f894ada",
+  "Version": "3.10.0.0",
+  "Name": "wpInfo",
+  "Content": {
+    "Content": {
+      "Animation": {
+        "Duration": 0,
+        "Speed": 1.0,
+        "Timelines": [],
+        "ctype": "TimelineActionData"
+      },
+      "AnimationList": [],
+      "ObjectData": {
+        "Tag": 48,
+        "Children": [
+          {
+            "FileData": {
+              "Type": "Normal",
+              "Path": "battle/wpUIBack.png",
+              "Plist": ""
+            },
+            "Scale9OriginX": 97,
+            "Scale9OriginY": 46,
+            "Scale9Width": 101,
+            "Scale9Height": 49,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 147.5,
+              "Y": 70.5
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PositionPercentXEnabled": true,
+            "PositionPercentYEnabled": true,
+            "PrePosition": {
+              "X": 0.5,
+              "Y": 0.5
+            },
+            "PreSize": {
+              "X": 1.0,
+              "Y": 1.0
+            },
+            "Tag": 49,
+            "ActionTag": -1754077388,
+            "Size": {
+              "X": 295.0,
+              "Y": 141.0
+            },
+            "Name": "Image_1",
+            "ctype": "ImageViewObjectData"
+          },
+          {
+            "FontSize": 11,
+            "LabelText": "Vũ khí",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 103.3319,
+              "Y": 119.7739
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3503,
+              "Y": 0.8495
+            },
+            "PreSize": {
+              "X": 0.1661,
+              "Y": 0.1064
+            },
+            "LeftMargin": 78.8319,
+            "RightMargin": 167.1681,
+            "TopMargin": 13.7261,
+            "BottomMargin": 112.2739,
+            "Tag": 50,
+            "ActionTag": -1264336105,
+            "Size": {
+              "X": 49.0,
+              "Y": 15.0
+            },
+            "Name": "Text_1",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 11,
+            "LabelText": "đã sử dụng",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 121.3314,
+              "Y": 104.924
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 83,
+              "G": 83,
+              "B": 245
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.4113,
+              "Y": 0.7441
+            },
+            "PreSize": {
+              "X": 0.2949,
+              "Y": 0.1064
+            },
+            "LeftMargin": 77.8314,
+            "RightMargin": 130.1686,
+            "TopMargin": 28.576,
+            "BottomMargin": 97.424,
+            "Tag": 51,
+            "ActionTag": 427680303,
+            "Size": {
+              "X": 87.0,
+              "Y": 15.0
+            },
+            "Name": "Text_1_0",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 11,
+            "LabelText": "Súng Nước",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 109.4167,
+              "Y": 29.7268
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.3709,
+              "Y": 0.2108
+            },
+            "PreSize": {
+              "X": 0.5085,
+              "Y": 0.1064
+            },
+            "LeftMargin": 34.4167,
+            "RightMargin": 110.5833,
+            "TopMargin": 103.7732,
+            "BottomMargin": 22.2268,
+            "Tag": 52,
+            "ActionTag": 858419068,
+            "Size": {
+              "X": 150.0,
+              "Y": 15.0
+            },
+            "Name": "name",
+            "ctype": "TextObjectData"
+          },
+          {
+            "FontSize": 11,
+            "LabelText": "Mana",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 213.91,
+              "Y": 29.73
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {},
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7251,
+              "Y": 0.2109
+            },
+            "PreSize": {
+              "X": 0.1525,
+              "Y": 0.1064
+            },
+            "LeftMargin": 191.41,
+            "RightMargin": 58.59,
+            "TopMargin": 103.77,
+            "BottomMargin": 22.23,
+            "Tag": 53,
+            "ActionTag": -1335487923,
+            "Size": {
+              "X": 45.0,
+              "Y": 15.0
+            },
+            "Name": "Text_1_1_0",
+            "ctype": "TextObjectData"
+          },
+          {
+            "IsCustomSize": true,
+            "FontSize": 18,
+            "LabelText": "1",
+            "FontResource": {
+              "Type": "Normal",
+              "Path": "font/SVN-Supercell Magic.ttf",
+              "Plist": ""
+            },
+            "HorizontalAlignmentType": "HT_Center",
+            "OutlineColor": {
+              "G": 0,
+              "B": 0
+            },
+            "ShadowColor": {
+              "R": 110,
+              "G": 110,
+              "B": 110
+            },
+            "ShadowOffsetX": 2.0,
+            "ShadowOffsetY": -2.0,
+            "AnchorPoint": {
+              "ScaleX": 0.5,
+              "ScaleY": 0.5
+            },
+            "Position": {
+              "X": 213.0345,
+              "Y": 70.1952
+            },
+            "Scale": {
+              "ScaleX": 1.0,
+              "ScaleY": 1.0
+            },
+            "CColor": {
+              "R": 30,
+              "G": 144
+            },
+            "IconVisible": false,
+            "PrePosition": {
+              "X": 0.7222,
+              "Y": 0.4978
+            },
+            "PreSize": {
+              "X": 0.1322,
+              "Y": 0.1915
+            },
+            "LeftMargin": 193.5345,
+            "RightMargin": 62.4655,
+            "TopMargin": 57.3048,
+            "BottomMargin": 56.6952,
+            "Tag": 54,
+            "ActionTag": -735980773,
+            "Size": {
+              "X": 39.0,
+              "Y": 27.0
+            },
+            "Name": "numMana",
+            "ctype": "TextObjectData"
+          }
+        ],
+        "Size": {
+          "X": 295.0,
+          "Y": 141.0
+        },
+        "Name": "Layer",
+        "ctype": "LayerObjectData"
+      },
+      "UsedResources": [
+        "battle/wpUIBack.png",
+        "font/SVN-Supercell Magic.ttf"
+      ],
+      "ctype": "GameFileData"
+    }
+  },
+  "Type": "Layer"
+}
