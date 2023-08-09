@@ -1,15 +1,17 @@
 var Knight = Character.extend({
 
-    ctor: function(posLogic, map) {
-        this._super(res.celll, posLogic, map);
+    ctor: function(map) {
+        this._super(res.celll, map);
         this.skillWp = null;
         this.timeSkillDuration = 0;
         this.timeSkillDurationMax = 6;
-        GamelayerInstance.updateSwitchWp(this.we.energy, this.we.getTexture())
+        this.maxHp = 7;
+        this.maxMana = 200;
+        this.maxS = 6;
+        // GamelayerInstance.updateSwitchWp(this.we.energy, this.we.getTexture())
     },
 
     switchWeapon: function () {
-        cc.log("size2=="+BackgroundLayerInstance.objectView.items.size())
         if(this.otherWeapon === null) return;
 
         let tmp = this.we;
@@ -21,6 +23,9 @@ var Knight = Character.extend({
         this.we.visible = true;
         this.energyWp = this.we.energy;
         this.otherWeapon.visible = false
+        this.fakeWP.setTexture(this.we.resFakeWP);
+        this.fakeWP.visible = this.we.isMelee;
+        this.we.initSwitch();
 
         this.removeSkill();
 

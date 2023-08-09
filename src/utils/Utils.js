@@ -29,6 +29,21 @@ Utils.getWpById = function (id) {
         case cf.WP_TYPE.WATER_GUN:
             wp = new WaterGun(player.posLogic, player._map)
             break;
+        case cf.WP_TYPE.NORMAL_GUN:
+            wp = new NormalGun(player.posLogic, player._map)
+            break;
+        case cf.WP_TYPE.DOUBLE_WATER_GUN:
+            wp = new DoubleWaterGun(player.posLogic, player._map)
+            break;
+        case cf.WP_TYPE.TRIPLE_WATER_GUN:
+            wp = new TripleWaterGun(player.posLogic, player._map)
+            break;
+        case cf.WP_TYPE.BAZOKA_GUN:
+            wp = new Bazoka(player.posLogic, player._map)
+            break;
+        case cf.WP_TYPE.KATANA:
+            wp = new Katana(player.posLogic, player._map)
+            break;
         default:
             wp = new DoubleGun(player.posLogic, player._map)
             break;

@@ -12,6 +12,10 @@ var Item = cc.Sprite.extend({
         this.isDestroy = false;
         this.gateId = null;
         this.isRendered = false;
+        if(this.type == GAME_CONFIG.ITEM_GATE){
+            var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
+            this.setPosition(posUI)
+        }
 
         this.init();
 
@@ -57,11 +61,27 @@ var Item = cc.Sprite.extend({
                 this.setTexture(res.gun2);
                 break;
             case cf.WP_TYPE.SHORT_GUN:
-                this.setTexture(res.gun);
+                this.setTexture(res.shortgun);
                 break;
             case cf.WP_TYPE.WATER_GUN:
                 this.setTexture(res.gun);
                 break;
+            case cf.WP_TYPE.NORMAL_GUN:
+                this.setTexture(res.gun3);
+                break;
+            case cf.WP_TYPE.DOUBLE_WATER_GUN:
+                this.setTexture(res.doubleWater);
+                break;
+            case cf.WP_TYPE.TRIPLE_WATER_GUN:
+                this.setTexture(res.tripleWater);
+                break;
+            case cf.WP_TYPE.BAZOKA_GUN:
+                this.setTexture(res.bazoka);
+                break;
+            case cf.WP_TYPE.KATANA:
+                this.setTexture(res.katana2);
+                break;
+
 
         }
     },
@@ -178,6 +198,7 @@ var Item = cc.Sprite.extend({
                 break;
             case cf.POTION_TYPE.SMALL_MANA:
                 player.recoverMana(20);
+                GamelayerInstance.updateLabelEnergy(20)
                 break;
 
         }
@@ -207,19 +228,52 @@ var Item = cc.Sprite.extend({
         // this.setTexture(res.chest4);
         this.isNotActive = true;
         this.hideActive()
-        setTimeout(()=>{
-            let wpSize = Object.keys(cf.WP_TYPE).length;
-            let ran = Math.floor((Math.random() * wpSize) + 1);
-            var poss2 = new cc.p(this.posLogic.x, this.posLogic.y);
-            let m2 = new Item(GAME_CONFIG.ITEM_WEAPON, ran, poss2);
-            let pos = new cc.p(0, 15);
-            let seq = cc.sequence(cc.MoveTo(0.2, pos))
+        switch (this.id)
+        {
+            case cf.CHEST_TYPE.ITEM:
+                setTimeout(()=>{
+                    var poss2 = new cc.p(this.posLogic.x, this.posLogic.y);
+                    let ranType = Math.floor(Math.random()*2);
+                    if(ranType <= 0){
+                        let wpSize = Object.keys(cf.WP_TYPE).length;
+                        let ran = Math.floor((Math.random() * wpSize) + 1);
 
-            // this.addChild(m,999)
-            // this.objectView.addItem(m2)
-            BackgroundLayerInstance.objectView.addItem(m2)
-            m2.runAction(seq)
-        }, 150)
+                        let m2 = new Item(GAME_CONFIG.ITEM_WEAPON, ran, poss2);
+                        let pos = new cc.p(0, 15);
+                        let seq = cc.sequence(cc.MoveTo(0.2, pos))
+                        BackgroundLayerInstance.objectView.addItem(m2)
+                        m2.runAction(seq)
+                    }else{
+                        let poSize = Object.keys(cf.POTION_TYPE).length;
+                        let ran = Math.floor((Math.random() * poSize) + 1);
+                        let m2 = new Item(GAME_CONFIG.ITEM_POTION, ran, poss2);
+                        let pos = new cc.p(0, 15);
+                        let seq = cc.sequence(cc.MoveTo(0.2, pos))
+                        BackgroundLayerInstance.objectView.addItem(m2)
+                        m2.runAction(seq)
+                    }
+
+                }, 150)
+                break;
+            case cf.CHEST_TYPE.GOLD:
+                var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
+                let player = BackgroundLayerInstance.player;
+                let ran = Math.random()*0.5 + 0.5;
+                let numCoin = Math.floor(Math.min(3, CurLvl)*20*ran);
+                let numMn = Math.floor(Math.min(1.5, CurLvl/2)*60*ran);
+                player.coin += numCoin;
+                let posCoin = new cc.p(970, 580);
+                let posMana = new cc.p(110, 570);
+                let curPos = new cc.p(posUI.x,posUI.y)
+                let coin  = new ItemFly(res.coin, curPos, posCoin, numCoin, 1);
+                BackgroundLayerInstance.addChild(coin, winSize.height);
+                player.recoverMana(numMn);
+                let mana  = new ItemFly(res.energyIcon, curPos, posMana, numMn, 2);
+                BackgroundLayerInstance.addChild(mana, winSize.height);
+                break;
+
+        }
+
 
     },
 

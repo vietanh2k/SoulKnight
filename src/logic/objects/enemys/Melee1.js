@@ -16,10 +16,11 @@ var Melee1 = Enemy.extend({
         this.timeDelayStartAtk = 0.7;         //thoi gian nghi sau khi atk
         this.timeDelayStartAtkMax = 0.7;
 
-        this.we = new Spear(posLogic, map);
+        this.we = new Spear1(posLogic, map);
         this.we.setAnchorPoint(0.5, 0.3)
         this.we.setPosition(this.width/2, this.height/4)
 
+        this.hp = 20;
         this.addChild(this.we)
         this.setCascadeColorEnabled(false);
     },

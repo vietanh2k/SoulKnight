@@ -19,6 +19,7 @@ var Weapon = cc.Sprite.extend({
         this.critDame = 1.5;
         this.lastFireTime = new Date().getTime();
         this.energy = 0;
+        this.resFakeWP = res.spear;
 
     },
 
@@ -30,6 +31,10 @@ var Weapon = cc.Sprite.extend({
         this.critRate = critRate;
         this.critDame = critDame;
         this.speed = speed;
+    },
+
+    initSwitch: function () {
+
     },
 
     updateDir: function (direction) {
@@ -71,6 +76,7 @@ var Weapon = cc.Sprite.extend({
                 this.activateWeapon(1);
                 this.lastFireTime = currentTime;
                 BackgroundLayerInstance.player.curMana -= this.energy;
+                GamelayerInstance.updateLabelEnergy(-this.energy);
             }
 
         }

@@ -1,15 +1,15 @@
-var DoubleGun = Weapon.extend({
+var DoubleWaterGun = Weapon.extend({
 
     ctor: function(posLogic, map) {
-        this._super(res.gun2, posLogic, map);
-        this.rateSpeed = 30;
+        this._super(res.doubleWater, posLogic, map);
+        this.rateSpeed = 5;
         this.rang = 800;    //range
-        this.dame = 2;
-        this.accuracy = 0.92;
-        this.critRate = 0.5;
+        this.dame = 1;
+        this.accuracy = 0.98;
+        this.critRate = 0;
         this.critDame = 1.5;
-        this.speed = 800;
-        this.energy = 1;
+        this.speed = 1000;
+        this.energy = 0;
         this.updateStat(this.dame, this.rateSpeed, this.accuracy, this.critRate, this.critDame, this.rang, this.speed)
 
     },
@@ -37,20 +37,20 @@ var DoubleGun = Weapon.extend({
         var pos2 = cc.pAdd(posLogic, cc.pMult(dir2, -10));
 
         posLogic = cc.pAdd(posLogic, cc.pMult(dir, this.width/2))
-        var bullet = new  NorBullet(rule, pos1, this._map, dirBullet,dame, rang, this.speed)
+        var bullet = new  WaterBullet(rule, pos1, this._map, dirBullet,dame, rang, this.speed)
         var posLogic2 = new cc.p(this.posLogic.x,this.posLogic.y+5);
-        var bullet2 = new  NorBullet(rule, pos2, this._map, dirBullet, dame, rang, this.speed)
+        var bullet2 = new  WaterBullet(rule, pos2, this._map, dirBullet, dame, rang, this.speed)
         BackgroundLayerInstance.objectView.addBullet(bullet)
         BackgroundLayerInstance.objectView.addBullet(bullet2)
     },
 
     getClone: function (pos) {
-        let wp = new DoubleGun(pos, this._map);
+        let wp = new DoubleWaterGun(pos, this._map);
         return wp;
     },
 
     getId: function() {
-        return cf.WP_TYPE.DOUBLE_GUN;
+        return cf.WP_TYPE.DOUBLE_WATER_GUN;
     }
 
 

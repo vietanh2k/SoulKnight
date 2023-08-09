@@ -14,6 +14,8 @@ CurLvl = 1;
 Cur_Chapter = 1;
 Cur_Map = 1;
 
+LVL_BOSS = 5;
+
 DX = [1, -1, 0, 0]
 DY = [0, 0, 1, -1]
 
@@ -31,7 +33,8 @@ var GameLayer = cc.Layer.extend({
 
     ctor: function(isResetMap) {
         this._super();
-
+        this.isPause = false;
+        this.optionUI = null;
         if (!cc.spriteFrameCache.isSpriteFramesWithFileLoaded(res.boomPlist)) {
             cc.spriteFrameCache.addSpriteFrames(res.boomPlist)
         }
@@ -49,8 +52,20 @@ var GameLayer = cc.Layer.extend({
             SMALL_MAP.retain()
 
         }
+
         if(isResetMap){
-            this.initNewChapterMap()
+            this.initNewChapterMap();
+            let chapStr = "Chap "+Cur_Chapter+"-"+Cur_Map;
+            var chap = new ccui.Text(chapStr, res.font_magic, 34)
+            chap.setPosition(winSize.width/2, winSize.height/2+CELL_SIZE_UI*2)
+            chap.opacity = 0;
+            let seq = cc.sequence(cc.delayTime(1), cc.fadeIn(0.5), cc.delayTime(1), cc.fadeOut(0.7));
+            let seq2 = cc.sequence(cc.delayTime(1), cc.scaleBy(0.3, 1.2), cc.delayTime(1.2), cc.callFunc(()=>{
+                chap.removeFromParent(true);
+            }));
+            chap.runAction(seq);
+            chap.runAction(seq2);
+            this.addChild(chap, 1)
         }
 
         this.addSmallMap()
@@ -65,11 +80,19 @@ var GameLayer = cc.Layer.extend({
         this.initSwitchWeaponBtn();
 
         this.initSkillBtn();
+        this.initBtnOption();
         this.isStop = false;
         GamelayerInstance = this
         this.bg = new BackgroundLayer();
         // this.initFireBtn();
         this.addChild(this.bg, -1);
+        this.tmpCoin = 0;
+        this.tmpEnergy = 0;
+        if(SavePlayer != null){
+            this.tmpCoin = SavePlayer.coin;
+            this.tmpEnergy = SavePlayer.curMana;
+            this.updateSwitchWp(SavePlayer.we.energy, SavePlayer.we.getTexture())
+        }
         this.initStatPaddle();
         this.initCoinPaddle();
         this.joystick = new Joystick();
@@ -78,6 +101,9 @@ var GameLayer = cc.Layer.extend({
         this.addChild(this.joystick);
         this.updateSwitchWp(SavePlayer.we.energy, SavePlayer.we.getTexture())
         this.addKeyboardListener();
+
+        this.updateStatPaddle()
+        this.updateCoinPaddle()
         this.scheduleUpdate();
     },
 
@@ -150,7 +176,7 @@ var GameLayer = cc.Layer.extend({
             let maxHp = this.bg.player.maxHp;
             let curHp = this.bg.player.curHp;
             let maxMana = this.bg.player.maxMana;
-            let curMana = this.bg.player.curMana;
+            let curMana = this.tmpEnergy;
             let maxS = this.bg.player.maxS;
             let curS = this.bg.player.curS;
 
@@ -257,6 +283,104 @@ var GameLayer = cc.Layer.extend({
 
     },
 
+    initBtnOption: function() {
+        this.btnOption = ccui.Button(res.btnOption);
+        this.btnOption.setPosition(winSize.width - this.btnOption.width/2-10, winSize.height - this.btnOption.height/2-10)
+        this.btnOption.addClickEventListener(()=>{
+            if(BackgroundLayerInstance.state == GAME_CONFIG.STATE_ONSTART) return;
+            if(!this.isPause){
+                this.isPause = true;
+                BackgroundLayerInstance.objectView.pauseObj();
+                this.showOption();
+            }else {
+                this.hideOption()
+                this.isPause = false;
+            }
+
+
+        });
+        this.addChild(this.btnOption, 1, 'btnOption');
+
+    },
+
+    showOptionLose: function(text) {
+        this.isPause = true;
+        this.btnOption.setTouchEnabled(false);
+        BackgroundLayerInstance.objectView.pauseObj();
+        if(this.optionUI == null){
+            this.optionUI = new cc.Sprite(res.optionBack);
+            this.optionUI.setPosition(winSize.width/2, winSize.height/2);
+            this.optionUI.scale = 0.7;
+            this.optionUI.opacity = 150;
+            var seq = cc.sequence( cc.ScaleTo(0.1, 1));
+            this.optionUI.runAction(seq);
+            var seq2 = cc.sequence(  cc.fadeIn(0.1));
+            this.optionUI.runAction(seq2);
+            this.addChild(this.optionUI);
+
+            var lb = new ccui.Text(text, res.font_magic, 30)
+            lb.setPosition(this.optionUI.width/2, this.optionUI.height-28);
+            this.optionUI.addChild(lb)
+
+            var btnContin = ccui.Button(res.btnContin);
+            btnContin.setPosition(this.optionUI.width/2, this.optionUI.height/2)
+            btnContin.addClickEventListener(()=>{
+                this.hideOption()
+                this.isPause = false;
+            });
+            this.optionUI.addChild(btnContin, 1);
+            btnContin.setTouchEnabled(false);
+            btnContin.setColor(cc.color(126, 124, 140));
+
+            var btnHome = ccui.Button(res.btnHome);
+            btnHome.setPosition(this.optionUI.width/2, this.optionUI.height/2 - 75)
+            btnHome.addClickEventListener(()=>{
+                fr.view(LobbyUI, 1 );
+            });
+            this.optionUI.addChild(btnHome, 1);
+        }
+    },
+
+    showOption: function() {
+        if(this.optionUI == null){
+            this.optionUI = new cc.Sprite(res.optionBack);
+            this.optionUI.setPosition(winSize.width/2, winSize.height/2);
+            this.optionUI.scale = 0.7;
+            this.optionUI.opacity = 150;
+            var seq = cc.sequence( cc.ScaleTo(0.1, 1));
+            this.optionUI.runAction(seq);
+            var seq2 = cc.sequence(  cc.fadeIn(0.1));
+            this.optionUI.runAction(seq2);
+            this.addChild(this.optionUI);
+
+            var lb = new ccui.Text('Dừng', res.font_magic, 30)
+            lb.setPosition(this.optionUI.width/2, this.optionUI.height-28);
+            this.optionUI.addChild(lb)
+
+            var btnContin = ccui.Button(res.btnContin);
+            btnContin.setPosition(this.optionUI.width/2, this.optionUI.height/2)
+            btnContin.addClickEventListener(()=>{
+                this.hideOption()
+                this.isPause = false;
+            });
+            this.optionUI.addChild(btnContin, 1);
+
+            var btnHome = ccui.Button(res.btnHome);
+            btnHome.setPosition(this.optionUI.width/2, this.optionUI.height/2 - 75)
+            btnHome.addClickEventListener(()=>{
+                fr.view(LobbyUI, 1 );
+            });
+            this.optionUI.addChild(btnHome, 1);
+        }
+    },
+
+    hideOption: function() {
+        if(this.optionUI != null){
+            this.optionUI.removeFromParent(true);
+            this.optionUI = null;
+        }
+    },
+
     activePlayerSkill: function() {
         if(BackgroundLayerInstance){
             BackgroundLayerInstance.player.pressSkill();
@@ -279,9 +403,21 @@ var GameLayer = cc.Layer.extend({
 
     },
 
-    fireBullet: function() {
-        var bullet = this.bg.player.createBullet()
-        this.bg.objectView.addBullet(bullet)
+    updateLabelCoin: function(num) {
+        this.tmpCoin += num;
+        if (this.tmpCoin > BackgroundLayerInstance.player.coin) {
+            this.tmpCoin = BackgroundLayerInstance.player.coin;
+        }
+        this.coinPaddle.getChildByName('num').setString(this.tmpCoin);
+    },
+
+    updateLabelEnergy: function(num) {
+        this.tmpEnergy += num;
+        if (this.tmpEnergy > BackgroundLayerInstance.player.curMana) {
+            this.tmpEnergy = BackgroundLayerInstance.player.curMana;
+        }
+        let maxMana = BackgroundLayerInstance.player.maxMana;
+        this.paddleHp.getChildByName('eneryNum').setString(this.tmpEnergy+"/"+maxMana);
 
     },
 
@@ -292,6 +428,7 @@ var GameLayer = cc.Layer.extend({
 
 
     update: function(dt) {
+        if(this.isPause) return;
             // this.bg.player.updateMove(this.joystick.direction, dt)
         if(BackgroundLayerInstance.state != GAME_CONFIG.STATE_ONSTART){
             this.updateMoveDirection(dt);
@@ -314,7 +451,6 @@ var GameLayer = cc.Layer.extend({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed: function (key, event) {
                 MW.KEYS[key] = true;
-                cc.log(key);
             },
             onKeyReleased: function (key, event) {
                 MW.KEYS[key] = false;
@@ -414,16 +550,6 @@ var GameLayer = cc.Layer.extend({
             listPosible.splice(ran, 1)
         }
 
-
-
-        for(var i=0; i<ChapterMap.length; i++){
-            for(var j=0; j<ChapterMap[i].length; j++){
-                if(ChapterMap[i][j]>=0){
-                    cc.log("Map "+i+"-"+j+"= "+ChapterMap[i][j])
-                }
-            }
-        }
-
         //sang chapter moi thi o middle
         CurDx = 0;
         CurDy = 0;
@@ -434,14 +560,16 @@ var GameLayer = cc.Layer.extend({
 
 
     viewNewMap: function(gateId) {
-        cc.log("size2=="+BackgroundLayerInstance.objectView.items.size())
-
         this.unscheduleAllCallbacks()
         SavePlayer.removeFromParent(true);
         SavePlayer.removeSkill();
 
         //sang chapter moi
         if(gateId[0] === 0 && gateId[1] === 0){
+            if(Cur_Map >= LVL_BOSS){
+                GamelayerInstance.showOptionLose("Chiến Thắng");
+                return;
+            }
 
             CurLvl = Math.max(1, CurLvl - 1);   //giam level khi sang chapter moi
 
@@ -474,8 +602,6 @@ var GameLayer = cc.Layer.extend({
             mapStatus.updateStatus2(BackgroundLayerInstance.mapView, BackgroundLayerInstance.objectView,
                 mapW, mapH);
             SaveMap[curMapKey] = mapStatus;
-            cc.log("size=="+BackgroundLayerInstance.objectView.items.size())
-
 
             CurDx = CurMap[0] - gateId[0];
             CurDy = CurMap[1] - gateId[1];

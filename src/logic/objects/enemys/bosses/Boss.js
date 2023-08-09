@@ -11,7 +11,7 @@ var Boss = Enemy.extend({
         this.radius = 100;
         this.w1 = 200;
         this.h1 = 400;
-        this.hp = 130;
+        this.hp = 200;
         this.speedMax = 300
         this.setAnchorPoint(0.5, 0.4)
         this.rangeAtk = 3;
@@ -27,7 +27,7 @@ var Boss = Enemy.extend({
         this.timeOpenShieldAfterAtkMax = 8;
         this.isShield = true;
 
-        this.we = new Spear(posLogic, map);
+        this.we = new Spear1(posLogic, map);
         this.we.setAnchorPoint(0.5, 0.3)
         this.we.setPosition(this.width/2, this.height/4)
         this.we.visible = false;

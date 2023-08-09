@@ -43,7 +43,6 @@ var ItemShop = Item.extend({
         if(SavePlayer.coin < this.coinCost) return;
 
         SavePlayer.updateCoin(-this.coinCost);
-        cc.log("coin="+SavePlayer.coin);
         BackgroundLayerInstance.isItemCanActive = false;
         if(this.type === GAME_CONFIG.ITEM_WEAPON){
             this.activeItemWeapon();

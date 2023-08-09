@@ -1,16 +1,16 @@
-var DoubleGun = Weapon.extend({
+var Bazoka = Weapon.extend({
 
     ctor: function(posLogic, map) {
-        this._super(res.gun2, posLogic, map);
-        this.rateSpeed = 30;
-        this.rang = 800;    //range
-        this.dame = 2;
-        this.accuracy = 0.92;
-        this.critRate = 0.5;
+        this._super(res.bazoka, posLogic, map);
+        this.rateSpeed = 0.6;
+        this.rang = 1500;    //range
+        this.dame = 14;
+        this.accuracy = 1;
+        this.critRate = 0.1;
         this.critDame = 1.5;
-        this.speed = 800;
-        this.energy = 1;
+        this.speed  = 600;
         this.updateStat(this.dame, this.rateSpeed, this.accuracy, this.critRate, this.critDame, this.rang, this.speed)
+        this.energy = 5;
 
     },
 
@@ -32,26 +32,18 @@ var DoubleGun = Weapon.extend({
         var dir = new cc.p(this.curDir.x, this.curDir.y);
         dir = cc.pNormalize(dir)
         posLogic = cc.pAdd(posLogic, cc.pMult(dir, this.width/2))
-        var dir2 = new cc.p(-dir.y, dir.x);     // vuong goc
-        var pos1 = cc.pAdd(posLogic, cc.pMult(dir2, 10));
-        var pos2 = cc.pAdd(posLogic, cc.pMult(dir2, -10));
 
-        posLogic = cc.pAdd(posLogic, cc.pMult(dir, this.width/2))
-        var bullet = new  NorBullet(rule, pos1, this._map, dirBullet,dame, rang, this.speed)
-        var posLogic2 = new cc.p(this.posLogic.x,this.posLogic.y+5);
-        var bullet2 = new  NorBullet(rule, pos2, this._map, dirBullet, dame, rang, this.speed)
+        var bullet = new  Rocket(rule, posLogic, this._map, dirBullet,dame, rang, this.speed)
         BackgroundLayerInstance.objectView.addBullet(bullet)
-        BackgroundLayerInstance.objectView.addBullet(bullet2)
     },
 
     getClone: function (pos) {
-        let wp = new DoubleGun(pos, this._map);
+        let wp = new Bazoka(pos, this._map);
         return wp;
     },
 
     getId: function() {
-        return cf.WP_TYPE.DOUBLE_GUN;
+        return cf.WP_TYPE.BAZOKA_GUN;
     }
-
 
 });

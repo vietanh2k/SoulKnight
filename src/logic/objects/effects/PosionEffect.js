@@ -17,11 +17,12 @@ const PosionEffect = Effect.extend({
         }
     },
 
-    update: function (playerState, dt) {
+    update: function (dt) {
         this.sumDt += dt;
         while (this.sumDt > TIME_PER_POSION) {
             this.sumDt -= TIME_PER_POSION
             this.target.takeDame(this.numDame)
+            cc.log("dame")
         }
     },
 
@@ -30,10 +31,11 @@ const PosionEffect = Effect.extend({
         if(!this.target.isDestroy) {
             this.target.setColor(cc.color(255, 255, 255));
             this.target.speed = this.target.maxSpeed;
+            this.target.___posionEffect = null
+            this.target.release()
         }
 
 
-        this.target.___posionEffect = null
-        this.target.release()
+
     }
 })

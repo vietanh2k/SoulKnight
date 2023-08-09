@@ -16,6 +16,7 @@ var Bullet = cc.Sprite.extend({
         this.rang = rang;
         this.speed = speed;
         this.disMove = 0; //quang duong di chuyen
+        this.color1 = cc.color(255, 184, 121);
 
     },
 
@@ -30,6 +31,11 @@ var Bullet = cc.Sprite.extend({
         if(this.checkColision(newPos) || this.disMove > this.rang){
             this.isDestroy = true;
             BackgroundLayerInstance.removeChild(this);
+            var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
+            let ap = new Appear(posUI, CELL_SIZE_UI);
+            ap.setColor(this.color1)
+            ap.scale = 0.5;
+            BackgroundLayerInstance.addChild(ap, winSize.height);
         }
         else {
             this.posLogic = newPos;
@@ -40,7 +46,11 @@ var Bullet = cc.Sprite.extend({
     logicUpdate: function (dt) {
         if (this.active) {
             this.updateMove(dt)
+            this.updateMore(dt);
         }
+    },
+
+    updateMore: function (dt) {
     },
 
     render: function () {

@@ -20,6 +20,8 @@ var Melee2 = Enemy.extend({
         this.we.setAnchorPoint(0.5, 0.3)
         this.we.setPosition(this.width/2, this.height/4)
 
+        this.hp = 25;
+
         this.addChild(this.we)
         this.setCascadeColorEnabled(false);
     },
@@ -109,7 +111,7 @@ var Melee2 = Enemy.extend({
         if(disWithChar <= GAME_CONFIG.CELLSIZE*this.rangeAtk ){
             this.isInRange = true;
             // this.dirMain = cc.pNormalize(cc.pSub(BackgroundLayerInstance.player.posLogic, this.posLogic));
-            if(this.timeDelayAtk <= 0 && disWithChar <= GAME_CONFIG.CELLSIZE*4) {
+            if(this.timeDelayAtk <= 0 && disWithChar <= GAME_CONFIG.CELLSIZE*5.5) {
                 this.timeDelayAtk = Math.random()*3 + this.timeDelayAtkMax;
                 this.timeDelayStartAtk = this.timeDelayStartAtkMax;
                 // this.activeAtk(this.dirMain);

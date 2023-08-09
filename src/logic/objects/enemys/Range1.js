@@ -7,7 +7,7 @@ var Range1 = Enemy.extend({
 
     ctor: function(posLogic, map) {
         this._super(res.celll, posLogic, map);
-        this.we = new ShortGun(posLogic, map);
+        this.we = new NormalGun(posLogic, map);
         this.we.setPosition(this.width/2, this.height/4)
 
         this.addChild(this.we)
@@ -15,6 +15,8 @@ var Range1 = Enemy.extend({
         this.timePerBullet = 0.4;
         this.timePerBulletMax = 0.4;
         this.numBullet = 0;
+
+        this.hp = 15;
         // this.setColor(cc.color(0,255,0,0))
     },
 

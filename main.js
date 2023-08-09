@@ -45,7 +45,7 @@ cc.game.onStart = function () {
         // //modules
         // testnetwork.connector = new testnetwork.Connector(gv.gameClient);
         //SignInScreen
-        fr.view_with_args(GameLayer, true);
+        fr.view_with_args(LobbyUI, true);
     }, this);
 };
 cc.game.run();

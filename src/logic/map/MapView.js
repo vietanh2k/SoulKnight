@@ -80,20 +80,23 @@ var MapView = cc.Class.extend({
         }
 
         let boxArr = map.boxArr;
-        for(var i=0; i<boxArr.length; i++){
-            let firstP = boxArr[i][0];
-            let secP = boxArr[i][1];
-            for(var m=firstP[0]; m <= secP[0]; m++){
-                for(var n=firstP[1]; n <= secP[1]; n++){
-                    if(m>=0 && m<= MAP_WIDTH && n>=0 && n<= MAP_HEIGHT){
-                        this.mapArray[m][n] = GAME_CONFIG.MAP_BOX;
-                        let tag = m+"-"+n;
-                        this.listBox[tag] = new Box(m,n);
+        if(boxArr.length <= 0){
+            this.createRandomBox();
+        }else{
+            for(var i=0; i<boxArr.length; i++){
+                let firstP = boxArr[i][0];
+                let secP = boxArr[i][1];
+                for(var m=firstP[0]; m <= secP[0]; m++){
+                    for(var n=firstP[1]; n <= secP[1]; n++){
+                        if(m>=0 && m<= MAP_WIDTH && n>=0 && n<= MAP_HEIGHT){
+                            this.mapArray[m][n] = GAME_CONFIG.MAP_BOX;
+                            let tag = m+"-"+n;
+                            this.listBox[tag] = new Box(m,n);
+                        }
                     }
                 }
             }
         }
-
         this.createRandomBoomBox();
 
         return true;
@@ -117,12 +120,19 @@ var MapView = cc.Class.extend({
                 }
             }
         }
-        // for(var i=0; i<this.mapArray.length; i++){
-        //     for(var j=0; j<this.mapArray[0].length; j++){
-        //         if(this.mapArray)
-        //     }
-        // }
+    },
 
+    createRandomBox:function () {
+        let ran = Math.floor(Math.random()*20);
+        for(var i=0; i< ran; i++){
+            let ran1 = Math.floor(Math.random()*(MAP_WIDTH-6))+3;
+            let ran2 = Math.floor(Math.random()*(MAP_HEIGHT-6))+3;
+            if(this.mapArray[ran1][ran2] === 0) {
+                this.mapArray[ran1][ran2] = GAME_CONFIG.MAP_BOX;
+                let tag = ran1 + "-" + ran2;
+                this.listBox[tag] = new Box(ran1, ran2);
+            }
+        }
     },
 
     delBox:function (dx, dy) {
@@ -155,6 +165,18 @@ var MapView = cc.Class.extend({
         return list;
     },
 
+    getListPosNoneBlock2:function () {
+        let list = [];
+        for(var i =3; i< MAP_WIDTH-2; i++){
+            for(var j =3; j< MAP_HEIGHT-2; j++){
+                if(!this.isBlock(i, j)){
+                    list.push([i,j]);
+                }
+            }
+        }
+
+        return list;
+    },
     getAllBox:function () {
         // for(var i=0; i<this.mapArray.length; i++){
         //     for(var j=0; j<this.mapArray[0].length; j++){

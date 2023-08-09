@@ -18,12 +18,6 @@ var BackgroundLayer = cc.Layer.extend({
         this.timeOnStart = 4.5;
 
         winSize = cc.director.getWinSize();
-        var pos = this.convertIndexToPosLogic(2.1, 2.2)
-        //
-        let p1 = convertIndexToPosLogic(2.4, 3.4);
-        let p2 = convertPosLogicToIntIdx(p1.x, p1.y);
-        cc.log("test= "+p2.x+" "+p2.y)
-
         let mapKey = CurMap[0]+"-"+CurMap[1];
         this.player = SavePlayer;
 
@@ -36,15 +30,8 @@ var BackgroundLayer = cc.Layer.extend({
 
             this.mapView = mapStatus._map;
             this.player._map = BackgroundLayerInstance.mapView;
-            if(this.player.we != null){
-                cc.log("111111111")
-            }
-            if(this.player.otherWeapon != null){
-                cc.log("2222222222222")
-            }
             this.addChild(this.player, 99);
-            cc.log('3333333333')
-            cc.log(this.player.x+" "+this.player.y)
+
             this.xx = cc.winSize.width/2;
             this.yy = cc.winSize.height/2;
             this.isTouchFire = false;
@@ -56,11 +43,9 @@ var BackgroundLayer = cc.Layer.extend({
         this.objectView = new ObjectView();
         let typeMap = ChapterMap[CurMap[0]][CurMap[1]];
 
-        cc.log("Curmap==== "+CurMap[0]+" "+CurMap[1])
-        cc.log("ChapterMap==== "+typeMap)
         switch (typeMap) {
             case GAME_CONFIG.HOME_STATE:
-                this.createHomeMap();
+                this.createChestMap();
                 break;
             case GAME_CONFIG.ENEMY_STATE:
                 CurLvl = Math.min(5, CurLvl + 0.4);     //tang level khi sang map moi
@@ -79,11 +64,9 @@ var BackgroundLayer = cc.Layer.extend({
                 this.createEnemyMap(CurLvl)
                 break;
         }
-        // this.mapView = new MapView();
-        // this.mapView.initFromJson(2);
-        // this.mapView.findPathBFS(9,9, 3)
+
         if(SavePlayer === null) {
-            SavePlayer = new Knight(pos, this.mapView);
+            SavePlayer = new Healer(this.mapView);
             SavePlayer.retain();
             this.player = SavePlayer;
         }
@@ -95,57 +78,27 @@ var BackgroundLayer = cc.Layer.extend({
         this.xx = cc.winSize.width/2;
         this.yy = cc.winSize.height/2;
         this.isTouchFire = false;
-        // this.p = new  Bullet(cc.p(200,200), this.mapView, cc.p(1,1))
-        // this.objectView.addBullet(this.p);
-        var poss = this.convertIndexToPosLogic(5, 2.2)
-        let m = new Item(2, 1, poss);
-        // this.addChild(m,999)
-        // this.objectView.addItem(m)
-
-        var poss2 = this.convertIndexToPosLogic(2.5, 2.5)
-        // let m3 = new Item(10, 1, poss2, 3);
-        // // this.addChild(m,999)
-        // this.objectView.addItem(m3)
-        let m2 = new ItemShop(1, 1, poss2, 26);
-        // this.addChild(m,999)
-        // this.objectView.addItemShop(m2)
-
-        let m3 = new ItemShop(2, 1, poss, 26);
-        // this.addChild(m,999)
-        // this.objectView.addItemShop(m3)
-
-
-
 
         this.addChild(this.player, 99);
-        // this.addChild(this.p)
-
-
         this.initMap()
-        // angleTotal=0;
-        //
-        // var mainscene = ccs.load(res.paddleHp, "res/").node;
-        //
-        // this.addChild(mainscene,0,'scene');
-
 
     },
 
-    activeItem: function(lvl) {
+    activeItem: function() {
         this.curItem.activeItem();
     },
 
     randomSpecailMap: function(lvl) {
         let ran = Math.random();
-        if(ran <= 0.25){
-            this.createEnemyMap(CurLvl*3);
+        if(ran <= 0){
+            let lvl = Math.min(5, CurLvl*3)
+            this.createEnemyMap(lvl);
         }else {
             this.createShopMap();
         }
     },
 
     initPosForPlayer: function() {
-        cc.log("CurDx= "+CurDx+" "+CurDy)
         var posMid = convertIndexToPosLogic(MAP_WIDTH/2, MAP_HEIGHT/2)
         var tmpMid = convertIndexToPosLogic(MAP_WIDTH/2-2, MAP_HEIGHT/2-2)
         let tmp = new cc.p(tmpMid.x*CurDx, tmpMid.y*CurDy);
@@ -271,7 +224,6 @@ var BackgroundLayer = cc.Layer.extend({
     },
 
     moveWindowToPosObj: function (speed, objX, objY) {
-        // cc.log("move==========")
         if(isNaN(objX) || isNaN(objY)) return;
         let p1 = cc.p(this.x, this.y);
         let p2 = cc.p(-(objX - this.xx), -(objY - this.yy));
@@ -320,12 +272,13 @@ var BackgroundLayer = cc.Layer.extend({
 
     createMapByLvl: function(lvl) {
         let ranMap = Math.floor(Math.random()*5);
-        let maxLvlEnemy = Math.ceil(lvl);
+
         this.mapView = new MapView();
         this.mapView.initFromJson(ranMap);
 
         let lis = [];
         let a = this.calculateLevelMap(lvl);
+
         for(var i=0; i<cf.MAP_LEVEL.length; i++){
             if(a < cf.MAP_LEVEL[i].level){
                 lis = cf.MAP_LEVEL[i].enemy;
@@ -342,6 +295,7 @@ var BackgroundLayer = cc.Layer.extend({
         let lis = this.createMapByLvl(lvl);
 
         let listPosNoneBlock = this.mapView.getListPosNoneBlock();
+        this.timeOnStart = 3.3 + 0.2*lis.length;
 
         setTimeout(()=>{
             let ready = new cc.Sprite(res.ready);
@@ -418,10 +372,10 @@ var BackgroundLayer = cc.Layer.extend({
         this.mapView.initChestMap();
         setTimeout(()=>{
             this.initAppear();
-        }, 500)
+        }, 1700)
         setTimeout(()=>{
             this.initDoor();
-        }, 800)
+        }, 2000)
     },
 
     createChestMap: function() {
@@ -434,14 +388,14 @@ var BackgroundLayer = cc.Layer.extend({
         BackgroundLayerInstance.objectView.addItem(chest)
         setTimeout(()=>{
             this.initAppear();
-        }, 500)
+        }, 1700)
         setTimeout(()=>{
             this.initDoor();
-        }, 800)
+        }, 2000)
     },
 
     createDesMap: function() {
-        if(Cur_Map >= 5){
+        if(Cur_Map >= LVL_BOSS){
             this.createBossMap();
             return;
         }
@@ -450,10 +404,10 @@ var BackgroundLayer = cc.Layer.extend({
         this.mapView.initDesMap();
         setTimeout(()=>{
             this.initAppear();
-        }, 500)
+        }, 1700)
         setTimeout(()=>{
             this.initDoor();
-        }, 800)
+        }, 2000)
         this.initDoorNewChap();
 
     },
@@ -485,20 +439,23 @@ var BackgroundLayer = cc.Layer.extend({
 
         var pos3 = this.convertIndexToPosLogic(MAP_WIDTH/7*4, MAP_HEIGHT/2.1)
 
-        let wp1 = new ItemShop(GAME_CONFIG.ITEM_WEAPON, 2, pos3, 10);
+        let wpSize = Object.keys(cf.WP_TYPE).length;
+        let ran = Math.floor((Math.random() * wpSize) + 1);
+
+        let wp1 = new ItemShop(GAME_CONFIG.ITEM_WEAPON, ran, pos3, 10);
         BackgroundLayerInstance.objectView.addItemShop(wp1)
 
         var pos4 = this.convertIndexToPosLogic(MAP_WIDTH/7*5, MAP_HEIGHT/2.1)
-
-        let wp2 = new ItemShop(GAME_CONFIG.ITEM_WEAPON, 1, pos4, 10);
+        let ran2 = Math.floor((Math.random() * wpSize) + 1);
+        let wp2 = new ItemShop(GAME_CONFIG.ITEM_WEAPON, ran2, pos4, 10);
         BackgroundLayerInstance.objectView.addItemShop(wp2)
 
         setTimeout(()=>{
             this.initAppear();
-        }, 500)
+        }, 1700)
         setTimeout(()=>{
             this.initDoor();
-        }, 800)
+        }, 2000)
     },
 
     calculateLevelMap: function(lvl) {
@@ -518,7 +475,6 @@ var BackgroundLayer = cc.Layer.extend({
             let x = CurMap[0] + DX[i];
             let y = CurMap[1] + DY[i];
             if(ChapterMap[x][y] >= 0){
-                cc.log("door "+x+" "+y);
                 SMALL_MAP.showNewMap(x,y);
                 let a = new ccui.Button(res.gold);
                 let tmp = new cc.p(tmpMid.x*DX[i], tmpMid.y*DY[i]);
@@ -533,7 +489,6 @@ var BackgroundLayer = cc.Layer.extend({
     },
 
     initAppear:function () {
-        let tmp1 = new cc.p(CurMap[0], CurMap[1]);
         var posMid = this.convertIndexToPosLogic(MAP_WIDTH/2, MAP_HEIGHT/2)
         var tmpMid = this.convertIndexToPosLogic(MAP_WIDTH/2-2, MAP_HEIGHT/2-2)
         for(var i =0;i <DX.length; i++){

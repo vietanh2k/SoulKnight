@@ -1,21 +1,22 @@
-var WaterBullet = Bullet.extend({
+var Rocket = Bullet.extend({
     _map: null,
 
     ctor: function(rule, posLogic, map, direction, dame, rang, speed) {
-        this._super(res.waterBullet, rule, posLogic, map, direction, dame, rang, 900);
-        let back = new cc.Sprite(res.waterBulletBack);
-        back.setPosition(this.width/2, this.height/2);
-        back.opacity = 60;
-        this.addChild(back);
+        this._super(res.rocket, rule, posLogic, map, direction, dame, rang, speed);
         var angle = cc.pToAngle(direction);
-        this.setRotation(-angle/Math.PI*180);
-        this.color1 = cc.color(148, 229, 248);
-
-        // this.setScale(1.5)
+        this.setRotation(-angle/Math.PI*180+180);
+        this.setScale(2)
+        this.radius = GAME_CONFIG.CELLSIZE*1.5;
+        this.maxSpeed = speed*1.5;
 
     },
 
-
+    updateMore: function (dt) {
+        this.speed *= 1.012;
+        if(this.speed >= this.maxSpeed){
+            this.speed = this.maxSpeed;
+        }
+    },
 
     checkColision: function (newPos) {
         let p1 = new cc.p(this.posLogic.x, this.posLogic.y)
@@ -54,59 +55,42 @@ var WaterBullet = Bullet.extend({
         //neu colision voi block ma ko colision voi enemy
         if(tmp){
             this.posLogic = gdBlock;
-            let blockId = blockTmp[1];
-            let listBox = BackgroundLayerInstance.mapView.listBox;
-            let tag = blockId[0]+"-"+blockId[1];
-            if(listBox.hasOwnProperty(tag)){
-                listBox[tag].takeDame(this.dame);
-            }
+            this.activeBullet(null);
             return true;
         }
 
         if(newPos.x < GAME_CONFIG.CELLSIZE){
+            this.activeBullet(null);
             return true;
         }
 
         if(newPos.x > GAME_CONFIG.CELLSIZE*MAP_WIDTH){
+            this.activeBullet(null);
             return true;
         }
 
         if(newPos.y < GAME_CONFIG.CELLSIZE){
+            this.activeBullet(null);
             return true;
         }
 
         if(newPos.y > GAME_CONFIG.CELLSIZE*MAP_HEIGHT){
+            this.activeBullet(null);
             return true;
         }
 
-
-        // var l = Math.floor((newPos.x - this.radius)/60);
-        // var r = Math.floor((newPos.x + this.radius)/60);
-        //
-        // var u = Math.floor((newPos.y + this.radius)/60);
-        // var d = Math.floor((newPos.y - this.radius)/60);
-        //
-        // for(var i =l; i<= r; i++){
-        //     if(this._map.mapArray[i][u] === 1){
-        //         return true;
-        //     }
-        //     if(this._map.mapArray[i][d] === 1){
-        //         return true;
-        //     }
-        // }
-        // for(var i =d; i<= u; i++){
-        //     if(this._map.mapArray[l][i] === 1){
-        //         return true;
-        //     }
-        //     if(this._map.mapArray[r][i] === 1){
-        //         return true;
-        //     }
-        // }
         return false;
     },
 
     activeBullet: function (target) {
-        target.takeDame(this.dame);
+        var posUI = cc.pMult(this.posLogic, (CELL_SIZE_UI/GAME_CONFIG.CELLSIZE));
+        let a = new Explosion(posUI, this.radius);
+        BackgroundLayerInstance.addChild(a);
+
+        let obj = BackgroundLayerInstance.objectView.getAllBlockAndEnemyInCircle(this.posLogic,this.radius)
+        for (let i = 0; i < obj.length; i++) {
+            obj[i].takeDame(this.dame);
+        }
     },
 
 

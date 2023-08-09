@@ -5,7 +5,7 @@ var WaterGun = Weapon.extend({
         this.rateSpeed = 1;
         this.rang = 900;    //range
         this.dame = 1;
-        this.accuracy = 0.97;
+        this.accuracy = 0.95;
         this.critRate = 0;
         this.critDame = 1;
         this.speed  = 500;
@@ -14,6 +14,7 @@ var WaterGun = Weapon.extend({
         this.numBullet = 0;
         this.timePerBullet = 0;
         this.timePerBulletMax = 0.1;
+        this.energy = 0;
     },
 
     logicUpdate: function (dt) {

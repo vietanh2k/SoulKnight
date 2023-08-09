@@ -8,13 +8,13 @@ var Character = AnimatedSprite.extend({
     otherWeapon: null,
     weapon2: null,
 
-    ctor: function(_res, posLogic, map) {
+    ctor: function(_res, map) {
         this._super(_res);
         this.inactiveSourceCounter = 0;
         this.maxHp = 7;
         this.curHp = 5;
-        this.maxMana = 5000;
-        this.curMana = 5000;
+        this.maxMana = 200;
+        this.curMana = 200;
         this.maxS = 6;
         this.curS = 4;
         this.coin = 50;
@@ -22,10 +22,10 @@ var Character = AnimatedSprite.extend({
         this.dirEnemy = false;      // co dang tro den enemy
         this.isCanDo = true;  //co the hoat dong
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
-        this.posLogic = posLogic;
+        var pos = convertIndexToPosLogic(2.1, 2.2)
+        this.posLogic = pos;
         this.radius = 20
         this.isLeft = true; //quay trai
-        cc.log("radius= "+this.radius)
         // p.scale = 1.2 * CELL_SIZE_UI / p.getContentSize().width
         this.setAnchorPoint(0.5, 0.28)
         this.otherWeapon = null;
@@ -33,14 +33,22 @@ var Character = AnimatedSprite.extend({
         // this.otherWeapon.setPosition(this.width/2, this.height/4)
         // this.otherWeapon.visible = false
         // this.addChild(this.otherWeapon);
-
-        this.we = new WaterGun(posLogic, map);
-        this.we.setPosition(this.width/2, this.height/4)
-
-        this.addChild(this.we)
+        this.fakeWP = new cc.Sprite(res.spear);
+        this.fakeWP.setPosition(this.width/2, this.height/4.5);
+        this.fakeWP.scale = 0.5;
+        this.fakeWP.setRotation(180-20);
+        this.addChild(this.fakeWP);
+        this.we = null;
+        // this.we = new ShortGun(pos, map);
+        // this.we.setPosition(this.width/2, this.height/4)
+        // this.fakeWP.setTexture(this.we.resFakeWP)
+        // this.fakeWP.visible = this.we.isMelee;
+        //
+        // this.addChild(this.we)
         this.initAnimation()
         this.setCascadeOpacityEnabled(false)
         this.direction = new cc.p(1,0);
+        this.dirMain = new cc.p(1,0);
         // this.opacity = 0
         this._map = map;
         this.timeShieldStart = 0; //s
@@ -53,6 +61,29 @@ var Character = AnimatedSprite.extend({
 
         this.energyWp = 0;
 
+        this.recoverHpFx = new sp.SkeletonAnimation(res.heal_fx_json, res.heal_fx_atlas)
+        this.recoverHpFx.visible = false;
+        this.recoverHpFx.opacity = 64
+        this.addChild(this.recoverHpFx)
+        this.recoverHpFx.setPosition(this.width / 2.0, this.height / 2.0)
+
+    },
+
+    initStatNewGame: function () {
+        this.curHp = this.maxHp;
+        this.curMana = this.maxMana;
+        this.curS = this.maxS;
+        this.cdSkill = 0;
+        this.coin = 10;
+    },
+
+    initWPStart: function (wp) {
+        this.we = wp;
+        this.we.setPosition(this.width/2, this.height/4)
+        this.fakeWP.setTexture(this.we.resFakeWP)
+        this.fakeWP.visible = this.we.isMelee;
+
+        this.addChild(this.we)
     },
 
     initAnimation: function () {
@@ -64,6 +95,7 @@ var Character = AnimatedSprite.extend({
     },
 
     switchWeapon: function () {
+
         if(this.otherWeapon === null) return;
 
         let tmp = this.we;
@@ -75,6 +107,9 @@ var Character = AnimatedSprite.extend({
         this.we.visible = true;
         this.energyWp = this.we.energy;
         this.otherWeapon.visible = false
+        this.fakeWP.setTexture(this.we.resFakeWP);
+        this.fakeWP.visible = this.we.isMelee;
+        this.we.initSwitch();
 
         GamelayerInstance.updateSwitchWp(this.we.energy, this.we.getTexture())
     },
@@ -151,7 +186,10 @@ var Character = AnimatedSprite.extend({
         let enemy = BackgroundLayerInstance.objectView.getClosestEnemy(7*GAME_CONFIG.CELLSIZE);
         if(enemy != null){
             var dir = cc.pSub(enemy.posLogic, this.posLogic);
+            this.dirMain = dir
             direction = dir;
+        }else{
+            this.dirMain = direction;
         }
 
         if(direction.x > 0) {
@@ -261,7 +299,6 @@ var Character = AnimatedSprite.extend({
 
     takeDame: function (dame) {
         if(this.isDestroy) return ;
-
         this.curS = this.curS - Math.floor(dame);
         if(this.curS < 0){
             this.curHp = Math.max(this.curHp + this.curS, 0);
@@ -272,7 +309,7 @@ var Character = AnimatedSprite.extend({
         // GamelayerInstance.newLvl();
         this.timeShieldDelay = 0;
         getNumDameUI(dame, cc.p(this.x, this.y))
-        if(this.hp <= 0) {
+        if(this.curHp <= 0) {
             this.isDestroy = true;
             this.destroy();
         }
@@ -282,15 +319,24 @@ var Character = AnimatedSprite.extend({
         many = Math.floor(many)
         this.curHp = Math.min(this.curHp + many, this.maxHp)
 
+        if (this.curHp !== this.maxHp && this.recoverHpFx.visible === false) {
+            const self = this
+            this.recoverHpFx.visible = true
+            this.recoverHpFx.setAnimation(0, 'fx_heal', false)
+            this.recoverHpFx.setCompleteListener(() => {
+                self.recoverHpFx.visible = false
+                self.recoverHpFx.setCompleteListener(null)
+            })
+        }
     },
 
     recoverMana: function (many) {
         many = Math.floor(many)
         this.curMana = Math.min(this.curMana + many, this.maxMana)
-
     },
 
     destroy: function () {
+        GamelayerInstance.showOptionLose("Thua cuộc");
     },
 
     pressSkill: function () {
@@ -337,6 +383,8 @@ var Character = AnimatedSprite.extend({
             this.we.setPosition(this.width/2, this.height/4)
             this.we.visible = true
             this.addChild(this.we);
+            this.fakeWP.setTexture(this.we.resFakeWP)
+            this.fakeWP.visible = this.we.isMelee;
             GamelayerInstance.updateSwitchWp(this.we.energy, this.we.getTexture())
         }
     },

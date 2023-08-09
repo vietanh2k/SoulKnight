@@ -1,4 +1,4 @@
-var Knife = Sword.extend({
+var Knife = Spear.extend({
 
     ctor: function( posLogic, map) {
         this._super(res.knife, posLogic, map);

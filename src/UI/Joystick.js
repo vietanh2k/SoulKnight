@@ -29,7 +29,6 @@ var Joystick = cc.Sprite.extend({
         var touchPos = touch.getLocation();
         if (cc.pDistance(touchPos, this.getPosition()) <= this.radius) {
             this.touchId = touch.getID();
-            getNumDameUI(5, cc.p(200, 120))
             return true;
         }
         return false;

@@ -16,7 +16,7 @@ var Enemy = AnimatedSprite.extend({
         this.setScale(0.9 * CELL_SIZE_UI / this.getContentSize().width)
         this.posLogic = new cc.p(posLogic.x, posLogic.y);
         this.radius = 20
-        this.hp = 1;
+        this.hp = 30;
         this.we = null;
         this.dirMove = new cc.p(0,1);  // hướng di chuyển
         this.isChangeDir = true;        // có đổi hướng

@@ -165,24 +165,57 @@ cf.MAP_LEVEL = [
         enemy: [1,1,1,1,1,1],
         rareEnemy: 0,
     },
+    {
+        level: 65,
+        enemy: [1,1,1,1,1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 75,
+        enemy: [1,1,1,1,1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 85,
+        enemy: [1,1,1,1,1,1],
+        rareEnemy: 0,
+    },
+    {
+        level: 95,
+        enemy: [1,1,1,1,1,1],
+        rareEnemy: 0,
+    },
 ];
+
+cf.CHAR_TYPE = {
+    KNIGHT: 1,
+    HEALER: 2
+};
 
 cf.WP_TYPE = {
     DOUBLE_GUN: 1,
     SHORT_GUN: 2,
     WATER_GUN:3,
+    DOUBLE_WATER_GUN:4,
+    TRIPLE_WATER_GUN:5,
+    NORMAL_GUN:6,
+    BAZOKA_GUN:7,
+    KATANA:8,
 };
 
 cf.POTION_TYPE = {
     SMALL_HEAL: 1,
     SMALL_MANA: 2,
-    BIG_HEAL: 3,
-    BIG_MANA: 4,
 };
 
 cf.GATE_TYPE = {
     NEXT_CHAPTER: 2,
     NEXT_MAP: 1,
+};
+
+cf.CHEST_TYPE = {
+    ITEM: 1,
+    GOLD: 2,
 };
 
 cf.TOAST_Z_ORDER = 1000000000;

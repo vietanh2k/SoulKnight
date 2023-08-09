@@ -15,6 +15,8 @@ var Range2 = Enemy.extend({
         this.timePerBullet = 1;
         this.timePerBulletMax = 1;
         this.numBullet = 0;
+
+        this.hp = 15;
         // this.setColor(cc.color(0,80,255,0))
     },
 

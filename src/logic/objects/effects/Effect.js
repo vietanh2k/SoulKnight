@@ -5,8 +5,8 @@ const Effect = cc.Class.extend({
         this.isDestroyed = false
     },
 
-    logicUpdate: function (playerState, dt) {
-        this.update(playerState, dt)
+    logicUpdate: function (dt) {
+        this.update(dt)
 
         if ((this.countDownTime -= dt) <= 0) {
             this.isDestroyed = true
@@ -14,7 +14,7 @@ const Effect = cc.Class.extend({
         }
     },
 
-    update: function (playerState, dt) {
+    update: function (dt) {
 
     },
 

@@ -83,26 +83,33 @@ var  ObjectView = cc.Class.extend({
                 }
             }
         })
-        // for(var i=0; i<this.enemys.size(); i++){
-        //     let enemy = this.enemys.get(i);
-        //     if(enemy) {
-        //         let posEnemy = new cc.p(enemy.posLogic.x, enemy.posLogic.y);
-        //         if (cc.pDistance(p1, posEnemy) > (dis1 + GAME_CONFIG.CELLSIZE)) continue;
-        //         let gd = getColisionDoanThangVaHCN(p0, p1, posEnemy, 50, 80);
-        //         if (gd != null) {
-        //             let dis = cc.pDistance(p0, gd);
-        //             if (dis < disMin) {
-        //                 GiaoDiem = gd;
-        //                 disMin = dis;
-        //                 retEnemy = enemy;
-        //             }
-        //         }
-        //     }
-        // }
+
         if(GiaoDiem != null) {
             return [GiaoDiem, retEnemy];
         }
         return null;
+    },
+
+    getAllEnemyColisionInMapAndTakeDame: function (p0, p1, dame) {
+        let dis1 = cc.pDistance(p0, p1);
+        this.enemys.forEach(enemy=>{
+            if(enemy) {
+                let gd = null;
+                let posEnemy = new cc.p(enemy.posLogic.x, enemy.posLogic.y);
+                if (cc.pDistance(p1, posEnemy) > (dis1 + GAME_CONFIG.CELLSIZE)) return;
+                let g1 = isPointInsideHCN(p1, posEnemy, enemy.w1, enemy.h1);
+                if(g1 != null) {
+                    gd = g1;
+                }else{
+                    let g2 = getColisionDoanThangVaHCN(p0, p1, posEnemy, enemy.w1, enemy.h1);
+                    if(g2 != null) gd = g2;
+                }
+                if (gd != null) {
+                    enemy.takeDame(dame);
+                }
+            }
+        })
+
     },
 
     getBlockColisionInMap2: function (p00, p11) {
@@ -229,7 +236,6 @@ var  ObjectView = cc.Class.extend({
                 }
             }
         }
-        cc.log("list "+this.listBlock.length)
     },
 
     delBoxInMap: function (dx, dy) {
@@ -286,7 +292,7 @@ var  ObjectView = cc.Class.extend({
     updateEffect: function (dt) {
         try {
             this.effects.forEach((effect, id, list) => {
-                effect.logicUpdate(this._playerState, dt);
+                effect.logicUpdate(dt);
 
                 if (effect.isDestroyed){
                     list.remove(id)
@@ -304,6 +310,9 @@ var  ObjectView = cc.Class.extend({
 
     addBullet: function (bullet) {
         bullet.mapId = this.bullets.add(bullet)
+        if(bullet.getParent() != null){
+            bullet.removeFromParent(true);
+        }
         if(BackgroundLayerInstance!= null)
         BackgroundLayerInstance.addChild(bullet)
     },
@@ -314,6 +323,9 @@ var  ObjectView = cc.Class.extend({
 
     addItem: function (item) {
         item.mapId = this.items.add(item)
+        if(item.getParent() != null){
+            item.removeFromParent(true);
+        }
         if(BackgroundLayerInstance!= null)
             BackgroundLayerInstance.addChild(item)
     },
@@ -328,6 +340,9 @@ var  ObjectView = cc.Class.extend({
 
     addEnemy: function (enemy) {
         enemy.mapId = this.enemys.add(enemy)
+        if(enemy.getParent() != null){
+            enemy.removeFromParent(true);
+        }
         if(BackgroundLayerInstance!= null)
             BackgroundLayerInstance.addChild(enemy)
     },
@@ -418,6 +433,22 @@ var  ObjectView = cc.Class.extend({
         return ret
     },
 
+    getAllBlockAndEnemyInCircle: function (posLogic, radius) {
+        const ret = [];
+
+        let enemys = this.queryEnemiesCircle(posLogic, radius);
+        for (let i = 0; i < enemys.length; i++) {
+            ret.push(enemys[i]);
+        }
+
+        let boxes = this.queryBoxCircle(posLogic, radius);
+        for (let i = 0; i < boxes.length; i++) {
+            ret.push(boxes[i]);
+        }
+
+        return ret
+    },
+
     getAllPeopleInCircle: function (posLogic, radius) {
         const ret = [];
 
@@ -425,6 +456,16 @@ var  ObjectView = cc.Class.extend({
         for (let i = 0; i < enemys.length; i++) {
             ret.push(enemys[i]);
         }
+
+        if(this.isCharInRangeCircle(posLogic, radius)){
+            ret.push(this.character);
+        }
+
+        return ret
+    },
+
+    getAllCharInCircle: function (posLogic, radius) {
+        const ret = [];
 
         if(this.isCharInRangeCircle(posLogic, radius)){
             ret.push(this.character);
@@ -513,10 +554,35 @@ var  ObjectView = cc.Class.extend({
                         BackgroundLayerInstance.state = GAME_CONFIG.STATE_MOVING;
                         setTimeout(()=>{
                             BackgroundLayerInstance.initAppear();
-                        }, 500)
+                        }, 2200)
                         setTimeout(()=>{
                             BackgroundLayerInstance.initDoor();
-                        }, 800)
+                        }, 2500);
+
+                        setTimeout(()=>{
+                            let clear = new cc.Sprite(res.clear);
+                            clear.setPosition(winSize.width/2, winSize.height/2);
+                            GamelayerInstance.addChild(clear, 1);
+                            clear.scale = 0.7
+                            let seq = cc.sequence(cc.fadeIn(0.3));
+                            let seq2 = cc.sequence(cc.scaleBy(0.2, 1/0.6), cc.delayTime(1), cc.callFunc(()=>{
+                                clear.removeFromParent(true);
+                            }));
+                            clear.runAction(seq);
+                            clear.runAction(seq2);
+                        }, 200)
+
+                        setTimeout(()=>{
+                            let listPosNoneBlock = BackgroundLayerInstance.mapView.getListPosNoneBlock2();
+                            let ran = Math.floor(Math.random()*listPosNoneBlock.length);
+                            var pos2 = convertIndexToPosLogic(listPosNoneBlock[ran][0], listPosNoneBlock[ran][1]);
+                            BackgroundLayerInstance.appearSmoke(pos2);
+                            setTimeout(()=>{
+                                let chest = new Item(GAME_CONFIG.ITEM_CHEST, 2, pos2);
+                                this.addItem(chest)
+                            }, 300)
+                        }, 1500)
+
 
                     }
                 }
@@ -568,6 +634,15 @@ var  ObjectView = cc.Class.extend({
         })
     },
 
+    pauseObj: function () {
+        this.enemys.forEach((enemy, id, list) => {
+            enemy.play(-1);
+        })
+
+        this.character.play(-1);
+
+    },
+
     saveObject: function () {
         this.items.forEach((item, id, list) => {
             // bullet.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + bullet.posLogic.y)
@@ -601,6 +676,10 @@ var  ObjectView = cc.Class.extend({
         this.getBlockInMap();
         this.items.forEach((item, id, list) => {
             // bullet.setLocalZOrder(GAME_CONFIG.RENDER_START_Z_ORDER_VALUE + bullet.posLogic.y)
+            if(item.getParent() != null){
+                item.removeFromParent(true);
+
+            }
             if(BackgroundLayerInstance!= null)
                 BackgroundLayerInstance.addChild(item)
         })
